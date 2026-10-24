@@ -6,8 +6,12 @@ import { Platform } from 'react-native';
 export function useDictation(onText: (t: string) => void) {
   const [listening, setListening] = useState(false);
   const rec = useRef<any>(null);
+  // Trong khung nhúng (ví dụ trang xem thử), trình duyệt thường chặn micro: ẩn nút thay vì để nút không hoạt động.
+  const embedded = Platform.OS === 'web' && typeof window !== 'undefined' && window.self !== window.top;
   const Ctor: any =
-    Platform.OS === 'web' && typeof window !== 'undefined' ? (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition : null;
+    Platform.OS === 'web' && typeof window !== 'undefined' && !embedded
+      ? (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+      : null;
 
   const start = useCallback(() => {
     if (!Ctor) return;

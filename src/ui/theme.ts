@@ -1,6 +1,23 @@
 // Bộ màu "đèn ngủ": nền sương xanh dịu cho giờ tối khi con đã ngủ,
 // một màu hổ phách như bút dạ quang để đánh dấu những gì Pal vừa ghi nhớ.
-import { useColorScheme } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Platform, useColorScheme } from 'react-native';
+
+/** Trên web, tôn trọng lựa chọn sáng/tối do trang chứa đặt (data-theme), nếu có. */
+function useHostTheme(): 'light' | 'dark' | null {
+  const read = () =>
+    Platform.OS === 'web' && typeof document !== 'undefined'
+      ? ((document.documentElement.getAttribute('data-theme') as 'light' | 'dark' | null) ?? null)
+      : null;
+  const [t, setT] = useState(read);
+  useEffect(() => {
+    if (Platform.OS !== 'web' || typeof MutationObserver === 'undefined') return;
+    const mo = new MutationObserver(() => setT(read()));
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => mo.disconnect();
+  }, []);
+  return t === 'light' || t === 'dark' ? t : null;
+}
 
 export interface Palette {
   bg: string;
@@ -57,7 +74,9 @@ const dark: Palette = {
 };
 
 export function usePalette(): Palette {
-  return useColorScheme() === 'dark' ? dark : light;
+  const system = useColorScheme();
+  const host = useHostTheme();
+  return (host ?? system) === 'dark' ? dark : light;
 }
 
 export const font = {
