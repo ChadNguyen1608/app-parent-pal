@@ -28,6 +28,9 @@ export async function openPage(browser, url, viewport = { width: 390, height: 84
   const errors = [];
   page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
   page.on('console', (m) => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
+  // Mỗi kịch bản bắt đầu với bộ nhớ trình duyệt trống, không lẫn với kịch bản trước.
+  await page.goto(new URL(url).origin + '/__blank', { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => localStorage.clear());
   await page.goto(url, { waitUntil: 'networkidle0' });
   return { page, errors };
 }
@@ -36,4 +39,39 @@ export const byId = (id) => `[data-testid="${id}"]`;
 
 export async function waitText(page, text, timeout = 8000) {
   await page.waitForFunction((t) => document.body.innerText.includes(t), { timeout }, text);
+}
+
+/** Gõ và gửi một tin nhắn, chờ Pal trả lời xong. */
+export async function say(page, text) {
+  const before = await page.$$eval('[data-testid="bubble-pal"], [data-testid="safety-card"]', (els) => els.length);
+  await page.click('[data-testid="composer"]');
+  await page.type('[data-testid="composer"]', text);
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(
+    (n) => document.querySelectorAll('[data-testid="bubble-pal"], [data-testid="safety-card"]').length > n && !document.querySelector('[data-testid="typing"]'),
+    { timeout: 8000 },
+    before,
+  );
+}
+
+export async function clickText(page, text, selector = '[role="button"], [role="tab"], button') {
+  const ok = await page.evaluate(
+    (t, sel) => {
+      const el = [...document.querySelectorAll(sel)].find((e) => e.innerText.trim() === t || e.getAttribute('aria-label') === t);
+      if (!el) return false;
+      el.click();
+      return true;
+    },
+    text,
+    selector,
+  );
+  if (!ok) throw new Error(`Không tìm thấy nút "${text}"`);
+}
+
+export const bodyText = (page) => page.evaluate(() => document.body.innerText);
+
+export async function onboard(page, name = 'chị Lan', kids = 'bé Na 8 tuổi') {
+  await waitText(page, 'mình nên gọi bạn');
+  await say(page, name);
+  await say(page, kids);
 }
