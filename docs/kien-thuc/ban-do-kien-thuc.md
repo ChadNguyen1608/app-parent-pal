@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.3 — 27/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; chưa viết nội dung. **Tạm dừng nghiên cứu** cho đến khi người dùng yêu cầu.
+Bản v5.4 — 27/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -13,6 +13,7 @@ Lịch sử thay đổi:
 - **v5.1 (27/10):** thêm §1.1 "Kho chuẩn và nguồn trả lời" theo quyết định của người dùng: kho chuẩn gồm thông tin định hướng và thủ tục hành chính; thủ tục chưa có trong kho thì Pal báo cho phụ huynh rồi mới dùng thông tin tra trên mạng.
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
+- **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`docs/kien-thuc/noi-dung/0-6/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`docs/kien-thuc/nguon.md`); cập nhật lưới độ phủ (§5.1).
 
 > Bản chính lưu trong repo tại `docs/kien-thuc/ban-do-kien-thuc.md`; project Parent-Pal giữ bản sao `claude/ban-do-kien-thuc.md`. Đổi tên từ `ban-do-chu-de-kien-thuc-1-6-tuoi.md` ngày 27/10/2026 vì nội dung đã phủ toàn bộ trục tuổi.
 
@@ -183,25 +184,27 @@ Thay cho bảng "nhóm trọng tâm" của v5 (đã bỏ ở v5.3 vì không có
 | Đang soạn | Có ít nhất một mẩu kiến thức ở trạng thái nháp hoặc chờ duyệt |
 | Đã duyệt | Mọi chủ đề đã lên danh sách của ô đều đã được chuyên gia duyệt |
 
-**Hiện trạng (27/10/2026)**, chưa có ô nào "Đang soạn" hay "Đã duyệt":
+**Hiện trạng (27/10/2026, sau đợt soạn nội dung 0–6 tuổi)**. Chưa có ô nào "Đã duyệt". Nội dung "Đang soạn" nằm ở `docs/kien-thuc/noi-dung/0-6/` (người soạn: AI, chờ chuyên gia duyệt).
 
-| Độ tuổi | Có danh sách | Không áp dụng | Chưa có | Tóm tắt |
-|---|---|---|---|---|
-| Tiền mang thai | — | 2, 3, 4, 5, 6, 8, 9, 11, 12, 13, 14, 15, 16 | Nền, 1, 7, 10, 17 | 5 chưa có · 13 không áp dụng |
-| Thai kỳ | Nền, 1, 7, 17 | 2, 3, 4, 5, 6, 8, 9, 11, 12, 13, 14, 15, 16 | 10 | 4 có danh sách · 1 chưa có · 13 không áp dụng |
-| Sơ sinh 0–28 ngày | — | 6, 8, 9, 13, 14, 15, 16 | các nhóm còn lại | 11 chưa có · 7 không áp dụng |
-| 1–12 tháng | — | 13, 14, 15, 16 | các nhóm còn lại | 14 chưa có · 4 không áp dụng |
-| 12–18 tháng | Nền, 1, 2, 3, 5, 7, 11 | 15, 16 | các nhóm còn lại | 7 có danh sách · 9 chưa có · 2 không áp dụng |
-| 18–24 tháng | Nền, 1, 2, 3, 5, 7, 11, 12, 17 | 15, 16 | các nhóm còn lại | 9 có danh sách · 7 chưa có · 2 không áp dụng |
-| 2–3 tuổi | Nền, 1, 2, 3, 5, 7, 12 | 15, 16 | các nhóm còn lại | 7 có danh sách · 9 chưa có · 2 không áp dụng |
-| 3–4 tuổi | Nền, 1, 2, 3, 4, 14, 17 | 15 | các nhóm còn lại | 7 có danh sách · 10 chưa có · 1 không áp dụng |
-| 4–5 tuổi | Nền, 1, 2, 3, 4, 11, 12 | 15 | các nhóm còn lại | 7 có danh sách · 10 chưa có · 1 không áp dụng |
-| 5–6 tuổi | 1, 3, 5, 17 | 15 | các nhóm còn lại | 4 có danh sách · 13 chưa có · 1 không áp dụng |
-| Tiểu học 6–8 | — | 15 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
-| Tiểu học 9–11 | — | 15 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
-| THCS 11–15 | — | — | tất cả | 18 chưa có |
-| THPT 15–18 | — | — | tất cả | 18 chưa có |
-| 18–24 tuổi | — | 8 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
+| Độ tuổi | Đang soạn | Có danh sách | Không áp dụng | Chưa có | Tóm tắt |
+|---|---|---|---|---|---|
+| Tiền mang thai | — | — | 2, 3, 4, 5, 6, 8, 9, 11, 12, 13, 14, 15, 16 | Nền, 1, 7, 10, 17 | 5 chưa có · 13 không áp dụng |
+| Thai kỳ | — | Nền, 1, 7, 17 | 2, 3, 4, 5, 6, 8, 9, 11, 12, 13, 14, 15, 16 | 10 | 4 có danh sách · 1 chưa có · 13 không áp dụng |
+| Sơ sinh 0–28 ngày | Nền, 1, 2, 4, 7, 11, 12 | — | 6, 8, 9, 13, 14, 15, 16 | 3, 5, 10, 17 | 7 đang soạn · 4 chưa có · 7 không áp dụng |
+| 1–12 tháng | Nền, 1, 2, 3, 4, 7, 8, 11, 12, 17 | — | 13, 14, 15, 16 | 5, 6, 9, 10 | 10 đang soạn · 4 chưa có · 4 không áp dụng |
+| 12–18 tháng | Nền, 1, 2, 3, 5, 7, 11, 12 | — | 15, 16 | 4, 6, 8, 9, 10, 13, 14, 17 | 8 đang soạn · 8 chưa có · 2 không áp dụng |
+| 18–24 tháng | Nền, 1, 2, 3, 5, 7, 8, 11, 12, 17 | — | 15, 16 | 4, 6, 9, 10, 13, 14 | 10 đang soạn · 6 chưa có · 2 không áp dụng |
+| 2–3 tuổi | Nền, 1, 2, 3, 4, 5, 7, 11, 12 | — | 15, 16 | 6, 8, 9, 10, 13, 14, 17 | 9 đang soạn · 7 chưa có · 2 không áp dụng |
+| 3–4 tuổi | Nền, 1, 2, 3, 4, 5, 7, 8, 11, 12, 14, 17 | — | 15 | 6, 9, 10, 13, 16 | 12 đang soạn · 5 chưa có · 1 không áp dụng |
+| 4–5 tuổi | Nền, 1, 2, 3, 4, 5, 7, 11, 12, 14 | — | 15 | 6, 8, 9, 10, 13, 16, 17 | 10 đang soạn · 7 chưa có · 1 không áp dụng |
+| 5–6 tuổi | Nền, 1, 2, 4, 11, 12, 14, 17 | 3, 5 | 15 | 6, 7, 8, 9, 10, 13, 16 | 8 đang soạn · 2 có danh sách · 7 chưa có · 1 không áp dụng |
+| Tiểu học 6–8 | — | — | 15 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
+| Tiểu học 9–11 | — | — | 15 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
+| THCS 11–15 | — | — | — | tất cả | 18 chưa có |
+| THPT 15–18 | — | — | — | tất cả | 18 chưa có |
+| 18–24 tuổi | — | — | 8 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
+
+Một ô "Đang soạn" chỉ có nghĩa là ô đã có ít nhất một mẩu nháp; chủ đề còn thiếu của từng ô ghi ở mục "Chưa có nội dung có nguồn" cuối mỗi file chặng.
 
 **Lý do các ô "Không áp dụng"** (người soạn đề xuất, người dùng đồng ý 27/10/2026):
 | Ô | Lý do |
@@ -259,6 +262,8 @@ Chưa lập chủ đề con. Vị trí dự kiến của các chủ đề lớn:
 | Định hướng nghề nghiệp | Nhóm 15 |
 
 ## 6. Bản đồ G2 theo chặng (danh sách việc cần nghiên cứu, chưa phải nội dung)
+
+> Nội dung nháp đã soạn cho từng chặng: `docs/kien-thuc/noi-dung/0-6/`. Danh sách dưới đây giữ làm danh sách chủ đề cần nghiên cứu; chủ đề nào chưa có nguồn được ghi ở cuối mỗi file nội dung.
 Chủ đề con xếp theo nhóm, đã áp dụng quy tắc §9. Ở mỗi chặng chỉ ghi những nhóm đã có chủ đề.
 
 ### Chặng 0a–0b — 0–12 tháng
@@ -488,7 +493,7 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 3. Chuyên gia duyệt các ô "Không áp dụng" của lưới độ phủ (§5.1), danh sách bước chuyển (§5.2) và sổ quyết định phân loại (§9.2).
 4. Đối chiếu 17 nhóm với Nurturing Care Framework, CDC/AAP, WHO 2020 ECD guideline và chuẩn Việt Nam cho 0–6 tuổi: Chương trình giáo dục mầm non; Bộ chuẩn phát triển trẻ em 5 tuổi (nhiều khả năng là Thông tư 23/2010, cần kiểm số hiệu và hiệu lực).
 5. Nguồn xác nhận khoảng tuổi dùng tuổi hiệu chỉnh cho trẻ sinh non.
-6. Chuyển danh sách nguồn ở §13 thành kho nguồn có mã (§7.4).
+6. Kho nguồn có mã đã lập tại `docs/kien-thuc/nguon.md` (27/10). Còn lại: chuyển các nguồn ở §13 chưa có mã vào kho; đối chiếu bản gốc cho các nguồn thứ cấp (bậc TC).
 7. Chốt các mục "chưa chốt" của §1.1 (kiến thức chung của AI, danh sách trang được phép, lọc chủ đề, xử lý khi thiếu thông tin định hướng).
 8. Viết mục "Cách Pal tìm câu trả lời" (hiểu câu hỏi → lọc theo tuổi và các nhóm liên quan → tìm trong kho chuẩn → tra mạng khi thiếu → trả lời, nói rõ nguồn), tách khỏi §9.
 9. Lập danh sách thủ tục hành chính ưu tiên đưa vào kho (ví dụ tuyển sinh mầm non, lớp 1, lớp 6, lớp 10) và cách cập nhật theo năm học, theo tỉnh.
