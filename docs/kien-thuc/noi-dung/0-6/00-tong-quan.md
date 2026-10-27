@@ -33,6 +33,7 @@ Bộ nội dung trả lời câu hỏi chính: **ở tuổi này con cần gì, 
 - Mỗi ý có mã nguồn trong ngoặc vuông, ví dụ [NG-002].
 - Ý nào **không có nguồn trực tiếp** mà do người soạn suy ra được gắn nhãn `đề xuất nội bộ`. Pal không được trình bày những ý này như khuyến nghị của tổ chức y tế.
 - Ý nào dựa trên nguồn **thứ cấp** (bậc TC trong kho nguồn) được đánh dấu ○ và phải đối chiếu bản gốc trước khi phát hành.
+- Ý nào lấy lời khuyên nguồn viết cho **nhóm tuổi liền kề** để áp cho chặng đang viết được gắn nhãn `áp tuổi liền kề`. Đây là nội suy; chuyên gia duyệt quyết định giữ hay bỏ.
 - **Mốc phát triển của CDC** là những việc **khoảng 75% trẻ trở lên** làm được ở một tuổi [NG-001]. Vì vậy, mục "Chưa cần kỳ vọng" lấy các mốc của **tuổi kế tiếp** trong danh sách CDC: chưa làm được những việc đó ở tuổi hiện tại là bình thường.
 - Không có liều thuốc, liều vi chất. Nguồn nào có liều thì không ghi.
 - Số liệu của AAP thường dựa trên bối cảnh Mỹ; khi số liệu mang tính địa phương (ví dụ tuổi tập đi vệ sinh trung bình), nội dung ghi rõ.
@@ -155,7 +156,7 @@ CDC khuyên **hành động sớm** khi [NG-002]:
 - con **mất kỹ năng** đã từng có;
 - cha mẹ **có lo lắng khác**.
 
-Việc cần làm: nói với bác sĩ của con, chia sẻ lo lắng, và **hỏi về sàng lọc phát triển** [NG-002]. Tài liệu mốc của CDC **không thay thế** công cụ sàng lọc phát triển đã chuẩn hóa [NG-001]. Bác sĩ nên sàng lọc phát triển ở 9, 18, 30 tháng và sàng lọc tự kỷ ở 18, 24 tháng [NG-001].
+Việc cần làm: nói với bác sĩ của con, chia sẻ lo lắng, và **hỏi về sàng lọc phát triển** [NG-002]. Tài liệu mốc của CDC **không thay thế** công cụ sàng lọc phát triển đã chuẩn hóa [NG-001]. AAP khuyến nghị **sàng lọc phát triển bằng công cụ chuẩn hóa lúc 9, 18, 30 tháng** và **sàng lọc tự kỷ lúc 18, 24 tháng, hoặc bất cứ khi nào cha mẹ hoặc bác sĩ lo lắng** (nêu trên trang của CDC, đã đối chiếu nguyên văn 28/10/2026) [NG-001].
 
 ## 5. Dấu hiệu nguy hiểm cần đi khám ngay (mọi chặng)
 `KT-0010` · Nhóm chính: Nền · Nhóm phụ: 1 · Nhãn: `an_toàn`

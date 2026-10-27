@@ -11,7 +11,7 @@ Theo §7.4 của bản đồ (`ban-do-kien-thuc.md`). Mẩu kiến thức trỏ 
 
 | Mã | Nguồn | Tổ chức, năm | Bậc | Loại | Trạng thái, ghi chú | Link |
 |---|---|---|---|---|---|---|
-| NG-001 | CDC's Developmental Milestones (trang tổng quan) | CDC, xuất bản 4/9/2025, cập nhật 16/5/2026 | 1 | TL | Hiện hành. Định nghĩa mốc: việc "most children (75% or more)" làm được ở một tuổi. Đã đối chiếu | https://www.cdc.gov/ncbddd/actearly/milestones/ |
+| NG-001 | CDC's Developmental Milestones (trang tổng quan) | CDC, xuất bản 4/9/2025, cập nhật 16/5/2026 | 1 | TL | Hiện hành. Định nghĩa mốc: việc "most children (75% or more)" làm được ở một tuổi. Đã đối chiếu. Trang nêu khuyến nghị sàng lọc của AAP (phát triển 9, 18, 30 tháng; tự kỷ 18, 24 tháng hoặc khi có lo lắng): đã đối chiếu nguyên văn 28/10/2026 | https://www.cdc.gov/ncbddd/actearly/milestones/ |
 | NG-002 | Milestones by 2, 4, 6, 9 tháng; 1 tuổi; 15, 18 tháng; 2 tuổi; 30 tháng; 3, 4, 5 tuổi | CDC, cùng ngày NG-001 | 1 | TL | Hiện hành. Không có trang 12 tháng riêng (dùng "1 Year"). Trang 30 tháng và 5 tuổi đã đối chiếu | https://www.cdc.gov/act-early/milestones/ (thêm `2-months.html`, `4-months.html`, `6-months.html`, `9-months.html`, `1-year.html`, `15-months.html`, `18-months.html`, `2-years.html`, `30-months.html`, `3-years.html`, `4-years.html`, `5-years.html`) |
 | NG-003 | Positive Parenting Tips: Infants (0–1 years) | CDC, cập nhật 20/2/2026 | 1 | TL | Hiện hành | https://www.cdc.gov/child-development/positive-parenting-tips/infants.html |
 | NG-004 | Positive Parenting Tips: Toddlers (1–2 years) | CDC, cập nhật 20/2/2026 | 1 | TL | Hiện hành | https://www.cdc.gov/child-development/positive-parenting-tips/toddlers-1-2-years.html |
