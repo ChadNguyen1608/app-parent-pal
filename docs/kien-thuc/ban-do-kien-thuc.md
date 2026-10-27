@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.2 — 27/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; chưa viết nội dung. **Tạm dừng nghiên cứu** cho đến khi người dùng yêu cầu.
+Bản v5.3 — 27/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; chưa viết nội dung. **Tạm dừng nghiên cứu** cho đến khi người dùng yêu cầu.
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -12,6 +12,7 @@ Lịch sử thay đổi:
   - Thêm: phạm vi, cây quyết định phân loại, sổ quyết định phân loại, nhãn phương pháp, mẫu mẩu kiến thức v2, ba đối tượng mới (hoạt động, dòng phát triển, kho nguồn), mã định danh, kiểm soát nội dung do AI soạn, tiêu chí nghiệm thu.
 - **v5.1 (27/10):** thêm §1.1 "Kho chuẩn và nguồn trả lời" theo quyết định của người dùng: kho chuẩn gồm thông tin định hướng và thủ tục hành chính; thủ tục chưa có trong kho thì Pal báo cho phụ huynh rồi mới dùng thông tin tra trên mạng.
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
+- **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 
 > Bản chính lưu trong repo tại `docs/kien-thuc/ban-do-kien-thuc.md`; project Parent-Pal giữ bản sao `claude/ban-do-kien-thuc.md`. Đổi tên từ `ban-do-chu-de-kien-thuc-1-6-tuoi.md` ngày 27/10/2026 vì nội dung đã phủ toàn bộ trục tuổi.
 
@@ -140,7 +141,7 @@ Mốc tuổi bám theo hệ thống trường học Việt Nam, vì phụ huynh 
 | Giai đoạn | Tuổi | Chặng nhỏ | Cách chia của các nguồn để đối chiếu | Trạng thái |
 |---|---|---|---|---|
 | G0 Tiền mang thai | trước thụ thai | — | Lancet 2018: góc nhìn sinh học, cá nhân, y tế công cộng | chỉ có khung |
-| G1 Thai kỳ | ~40 tuần | 3 tam cá nguyệt | — | chỉ có khung (§5.2) |
+| G1 Thai kỳ | ~40 tuần | 3 tam cá nguyệt | — | chỉ có khung (§5.3) |
 | G2 Mầm non | 0–6 tuổi | 8 chặng (bảng dưới) | CDC: 0–1, 1–2, 2–3, 3–5; AASM: 4–12 tháng, 1–2, 3–5 | **chi tiết nhất** (§6) |
 | G3 Tiểu học | 6–11 tuổi | 6–8; 9–11 | CDC: 6–8, 9–11; AAP Bright Futures: 5–10; AASM: 6–12 | chỉ có khung |
 | G4 THCS | 11–15 tuổi | — | WHO: vị thành niên 10–19; UNICEF: 10–14; CDC: 12–14; Bright Futures: 11–14 | chỉ có khung |
@@ -166,24 +167,73 @@ Chặng của G2, mỗi chặng ứng với một checklist CDC/AAP:
 
 ## 5. Ma trận giai đoạn × nhóm
 
-### 5.1 Nhóm trọng tâm theo giai đoạn
-Dùng để Pal chọn 3–5 ưu tiên khi phụ huynh hỏi chung, thay vì đổ ra cả 17 nhóm. Lớp nền luôn được xét trước.
+### 5.1 Lưới độ phủ
+Lưới cho biết **mỗi ô (độ tuổi × nhóm) đã có nội dung đến đâu**, để không ô nào bị bỏ quên. Lưới không xếp hạng ưu tiên: mọi ô không phải "không áp dụng" đều cần được nghiên cứu và điền.
 
-⚠️ Bảng này là `đề xuất nội bộ`, chưa có nguồn, cần chuyên gia duyệt.
+Thay cho bảng "nhóm trọng tâm" của v5 (đã bỏ ở v5.3 vì không có nguồn, dễ khiến người soạn và Pal bỏ sót các nhóm còn lại).
 
-| Giai đoạn / chặng | Nhóm trọng tâm | Bước chuyển (nhóm 17) | C1 xuyên suốt |
-|---|---|---|---|
-| G0 Tiền mang thai | 1 (sức khỏe cha mẹ), 7 | Chuẩn bị mang thai | — |
-| G1 Thai kỳ | 1 (mẹ và thai), 7, Nền | Chuẩn bị sinh, chuẩn bị làm cha mẹ | — |
-| G2 · 0–12 tháng | 1, 4 (gắn bó), 7, Nền (ngủ an toàn) | Về nhà sau sinh; cha mẹ đi làm lại | — |
-| G2 · 1–3 tuổi | 1, 2 (ngôn ngữ), 3, 7, 12 | Vào nhà trẻ; có em | rất mỏng (thói quen nhỏ) |
-| G2 · 3–6 tuổi | 3, 4, 5, 12 | Vào mẫu giáo; **vào lớp 1** | mỏng (13, 14 ở mức thói quen) |
-| G3 Tiểu học | 5, 6, 8, 4, 11 | Chuẩn bị dậy thì; lên THCS | bắt đầu (13, 14, 16) |
-| G4 THCS | 1 (dậy thì), 3, 9, 11, Nền | Thi vào lớp 10 | trung bình |
-| G5 THPT | 3, 6, 11, 14, 15 | Chọn ngành; rời nhà | đậm |
-| G6 18–24 | 7 (vai trò cha mẹ với con đã lớn), 3, 14, 15 | Đi làm; sống độc lập | đậm |
+**Hàng:** 15 độ tuổi theo trục dọc (§4). **Cột:** 18 nhóm (Nền và nhóm 1–17).
 
-### 5.2 Thai kỳ trong khung chung
+**Trạng thái một ô:**
+| Trạng thái | Nghĩa |
+|---|---|
+| Không áp dụng | Cố ý để trống; bắt buộc ghi lý do (bảng lý do bên dưới) |
+| Chưa có | Chưa có gì, cần nghiên cứu |
+| Có danh sách | Đã biết cần viết những chủ đề nào (§5.3, §6), chưa viết |
+| Đang soạn | Có ít nhất một mẩu kiến thức ở trạng thái nháp hoặc chờ duyệt |
+| Đã duyệt | Mọi chủ đề đã lên danh sách của ô đều đã được chuyên gia duyệt |
+
+**Hiện trạng (27/10/2026)**, chưa có ô nào "Đang soạn" hay "Đã duyệt":
+
+| Độ tuổi | Có danh sách | Không áp dụng | Chưa có | Tóm tắt |
+|---|---|---|---|---|
+| Tiền mang thai | — | 2, 3, 4, 5, 6, 8, 9, 11, 12, 13, 14, 15, 16 | Nền, 1, 7, 10, 17 | 5 chưa có · 13 không áp dụng |
+| Thai kỳ | Nền, 1, 7, 17 | 2, 3, 4, 5, 6, 8, 9, 11, 12, 13, 14, 15, 16 | 10 | 4 có danh sách · 1 chưa có · 13 không áp dụng |
+| Sơ sinh 0–28 ngày | — | 6, 8, 9, 13, 14, 15, 16 | các nhóm còn lại | 11 chưa có · 7 không áp dụng |
+| 1–12 tháng | — | 13, 14, 15, 16 | các nhóm còn lại | 14 chưa có · 4 không áp dụng |
+| 12–18 tháng | Nền, 1, 2, 3, 5, 7, 11 | 15, 16 | các nhóm còn lại | 7 có danh sách · 9 chưa có · 2 không áp dụng |
+| 18–24 tháng | Nền, 1, 2, 3, 5, 7, 11, 12, 17 | 15, 16 | các nhóm còn lại | 9 có danh sách · 7 chưa có · 2 không áp dụng |
+| 2–3 tuổi | Nền, 1, 2, 3, 5, 7, 12 | 15, 16 | các nhóm còn lại | 7 có danh sách · 9 chưa có · 2 không áp dụng |
+| 3–4 tuổi | Nền, 1, 2, 3, 4, 14, 17 | 15 | các nhóm còn lại | 7 có danh sách · 10 chưa có · 1 không áp dụng |
+| 4–5 tuổi | Nền, 1, 2, 3, 4, 11, 12 | 15 | các nhóm còn lại | 7 có danh sách · 10 chưa có · 1 không áp dụng |
+| 5–6 tuổi | 1, 3, 5, 17 | 15 | các nhóm còn lại | 4 có danh sách · 13 chưa có · 1 không áp dụng |
+| Tiểu học 6–8 | — | 15 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
+| Tiểu học 9–11 | — | 15 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
+| THCS 11–15 | — | — | tất cả | 18 chưa có |
+| THPT 15–18 | — | — | tất cả | 18 chưa có |
+| 18–24 tuổi | — | 8 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
+
+**Lý do các ô "Không áp dụng"** (người soạn đề xuất, người dùng đồng ý 27/10/2026):
+| Ô | Lý do |
+|---|---|
+| Tiền mang thai, thai kỳ × nhóm 2–6, 8, 9, 11–16 | Các nhóm này nói về đứa trẻ hoặc môi trường quanh trẻ, khi trẻ chưa ra đời. Nội dung thai kỳ nằm ở Nền, nhóm 1, 7, 10, 17 (§5.3) |
+| Sơ sinh × nhóm 6, 8, 9 | Chưa có hoạt động học tập, chưa đi nhà trẻ, chưa có quan hệ bạn bè và cộng đồng riêng |
+| Dưới 12 tháng × nhóm 13, 14, 16 | Giá trị, kỹ năng sống, năng lực công dân chưa phù hợp tuổi |
+| 12–36 tháng × nhóm 16 | Năng lực công dân chưa phù hợp tuổi |
+| Đến hết tiểu học × nhóm 15 | Tránh "phát hiện năng khiếu sớm" (xem Bộ chỉ số: sinh trắc vân tay, gen năng khiếu) |
+| 18–24 tuổi × nhóm 8 | Cha mẹ gần như không còn vai trò ở trường của con |
+
+**Cập nhật lưới:**
+- Hiện tại: cập nhật bằng tay mỗi khi danh sách chủ đề (§5.3, §6) hoặc trạng thái mẩu kiến thức thay đổi.
+- Khi mẩu kiến thức thành file trong repo (có nhãn nhóm, tuổi, trạng thái theo §7): viết đoạn mã tự tạo lưới từ các file, chạy cùng `npm run check`, để lưới luôn khớp với kho thật.
+- Khi Pal gặp câu hỏi rộng (ví dụ "con lên cấp 1 cần chuẩn bị gì"), Pal dùng bài tổng quan ở nhóm 17 và hồ sơ của bé, không dùng lưới này để xếp hạng nhóm.
+
+### 5.2 Bước chuyển theo giai đoạn (nhóm 17)
+Danh sách bước chuyển dự kiến cho nhóm 17, dùng để lập chủ đề con. `đề xuất nội bộ`, chưa có nguồn.
+
+| Giai đoạn | Bước chuyển |
+|---|---|
+| Tiền mang thai | Chuẩn bị mang thai |
+| Thai kỳ | Chuẩn bị sinh; chuẩn bị làm cha mẹ |
+| 0–12 tháng | Về nhà sau sinh; cha mẹ đi làm lại |
+| 1–3 tuổi | Vào nhà trẻ; có em |
+| 3–6 tuổi | Vào mẫu giáo; vào lớp 1 |
+| Tiểu học | Chuẩn bị dậy thì; lên THCS |
+| THCS | Thi vào lớp 10 |
+| THPT | Chọn ngành; rời nhà |
+| 18–24 tuổi | Đi làm; sống độc lập |
+
+### 5.3 Thai kỳ trong khung chung
 Ở G1, đối tượng của nhóm 1 là **mẹ và thai**.
 
 | Nhóm | Chủ đề con | Nguồn dự kiến |
@@ -196,7 +246,7 @@ Dùng để Pal chọn 3–5 ưu tiên khi phụ huynh hỏi chung, thay vì đ�
 
 ⚠️ Phần lớn nội dung G1 thuộc vùng y tế. Người duyệt cần là **bác sĩ sản khoa hoặc hộ sinh**.
 
-### 5.3 G0, G3–G6
+### 5.4 G0, G3–G6
 Chưa lập chủ đề con. Vị trí dự kiến của các chủ đề lớn:
 
 | Chủ đề | Vị trí |
@@ -368,7 +418,7 @@ Nguồn: văn bản "Khung sơ bộ phát triển toàn diện trẻ và các v�
   - qua 8 câu kiểm tra §8.1;
   - chuyên gia đúng chuyên môn đã duyệt.
 - **Một chặng tuổi được phát hành khi:**
-  - mọi nhóm trọng tâm của chặng có ít nhất 1 mẩu đã duyệt;
+  - mọi ô của chặng trong lưới độ phủ (§5.1), trừ ô "Không áp dụng", đã ở trạng thái "Đã duyệt";
   - lớp nền có mẩu cho các rủi ro chính;
   - có ít nhất 3 tình huống đời thường;
   - các dòng phát triển liên quan đã có đoạn cho chặng đó.
@@ -430,12 +480,12 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 | L8 An toàn | Nền |
 | L9 Hiểu lầm thường gặp | Mục "Hiểu lầm" + nhãn `hiểu_lầm` (gom thành chuyên mục riêng được) |
 | N / P / S | Nhãn `kiến_thức_nền` / nhóm 7 / nhãn `hoàn_cảnh_đặc_biệt` |
-| T1–T9 (thai kỳ) | Nhóm 1, 7, 17 và Nền (§5.2) |
+| T1–T9 (thai kỳ) | Nhóm 1, 7, 17 và Nền (§5.3) |
 
 ## 11. Việc còn mở
 1. **Lấp nội dung 0–12 tháng** (ưu tiên kế tiếp).
 2. **Bản đồ chuyển tuyến:** dấu hiệu nào → gặp ai (bác sĩ nhi, chuyên khoa phát triển, âm ngữ trị liệu, tâm lý, mắt, tai mũi họng…), theo hệ thống y tế Việt Nam.
-3. Chuyên gia duyệt bảng nhóm trọng tâm (§5.1) và sổ quyết định phân loại (§9.2).
+3. Chuyên gia duyệt các ô "Không áp dụng" của lưới độ phủ (§5.1), danh sách bước chuyển (§5.2) và sổ quyết định phân loại (§9.2).
 4. Đối chiếu 17 nhóm với Nurturing Care Framework, CDC/AAP, WHO 2020 ECD guideline và chuẩn Việt Nam cho 0–6 tuổi: Chương trình giáo dục mầm non; Bộ chuẩn phát triển trẻ em 5 tuổi (nhiều khả năng là Thông tư 23/2010, cần kiểm số hiệu và hiệu lực).
 5. Nguồn xác nhận khoảng tuổi dùng tuổi hiệu chỉnh cho trẻ sinh non.
 6. Chuyển danh sách nguồn ở §13 thành kho nguồn có mã (§7.4).
