@@ -25,6 +25,16 @@ Kế hoạch dài hơn (chưa làm): app riêng cho con, vòng "con đề xuất
 - Có nhiều con mà phụ huynh không nêu tên: **hỏi lại**, không đoán.
 - So khớp tiếng Việt: dùng `prep`/`hasPhrase` trong `src/ai/text.ts`. Chỉ so khớp kiểu bỏ dấu khi phụ huynh gõ không dấu ("cáu" và "câu" không được lẫn nhau).
 
+## Bộ kiến thức
+
+Cấu trúc bộ kiến thức ở `docs/kien-thuc/ban-do-kien-thuc.md` (bản v5). Đọc file này trước khi viết hay xếp bất kỳ nội dung lời khuyên nào.
+
+- Trục dọc là tuổi: tiền mang thai → thai kỳ → 0–6 → 6–11 → 11–15 → 15–18 → 18–24.
+- Mỗi nội dung thuộc **1 nhóm chính** trong 17 nhóm: lớp **Nền** an toàn; cấp **A** phát triển cốt lõi (1–6); cấp **B** môi trường (7–12); **C1** định hướng xuyên suốt (13, 14, 16); **C2** định hướng giai đoạn (15, 17).
+- Xếp nhóm theo cây quyết định và sổ quyết định phân loại trong file, không tự đặt nhóm mới.
+- Không điểm tổng, không so sánh trẻ với trẻ khác; tín hiệu an toàn luôn được ưu tiên.
+- Nội dung do AI soạn phải ghi `người soạn: AI` và không được tự chuyển sang "đã duyệt".
+
 ## Làm việc
 
 ```bash
