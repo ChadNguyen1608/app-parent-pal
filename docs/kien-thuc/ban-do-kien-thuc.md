@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.1 — 27/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; chưa viết nội dung. **Tạm dừng nghiên cứu** cho đến khi người dùng yêu cầu.
+Bản v5.2 — 27/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; chưa viết nội dung. **Tạm dừng nghiên cứu** cho đến khi người dùng yêu cầu.
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -11,6 +11,7 @@ Lịch sử thay đổi:
   - Nhóm 12 "Chơi" giữ ở cấp B.
   - Thêm: phạm vi, cây quyết định phân loại, sổ quyết định phân loại, nhãn phương pháp, mẫu mẩu kiến thức v2, ba đối tượng mới (hoạt động, dòng phát triển, kho nguồn), mã định danh, kiểm soát nội dung do AI soạn, tiêu chí nghiệm thu.
 - **v5.1 (27/10):** thêm §1.1 "Kho chuẩn và nguồn trả lời" theo quyết định của người dùng: kho chuẩn gồm thông tin định hướng và thủ tục hành chính; thủ tục chưa có trong kho thì Pal báo cho phụ huynh rồi mới dùng thông tin tra trên mạng.
+- **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 
 > Bản chính lưu trong repo tại `docs/kien-thuc/ban-do-kien-thuc.md`; project Parent-Pal giữ bản sao `claude/ban-do-kien-thuc.md`. Đổi tên từ `ban-do-chu-de-kien-thuc-1-6-tuoi.md` ngày 27/10/2026 vì nội dung đã phủ toàn bộ trục tuổi.
 
@@ -22,7 +23,7 @@ Lịch sử thay đổi:
   - dạy kiến thức môn học cho trẻ;
   - tư vấn tài chính gia đình;
   - giới thiệu sản phẩm, trường, lớp cụ thể.
-- **Thêm chủ đề mới:** người soạn đề xuất → chủ sản phẩm duyệt có thuộc phạm vi không → xếp chỗ theo §4.
+- **Thêm chủ đề mới:** người soạn đề xuất → chủ sản phẩm duyệt có thuộc phạm vi không → xếp chỗ theo §9.
 
 ### 1.1 Kho chuẩn và nguồn trả lời
 Pal trả lời từ hai loại nguồn:
@@ -75,10 +76,10 @@ Pal trả lời từ hai loại nguồn:
 Tầng 1  3 cấp + lớp nền an toàn              (giống nhau ở mọi tuổi)
 Tầng 2  16 nhóm                              (giống nhau ở mọi tuổi)
 Tầng 3  Chủ đề con                           (thay đổi theo giai đoạn, chặng)
-Tầng 4  Mẩu kiến thức, hoạt động             (mẫu cố định, §8)
+Tầng 4  Mẩu kiến thức, hoạt động             (mẫu cố định, §7)
 ```
 
-### 3.1 Các cấp và 16 nhóm
+### 3.1 Các cấp và 17 nhóm
 
 | Cấp | Câu hỏi của cấp | Số | Tên nhóm | Nói gọn là gì |
 |---|---|---|---|---|
@@ -102,7 +103,7 @@ Tầng 4  Mẩu kiến thức, hoạt động             (mẫu cố định, �
 | | | 17 | Chuẩn bị bước chuyển | Vào nhà trẻ/mẫu giáo, vào lớp 1, dậy thì, chuyển cấp, rời nhà |
 
 **Khác nhau giữa C1 và C2:**
-- **C1 xuyên suốt:** theo con ở mọi tuổi, mỗi giai đoạn có biểu hiện riêng. Ví dụ "trách nhiệm" ở 3 tuổi là cất đồ chơi, ở 10 tuổi là tự lo bài vở. Mỗi nhóm C1 có một **dòng phát triển** (§8.3) mô tả biểu hiện theo từng giai đoạn.
+- **C1 xuyên suốt:** theo con ở mọi tuổi, mỗi giai đoạn có biểu hiện riêng. Ví dụ "trách nhiệm" ở 3 tuổi là cất đồ chơi, ở 10 tuổi là tự lo bài vở. Mỗi nhóm C1 có một **dòng phát triển** (§7.3) mô tả biểu hiện theo từng giai đoạn.
 - **C2 giai đoạn:** gắn với một bước chuyển có thời điểm cụ thể, có bắt đầu và kết thúc. Đây là nơi Pal trả lời các câu như "con sắp vào lớp 1, tôi cần chuẩn bị gì".
 
 Nhóm 17 là nhóm mới của v5, sinh ra từ quyết định tách C2. Số thứ tự 13–16 giữ nguyên để không đổi liên kết cũ.
@@ -131,57 +132,16 @@ Nhóm 17 là nhóm mới của v5, sinh ra từ quyết định tách C2. Số t
 
 ### 3.3 Hai yếu tố xuyên suốt (không phải nhóm)
 - **Tiếng nói của trẻ:** mỗi mẩu kiến thức có mục "Con cảm thấy thế nào". 0–3 tuổi: cha mẹ quan sát. Khoảng 4 tuổi trở lên: gợi ý câu cha mẹ hỏi con. Lớn dần: con tự nói.
-- **Loại nội dung:** là các mục bên trong mẩu kiến thức (§8.1), không phải nhóm. Gồm: điều thường thấy, vì sao quan trọng, chưa cần kỳ vọng, việc cha mẹ có thể làm, dấu hiệu, hiểu lầm, điều Pal không nói.
+- **Loại nội dung:** là các mục bên trong mẩu kiến thức (§7.1), không phải nhóm. Gồm: điều thường thấy, vì sao quan trọng, chưa cần kỳ vọng, việc cha mẹ có thể làm, dấu hiệu, hiểu lầm, điều Pal không nói.
 
-## 4. Quy tắc phân loại
-
-### 4.1 Cây quyết định
-Áp dụng theo thứ tự, dừng ở bước đầu tiên khớp:
-1. Nội dung có nguy cơ gây hại thể chất, bạo lực, xâm hại, hoặc cần hỗ trợ khẩn? → **Nền**. Nhóm liên quan khác làm nhóm phụ.
-2. Nội dung là một **phương pháp, trường phái, sản phẩm hay dịch vụ** (Montessori, EASY, ăn dặm tự chỉ huy BLW, Glenn Doman, sinh trắc vân tay…)? → gắn nhãn `phương_pháp`; nhóm chính là nhóm mà phương pháp nhắm tới.
-3. Nội dung là **tổng quan một bước chuyển** (vào lớp 1, có em, dậy thì…)? → **nhóm 17**. Kỹ năng cụ thể của bước chuyển viết thành mẩu riêng ở nhóm cấp A, trỏ về nhóm 17.
-4. Nội dung mô tả điều đang diễn ra **ở trẻ** (hành vi, kỹ năng, cơ thể)? → **cấp A**, chọn nhóm theo năng lực bị tác động chính (bảng §3.2).
-5. Nội dung mô tả **điều kiện quanh trẻ**, hoặc thực hành của người lớn không gắn với một hiện tượng cụ thể ở trẻ? → **cấp B**.
-6. Nội dung về **giá trị, kỹ năng sống, công dân** nhìn theo hướng lâu dài? → **C1**. Hành vi cụ thể ở một tuổi (ví dụ tranh đồ chơi lúc 2 tuổi) vẫn xếp cấp A, chỉ liên kết với C1.
-7. Nội dung về **định hướng nghề nghiệp**? → **nhóm 15**.
-
-Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ hồ thì ghi vào Sổ quyết định phân loại (§4.2), để các lần sau xếp giống nhau.
-
-### 4.2 Sổ quyết định phân loại
-| Khái niệm | Nhóm chính | Nhóm phụ | Lý do |
-|---|---|---|---|
-| Ăn vạ | 3 | 7 | Hiện tượng điều tiết cảm xúc ở trẻ |
-| Kén ăn: ăn gì, bao nhiêu | 1 | — | Dinh dưỡng |
-| Kén ăn: giằng co trong bữa ăn | 3 | 7 | Phần hành vi, cảm xúc |
-| Tập đi vệ sinh | 5 | 1 | Kỹ năng tự phục vụ; phần táo bón ở nhóm 1 |
-| Tự xúc ăn | 5 | 1 | Kỹ năng tự phục vụ |
-| Sợ người lạ, lo âu khi xa người thân | 3 | 4 | Cảm xúc, liên quan gắn bó |
-| Ngủ an toàn cho trẻ nhỏ | Nền | 1 | Nguy cơ tử vong đột ngột ở trẻ sơ sinh |
-| Thời lượng ngủ, nề nếp ngủ | 1 | 7 | Sức khỏe |
-| Không chịu đi ngủ, thức đêm | 1 | 3 | Sức khỏe; phần cảm xúc ở nhóm phụ |
-| Khả năng tập trung | 5 | — | Chức năng điều hành |
-| Chức năng điều hành | 5 | — | — |
-| Song ngữ | 2 | 7 | Ngôn ngữ |
-| Ông bà chăm cháu | 7 | — | Môi trường gia đình |
-| Màn hình | 11 | 1 | Môi trường số; phần ảnh hưởng đến giấc ngủ ở nhóm 1 |
-| Montessori | 8 (nhãn `phương_pháp`) | 6 | Phương pháp giáo dục |
-| Kỷ luật không bạo lực | 7 | Nền | Thực hành của cha mẹ |
-| Nói dối ở trẻ 4–5 tuổi | 3 | 13 | Hiện tượng phát triển; liên kết giá trị trung thực |
-| Chuẩn bị vào lớp 1 (tổng quan) | 17 | 6 | Bước chuyển |
-| Thích nghi khi mới đi mẫu giáo | 17 | 3 | Bước chuyển |
-| Chia sẻ đồ chơi | 4 | 13 | Hành vi xã hội ở trẻ |
-| Thủ tục nhập học, tuyển sinh, chuyển trường, quy chế thi | 17 (nhãn `thủ_tục`) | 8 | Gắn với bước chuyển của con |
-| Thủ tục y tế cho con (thẻ bảo hiểm y tế, sổ tiêm chủng) | 1 (nhãn `thủ_tục`) | — | Sức khỏe |
-| Giấy tờ hộ tịch của con (khai sinh…) | 7 (nhãn `thủ_tục`) | — | Việc của gia đình |
-
-## 5. Trục tuổi
+## 4. Trục tuổi
 Mốc tuổi bám theo hệ thống trường học Việt Nam, vì phụ huynh quen nghĩ theo mốc này. Các nguồn quốc tế chia lệch khoảng ±1 năm; khi gặp phần chồng lấn thì ghi rõ.
 
 | Giai đoạn | Tuổi | Chặng nhỏ | Cách chia của các nguồn để đối chiếu | Trạng thái |
 |---|---|---|---|---|
 | G0 Tiền mang thai | trước thụ thai | — | Lancet 2018: góc nhìn sinh học, cá nhân, y tế công cộng | chỉ có khung |
-| G1 Thai kỳ | ~40 tuần | 3 tam cá nguyệt | — | chỉ có khung (§6.2) |
-| G2 Mầm non | 0–6 tuổi | 8 chặng (bảng dưới) | CDC: 0–1, 1–2, 2–3, 3–5; AASM: 4–12 tháng, 1–2, 3–5 | **chi tiết nhất** (§7) |
+| G1 Thai kỳ | ~40 tuần | 3 tam cá nguyệt | — | chỉ có khung (§5.2) |
+| G2 Mầm non | 0–6 tuổi | 8 chặng (bảng dưới) | CDC: 0–1, 1–2, 2–3, 3–5; AASM: 4–12 tháng, 1–2, 3–5 | **chi tiết nhất** (§6) |
 | G3 Tiểu học | 6–11 tuổi | 6–8; 9–11 | CDC: 6–8, 9–11; AAP Bright Futures: 5–10; AASM: 6–12 | chỉ có khung |
 | G4 THCS | 11–15 tuổi | — | WHO: vị thành niên 10–19; UNICEF: 10–14; CDC: 12–14; Bright Futures: 11–14 | chỉ có khung |
 | G5 THPT | 15–18 tuổi | — | UNICEF: 15–19; CDC: 15–17; Bright Futures: 15–17; AASM: 13–18 | chỉ có khung |
@@ -204,9 +164,9 @@ Chặng của G2, mỗi chặng ứng với một checklist CDC/AAP:
 
 **Trẻ sinh non:** hồ sơ trẻ ghi tuần thai lúc sinh, để dùng tuổi hiệu chỉnh khi đối chiếu mốc phát triển và tăng trưởng. Khoảng tuổi áp dụng cần nguồn xác nhận (○).
 
-## 6. Ma trận giai đoạn × nhóm
+## 5. Ma trận giai đoạn × nhóm
 
-### 6.1 Nhóm trọng tâm theo giai đoạn
+### 5.1 Nhóm trọng tâm theo giai đoạn
 Dùng để Pal chọn 3–5 ưu tiên khi phụ huynh hỏi chung, thay vì đổ ra cả 17 nhóm. Lớp nền luôn được xét trước.
 
 ⚠️ Bảng này là `đề xuất nội bộ`, chưa có nguồn, cần chuyên gia duyệt.
@@ -223,7 +183,7 @@ Dùng để Pal chọn 3–5 ưu tiên khi phụ huynh hỏi chung, thay vì đ�
 | G5 THPT | 3, 6, 11, 14, 15 | Chọn ngành; rời nhà | đậm |
 | G6 18–24 | 7 (vai trò cha mẹ với con đã lớn), 3, 14, 15 | Đi làm; sống độc lập | đậm |
 
-### 6.2 Thai kỳ trong khung chung
+### 5.2 Thai kỳ trong khung chung
 Ở G1, đối tượng của nhóm 1 là **mẹ và thai**.
 
 | Nhóm | Chủ đề con | Nguồn dự kiến |
@@ -236,7 +196,7 @@ Dùng để Pal chọn 3–5 ưu tiên khi phụ huynh hỏi chung, thay vì đ�
 
 ⚠️ Phần lớn nội dung G1 thuộc vùng y tế. Người duyệt cần là **bác sĩ sản khoa hoặc hộ sinh**.
 
-### 6.3 G0, G3–G6
+### 5.3 G0, G3–G6
 Chưa lập chủ đề con. Vị trí dự kiến của các chủ đề lớn:
 
 | Chủ đề | Vị trí |
@@ -248,8 +208,8 @@ Chưa lập chủ đề con. Vị trí dự kiến của các chủ đề lớn:
 | Chất gây nghiện | Nền, nhóm 1 |
 | Định hướng nghề nghiệp | Nhóm 15 |
 
-## 7. Bản đồ G2 theo chặng (danh sách việc cần nghiên cứu, chưa phải nội dung)
-Chủ đề con xếp theo nhóm, đã áp dụng quy tắc §4. Ở mỗi chặng chỉ ghi những nhóm đã có chủ đề.
+## 6. Bản đồ G2 theo chặng (danh sách việc cần nghiên cứu, chưa phải nội dung)
+Chủ đề con xếp theo nhóm, đã áp dụng quy tắc §9. Ở mỗi chặng chỉ ghi những nhóm đã có chủ đề.
 
 ### Chặng 0a–0b — 0–12 tháng
 ⚠️ **Ưu tiên lấp đầy.** Chưa lập danh sách. Dự kiến cần ít nhất:
@@ -321,9 +281,9 @@ Chủ đề con xếp theo nhóm, đã áp dụng quy tắc §4. Ở mỗi chặ
 - **17:** **chuẩn bị vào lớp 1** (bài tổng quan, trỏ tới các nhóm 1, 3, 5, 6, 8, 11 và Nền).
 - **Hiểu lầm (dự kiến):** "phải biết đọc trước khi vào lớp 1" (6).
 
-## 8. Đối tượng dữ liệu
+## 7. Đối tượng dữ liệu
 
-### 8.1 Mẩu kiến thức (mẫu v2)
+### 7.1 Mẩu kiến thức (mẫu v2)
 ```
 Mã · Giai đoạn · Chặng · Nhóm chính / phụ · Chủ đề · Tuổi từ–đến (tháng) hoặc tuần thai · Nhãn
 Điều thường thấy ở tuổi này (mỗi ý có nhãn mức chắc chắn + mã nguồn)
@@ -346,7 +306,7 @@ Trạng thái: khung / nháp / chờ duyệt / đã duyệt / phát hành
 Lịch sử thay đổi
 ```
 
-### 8.2 Hoạt động
+### 7.2 Hoạt động
 ```
 Mã · Mục tiêu (nhóm, chủ đề) · Tuổi từ–đến
 Dấu hiệu trẻ đã sẵn sàng
@@ -358,12 +318,12 @@ Dấu hiệu nên dừng hoặc đổi hoạt động
 Mẩu kiến thức liên quan · Nguồn · Người soạn · Trạng thái
 ```
 
-### 8.3 Dòng phát triển
+### 7.3 Dòng phát triển
 Mô tả **tiến trình** của một kỹ năng hoặc một định hướng qua các giai đoạn, thay vì chỉ một mốc tuổi đơn lẻ. Mỗi dòng có một đoạn cho từng giai đoạn/chặng (biểu hiện thường thấy, chưa cần kỳ vọng), trỏ tới mẩu kiến thức của chặng đó.
 - **Dòng của cấp A** (dự kiến khoảng 8 dòng): điều tiết cảm xúc, ngôn ngữ, vận động thô, vận động tinh, tự phục vụ, chơi với bạn, tập trung/chức năng điều hành, giấc ngủ.
 - **Dòng của C1:** mỗi giá trị hoặc kỹ năng sống chính có một dòng (ví dụ trách nhiệm, trung thực, tự lập).
 
-### 8.4 Kho nguồn
+### 7.4 Kho nguồn
 Mỗi nguồn có:
 - mã, tên gốc, tổ chức, năm/phiên bản, link;
 - bậc nguồn, `loại_bằng_chứng` (hướng dẫn chính thức / tổng quan hệ thống / nghiên cứu gốc / đồng thuận chuyên gia);
@@ -372,7 +332,7 @@ Mỗi nguồn có:
 
 Mẩu kiến thức trỏ tới mã nguồn. Khi một nguồn đổi trạng thái, lọc ra được mọi mẩu phụ thuộc vào nó.
 
-### 8.5 Mã định danh và nhãn
+### 7.5 Mã định danh và nhãn
 - **Mã ổn định, không chứa số nhóm**, để chuyển nhóm không phải đổi mã: `KT-0001` (mẩu kiến thức), `HD-0001` (hoạt động), `DP-01` (dòng phát triển), `NG-001` (nguồn). Khi đổi tên khái niệm, giữ tên cũ làm tên phụ để tìm kiếm.
 - **Nhãn:**
   - `giai_đoạn`, `chặng`, `tuổi_từ_tháng`, `tuổi_đến_tháng` (G1 dùng `tuần_thai_từ` / `tuần_thai_đến`);
@@ -381,9 +341,9 @@ Mẩu kiến thức trỏ tới mã nguồn. Khi một nguồn đổi trạng th
   - tùy chọn: `kiến_thức_nền` (không gắn tuổi: serve-and-return, stress độc hại…), `hoàn_cảnh_đặc_biệt` (chậm phát triển, sinh non, biến cố gia đình…), `phương_pháp`, `hiểu_lầm`, `an_toàn`, `thủ_tục`.
   - mẩu có nhãn `thủ_tục` bắt buộc thêm: `văn_bản_gốc`, `cơ_quan_ban_hành`, `địa_phương`, `năm_học`, `hạn_rà_soát` (§1.1).
 
-## 9. Kiểm soát chất lượng
+## 8. Kiểm soát chất lượng
 
-### 9.1 Tám câu kiểm tra khái niệm khi duyệt
+### 8.1 Tám câu kiểm tra khái niệm khi duyệt
 Nguồn: văn bản "Khung sơ bộ phát triển toàn diện trẻ và các vấn đề chưa giải quyết" của người dùng.
 1. Mẩu này nói về **kết quả/năng lực của trẻ** hay về **môi trường**? Nếu là môi trường, có đang bị viết thành tính cách của trẻ không?
 2. Có tín hiệu **an toàn** nào bị lấp hoặc bị "cân" với điểm mạnh khác không?
@@ -394,18 +354,18 @@ Nguồn: văn bản "Khung sơ bộ phát triển toàn diện trẻ và các v�
 7. Có hỏi hoặc lưu **dữ liệu nhạy cảm** không cần thiết không?
 8. Có phù hợp **văn hóa và pháp lý Việt Nam** không?
 
-### 9.2 Nội dung do AI soạn
+### 8.2 Nội dung do AI soạn
 - Mọi mẩu ghi rõ `người soạn` là AI hay người.
 - Mọi link nguồn do AI đưa ra phải được mở và kiểm tra trước khi chuyển "chờ duyệt".
 - Bắt buộc chuyên gia đúng chuyên môn duyệt các phần: Nền, nhóm 1 (phần y tế), nhóm 3 (sức khỏe tâm thần), thai kỳ.
 - AI không được tự chuyển trạng thái sang "đã duyệt" hay "phát hành".
 
-### 9.3 Tiêu chí nghiệm thu
+### 8.3 Tiêu chí nghiệm thu
 - **Một mẩu kiến thức được phát hành khi:**
-  - đủ các mục bắt buộc của mẫu §8.1;
+  - đủ các mục bắt buộc của mẫu §7.1;
   - mọi ý có mã nguồn và nhãn mức chắc chắn;
   - link nguồn đã kiểm;
-  - qua 8 câu kiểm tra §9.1;
+  - qua 8 câu kiểm tra §8.1;
   - chuyên gia đúng chuyên môn đã duyệt.
 - **Một chặng tuổi được phát hành khi:**
   - mọi nhóm trọng tâm của chặng có ít nhất 1 mẩu đã duyệt;
@@ -413,6 +373,49 @@ Nguồn: văn bản "Khung sơ bộ phát triển toàn diện trẻ và các v�
   - có ít nhất 3 tình huống đời thường;
   - các dòng phát triển liên quan đã có đoạn cho chặng đó.
 - **Kiểm tra tự động** (đưa vào `npm run check` khi dữ liệu nằm trong repo): thiếu mục bắt buộc, thiếu mã nguồn, mã nguồn trỏ tới nguồn "rút lại", nhóm không hợp lệ, trùng mã.
+
+## 9. Quy tắc xếp bài vào kho (dành cho người soạn nội dung)
+
+> Mục này dùng khi **cất một bài mới vào kho chuẩn**: bài nằm ở nhóm nào. Đây **không phải** cách Pal tìm câu trả lời; cách Pal tìm câu trả lời sẽ viết thành mục riêng (việc còn mở).
+
+### 9.1 Cây quyết định
+Áp dụng theo thứ tự, dừng ở bước đầu tiên khớp:
+1. Nội dung có nguy cơ gây hại thể chất, bạo lực, xâm hại, hoặc cần hỗ trợ khẩn? → **Nền**. Nhóm liên quan khác làm nhóm phụ.
+2. Nội dung là một **phương pháp, trường phái, sản phẩm hay dịch vụ** (Montessori, EASY, ăn dặm tự chỉ huy BLW, Glenn Doman, sinh trắc vân tay…)? → gắn nhãn `phương_pháp`; nhóm chính là nhóm mà phương pháp nhắm tới.
+3. Nội dung là **tổng quan một bước chuyển** (vào lớp 1, có em, dậy thì…)? → **nhóm 17**. Kỹ năng cụ thể của bước chuyển viết thành mẩu riêng ở nhóm cấp A, trỏ về nhóm 17.
+4. Nội dung mô tả điều đang diễn ra **ở trẻ** (hành vi, kỹ năng, cơ thể)? → **cấp A**, chọn nhóm theo năng lực bị tác động chính (bảng §3.2).
+5. Nội dung mô tả **điều kiện quanh trẻ**, hoặc thực hành của người lớn không gắn với một hiện tượng cụ thể ở trẻ? → **cấp B**.
+6. Nội dung về **giá trị, kỹ năng sống, công dân** nhìn theo hướng lâu dài? → **C1**. Hành vi cụ thể ở một tuổi (ví dụ tranh đồ chơi lúc 2 tuổi) vẫn xếp cấp A, chỉ liên kết với C1.
+7. Nội dung về **định hướng nghề nghiệp**? → **nhóm 15**.
+
+Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ hồ thì ghi vào Sổ quyết định phân loại (§9.2), để các lần sau xếp giống nhau.
+
+### 9.2 Sổ quyết định phân loại
+| Khái niệm | Nhóm chính | Nhóm phụ | Lý do |
+|---|---|---|---|
+| Ăn vạ | 3 | 7 | Hiện tượng điều tiết cảm xúc ở trẻ |
+| Kén ăn: ăn gì, bao nhiêu | 1 | — | Dinh dưỡng |
+| Kén ăn: giằng co trong bữa ăn | 3 | 7 | Phần hành vi, cảm xúc |
+| Tập đi vệ sinh | 5 | 1 | Kỹ năng tự phục vụ; phần táo bón ở nhóm 1 |
+| Tự xúc ăn | 5 | 1 | Kỹ năng tự phục vụ |
+| Sợ người lạ, lo âu khi xa người thân | 3 | 4 | Cảm xúc, liên quan gắn bó |
+| Ngủ an toàn cho trẻ nhỏ | Nền | 1 | Nguy cơ tử vong đột ngột ở trẻ sơ sinh |
+| Thời lượng ngủ, nề nếp ngủ | 1 | 7 | Sức khỏe |
+| Không chịu đi ngủ, thức đêm | 1 | 3 | Sức khỏe; phần cảm xúc ở nhóm phụ |
+| Khả năng tập trung | 5 | — | Chức năng điều hành |
+| Chức năng điều hành | 5 | — | — |
+| Song ngữ | 2 | 7 | Ngôn ngữ |
+| Ông bà chăm cháu | 7 | — | Môi trường gia đình |
+| Màn hình | 11 | 1 | Môi trường số; phần ảnh hưởng đến giấc ngủ ở nhóm 1 |
+| Montessori | 8 (nhãn `phương_pháp`) | 6 | Phương pháp giáo dục |
+| Kỷ luật không bạo lực | 7 | Nền | Thực hành của cha mẹ |
+| Nói dối ở trẻ 4–5 tuổi | 3 | 13 | Hiện tượng phát triển; liên kết giá trị trung thực |
+| Chuẩn bị vào lớp 1 (tổng quan) | 17 | 6 | Bước chuyển |
+| Thích nghi khi mới đi mẫu giáo | 17 | 3 | Bước chuyển |
+| Chia sẻ đồ chơi | 4 | 13 | Hành vi xã hội ở trẻ |
+| Thủ tục nhập học, tuyển sinh, chuyển trường, quy chế thi | 17 (nhãn `thủ_tục`) | 8 | Gắn với bước chuyển của con |
+| Thủ tục y tế cho con (thẻ bảo hiểm y tế, sổ tiêm chủng) | 1 (nhãn `thủ_tục`) | — | Sức khỏe |
+| Giấy tờ hộ tịch của con (khai sinh…) | 7 (nhãn `thủ_tục`) | — | Việc của gia đình |
 
 ## 10. Đối chiếu hệ làn v3 → khung hiện tại
 | Làn v3 | Chuyển thành |
@@ -427,17 +430,18 @@ Nguồn: văn bản "Khung sơ bộ phát triển toàn diện trẻ và các v�
 | L8 An toàn | Nền |
 | L9 Hiểu lầm thường gặp | Mục "Hiểu lầm" + nhãn `hiểu_lầm` (gom thành chuyên mục riêng được) |
 | N / P / S | Nhãn `kiến_thức_nền` / nhóm 7 / nhãn `hoàn_cảnh_đặc_biệt` |
-| T1–T9 (thai kỳ) | Nhóm 1, 7, 17 và Nền (§6.2) |
+| T1–T9 (thai kỳ) | Nhóm 1, 7, 17 và Nền (§5.2) |
 
 ## 11. Việc còn mở
 1. **Lấp nội dung 0–12 tháng** (ưu tiên kế tiếp).
 2. **Bản đồ chuyển tuyến:** dấu hiệu nào → gặp ai (bác sĩ nhi, chuyên khoa phát triển, âm ngữ trị liệu, tâm lý, mắt, tai mũi họng…), theo hệ thống y tế Việt Nam.
-3. Chuyên gia duyệt bảng nhóm trọng tâm (§6.1) và sổ quyết định phân loại (§4.2).
+3. Chuyên gia duyệt bảng nhóm trọng tâm (§5.1) và sổ quyết định phân loại (§9.2).
 4. Đối chiếu 17 nhóm với Nurturing Care Framework, CDC/AAP, WHO 2020 ECD guideline và chuẩn Việt Nam cho 0–6 tuổi: Chương trình giáo dục mầm non; Bộ chuẩn phát triển trẻ em 5 tuổi (nhiều khả năng là Thông tư 23/2010, cần kiểm số hiệu và hiệu lực).
 5. Nguồn xác nhận khoảng tuổi dùng tuổi hiệu chỉnh cho trẻ sinh non.
-6. Chuyển danh sách nguồn ở §13 thành kho nguồn có mã (§8.4).
+6. Chuyển danh sách nguồn ở §13 thành kho nguồn có mã (§7.4).
 7. Chốt các mục "chưa chốt" của §1.1 (kiến thức chung của AI, danh sách trang được phép, lọc chủ đề, xử lý khi thiếu thông tin định hướng).
-8. Lập danh sách thủ tục hành chính ưu tiên đưa vào kho (ví dụ tuyển sinh mầm non, lớp 1, lớp 6, lớp 10) và cách cập nhật theo năm học, theo tỉnh.
+8. Viết mục "Cách Pal tìm câu trả lời" (hiểu câu hỏi → lọc theo tuổi và các nhóm liên quan → tìm trong kho chuẩn → tra mạng khi thiếu → trả lời, nói rõ nguồn), tách khỏi §9.
+9. Lập danh sách thủ tục hành chính ưu tiên đưa vào kho (ví dụ tuyển sinh mầm non, lớp 1, lớp 6, lớp 10) và cách cập nhật theo năm học, theo tỉnh.
 
 ## 12. Ghi chú về file tham khảo "Khung 0–18 tuổi"
 - **Dùng:** cấu trúc theo giai đoạn.
