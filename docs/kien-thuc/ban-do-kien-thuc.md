@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5 — 27/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; chưa viết nội dung. **Tạm dừng nghiên cứu** cho đến khi người dùng yêu cầu.
+Bản v5.1 — 27/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; chưa viết nội dung. **Tạm dừng nghiên cứu** cho đến khi người dùng yêu cầu.
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -10,6 +10,7 @@ Lịch sử thay đổi:
   - Cấp C chia hai loại: **C1 Định hướng xuyên suốt** và **C2 Định hướng giai đoạn**.
   - Nhóm 12 "Chơi" giữ ở cấp B.
   - Thêm: phạm vi, cây quyết định phân loại, sổ quyết định phân loại, nhãn phương pháp, mẫu mẩu kiến thức v2, ba đối tượng mới (hoạt động, dòng phát triển, kho nguồn), mã định danh, kiểm soát nội dung do AI soạn, tiêu chí nghiệm thu.
+- **v5.1 (27/10):** thêm §1.1 "Kho chuẩn và nguồn trả lời" theo quyết định của người dùng: kho chuẩn gồm thông tin định hướng và thủ tục hành chính; thủ tục chưa có trong kho thì Pal báo cho phụ huynh rồi mới dùng thông tin tra trên mạng.
 
 > Bản chính lưu trong repo tại `docs/kien-thuc/ban-do-kien-thuc.md`; project Parent-Pal giữ bản sao `claude/ban-do-kien-thuc.md`. Đổi tên từ `ban-do-chu-de-kien-thuc-1-6-tuoi.md` ngày 27/10/2026 vì nội dung đã phủ toàn bộ trục tuổi.
 
@@ -22,6 +23,33 @@ Lịch sử thay đổi:
   - tư vấn tài chính gia đình;
   - giới thiệu sản phẩm, trường, lớp cụ thể.
 - **Thêm chủ đề mới:** người soạn đề xuất → chủ sản phẩm duyệt có thuộc phạm vi không → xếp chỗ theo §4.
+
+### 1.1 Kho chuẩn và nguồn trả lời
+Pal trả lời từ hai loại nguồn:
+- **Kho chuẩn:** tài nguyên của công ty, đã kiểm chứng và qua chuyên gia duyệt. Là khung mà mọi câu trả lời khác phải tuân theo.
+- **Tra cứu trên mạng:** Pal tìm ngay lúc được hỏi. Có nguồn, nhưng chưa được đội ngũ kiểm duyệt.
+
+**Kho chuẩn gồm (người dùng chốt 27/10):**
+1. **Thông tin định hướng:** toàn bộ khung cấp độ và các nhóm ở §3. Đây là các mẩu kiến thức, hoạt động và dòng phát triển xây theo bản đồ này.
+2. **Thủ tục hành chính liên quan đến con:** nhập học, tuyển sinh, chuyển trường, quy chế thi…
+   - Nếu kho chuẩn **chưa có** thông tin thủ tục được hỏi: Pal **báo cho phụ huynh** rằng tài liệu của Parent-Pal chưa có, **rồi mới** trả thông tin tra trên mạng, kèm nguồn.
+3. Các loại khác: **bổ sung sau**.
+
+**Cách Pal nói rõ nguồn:**
+- Từ kho chuẩn: "Theo tài liệu của Parent-Pal…"
+- Từ mạng: "Tài liệu của Parent-Pal chưa có thông tin này. Mình vừa tìm trên [tên trang], thông tin này chưa được đội ngũ kiểm duyệt." Kèm link.
+
+**Quy tắc riêng cho thủ tục hành chính** (`đề xuất nội bộ`, chờ duyệt):
+- Chỉ dùng nguồn chính thức: văn bản của Bộ, Sở, Phòng GD&ĐT, Bộ Y tế, hoặc thông báo của chính trường.
+- Mỗi mẩu thủ tục ghi rõ: văn bản gốc (số hiệu, ngày ban hành), cơ quan ban hành, **địa phương áp dụng**, **năm học áp dụng**, hạn rà soát. Tuyển sinh và thi cử thay đổi theo năm và theo tỉnh, nên hạn rà soát mặc định là **mỗi năm học**.
+- Pal luôn kèm lời nhắc kiểm tra lại với trường hoặc Sở trước hạn chót.
+- Không đưa tên con, trường, địa chỉ vào câu tìm kiếm trên mạng (quy tắc đã có trong `CLAUDE.md`).
+
+**Chưa chốt (bổ sung sau):**
+- Kiến thức chung sẵn có của mô hình AI (không có nguồn) có được dùng không, dùng cho loại câu hỏi nào.
+- Danh sách trang được phép tra cứu.
+- Có lọc lại danh sách chủ đề trong bản đồ theo tiêu chí "rủi ro cao / định hướng lớn / hay bị hiểu sai / hỏi nhiều" không.
+- Khi kho chuẩn thiếu thông tin **định hướng**, Pal xử lý thế nào.
 
 ## 2. Nguyên tắc
 1. **Thứ bậc nguồn**
@@ -142,6 +170,9 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 | Chuẩn bị vào lớp 1 (tổng quan) | 17 | 6 | Bước chuyển |
 | Thích nghi khi mới đi mẫu giáo | 17 | 3 | Bước chuyển |
 | Chia sẻ đồ chơi | 4 | 13 | Hành vi xã hội ở trẻ |
+| Thủ tục nhập học, tuyển sinh, chuyển trường, quy chế thi | 17 (nhãn `thủ_tục`) | 8 | Gắn với bước chuyển của con |
+| Thủ tục y tế cho con (thẻ bảo hiểm y tế, sổ tiêm chủng) | 1 (nhãn `thủ_tục`) | — | Sức khỏe |
+| Giấy tờ hộ tịch của con (khai sinh…) | 7 (nhãn `thủ_tục`) | — | Việc của gia đình |
 
 ## 5. Trục tuổi
 Mốc tuổi bám theo hệ thống trường học Việt Nam, vì phụ huynh quen nghĩ theo mốc này. Các nguồn quốc tế chia lệch khoảng ±1 năm; khi gặp phần chồng lấn thì ghi rõ.
@@ -347,7 +378,8 @@ Mẩu kiến thức trỏ tới mã nguồn. Khi một nguồn đổi trạng th
   - `giai_đoạn`, `chặng`, `tuổi_từ_tháng`, `tuổi_đến_tháng` (G1 dùng `tuần_thai_từ` / `tuần_thai_đến`);
   - `nhóm_chính`, `nhóm_phụ`; `cấp` suy ra từ nhóm;
   - `chủ_đề`;
-  - tùy chọn: `kiến_thức_nền` (không gắn tuổi: serve-and-return, stress độc hại…), `hoàn_cảnh_đặc_biệt` (chậm phát triển, sinh non, biến cố gia đình…), `phương_pháp`, `hiểu_lầm`, `an_toàn`.
+  - tùy chọn: `kiến_thức_nền` (không gắn tuổi: serve-and-return, stress độc hại…), `hoàn_cảnh_đặc_biệt` (chậm phát triển, sinh non, biến cố gia đình…), `phương_pháp`, `hiểu_lầm`, `an_toàn`, `thủ_tục`.
+  - mẩu có nhãn `thủ_tục` bắt buộc thêm: `văn_bản_gốc`, `cơ_quan_ban_hành`, `địa_phương`, `năm_học`, `hạn_rà_soát` (§1.1).
 
 ## 9. Kiểm soát chất lượng
 
@@ -404,7 +436,8 @@ Nguồn: văn bản "Khung sơ bộ phát triển toàn diện trẻ và các v�
 4. Đối chiếu 17 nhóm với Nurturing Care Framework, CDC/AAP, WHO 2020 ECD guideline và chuẩn Việt Nam cho 0–6 tuổi: Chương trình giáo dục mầm non; Bộ chuẩn phát triển trẻ em 5 tuổi (nhiều khả năng là Thông tư 23/2010, cần kiểm số hiệu và hiệu lực).
 5. Nguồn xác nhận khoảng tuổi dùng tuổi hiệu chỉnh cho trẻ sinh non.
 6. Chuyển danh sách nguồn ở §13 thành kho nguồn có mã (§8.4).
-7. Cập nhật `CLAUDE.md` trong repo theo các nguyên tắc 6–11 và cấu trúc 17 nhóm.
+7. Chốt các mục "chưa chốt" của §1.1 (kiến thức chung của AI, danh sách trang được phép, lọc chủ đề, xử lý khi thiếu thông tin định hướng).
+8. Lập danh sách thủ tục hành chính ưu tiên đưa vào kho (ví dụ tuyển sinh mầm non, lớp 1, lớp 6, lớp 10) và cách cập nhật theo năm học, theo tỉnh.
 
 ## 12. Ghi chú về file tham khảo "Khung 0–18 tuổi"
 - **Dùng:** cấu trúc theo giai đoạn.

@@ -34,6 +34,7 @@ Cấu trúc bộ kiến thức ở `docs/kien-thuc/ban-do-kien-thuc.md` (bản v
 - Xếp nhóm theo cây quyết định và sổ quyết định phân loại trong file, không tự đặt nhóm mới.
 - Không điểm tổng, không so sánh trẻ với trẻ khác; tín hiệu an toàn luôn được ưu tiên.
 - Nội dung do AI soạn phải ghi `người soạn: AI` và không được tự chuyển sang "đã duyệt".
+- **Nguồn trả lời** (§1.1 của bản đồ): Pal tìm trong **kho chuẩn** trước. Kho chuẩn gồm thông tin định hướng (các cấp, các nhóm) và thủ tục hành chính (nhập học, tuyển sinh, quy chế thi…). Thủ tục chưa có trong kho thì Pal **báo cho phụ huynh trước**, rồi mới đưa thông tin tra trên mạng kèm nguồn. Luôn nói rõ câu trả lời lấy từ kho hay từ mạng.
 
 ## Làm việc
 
