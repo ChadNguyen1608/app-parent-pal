@@ -1,55 +1,47 @@
 # Parent-Pal: hướng dẫn cho Claude
 
-Đọc thêm `AGENTS.md` (quy tắc Expo) và `README.md` (cấu trúc thư mục).
+Repo này hiện **chỉ chứa tài liệu** của Parent-Pal (thư mục `documents/`). Code bản thử Expo cũ đã được gỡ ngày 28/10/2026; muốn xem hoặc khôi phục, dùng lịch sử git (commit `9abc286` là bản cuối còn code).
 
 ## Sản phẩm
 
-App đồng hành nuôi con cho phụ huynh trẻ ở Việt Nam. Trung tâm là **Pal**, một người bạn trò chuyện có trí nhớ, thay cho việc điền form.
+App đồng hành nuôi con cho phụ huynh trẻ ở Việt Nam. Trung tâm là **Pal**, một người bạn trò chuyện có trí nhớ, giúp phụ huynh **thực thi** việc nuôi dạy con (kế hoạch, nhắc lịch, trò chơi, sách, thực đơn), không chỉ liệt kê thông tin.
 
 - Pal xưng "mình", gọi phụ huynh theo cách họ chọn khi làm quen ("chị Lan" lần đầu, sau đó "chị").
 - Nguyên tắc trò chuyện: **nghe trước, khuyên sau, gợi ý dịch vụ sau cùng**. Không gợi ý trả phí khi phụ huynh đang buồn.
 - Pal không hùa theo khi phụ huynh muốn dùng đòn roi: phản biện nhẹ nhàng, thẳng thắn.
-- Pal không chẩn đoán. Gọi là "đồng hành", không gọi là "tư vấn tâm lý".
+- Pal không chẩn đoán. Gọi là "đồng hành", không gọi là "tư vấn tâm lý". App không thay thế khám bệnh.
 
-Kế hoạch dài hơn (chưa làm): app riêng cho con, vòng "con đề xuất, cha mẹ định hướng", sàn kết nối trung tâm đã kiểm định, thanh toán.
+## Quyết định sản phẩm đã chốt (giữ cho lần dựng app sau)
 
-## Các quyết định đã chốt
-
-- **Một codebase Expo** (SDK 58, Expo Router, TypeScript) cho iOS, Android, web.
-- **Trí nhớ 4 lớp** (`MemoryKind`): `fact` hồ sơ, `event` dòng thời gian, `followup` việc đang theo dõi để Pal hỏi lại, `parent` về chính phụ huynh.
-- **Hai phạm vi** (`MemoryScope`): `private` chỉ người kể thấy, `family` cả nhà dùng chung. Cảm xúc của phụ huynh mặc định `private`. Không bao giờ đưa dữ liệu `private` của người này cho người lớn khác.
-- **Minh bạch**: mọi thứ Pal nhớ phải hiện cho phụ huynh thấy (vệt dưới tin nhắn, Sổ tay về con) và sửa, xóa, đổi phạm vi được.
-- **Lớp an toàn chạy trước AI** (`src/ai/safety.ts`). Mức `urgent` thì chỉ đưa thông tin hỗ trợ (111 bảo vệ trẻ em, 113 công an, 115 cấp cứu), không trả lời như thường, không ghi trí nhớ.
-- **AI sau giao diện `CompanionEngine`** (`src/ai/engine.ts`). Hiện là `MockEngine` (luật tiếng Việt). Bản thật: gọi API mô hình lớn qua server, trả về đúng `TurnOutput`. Không gửi tên con, trường, địa chỉ ra API nước ngoài khi chưa ẩn danh.
-- **Lưu trữ sau giao diện `Repo`** (`src/data/repo.ts`). Hiện là `LocalRepo` (AsyncStorage). Sau này thêm Supabase cùng giao diện.
+- **Trí nhớ 4 lớp:** hồ sơ, dòng thời gian, việc đang theo dõi để Pal hỏi lại, về chính phụ huynh.
+- **Hai phạm vi:** riêng (chỉ người kể thấy) và cả nhà. Cảm xúc của phụ huynh mặc định là riêng. Không đưa dữ liệu riêng của người này cho người lớn khác.
+- **Minh bạch:** mọi thứ Pal nhớ phải hiện cho phụ huynh thấy và sửa, xóa, đổi phạm vi được.
+- **Lớp an toàn chạy trước AI.** Tình huống khẩn chỉ đưa thông tin hỗ trợ (111 bảo vệ trẻ em, 113 công an, 115 cấp cứu).
+- Không gửi tên con, trường, địa chỉ ra API hay công cụ tìm kiếm nước ngoài khi chưa ẩn danh.
 - Có nhiều con mà phụ huynh không nêu tên: **hỏi lại**, không đoán.
-- So khớp tiếng Việt: dùng `prep`/`hasPhrase` trong `src/ai/text.ts`. Chỉ so khớp kiểu bỏ dấu khi phụ huynh gõ không dấu ("cáu" và "câu" không được lẫn nhau).
 
-## Bộ kiến thức
+## Tài liệu
 
-Cấu trúc bộ kiến thức ở `docs/kien-thuc/ban-do-kien-thuc.md` (bản v5). Đọc file này trước khi viết hay xếp bất kỳ nội dung lời khuyên nào.
+| File | Nội dung |
+|---|---|
+| `documents/kien-thuc/spec-knowledge-map.md` | Bản đồ bộ kiến thức: phạm vi, nguyên tắc, khung 17 nhóm, trục tuổi, lưới độ phủ, cấu trúc dữ liệu, hai lớp kho, kiểm soát chất lượng. **Đọc trước khi viết hay xếp bất kỳ nội dung lời khuyên nào** |
+| `documents/kien-thuc/nguon.md` | Kho nguồn có mã `NG-xxx` |
+| `documents/kien-thuc/noi-dung/0-6/` | Nội dung nháp 0–6 tuổi (người soạn: AI, chờ chuyên gia duyệt) |
+| `documents/pal/guide-pal-answers.md` | Cách Pal trả lời câu hỏi lập kế hoạch |
+| `documents/pal/vi-du/` | Ví dụ câu trả lời chuẩn |
 
+Quy tắc khi sửa tài liệu:
 - Trục dọc là tuổi: tiền mang thai → thai kỳ → 0–6 → 6–11 → 11–15 → 15–18 → 18–24.
-- Mỗi nội dung thuộc **1 nhóm chính** trong 17 nhóm: lớp **Nền** an toàn; cấp **A** phát triển cốt lõi (1–6); cấp **B** môi trường (7–12); **C1** định hướng xuyên suốt (13, 14, 16); **C2** định hướng giai đoạn (15, 17).
-- Xếp nhóm theo cây quyết định và sổ quyết định phân loại trong file, không tự đặt nhóm mới.
+- Mỗi nội dung thuộc **1 nhóm chính** trong 17 nhóm: lớp **Nền** an toàn; cấp **A** phát triển cốt lõi (1–6); cấp **B** môi trường (7–12); **C1** định hướng xuyên suốt (13, 14, 16); **C2** định hướng giai đoạn (15, 17). Xếp nhóm theo cây quyết định và sổ quyết định phân loại trong bản đồ, không tự đặt nhóm mới.
 - Không điểm tổng, không so sánh trẻ với trẻ khác; tín hiệu an toàn luôn được ưu tiên.
-- Nội dung do AI soạn phải ghi `người soạn: AI` và không được tự chuyển sang "đã duyệt".
+- Mọi ý trong lớp bằng chứng có mã nguồn; ý không có nguồn gắn nhãn `đề xuất nội bộ`; lời khuyên mượn từ nhóm tuổi kề bên gắn nhãn `áp tuổi liền kề`; nguồn thứ cấp đánh dấu ○.
+- Nội dung do AI soạn ghi `người soạn: AI` và không được tự chuyển sang "đã duyệt".
+- **Nguồn trả lời** (bản đồ §1.1): Pal tìm trong kho chuẩn trước. Thủ tục hành chính chưa có trong kho thì Pal báo cho phụ huynh trước, rồi mới đưa thông tin tra trên mạng kèm nguồn.
+- **Hai lớp kho** (bản đồ §1.2): lớp bằng chứng (có nguồn) và lớp thực thi (trò chơi, món ăn, sách, cơ sở dịch vụ, sản phẩm; có chi phí). Mục đối tác hoặc sản phẩm mẫu có cờ "ẩn khi phát hành".
+- Khi đổi tên hoặc chuyển file, sửa mọi đường dẫn trỏ tới nó trong `documents/`, kiểm tra mã nguồn `NG-xxx` được dùng đều có trong `nguon.md`, và cập nhật bản sao trong project Parent-Pal trên claude.ai.
 
-## Làm việc
+## Viết tài liệu
 
-```bash
-npm install
-npm run check   # typecheck + jest + build web + đóng gói artifact + test trình duyệt
-```
-
-- Chạy `npm run check` trước khi báo xong bất kỳ việc gì. Xem ảnh trong `e2e/screens/` khi đổi giao diện.
-- Cài gói bằng `EXPO_OFFLINE=1 npx expo install <gói>`: trong môi trường cloud, máy chủ phiên bản của Expo bị chặn, cờ này dùng danh sách phiên bản đi kèm SDK.
-- Test trình duyệt dùng `puppeteer-core` + `@sparticuz/chromium` (không cần cài trình duyệt). Thêm `?fast` vào URL để bỏ độ trễ "đang viết".
-- `scripts/build-artifact.mjs` đóng gói bản web thành một file HTML tự chứa (nhúng JS và 4 font) để đăng trang xem thử.
-- Giao diện: bộ màu "đèn ngủ" trong `src/ui/theme.ts`, font Be Vietnam Pro, hỗ trợ sáng và tối. Chữ trên giao diện viết tiếng Việt, ngắn, rõ, động từ nói đúng việc nút làm.
-- Comment trong code viết bằng tiếng Việt.
-
-## Giới hạn hiện tại
-
-- Lời khuyên trong `src/ai/topics.ts` là ví dụ, **chưa qua chuyên gia duyệt**.
-- Chưa có tài khoản, đồng bộ, backend. Supabase của chủ dự án đã dùng hết 2 project miễn phí.
+- Viết tiếng Việt; tên tài liệu gốc và link nguồn giữ nguyên tiếng Anh.
+- Tên file tài liệu chính: tiếng Anh, có tiền tố theo loại (`spec-` đặc tả, `guide-` hướng dẫn).
+- Câu ngắn, rõ; bảng cho dữ liệu nhiều chiều; không dùng ký hiệu khó hiểu mà không giải thích.
