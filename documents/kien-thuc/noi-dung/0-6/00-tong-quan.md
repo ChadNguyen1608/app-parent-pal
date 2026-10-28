@@ -27,7 +27,7 @@ Bộ nội dung trả lời câu hỏi chính: **ở tuổi này con cần gì, 
 - **Tùy hoàn cảnh:** cách điều chỉnh cho các hoàn cảnh khác nhau (mục 3).
 - **Chưa cần kỳ vọng:** điều chưa cần lo nếu con chưa làm.
 - **Dấu hiệu:** chia 3 mức (theo dõi thêm / trao đổi với bác sĩ / đi khám ngay).
-- **Nguồn:** mã trong `docs/kien-thuc/nguon.md`.
+- **Nguồn:** mã trong `documents/kien-thuc/nguon.md`.
 
 **Quy ước:**
 - Mỗi ý có mã nguồn trong ngoặc vuông, ví dụ [NG-002].
