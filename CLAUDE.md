@@ -35,6 +35,8 @@ Cấu trúc bộ kiến thức ở `docs/kien-thuc/ban-do-kien-thuc.md` (bản v
 - Không điểm tổng, không so sánh trẻ với trẻ khác; tín hiệu an toàn luôn được ưu tiên.
 - Nội dung do AI soạn phải ghi `người soạn: AI` và không được tự chuyển sang "đã duyệt".
 - **Nguồn trả lời** (§1.1 của bản đồ): Pal tìm trong **kho chuẩn** trước. Kho chuẩn gồm thông tin định hướng (các cấp, các nhóm) và thủ tục hành chính (nhập học, tuyển sinh, quy chế thi…). Thủ tục chưa có trong kho thì Pal **báo cho phụ huynh trước**, rồi mới đưa thông tin tra trên mạng kèm nguồn. Luôn nói rõ câu trả lời lấy từ kho hay từ mạng.
+- **Hai lớp kho** (bản đồ §1.2): lớp bằng chứng (có nguồn) và lớp thực thi (trò chơi, món ăn, sách, cơ sở dịch vụ, sản phẩm; có chi phí). Mục đối tác hoặc sản phẩm mẫu có cờ "ẩn khi phát hành".
+- **Cách Pal trả lời** câu hỏi lập kế hoạch: `docs/pal/cach-tra-loi.md` (chọn sẵn một phương án, tiêm → khám → lịch → kế hoạch tuần → chi phí → giải thích cuối; quy tắc trung thực). Ví dụ chuẩn trong `docs/pal/vi-du/`.
 
 ## Làm việc
 

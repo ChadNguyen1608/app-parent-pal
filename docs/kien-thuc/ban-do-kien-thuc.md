@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.4 — 27/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.5 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`docs/kien-thuc/noi-dung/0-6/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`docs/kien-thuc/nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.5 (28/10):** tách kho thành **lớp bằng chứng** và **lớp thực thi** (§1.2); thêm danh mục thực thi (§7.6), mục tiêu và danh sách của gia đình (§7.7), chi phí và ước tính chi phí (§7.8). Cách Pal trả lời viết riêng ở `docs/pal/cach-tra-loi.md`.
 
 > Bản chính lưu trong repo tại `docs/kien-thuc/ban-do-kien-thuc.md`; project Parent-Pal giữ bản sao `claude/ban-do-kien-thuc.md`. Đổi tên từ `ban-do-chu-de-kien-thuc-1-6-tuoi.md` ngày 27/10/2026 vì nội dung đã phủ toàn bộ trục tuổi.
 
@@ -53,6 +54,17 @@ Pal trả lời từ hai loại nguồn:
 - Danh sách trang được phép tra cứu.
 - Có lọc lại danh sách chủ đề trong bản đồ theo tiêu chí "rủi ro cao / định hướng lớn / hay bị hiểu sai / hỏi nhiều" không.
 - Khi kho chuẩn thiếu thông tin **định hướng**, Pal xử lý thế nào.
+
+### 1.2 Hai lớp của kho (người dùng chốt 28/10/2026)
+
+| Lớp | Chứa gì | Kiểm soát chất lượng |
+|---|---|---|
+| **Lớp bằng chứng** | Khuyến nghị, con số, mốc phát triển, dấu hiệu, thủ tục; mỗi ý có nguồn (§7.1, `docs/kien-thuc/noi-dung/`) | Nguồn theo thứ bậc (§2); chuyên gia đúng chuyên môn duyệt |
+| **Lớp thực thi** | Danh mục cụ thể để **làm**: trò chơi, hoạt động, món ăn, thực đơn, sách, cơ sở dịch vụ, sản phẩm (§7.6) | Mỗi mục **liên kết tới khuyến nghị** mà nó phục vụ; **qua quy tắc an toàn** của lớp bằng chứng (ví dụ không có thức ăn dễ hóc cho trẻ dưới 4 tuổi); biên tập viên hoặc chuyên gia duyệt |
+
+- Từng mục của lớp thực thi không cần một bài nghiên cứu riêng, nhưng **không được trái** với lớp bằng chứng.
+- Pal dùng lớp thực thi để **giao việc cụ thể**, chọn sẵn một phương án; chỉ đưa phương án khác khi phụ huynh yêu cầu (`docs/pal/cach-tra-loi.md`).
+- Trên lớp thực thi có **danh sách của từng gia đình**: những mục Pal chọn cho riêng một con, theo tuổi, hoàn cảnh và mục tiêu (§7.7).
 
 ## 2. Nguyên tắc
 1. **Thứ bậc nguồn**
@@ -362,6 +374,8 @@ Lịch sử thay đổi
 ```
 
 ### 7.2 Hoạt động
+> Mẫu đầy đủ hơn, gồm nhãn kỹ năng và chi phí: xem §7.6 (lớp thực thi). Mẫu dưới đây giữ làm phần "cách làm" của một mục hoạt động.
+
 ```
 Mã · Mục tiêu (nhóm, chủ đề) · Tuổi từ–đến
 Dấu hiệu trẻ đã sẵn sàng
@@ -395,6 +409,70 @@ Mẩu kiến thức trỏ tới mã nguồn. Khi một nguồn đổi trạng th
   - `chủ_đề`;
   - tùy chọn: `kiến_thức_nền` (không gắn tuổi: serve-and-return, stress độc hại…), `hoàn_cảnh_đặc_biệt` (chậm phát triển, sinh non, biến cố gia đình…), `phương_pháp`, `hiểu_lầm`, `an_toàn`, `thủ_tục`.
   - mẩu có nhãn `thủ_tục` bắt buộc thêm: `văn_bản_gốc`, `cơ_quan_ban_hành`, `địa_phương`, `năm_học`, `hạn_rà_soát` (§1.1).
+
+### 7.6 Lớp thực thi: danh mục chung
+Mọi mục của lớp thực thi có các trường chung:
+- `mã` (ví dụ `HD-0001` hoạt động, `MA-0001` món ăn, `SA-0001` sách, `CS-0001` cơ sở dịch vụ, `SP-0001` sản phẩm);
+- `tuổi_từ_tháng`, `tuổi_đến_tháng`;
+- `kỹ_năng_chính`, `kỹ_năng_phụ` (nhãn kỹ năng, gắn với nhóm của bản đồ; ví dụ vận động thô, vận động tinh, ngôn ngữ biểu đạt, tò mò khám phá, tự phục vụ);
+- `chủ_đề` (con vật, xe cộ, nấu ăn, thiên nhiên…), dùng khi khớp với sở thích của con;
+- `phục_vụ_khuyến_nghị`: mã mẩu kiến thức của lớp bằng chứng mà mục này phục vụ;
+- `lưu_ý_an_toàn`;
+- **chi phí** (§7.8);
+- `trạng_thái`: mẫu / đã duyệt / ngừng dùng; `người_soạn`; `người_duyệt`;
+- `đối_tác` và cờ **`chỉ_là_mẫu_ẩn_khi_phát_hành`**: mọi mục giới thiệu sản phẩm hoặc cơ sở đối tác trong giai đoạn thử nghiệm đều bật cờ này và bị loại khỏi bản phát hành.
+
+Trường riêng theo loại:
+
+| Loại | Trường riêng |
+|---|---|
+| Hoạt động, trò chơi | đồ dùng (có sẵn trong nhà / phải mua); thời lượng; không gian cần (trong nhà, sân, nước); số người lớn cần; cách làm (§7.2); cách làm dễ hơn, khó hơn; dấu hiệu nên dừng; nguồn |
+| Món ăn | nguyên liệu; nhóm thực phẩm; cách chế biến theo tuổi (thái nhỏ, gỡ xương, nấu mềm); cảnh báo hóc và dị ứng; vùng miền; thời gian nấu |
+| Thực đơn | ghép từ món ăn theo quy tắc của lớp bằng chứng (thịt, cá hoặc trứng mỗi ngày; không đồ uống có đường; không thức ăn dễ hóc dưới 4 tuổi; số bữa phụ); **cần chuyên gia dinh dưỡng duyệt quy tắc** |
+| Sách | tác giả; bản tiếng Việt (nhà xuất bản, năm); loại (bìa cứng, âm thanh, lật mở, có vần, tranh không chữ, kể chuyện); độ dài |
+| Cơ sở dịch vụ | loại (trạm y tế, bệnh viện nhi, trung tâm tiêm chủng, nha khoa, lớp học); địa chỉ; tỉnh, xã; công hay tư; dịch vụ; giờ làm việc; liên hệ; ngày cập nhật |
+| Sản phẩm | loại; tiêu chí khớp với khuyến nghị (ví dụ "kem đánh răng có fluoride"); tuổi |
+
+### 7.7 Mục tiêu và danh sách của gia đình
+**Mục tiêu** (người dùng chốt 28/10/2026):
+- Danh sách mục tiêu cố định giúp phụ huynh có **cái nhìn tổng quan** về những khả năng có thể phát triển cho con; mỗi mục tiêu tương ứng một số nhãn kỹ năng.
+- Pal **hỏi phụ huynh về nguyện vọng và khả năng** (tài chính, thời gian, người chăm, không gian), rồi đưa ra **một thiết kế phù hợp nhất kèm cảnh báo**. Cách hỏi và cách trình bày: `docs/pal/cach-tra-loi.md`.
+- **Bố mẹ tự thống nhất với nhau.** Pal chỉ nhận ý kiến cuối cùng; phần tư vấn tổng thể đã được đưa ra trước đó.
+
+**Phần nền và phần theo mục tiêu:**
+- Mọi kế hoạch luôn có đủ **phần nền** theo lớp bằng chứng: an toàn, ngủ, ăn, vận động, đọc sách, khám và tiêm.
+- Phần theo mục tiêu được **thêm vào trong giới hạn thời gian và tài chính** mà phụ huynh khai báo.
+- Pal **cảnh báo** khi phần theo mục tiêu lấn vào phần nền (ví dụ lớp học thêm làm mất giờ ngủ trưa hoặc giờ vận động), khi kế hoạch vượt khả năng gia đình khai báo, hoặc khi mục tiêu không hợp tuổi (ví dụ "phát hiện năng khiếu sớm", nhóm 15).
+- Cơ sở: lớp bằng chứng hiện không có nguồn ủng hộ chuyên biệt hóa sớm ở 0–6 tuổi.
+
+**Bảng dữ liệu:**
+
+| Bảng | Trường chính |
+|---|---|
+| Danh sách mục tiêu cố định | tên; mô tả cho phụ huynh; nhãn kỹ năng tương ứng; tuổi áp dụng |
+| Mục tiêu của gia đình (thuộc hồ sơ con, phạm vi `family`) | mục tiêu; mức ưu tiên; ngày đặt |
+| Khả năng của gia đình (thuộc hồ sơ, phạm vi `family`) | ngân sách tháng cho con (khoảng); thời gian rảnh của người lớn theo ngày; người chăm chính; con đi nhà trẻ hay không; không gian nhà; tỉnh, xã (chỉ hỏi khi cần tìm cơ sở dịch vụ); dị ứng của con |
+| Danh sách của gia đình | mã mục trong danh mục chung, hoặc mục phụ huynh tự thêm; lý do Pal chọn (mục tiêu nào, kỹ năng nào); trạng thái (sắp làm, đã làm, con thích, không hứng thú, bỏ); ngày; ghi chú |
+
+- Phản hồi "con thích / không hứng thú" là cách đưa **tiếng nói của trẻ** (§3.3) vào kế hoạch: danh sách tự điều chỉnh theo phản hồi.
+- Mục phụ huynh tự thêm chỉ nằm trong danh sách của gia đình đó; có thể được đội ngũ xem xét đưa vào danh mục chung sau khi duyệt.
+
+### 7.8 Chi phí và ước tính chi phí
+Mọi mục của lớp thực thi có trường chi phí, để Pal **ước tính chi phí** của kế hoạch (đồ chơi cho hoạt động, khám bệnh, tiêm dịch vụ, sách, học tập):
+
+| Trường | Ý nghĩa |
+|---|---|
+| `kiểu_chi_phí` | một lần (mua đồ chơi, sách) / mỗi lần dùng (một lần khám, một mũi tiêm dịch vụ) / định kỳ (học phí theo tháng) / miễn phí |
+| `chi_phí_từ`, `chi_phí_đến` | khoảng giá, đơn vị đồng |
+| `có_phương_án_0_đồng` | có cách làm không tốn tiền không (ví dụ dùng đồ gia dụng thay đồ chơi mua) |
+| `vùng_giá` | toàn quốc / thành phố lớn / tỉnh |
+| `nguồn_giá`, `ngày_cập_nhật_giá` | lấy giá từ đâu, khi nào; giá cũ hơn 6 tháng thì cần cập nhật (`đề xuất nội bộ`) |
+
+Quy tắc ước tính:
+- Ước tính **theo tháng**, cộng các mục trong danh sách của gia đình, hiện dạng **khoảng** (thấp nhất – cao nhất), kèm ngày cập nhật giá.
+- Luôn hiện **phương án tiết kiệm** khi có (ví dụ tiêm chủng mở rộng ở trạm y tế, đồ chơi tự làm).
+- Ghi rõ đây là **ước tính tham khảo**, giá thực tế tùy nơi.
+- So ước tính với ngân sách gia đình khai báo; vượt thì cảnh báo và đề xuất phương án rẻ hơn.
 
 ## 8. Kiểm soát chất lượng
 
@@ -496,7 +574,8 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 6. Kho nguồn có mã đã lập tại `docs/kien-thuc/nguon.md` (27/10). Còn lại: chuyển các nguồn ở §13 chưa có mã vào kho; đối chiếu bản gốc cho các nguồn thứ cấp (bậc TC).
 7. Chốt các mục "chưa chốt" của §1.1 (kiến thức chung của AI, danh sách trang được phép, lọc chủ đề, xử lý khi thiếu thông tin định hướng).
 8. Viết mục "Cách Pal tìm câu trả lời" (hiểu câu hỏi → lọc theo tuổi và các nhóm liên quan → tìm trong kho chuẩn → tra mạng khi thiếu → trả lời, nói rõ nguồn), tách khỏi §9.
-9. Lập danh sách thủ tục hành chính ưu tiên đưa vào kho (ví dụ tuyển sinh mầm non, lớp 1, lớp 6, lớp 10) và cách cập nhật theo năm học, theo tỉnh.
+9. Lớp thực thi (§7.6–7.8): xây trước các bảng sự kiện theo tháng tuổi, hoạt động, món ăn; chuyên gia dinh dưỡng duyệt quy tắc thực đơn; tìm hướng dẫn khẩu phần của Viện Dinh dưỡng Quốc gia; tải đủ bảng chuẩn tăng trưởng WHO; xin phép tác giả M-CHAT-R/F trước khi đưa bộ câu hỏi vào app; xác minh tiêm chủng mở rộng miễn phí tại trạm y tế.
+10. Lập danh sách thủ tục hành chính ưu tiên đưa vào kho (ví dụ tuyển sinh mầm non, lớp 1, lớp 6, lớp 10) và cách cập nhật theo năm học, theo tỉnh.
 
 ## 12. Ghi chú về file tham khảo "Khung 0–18 tuổi"
 - **Dùng:** cấu trúc theo giai đoạn.

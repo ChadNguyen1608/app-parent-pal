@@ -103,6 +103,17 @@ Theo §7.4 của bản đồ (`ban-do-kien-thuc.md`). Mẩu kiến thức trỏ 
 | NG-068 | Từ 1/7/2026 nghỉ thai sản mấy tháng? | Thư viện Pháp luật (hỏi đáp), 7/6/2026 | TC | TT | Cần kiểm: chưa mở Luật Dân số 2025 và Luật BHXH 2024 | https://thuvienphapluat.vn/hoi-dap-phap-luat/tu-172026-nghi-thai-san-may-thang-138092879.html |
 | NG-069 | Vợ sinh con thứ 2 chồng được nghỉ mấy ngày? (13/7/2026) và Vợ sinh non thì lao động nam được nghỉ bao nhiêu ngày? (2024) | Thư viện Pháp luật | TC | TT | Cần kiểm: trang thứ hai dẫn Luật BHXH 2014, có thể đã được thay bằng Luật BHXH 2024 | https://thuvienphapluat.vn/lao-dong-tien-luong/vo-sinh-con-thu-2-chong-duoc-nghi-may-ngay-62693.html · https://thuvienphapluat.vn/lao-dong-tien-luong/vo-sinh-non-thi-lao-dong-nam-duoc-nghi-bao-nhieu-ngay-5085.html |
 
+## 6. Lớp thực thi và công cụ (thêm 28/10/2026)
+
+| Mã | Nguồn | Tổ chức, năm | Bậc | Loại | Trạng thái, ghi chú | Link |
+|---|---|---|---|---|---|---|
+| NG-072 | Developmental Activities 24–36 Months | Rady Children's Hospital San Diego, không ghi ngày (đường dẫn 12/2025) | 2* | TL | Hiện hành. Bệnh viện nhi; danh sách hoạt động vận động thô, tinh | https://www.rchsd.org/documents/2025/12/developmental-activities-24-36-months.pdf/ |
+| NG-073 | How to Choose Books for Young Children (Read, Imagine, Grow) | Kennedy Krieger Institute, không ghi ngày | 2* | TL | Hiện hành. Loại sách theo tuổi | https://kennedykrieger.org/patient-care/centers-and-programs/read-imagine-grow/choosing-books-for-young-children |
+| NG-074 | M-CHAT-R/F (Robins, Fein, Barton) | Tác giả; bản lưu tại Drexel University | 2* | TL | Hiện hành. Miễn phí cho lâm sàng, nghiên cứu, giáo dục; **dùng thương mại hoặc dạng điện tử phải xin phép tác giả**; không được sửa câu hỏi | https://drexel.edu/~/media/Files/autismInstitute/EDI/M-CHAT-R_F.ashx |
+| NG-075 | WHO Child Growth Standards: bảng cân nặng theo tuổi (bách phân vị, z-score) và chiều dài, chiều cao theo tuổi | WHO, 2006 | 1 | HD | Hiện hành. Đã lấy: cân nặng nam, nữ 24/30/36 tháng; chiều cao nam 24/30/36 tháng; chiều dài nữ 24 tháng. **Chưa lấy được** chiều cao nữ 30, 36 tháng | https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/weight-for-age/sft-wfa-boys-p-0-5.pdf · https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/weight-for-age/sft-wfa-girls-p-0-5.pdf · https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/hfa-boys-2-5-percentiles.pdf · https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/sft_lhfa_girls_p_0_2.pdf |
+
+Đã xem nhưng **không dùng**: bài "Hướng dẫn dinh dưỡng cho trẻ nhỏ từ 2 đến 4 tuổi" của Vinmec (nguồn tham khảo duy nhất là BabyCenter, trang có quảng cáo thực phẩm chức năng).
+
 ## Những gì đã tìm mà không thấy (27/10/2026)
 - Văn bản Việt Nam quy định chuẩn tăng trưởng trẻ em.
 - Toàn văn WHO 2023 về ăn bổ sung (số bữa, đa dạng khẩu phần tối thiểu, mật ong).
@@ -113,3 +124,5 @@ Theo §7.4 của bản đồ (`ban-do-kien-thuc.md`). Mẩu kiến thức trỏ 
 - Dấu hiệu trầm cảm sau sinh và cách tìm trợ giúp từ WHO/AAP.
 - Lịch tiêm theo tuổi trong Thông tư 13/2026/TT-BYT; nội dung sửa Điều lệ trường mầm non trong Thông tư 51/2026/TT-BGDĐT.
 - Mục tiêu chi tiết của Chương trình giáo dục mầm non.
+- Hướng dẫn khẩu phần của Viện Dinh dưỡng Quốc gia cho trẻ 2–3 tuổi (28/10).
+- Văn bản xác nhận tiêm chủng mở rộng miễn phí tại trạm y tế (28/10; các trang hỏi đáp không mở được).
