@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.7 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.9 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -13,12 +13,14 @@ Lịch sử thay đổi:
 - **v5.1 (27/10):** thêm §1.1 "Kho chuẩn và nguồn trả lời" theo quyết định của người dùng: kho chuẩn gồm thông tin định hướng và thủ tục hành chính; thủ tục chưa có trong kho thì Pal báo cho phụ huynh rồi mới dùng thông tin tra trên mạng.
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
-- **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/kien-thuc/noi-dung/0-6/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/kien-thuc/nguon.md`); cập nhật lưới độ phủ (§5.1).
-- **v5.7 (28/10):** đổi tên file thành `spec-knowledge-map.md` và chuyển vào thư mục `documents/`; repo chỉ còn tài liệu (code bản thử đã gỡ).
+- **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.9 (28/10):** phần mô tả trong tên file đổi sang tiếng Việt không dấu (file này thành `spec-ban-do-kien-thuc.md`); tên thư mục giữ tiếng Anh.
+- **v5.8 (28/10):** đổi toàn bộ thư mục và tên file sang tiếng Anh có tiền tố theo loại (`documents/README.md`); tách thủ tục hành chính ra `documents/knowledge/procedures/`, xếp theo lĩnh vực thay vì theo tuổi (§1.1).
+- **v5.7 (28/10):** đổi tên file thành `spec-ban-do-kien-thuc.md` và chuyển vào thư mục `documents/`; repo chỉ còn tài liệu (code bản thử đã gỡ).
 - **v5.6 (28/10):** mục tiêu của gia đình chỉ làm tăng số gợi ý ở mảng tương ứng (ví dụ 2 → 3–5 sách khoa học), không bớt mảng khác; thêm bảng cấu hình số gợi ý (§7.7).
-- **v5.5 (28/10):** tách kho thành **lớp bằng chứng** và **lớp thực thi** (§1.2); thêm danh mục thực thi (§7.6), mục tiêu và danh sách của gia đình (§7.7), chi phí và ước tính chi phí (§7.8). Cách Pal trả lời viết riêng ở `documents/pal/guide-pal-answers.md`.
+- **v5.5 (28/10):** tách kho thành **lớp bằng chứng** và **lớp thực thi** (§1.2); thêm danh mục thực thi (§7.6), mục tiêu và danh sách của gia đình (§7.7), chi phí và ước tính chi phí (§7.8). Cách Pal trả lời viết riêng ở `documents/pal/guide-cach-pal-tra-loi.md`.
 
-> Bản chính lưu trong repo tại `documents/kien-thuc/spec-knowledge-map.md`; project Parent-Pal giữ bản sao `claude/spec-knowledge-map.md`. Đổi tên từ `ban-do-chu-de-kien-thuc-1-6-tuoi.md` ngày 27/10/2026 vì nội dung đã phủ toàn bộ trục tuổi.
+> Bản chính lưu trong repo tại `documents/knowledge/spec-ban-do-kien-thuc.md`; project Parent-Pal giữ bản sao `claude/spec-ban-do-kien-thuc.md`. Đổi tên từ `ban-do-chu-de-kien-thuc-1-6-tuoi.md` ngày 27/10/2026 vì nội dung đã phủ toàn bộ trục tuổi.
 
 ## 1. Phạm vi
 - **Trong phạm vi:** sự phát triển của trẻ; chăm sóc và nuôi dạy; an toàn (ở mức nhận biết nguy cơ và tìm hỗ trợ); sức khỏe tinh thần và vai trò của cha mẹ; chuẩn bị cho các bước chuyển của con.
@@ -41,6 +43,8 @@ Pal trả lời từ hai loại nguồn:
    - Nếu kho chuẩn **chưa có** thông tin thủ tục được hỏi: Pal **báo cho phụ huynh** rằng tài liệu của Parent-Pal chưa có, **rồi mới** trả thông tin tra trên mạng, kèm nguồn.
 3. Các loại khác: **bổ sung sau**.
 
+**Nơi lưu thủ tục:** `documents/knowledge/procedures/`, mỗi file một **lĩnh vực** (hộ tịch, bảo hiểm y tế, nghỉ thai sản, nhập học, học phí, tiêm chủng bắt buộc), **không xếp theo tuổi**. Mỗi mẩu ghi độ tuổi áp dụng, nên thủ tục của tuổi khác (ví dụ thi vào lớp 10) thêm vào đúng file lĩnh vực mà không trùng lặp.
+
 **Cách Pal nói rõ nguồn:**
 - Từ kho chuẩn: "Theo tài liệu của Parent-Pal…"
 - Từ mạng: "Tài liệu của Parent-Pal chưa có thông tin này. Mình vừa tìm trên [tên trang], thông tin này chưa được đội ngũ kiểm duyệt." Kèm link.
@@ -61,11 +65,11 @@ Pal trả lời từ hai loại nguồn:
 
 | Lớp | Chứa gì | Kiểm soát chất lượng |
 |---|---|---|
-| **Lớp bằng chứng** | Khuyến nghị, con số, mốc phát triển, dấu hiệu, thủ tục; mỗi ý có nguồn (§7.1, `documents/kien-thuc/noi-dung/`) | Nguồn theo thứ bậc (§2); chuyên gia đúng chuyên môn duyệt |
+| **Lớp bằng chứng** | Khuyến nghị, con số, mốc phát triển, dấu hiệu, thủ tục; mỗi ý có nguồn (§7.1, `documents/knowledge/by-age/`, `documents/knowledge/procedures/`) | Nguồn theo thứ bậc (§2); chuyên gia đúng chuyên môn duyệt |
 | **Lớp thực thi** | Danh mục cụ thể để **làm**: trò chơi, hoạt động, món ăn, thực đơn, sách, cơ sở dịch vụ, sản phẩm (§7.6) | Mỗi mục **liên kết tới khuyến nghị** mà nó phục vụ; **qua quy tắc an toàn** của lớp bằng chứng (ví dụ không có thức ăn dễ hóc cho trẻ dưới 4 tuổi); biên tập viên hoặc chuyên gia duyệt |
 
 - Từng mục của lớp thực thi không cần một bài nghiên cứu riêng, nhưng **không được trái** với lớp bằng chứng.
-- Pal dùng lớp thực thi để **giao việc cụ thể**, chọn sẵn một phương án; chỉ đưa phương án khác khi phụ huynh yêu cầu (`documents/pal/guide-pal-answers.md`).
+- Pal dùng lớp thực thi để **giao việc cụ thể**, chọn sẵn một phương án; chỉ đưa phương án khác khi phụ huynh yêu cầu (`documents/pal/guide-cach-pal-tra-loi.md`).
 - Trên lớp thực thi có **danh sách của từng gia đình**: những mục Pal chọn cho riêng một con, theo tuổi, hoàn cảnh và mục tiêu (§7.7).
 
 ## 2. Nguyên tắc
@@ -198,7 +202,7 @@ Thay cho bảng "nhóm trọng tâm" của v5 (đã bỏ ở v5.3 vì không có
 | Đang soạn | Có ít nhất một mẩu kiến thức ở trạng thái nháp hoặc chờ duyệt |
 | Đã duyệt | Mọi chủ đề đã lên danh sách của ô đều đã được chuyên gia duyệt |
 
-**Hiện trạng (27/10/2026, sau đợt soạn nội dung 0–6 tuổi)**. Chưa có ô nào "Đã duyệt". Nội dung "Đang soạn" nằm ở `documents/kien-thuc/noi-dung/0-6/` (người soạn: AI, chờ chuyên gia duyệt).
+**Hiện trạng (27/10/2026, sau đợt soạn nội dung 0–6 tuổi)**. Chưa có ô nào "Đã duyệt". Nội dung "Đang soạn" nằm ở `documents/knowledge/by-age/age-00-06-early-childhood/` (người soạn: AI, chờ chuyên gia duyệt).
 
 | Độ tuổi | Đang soạn | Có danh sách | Không áp dụng | Chưa có | Tóm tắt |
 |---|---|---|---|---|---|
@@ -277,7 +281,7 @@ Chưa lập chủ đề con. Vị trí dự kiến của các chủ đề lớn:
 
 ## 6. Bản đồ G2 theo chặng (danh sách việc cần nghiên cứu, chưa phải nội dung)
 
-> Nội dung nháp đã soạn cho từng chặng: `documents/kien-thuc/noi-dung/0-6/`. Danh sách dưới đây giữ làm danh sách chủ đề cần nghiên cứu; chủ đề nào chưa có nguồn được ghi ở cuối mỗi file nội dung.
+> Nội dung nháp đã soạn cho từng chặng: `documents/knowledge/by-age/age-00-06-early-childhood/`. Danh sách dưới đây giữ làm danh sách chủ đề cần nghiên cứu; chủ đề nào chưa có nguồn được ghi ở cuối mỗi file nội dung.
 Chủ đề con xếp theo nhóm, đã áp dụng quy tắc §9. Ở mỗi chặng chỉ ghi những nhóm đã có chủ đề.
 
 ### Chặng 0a–0b — 0–12 tháng
@@ -438,7 +442,7 @@ Trường riêng theo loại:
 ### 7.7 Mục tiêu và danh sách của gia đình
 **Mục tiêu** (người dùng chốt 28/10/2026):
 - Danh sách mục tiêu cố định giúp phụ huynh có **cái nhìn tổng quan** về những khả năng có thể phát triển cho con; mỗi mục tiêu tương ứng một số nhãn kỹ năng.
-- Pal **hỏi phụ huynh về nguyện vọng và khả năng** (tài chính, thời gian, người chăm, không gian), rồi đưa ra **một thiết kế phù hợp nhất kèm cảnh báo**. Cách hỏi và cách trình bày: `documents/pal/guide-pal-answers.md`.
+- Pal **hỏi phụ huynh về nguyện vọng và khả năng** (tài chính, thời gian, người chăm, không gian), rồi đưa ra **một thiết kế phù hợp nhất kèm cảnh báo**. Cách hỏi và cách trình bày: `documents/pal/guide-cach-pal-tra-loi.md`.
 - **Bố mẹ tự thống nhất với nhau.** Pal chỉ nhận ý kiến cuối cùng; phần tư vấn tổng thể đã được đưa ra trước đó.
 
 **Phần nền và phần theo mục tiêu:**
@@ -575,7 +579,7 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 3. Chuyên gia duyệt các ô "Không áp dụng" của lưới độ phủ (§5.1), danh sách bước chuyển (§5.2) và sổ quyết định phân loại (§9.2).
 4. Đối chiếu 17 nhóm với Nurturing Care Framework, CDC/AAP, WHO 2020 ECD guideline và chuẩn Việt Nam cho 0–6 tuổi: Chương trình giáo dục mầm non; Bộ chuẩn phát triển trẻ em 5 tuổi (nhiều khả năng là Thông tư 23/2010, cần kiểm số hiệu và hiệu lực).
 5. Nguồn xác nhận khoảng tuổi dùng tuổi hiệu chỉnh cho trẻ sinh non.
-6. Kho nguồn có mã đã lập tại `documents/kien-thuc/nguon.md` (27/10). Còn lại: chuyển các nguồn ở §13 chưa có mã vào kho; đối chiếu bản gốc cho các nguồn thứ cấp (bậc TC).
+6. Kho nguồn có mã đã lập tại `documents/knowledge/ref-kho-nguon.md` (27/10). Còn lại: chuyển các nguồn ở §13 chưa có mã vào kho; đối chiếu bản gốc cho các nguồn thứ cấp (bậc TC).
 7. Chốt các mục "chưa chốt" của §1.1 (kiến thức chung của AI, danh sách trang được phép, lọc chủ đề, xử lý khi thiếu thông tin định hướng).
 8. Viết mục "Cách Pal tìm câu trả lời" (hiểu câu hỏi → lọc theo tuổi và các nhóm liên quan → tìm trong kho chuẩn → tra mạng khi thiếu → trả lời, nói rõ nguồn), tách khỏi §9.
 9. Lớp thực thi (§7.6–7.8): xây trước các bảng sự kiện theo tháng tuổi, hoạt động, món ăn; chuyên gia dinh dưỡng duyệt quy tắc thực đơn; tìm hướng dẫn khẩu phần của Viện Dinh dưỡng Quốc gia; tải đủ bảng chuẩn tăng trưởng WHO; xin phép tác giả M-CHAT-R/F trước khi đưa bộ câu hỏi vào app; xác minh tiêm chủng mở rộng miễn phí tại trạm y tế.

@@ -1,7 +1,7 @@
 # Ví dụ 01 — "Những lưu ý tôi cần ghi nhớ trong năm thứ 3 của trẻ"
 
 - **Trạng thái:** ví dụ chuẩn, bản nháp (lần thử 4, 28/10/2026; thêm phần chi phí theo quy tắc mới). Nội dung lấy từ kho nháp, chưa qua chuyên gia duyệt.
-- **Quy tắc trình bày:** `documents/pal/guide-pal-answers.md`.
+- **Quy tắc trình bày:** `documents/pal/guide-cach-pal-tra-loi.md`.
 - **Giả định:** phụ huynh chưa khai hoàn cảnh → Pal dùng mặc định "có người chăm cả ngày", con vừa tròn 24 tháng.
 
 ---

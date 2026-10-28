@@ -2,7 +2,7 @@
 
 - **Giai đoạn:** G2 · **Chặng:** 4 · **Tuổi:** 36–48 tháng
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 27/10/2026
-- Quy ước nguồn, nhãn và ký hiệu ○: xem `00-tong-quan.md`.
+- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-tong-quan-0-6-tuoi.md`.
 
 ## Ở tuổi này con cần gì (tóm tắt)
 
@@ -84,7 +84,7 @@ AAP khuyên [NG-047]:
 `KT-0606` · Nhóm chính: 3 · Nhóm phụ: 7
 
 - **Giúp con đi qua từng bước để giải quyết vấn đề** khi con bực bội [NG-006].
-- Ăn vạ: xem `05-2-3-tuoi.md`, mục 3 [NG-005] [NG-018].
+- Ăn vạ: xem `content-05-nha-tre-2-3-tuoi.md`, mục 3 [NG-005] [NG-018].
 
 ## 4 — Quan hệ
 `KT-0607` · Nhóm chính: 4
@@ -103,14 +103,14 @@ AAP khuyên [NG-047]:
 
 - **Rõ ràng và nhất quán** khi kỷ luật con [NG-006].
 - **Mỗi khi nói "không", nói tiếp điều con nên làm thay vào đó** [NG-006].
-- Kỷ luật không bạo lực: `00-tong-quan.md`, mục 4.4.
+- Kỷ luật không bạo lực: `content-00-tong-quan-0-6-tuoi.md`, mục 4.4.
 
 ## 8 — Giáo dục · 17 — Vào mẫu giáo
 `KT-0610` · Nhóm chính: 17 · Nhóm phụ: 8, 3
 
 - Trẻ **3–6 tuổi** được tổ chức thành các **lớp mẫu giáo** [NG-056].
 - Mốc 3 tuổi của CDC: con **dịu lại trong vòng 10 phút** sau khi cha mẹ rời đi lúc gửi con [NG-002]. Nếu con chưa đạt mốc này, hoặc cha mẹ lo lắng, CDC khuyên trao đổi với bác sĩ [NG-002].
-- Học phí mầm non công lập: `09-thu-tuc-hanh-chinh.md`.
+- Học phí mầm non công lập: `documents/knowledge/procedures/`.
 
 ## 11 — Môi trường số
 `KT-0611` · Nhóm chính: 11

@@ -10,16 +10,16 @@ Bộ nội dung trả lời câu hỏi chính: **ở tuổi này con cần gì, 
 
 | File | Chặng |
 |---|---|
-| `00-tong-quan.md` | Kiến thức nền dùng cho mọi chặng 0–6 tuổi (file này) |
-| `01-so-sinh.md` | Sơ sinh 0–28 ngày |
-| `02-1-12-thang.md` | 1–12 tháng |
-| `03-12-18-thang.md` | 12–18 tháng |
-| `04-18-24-thang.md` | 18–24 tháng |
-| `05-2-3-tuoi.md` | 2–3 tuổi |
-| `06-3-4-tuoi.md` | 3–4 tuổi |
-| `07-4-5-tuoi.md` | 4–5 tuổi |
-| `08-5-6-tuoi.md` | 5–6 tuổi |
-| `09-thu-tuc-hanh-chinh.md` | Thủ tục hành chính liên quan đến con 0–6 tuổi |
+| `content-00-tong-quan-0-6-tuoi.md` | Kiến thức nền dùng cho mọi chặng 0–6 tuổi (file này) |
+| `content-01-so-sinh-0-1-thang.md` | Sơ sinh 0–28 ngày |
+| `content-02-nhu-nhi-1-12-thang.md` | 1–12 tháng |
+| `content-03-tap-di-12-18-thang.md` | 12–18 tháng |
+| `content-04-tap-di-18-24-thang.md` | 18–24 tháng |
+| `content-05-nha-tre-2-3-tuoi.md` | 2–3 tuổi |
+| `content-06-mau-giao-3-4-tuoi.md` | 3–4 tuổi |
+| `content-07-mau-giao-4-5-tuoi.md` | 4–5 tuổi |
+| `content-08-mau-giao-5-6-tuoi.md` | 5–6 tuổi |
+| `documents/knowledge/procedures/` | Thủ tục hành chính liên quan đến con 0–6 tuổi |
 
 **Mỗi file chặng** bắt đầu bằng phần tóm tắt "Ở tuổi này con cần gì", sau đó đi theo từng nhóm của bản đồ. Mỗi nhóm có các mục:
 - **Con cần gì:** điều thường thấy và nhu cầu của con ở tuổi này.
@@ -27,7 +27,7 @@ Bộ nội dung trả lời câu hỏi chính: **ở tuổi này con cần gì, 
 - **Tùy hoàn cảnh:** cách điều chỉnh cho các hoàn cảnh khác nhau (mục 3).
 - **Chưa cần kỳ vọng:** điều chưa cần lo nếu con chưa làm.
 - **Dấu hiệu:** chia 3 mức (theo dõi thêm / trao đổi với bác sĩ / đi khám ngay).
-- **Nguồn:** mã trong `documents/kien-thuc/nguon.md`.
+- **Nguồn:** mã trong `documents/knowledge/ref-kho-nguon.md`.
 
 **Quy ước:**
 - Mỗi ý có mã nguồn trong ngoặc vuông, ví dụ [NG-002].
@@ -136,7 +136,7 @@ Những nguồn sau áp dụng cho nhiều hoàn cảnh cùng lúc:
 
 - UNICEF: người bố **không chỉ là "người phụ" hay thêm một đôi tay**, mà là một trong những nguồn lực tốt nhất cho sự phát triển của trẻ [NG-055].
 - Không có giai đoạn nào quan trọng với phát triển não bộ hơn **1.000 ngày đầu đời** [NG-055].
-- UNICEF kêu gọi chính sách giúp cha mẹ có thời gian chất lượng với con [NG-055]. Chế độ nghỉ của bố ở Việt Nam: xem `09-thu-tuc-hanh-chinh.md`.
+- UNICEF kêu gọi chính sách giúp cha mẹ có thời gian chất lượng với con [NG-055]. Chế độ nghỉ của bố ở Việt Nam: xem `documents/knowledge/procedures/`.
 
 ### 4.7 Khí chất
 `KT-0008` · Nhóm chính: 3 · Nhãn: `kiến_thức_nền`
@@ -161,7 +161,7 @@ Việc cần làm: nói với bác sĩ của con, chia sẻ lo lắng, và **h�
 ## 5. Dấu hiệu nguy hiểm cần đi khám ngay (mọi chặng)
 `KT-0010` · Nhóm chính: Nền · Nhóm phụ: 1 · Nhãn: `an_toàn`
 
-**Trẻ sơ sinh**: xem `01-so-sinh.md`.
+**Trẻ sơ sinh**: xem `content-01-so-sinh-0-1-thang.md`.
 
 **Trẻ 2 tháng đến 5 tuổi đang bị ốm** (dấu hiệu nguy hiểm chung theo WHO IMCI) [NG-036]:
 - **không uống được hoặc không bú được**;

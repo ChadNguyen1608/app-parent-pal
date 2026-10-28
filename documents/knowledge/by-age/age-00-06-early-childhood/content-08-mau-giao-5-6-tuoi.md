@@ -2,7 +2,7 @@
 
 - **Giai đoạn:** G2 · **Chặng:** 6 · **Tuổi:** 60–72 tháng
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 27/10/2026
-- Quy ước nguồn, nhãn và ký hiệu ○: xem `00-tong-quan.md`.
+- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-tong-quan-0-6-tuoi.md`.
 
 ## Ở tuổi này con cần gì (tóm tắt)
 
@@ -81,7 +81,7 @@ Việc **khoảng 75% trẻ trở lên** làm được ở 5 tuổi [NG-001] [NG
   - Là tập hợp chuẩn và chỉ số **định hướng về sự phát triển toàn diện** của trẻ 5 tuổi.
   - Bộ chuẩn cũ (Thông tư 23/2010, gồm 4 lĩnh vực, 28 chuẩn, 120 chỉ số) **đã bị bãi bỏ** từ 14/1/2025 [NG-059].
   - **Chưa đọc** danh sách 70 chỉ số; chưa rõ bộ chuẩn dùng để đánh giá trẻ hay chỉ để định hướng. Pal **không dùng bộ chuẩn để chấm điểm con** (nguyên tắc 8 của bản đồ).
-- Tuyển sinh lớp 1 thay đổi theo địa phương và năm học: xem `09-thu-tuc-hanh-chinh.md`.
+- Tuyển sinh lớp 1 thay đổi theo địa phương và năm học: xem `documents/knowledge/procedures/`.
 
 **Tùy hoàn cảnh:**
 - **Con sinh cuối năm:** tuổi vào lớp 1 tính theo năm sinh [NG-060], nên con sinh cuối năm vào lớp 1 khi chưa tròn 6 tuổi. `đề xuất nội bộ`: Pal nói rõ điều này để cha mẹ không lo con "nhỏ hơn bạn".

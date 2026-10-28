@@ -2,7 +2,7 @@
 
 - **Giai đoạn:** G2 · **Chặng:** 1 · **Tuổi:** 12–18 tháng
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 27/10/2026
-- Quy ước nguồn, nhãn và ký hiệu ○: xem `00-tong-quan.md`.
+- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-tong-quan-0-6-tuoi.md`.
 
 ## Ở tuổi này con cần gì (tóm tắt)
 
@@ -46,7 +46,7 @@ Việc **khoảng 75% trẻ trở lên** làm được [NG-001] [NG-002]:
 - **Khóa cất thuốc, chất tẩy rửa và chất độc.**
 
 Thêm:
-- Tránh thức ăn dễ gây hóc **đến 4 tuổi trở lên**: xem danh sách ở `02-1-12-thang.md`, mục Nền [NG-039].
+- Tránh thức ăn dễ gây hóc **đến 4 tuổi trở lên**: xem danh sách ở `content-02-nhu-nhi-1-12-thang.md`, mục Nền [NG-039].
 - Ngộ độc phần lớn xảy ra tại nhà khi người lớn mất tập trung [NG-040]. Đến khi mọi trẻ trong nhà đủ 6 tuổi, nên dùng **nước giặt dạng lỏng hoặc bột thay cho viên giặt** [NG-040].
 - Khi con ở trong hoặc gần nước, **chú ý hoàn toàn vào con** [NG-042].
 
@@ -104,7 +104,7 @@ Thêm:
 `KT-0307` · Nhóm chính: 3 · Nhóm phụ: 4
 
 - Lo âu khi xa cha mẹ thường **đạt đỉnh trong khoảng 10–18 tháng** [NG-017].
-- Cách giúp con: xem `02-1-12-thang.md`, mục 3 [NG-017].
+- Cách giúp con: xem `content-02-nhu-nhi-1-12-thang.md`, mục 3 [NG-017].
 
 ## 5 — Tự chủ
 `KT-0308` · Nhóm chính: 5 · Nhóm phụ: 1
@@ -116,7 +116,7 @@ Thêm:
 `KT-0309` · Nhóm chính: 7 · Nhóm phụ: 3
 
 - **Đáp lại hành vi tốt nhiều hơn là phạt hành vi chưa tốt.** Nếu dùng hình thức cho con ngồi riêng một lúc (time-out) thì **chỉ rất ngắn** [NG-004].
-- Kỷ luật không bạo lực: xem `00-tong-quan.md`, mục 4.4.
+- Kỷ luật không bạo lực: xem `content-00-tong-quan-0-6-tuoi.md`, mục 4.4.
 
 ## 11 — Môi trường số
 `KT-0310` · Nhóm chính: 11

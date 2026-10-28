@@ -1,8 +1,8 @@
 # Cách Pal trả lời
 
-Bản nháp v1 — 28/10/2026. Rút ra từ 4 lần trả lời thử câu "những lưu ý trong năm thứ 3 của trẻ" và góp ý của chủ sản phẩm. Ví dụ chuẩn: `documents/pal/vi-du/01-nam-thu-3.md`.
+Bản nháp v1 — 28/10/2026. Rút ra từ 4 lần trả lời thử câu "những lưu ý trong năm thứ 3 của trẻ" và góp ý của chủ sản phẩm. Ví dụ chuẩn: `documents/pal/examples/example-01-ke-hoach-nam-thu-3.md`.
 
-Tài liệu này là lớp **trình bày** (bước 4 "tạo câu trả lời"). Nội dung lấy từ kho (`documents/kien-thuc/`): lớp bằng chứng và lớp thực thi (bản đồ §1.2). Không viết câu trả lời sẵn vào kho.
+Tài liệu này là lớp **trình bày** (bước 4 "tạo câu trả lời"). Nội dung lấy từ kho (`documents/knowledge/`): lớp bằng chứng và lớp thực thi (bản đồ §1.2). Không viết câu trả lời sẵn vào kho.
 
 ## 1. Áp dụng cho
 - **Câu hỏi định hướng, lập kế hoạch:** "con năm thứ 3 cần lưu ý gì", "con sắp vào lớp 1 cần chuẩn bị gì", "tháng này cần làm gì cho con".
@@ -62,5 +62,5 @@ Rút ra từ 6 lỗi phát sinh lúc trả lời ở lần thử thứ nhất:
 
 ## 7. Còn mở
 - Quy tắc cho câu hỏi tình huống ngắn; độ dài tối đa của một câu trả lời trong chat.
-- Bộ câu hỏi mẫu (10–15 câu) có câu trả lời chuẩn, để làm bộ test khi nối AI thật. Câu số 1: `documents/pal/vi-du/01-nam-thu-3.md`.
+- Bộ câu hỏi mẫu (10–15 câu) có câu trả lời chuẩn, để làm bộ test khi nối AI thật. Câu số 1: `documents/pal/examples/example-01-ke-hoach-nam-thu-3.md`.
 - Cách hiển thị trong app (bảng trong chat, thẻ kế hoạch, lịch nhắc) khi làm giao diện.
