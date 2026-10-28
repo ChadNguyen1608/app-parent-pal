@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.13 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.14 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.14 (28/10):** nội dung 6–11 thêm mục 11 kỹ năng sống và vận động (bơi, đạp xe, điện thoại liên lạc, số khẩn cấp, vận động tinh, việc nhà theo tuổi) và "làm quen nhẹ nhàng trước lớp 1"; cách Pal trả lời v1.2: giải pháp thay vì thông tin, câu hỏi chung theo giai đoạn liệt kê mục tiêu cả giai đoạn. Nguồn NG-244 đến NG-251, chưa kiểm chứng độc lập.
 - **v5.13 (28/10):** theo quyết định của người dùng: đề xuất học thử cho **mọi** phương pháp, trước đó nói rõ bằng chứng (§1.3 mục 6); được nêu tên trường, chỉ dữ kiện, không nhận xét (§1.3 mục 7); chỉ dùng agent khi được cho phép (§8). Thêm bài "toán tư duy", "tiền tiểu học" (đã qua một lượt kiểm chứng độc lập, được cho phép, và sửa theo ghi chú).
 - **v5.12 (28/10):** đợt 2 bài phương pháp (học thêm ở tuổi đi học, song ngữ, cách nuôi dạy, ngủ chung giường, bơi sớm, kích hoạt não giữa, Tomatis, luyện trí nhớ, ăn dặm 3 in 1); mã bài phương pháp đổi thành `KT-3FFNN`; thêm `ref-muc-quan-tam-tim-kiem.md` (Google Trends) để xếp ưu tiên.
 - **v5.11 (28/10):** theo quyết định của người dùng: mọi thông tin chưa có trong kho được tra trên mạng, gắn nhãn **chưa kiểm chứng** và ghi vào hàng đợi kiểm chứng (§1.1, `documents/knowledge/ref-hang-doi-kiem-chung.md`); thêm §1.3 cách Pal tư vấn "phương pháp X có hợp với con không" (đề xuất cuối luôn là học thử); thêm mẫu bài phương pháp (§7.9) và trường thông tin cho trường, lớp học (§7.6); soạn nội dung nháp các phương pháp (`documents/knowledge/methods/`).

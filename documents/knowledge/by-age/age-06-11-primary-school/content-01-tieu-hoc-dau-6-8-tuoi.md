@@ -59,6 +59,11 @@ Từ 7 tuổi: các trò chơi trong `content-02-tieu-hoc-cuoi-9-11-tuoi.md` (Ha
 - Học sinh tiểu học **được chọn trường ngoài nơi cư trú** nếu trường đó còn khả năng tiếp nhận ○ [NG-118].
 - Chương trình lớp 1 theo Chương trình giáo dục phổ thông 2018 [NG-111]; học phí trường công lập được miễn [NG-061].
 - Thủ tục và quy định: `documents/knowledge/procedures/procedure-nhap-hoc.md`, `procedure-hoc-phi.md`, `procedure-quy-dinh-hoc-tap-tieu-hoc.md`.
+- **Làm quen nhẹ nhàng trước lớp 1** (bổ sung 28/10/2026; Claude tự tìm nguồn, **chưa kiểm chứng độc lập**):
+  - **Làm quen với trường, lớp:** ở Mỹ, trường càng có nhiều hoạt động chuyển tiếp (thăm trường, gặp giáo viên, liên lạc với gia đình) thì trẻ càng có điểm học tập cao hơn ở cuối năm đầu, nhất là trẻ nhà thu nhập thấp và trung bình; một phần là do cha mẹ tham gia vào việc ở trường nhiều hơn [NG-248]. Đây là **tương quan**. Bộ GD&ĐT cũng yêu cầu trường mầm non và tiểu học phối hợp trong **hoạt động chuyển tiếp** [NG-238].
+  - **Làm quen với chữ, số qua chơi:** đọc sách cùng con, chơi trò chơi với chữ cái và con số, cầm bút tô vẽ, đếm đồ vật. Kỹ năng toán sớm, đọc, chú ý lúc bắt đầu đi học **gắn với** kết quả học tập về sau [NG-234].
+  - **Học trước một chút giúp con tự tin, giảm áp lực:** `đề xuất nội bộ`. Kho **chưa có nghiên cứu** đo việc này (hàng đợi CK-024). Pal gợi ý ở mức **làm quen, không ép**: buổi ngắn, dừng khi con mệt, không chấm điểm, không chê chữ xấu.
+  - Ranh giới: trường mầm non không được dạy trước chương trình lớp 1 [NG-182] [NG-238]; quy định này ràng buộc nhà trường, không cấm cha mẹ cho con làm quen ở nhà.
 - Chuẩn bị trước lớp 1 (5–6 tuổi): `documents/knowledge/by-age/age-00-06-early-childhood/content-08-mau-giao-5-6-tuoi.md`.
 
 ## Chưa có nội dung có nguồn

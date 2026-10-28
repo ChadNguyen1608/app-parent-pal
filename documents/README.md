@@ -101,3 +101,4 @@ documents/
 |---|---|
 | `example-01-ke-hoach-nam-thu-3.md` | Những lưu ý trong năm thứ 3 của trẻ |
 | `example-02-montessori-tre-nhut-nhat.md` | Con nghịch và nhút nhát, Montessori có hợp không; trường ở Hà Nội 3–5 triệu/tháng |
+| `example-03-luu-y-giai-doan-tieu-hoc.md` | Giai đoạn cấp 1 cần lưu ý gì (câu hỏi chung theo giai đoạn) |

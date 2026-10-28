@@ -26,7 +26,7 @@ Thủ tục và quy định trường học (nhập học, học phí, BHYT họ
 | Nhóm | Con cần |
 |---|---|
 | Nền | An toàn giao thông (đội mũ bảo hiểm, ngồi ghế sau ô tô), biết bơi trong chương trình an toàn, biết bảo vệ cơ thể, không bị đánh |
-| 1 Sức khỏe | Ngủ 9–12 giờ; trung bình 60 phút vận động vừa đến mạnh mỗi ngày; ăn sáng; ít đường; khám định kỳ hằng năm; mắt, răng; theo dõi dậy thì |
+| 1 Sức khỏe | Ngủ 9–12 giờ; trung bình 60 phút vận động vừa đến mạnh mỗi ngày; **vận động tinh** (cầm bút, cắt, cài cúc; mục 11.4); ăn sáng; ít đường; khám định kỳ hằng năm; mắt, răng; theo dõi dậy thì |
 | 2 Nhận thức | Đọc sách mỗi ngày; được để ý khi có dấu hiệu khó đọc |
 | 3 Cảm xúc | Được để ý các dấu hiệu lo âu, buồn chán; được tìm trợ giúp sớm |
 | 4 Quan hệ | Bạn bè; lòng tự trọng hình thành từ gia đình |
@@ -36,7 +36,7 @@ Thủ tục và quy định trường học (nhập học, học phí, BHYT họ
 | 8 Trường học | Môi trường không bắt nạt |
 | 11 Môi trường số | Kế hoạch dùng thiết bị của cả nhà; chưa dùng mạng xã hội |
 | 12 Chơi | Trò chơi bài, cờ, vận động, âm nhạc |
-| 14 Kỹ năng sống | Việc nhà; tiền tiêu vặt |
+| 14 Kỹ năng sống | Việc nhà theo tuổi; tiền tiêu vặt; **bơi, đạp xe an toàn; thuộc số điện thoại bố mẹ và số khẩn cấp; điện thoại liên lạc khi cần** (mục 11) |
 | 17 Bước chuyển | Vào lớp 1, dậy thì, lên lớp 6 (trong file từng chặng) |
 
 ## 3. Nền — An toàn
@@ -223,7 +223,7 @@ UNICEF Việt Nam [NG-102]:
   - AAP: trẻ đi học (5–10 tuổi) **chưa sẵn sàng có tài khoản mạng xã hội** [NG-078]. Với trẻ 11 tuổi: `áp tuổi liền kề`.
   - Ở Mỹ, **13 tuổi** thường là tuổi tối thiểu mà các nền tảng mạng xã hội đặt ra; **gần 40%** trẻ 8–12 tuổi ở Mỹ vẫn dùng mạng xã hội [NG-077].
 - Ở Việt Nam, **89%** trẻ **12–17 tuổi** dùng internet (khảo sát 2022) [NG-110]. Số liệu cho tuổi lớn hơn: `áp tuổi liền kề`.
-- **Còn thiếu nguồn:** tuổi phù hợp cho điện thoại riêng đầu tiên.
+- Điện thoại để liên lạc: mục 11.3.
 
 ## 10. Nhóm 14 — Tiền tiêu vặt
 `KT-2021` · Nhóm chính: 14
@@ -232,6 +232,64 @@ AAP [NG-104] (nguồn 2015, cần kiểm):
 - Tiền tiêu vặt giúp con hiểu **giá trị của tiền**: tiết kiệm, lập ngân sách, lên kế hoạch.
 - **Nói rõ trước** số tiền, mục đích và kỳ vọng.
 - Trẻ đi học **chưa sẵn sàng tự mua đồ thiết yếu**; tiền tiêu vặt dành cho chi tiêu tùy ý.
+
+## 11. Kỹ năng sống và vận động (bổ sung 28/10/2026)
+> Claude tự tìm và tự mở lại nguồn; **chưa kiểm chứng độc lập** (`CLAUDE.md`). Mỗi mục viết theo dạng **việc cha mẹ làm**, kèm lý do có nguồn.
+
+### 11.1 Bơi
+`KT-2023` · Nhóm chính: Nền · Nhóm phụ: 14 · Nhãn: `an_toàn`
+- **Việc làm:** cho con học bơi theo chương trình an toàn, có huấn luyện viên, khu tập an toàn; hỏi trường về chương trình dạy bơi. Học bơi **không thay** giám sát.
+- **Vì sao:** WHO khuyến nghị mạnh dạy **kỹ năng bơi cơ bản và an toàn dưới nước cho trẻ từ 6 tuổi** [NG-207]. Chương trình dạy bơi an toàn của Bộ GD&ĐT (Quyết định 2993/QĐ-BGDĐT) đặt mục tiêu cho tiểu học: kiến thức cơ bản về phòng, chống đuối nước, **cứu đuối gián tiếp**; kỹ năng cơ bản về **bơi an toàn**, kỹ năng an toàn trong môi trường nước ○ [NG-109]. Học bơi không làm trẻ "miễn nhiễm" đuối nước [NG-205].
+- Chi tiết: mục 3.2; `documents/knowledge/methods/content-12-boi-som.md`.
+
+### 11.2 Đạp xe
+`KT-2024` · Nhóm chính: 14 · Nhóm phụ: Nền
+- **Việc làm:**
+  - **mua mũ bảo hiểm** cùng lúc với xe; dạy con **đội đúng cách ở mọi lần đạp** [NG-244];
+  - cho con tập ở **nơi không có xe cộ**, có người lớn trông [NG-244];
+  - dạy luật: đi cùng chiều xe cộ, dừng và nhìn hai bên trước khi ra đường, dừng ở mọi giao lộ, ra hiệu bằng tay khi rẽ, nhìn vào mắt người lái trước khi đi qua đầu xe [NG-244];
+  - **không đạp xe khi trời nhá nhem tối hoặc tối** [NG-244];
+  - mỗi năm kiểm tra lốp, phanh, độ cao yên, tay lái cùng con [NG-244].
+- **Khi nào cho con đạp xe ra đường:** AAP không nêu một tuổi cố định; tùy mật độ xe, độ chín chắn của con và mức hiểu luật giao thông [NG-244]. Ở Việt Nam, xe đạp chỉ được chở thêm một trẻ **dưới 7 tuổi** [NG-107].
+- **Vì sao:** phần lớn chấn thương nặng xảy ra khi người đạp xe **bị xe cơ giới đâm**; đội mũ giúp giảm chấn thương đầu và tử vong [NG-244].
+- Tuổi bắt đầu tập đạp xe hai bánh: **chưa có nguồn đã kiểm**. `đề xuất nội bộ`: tập khi con muốn, ở chỗ an toàn.
+
+### 11.3 Điện thoại để liên lạc; số khẩn cấp
+`KT-2025` · Nhóm chính: 11 · Nhóm phụ: Nền
+- **Việc làm, theo thứ tự:**
+  1. **Cho con thuộc** địa chỉ nhà và **số điện thoại của bố mẹ** [NG-250].
+  2. **Dạy con các số khẩn cấp** và khi nào gọi: **113** công an, **114** cứu hỏa, cứu nạn, **115** cấp cứu y tế ○ [NG-251]; **111** tổng đài bảo vệ trẻ em (quy tắc của dự án). Tập trước câu trả lời cho các câu hỏi thường gặp: chuyện gì xảy ra, con đang ở đâu, ai cần giúp [NG-250].
+  3. **Khi cần một thiết bị để liên lạc:** bắt đầu bằng **điện thoại cục gạch** (chỉ gọi, nhắn tin) hoặc **đồng hồ** có nghe gọi [NG-245] [NG-246].
+  4. **Khi lên điện thoại thông minh:** bắt đầu chậm: ít ứng dụng, không trình duyệt, giới hạn thời gian chặt; mở dần khi con có trách nhiệm hơn; vài tuần trò chuyện lại một lần [NG-246]. Cài đặt kiểm soát, bộ lọc, hẹn giờ **cùng với con**, giải thích lý do [NG-245]. Đưa vào kế hoạch dùng thiết bị của cả nhà [NG-079].
+- **Tuổi nào:** AAP: nghiên cứu **không chỉ ra một tuổi phù hợp nhất**; quyết định theo độ sẵn sàng, độ chín chắn và **nhu cầu thực tế** của con [NG-246]. Mạng xã hội: AAP khuyên **đợi đến 13 tuổi** [NG-246].
+- **Câu hỏi để bố mẹ cân nhắc** (AAP): con đã nghĩ sẽ dùng điện thoại vào việc gì; điểm mạnh, khó khăn riêng của con; dấu hiệu nào cho thấy con dùng có trách nhiệm [NG-245].
+
+### 11.4 Vận động tinh: cầm bút, cắt, cài cúc
+`KT-2026` · Nhóm chính: 1 · Nhóm phụ: 5
+- **Đến 6–8 tuổi, trẻ thường tự mặc quần áo, tự buộc dây giày** (CDC) ○ [NG-093].
+- **Việc làm ở nhà** (chuyên viên hoạt động trị liệu, dịch vụ trị liệu trẻ em của NHS Anh) [NG-247]:
+  - **nhặt đồ nhỏ bằng ngón cái và ngón trỏ**: kẹp quần áo, Lego, xâu hạt, xâu mì ống;
+  - **nặn đất**: lăn, bóp, đập, giấu đồ nhỏ trong đất nặn cho con tìm;
+  - **cầm bút** giữa đầu ngón cái và đầu ngón trỏ ("như mỏ chim"); có thể dùng bút ngắn, to, bút tam giác, đệm cầm bút;
+  - **cắt kéo**: hai khuỷu tay đặt trên bàn, mở kéo rộng, đóng hết; bắt đầu bằng đường thẳng to;
+  - **viết**: dùng giấy có dòng, lề để con canh cỡ chữ; để cách một ngón tay giữa các chữ; học hình chữ bằng nhiều giác quan (viết lên không trung, nhắm mắt viết).
+  - Tự cài cúc, kéo khóa, buộc dây giày: để con tự làm hằng ngày, không làm hộ. `đề xuất nội bộ`.
+- **Khi nào hỏi chuyên gia:** làm theo các cách trên **ít nhất 12 tuần** mà con vẫn rất khó khăn thì hỏi về **hoạt động trị liệu** (occupational therapy) [NG-247]. Ở Việt Nam: hỏi bác sĩ nhi hoặc khoa phục hồi chức năng. `đề xuất nội bộ`.
+- Học nhạc cụ cũng rèn chú ý và tự theo dõi (Harvard) [NG-096].
+
+### 11.5 Việc nhà theo tuổi
+`KT-2027` · Nhóm chính: 14
+AAP (2024) [NG-249]:
+
+| Tuổi | Việc nhà gợi ý |
+|---|---|
+| 5–7 | Tự dọn giường; dọn bàn trước và sau bữa ăn; lau bụi, quét nhà; phân loại quần áo |
+| 8–10 | Các việc trên, thêm hút bụi, giúp nấu bữa tối, tự làm bữa phụ |
+| 11–12 | Thêm dọn bếp, thay ga giường, xếp bát đĩa, giặt và gấp quần áo; nấu món đơn giản có người lớn trông |
+
+- **Cách giao việc:** nói rõ việc hằng ngày, hằng tuần; dùng bảng việc; **mỗi lần thêm một việc**; **khen nỗ lực**; giữ nếp đều đặn; họp gia đình xem lại [NG-249].
+- **Vì sao:** việc nhà dạy kỹ năng sống, cách hợp tác; góp sức giữ nhà cửa giúp con tự tin hơn về bản thân [NG-249].
+- Tiền tiêu vặt: mục 10.
 
 ## Chưa có nội dung có nguồn
 - **9 Bạn bè, cộng đồng** (ngoài phần bắt nạt).

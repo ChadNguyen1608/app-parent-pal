@@ -13,7 +13,7 @@
 |---|---|---|
 | Con có cần học tiền tiểu học không? | Không bắt buộc. Năm học 2026–2027, Bộ GD&ĐT yêu cầu **không kiểm tra, khảo sát năng lực** để tuyển sinh lớp 1 (đọc qua báo). "Sẵn sàng đi học" gồm **nhiều mặt**: sức khỏe, cảm xúc, kỹ năng xã hội, tự phục vụ, ngôn ngữ, nhận thức, không chỉ biết chữ | KT-31501, KT-31502 |
 | Có phải biết đọc, biết viết trước lớp 1? | Không có quy định nào yêu cầu. Trường mầm non **không được dạy trước chương trình lớp 1**, không yêu cầu trẻ tập tô, tập viết chữ | KT-31503 |
-| Vậy nên chuẩn bị gì? | Đọc sách, trò chuyện hằng ngày; chơi và vận động; nếp ngủ, ăn, chơi đều đặn; tự phục vụ; làm quen với số qua chơi | KT-31504 |
+| Vậy nên chuẩn bị gì? | **Làm quen nhẹ nhàng** trong vài tháng trước lớp 1 (KT-31505). Đọc sách, trò chuyện hằng ngày; chơi và vận động; nếp ngủ, ăn, chơi đều đặn; tự phục vụ; làm quen với số qua chơi | KT-31504 |
 
 ## KT-31501 — "Sẵn sàng đi học" là gì
 - **UNICEF (2012):** sẵn sàng đi học có ba chiều: **trẻ sẵn sàng**, **trường sẵn sàng**, **gia đình sẵn sàng**. Trẻ sẵn sàng gồm 5 mảng: **sức khỏe thể chất và vận động; cảm xúc và xã hội; cách tiếp cận việc học** (kiên trì, tò mò, sáng tạo); **ngôn ngữ; nhận thức và hiểu biết chung, gồm toán**. Sẵn sàng đi học **rộng hơn kỹ năng học thuật** ○ [NG-240].
@@ -32,6 +32,13 @@
 - **Các quy định trên ràng buộc trường, giáo viên**, không cấm phụ huynh cho con học ở ngoài [NG-182] [NG-238].
 - Lớp tiền tiểu học ngoài trường có thuộc quy định dạy thêm không: **chưa rõ** (`đề xuất nội bộ`, chờ người am hiểu pháp luật giáo dục duyệt). Thông tư 29/2024 chỉ quy định dạy thêm, học thêm đối với giáo dục phổ thông và giáo dục thường xuyên (Điều 1), không nhắc giáo dục mầm non [NG-185]. Hàng đợi CK-022.
 - **Bằng chứng về kết quả:** kho **chưa có** nghiên cứu cho thấy học trước chương trình lớp 1 giúp hay hại về sau. Ở các nghiên cứu nước ngoài, lợi thế học chữ sớm thường mất dần [NG-130] [NG-132] (`content-02-mam-non-reggio-waldorf-highscope.md`, KT-30202, KT-30204).
+
+## KT-31505 — Giải pháp: làm quen nhẹ nhàng (Pal đề xuất mặc định)
+- **Pal đề xuất** cho con **làm quen nhẹ nhàng** với lớp 1 trong vài tháng trước khi vào học, thay vì học trước chương trình hay không chuẩn bị gì. `đề xuất nội bộ` (chủ sản phẩm đề nghị 28/10/2026).
+- **Làm quen gồm:** thăm trường, gặp cô nếu được; tập nếp ngồi bàn 15–20 phút; đọc sách cùng con; chơi trò chơi với chữ cái, con số; cầm bút tô vẽ; tự đeo cặp, tự đi vệ sinh, tự mở hộp cơm. Thời lượng, cách làm cụ thể: `đề xuất nội bộ`.
+- **Có nguồn:** hoạt động chuyển tiếp của trường (thăm trường, gặp giáo viên, liên lạc với gia đình) **gắn với** điểm học tập cao hơn ở cuối năm đầu, nhất là ở trẻ nhà thu nhập thấp và trung bình (Mỹ, 17.212 trẻ; tương quan) [NG-248]; Bộ GD&ĐT yêu cầu trường phối hợp trong hoạt động chuyển tiếp [NG-238].
+- **Chưa có nguồn:** "học trước một chút giúp con tự tin, giảm áp lực". Pal nói đây là **gợi ý của Parent-Pal**. Hàng đợi CK-024.
+- **Giữ ở mức làm quen:** buổi ngắn, dừng khi con mệt; không chấm điểm, không chê chữ xấu; không ép con viết chữ theo vở.
 
 ## KT-31504 — Chuẩn bị ở nhà (có nguồn)
 - **Đọc sách, trò chuyện:** AAP khuyên cha mẹ **đọc to cho con, tốt nhất là hằng ngày**, mở rộng ngôn ngữ qua trò chuyện có đáp lại, kể chuyện ○ [NG-239]; đọc sách cùng con từ nhỏ [NG-171].
