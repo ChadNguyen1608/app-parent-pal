@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.14 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.15 — 29/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.15 (29/10):** theo quyết định của người dùng: thêm nhãn **`suy từ lý thuyết`** (§2 mục 3a); thêm **lớp kiến thức nền tâm lý** (`documents/knowledge/foundations/`, §7.10) với lăng kính 4 nhu cầu tâm lý (an toàn, gắn kết và được ghi nhận, năng lực, tự chủ); nhóm 3 thêm chủ đề con cố định thứ tư **"hình ảnh bản thân và tự tin"** (§3.2); "lòng tự trọng" chuyển từ nhóm 4 sang nhóm 3 (§9.2); **không chấm điểm tự tin**, chỉ quan sát mô tả. Nguồn NG-252 đến NG-321, chưa kiểm chứng độc lập.
 - **v5.14 (28/10):** nội dung 6–11 thêm mục 11 kỹ năng sống và vận động (bơi, đạp xe, điện thoại liên lạc, số khẩn cấp, vận động tinh, việc nhà theo tuổi) và "làm quen nhẹ nhàng trước lớp 1"; cách Pal trả lời v1.2: giải pháp thay vì thông tin, câu hỏi chung theo giai đoạn liệt kê mục tiêu cả giai đoạn. Nguồn NG-244 đến NG-251, chưa kiểm chứng độc lập.
 - **v5.13 (28/10):** theo quyết định của người dùng: đề xuất học thử cho **mọi** phương pháp, trước đó nói rõ bằng chứng (§1.3 mục 6); được nêu tên trường, chỉ dữ kiện, không nhận xét (§1.3 mục 7); chỉ dùng agent khi được cho phép (§8). Thêm bài "toán tư duy", "tiền tiểu học" (đã qua một lượt kiểm chứng độc lập, được cho phép, và sửa theo ghi chú).
 - **v5.12 (28/10):** đợt 2 bài phương pháp (học thêm ở tuổi đi học, song ngữ, cách nuôi dạy, ngủ chung giường, bơi sớm, kích hoạt não giữa, Tomatis, luyện trí nhớ, ăn dặm 3 in 1); mã bài phương pháp đổi thành `KT-3FFNN`; thêm `ref-muc-quan-tam-tim-kiem.md` (Google Trends) để xếp ưu tiên.
@@ -110,6 +111,12 @@ Phụ huynh hay hiểu sai về phương pháp (ví dụ nghĩ một phương ph
    - Nguồn Việt Nam dùng ở bước tuỳ biến theo quốc gia.
 2. **Khi nguồn mâu thuẫn:** ghi cả hai, nói rõ khác ở đâu, không tự chọn bên nào.
 3. **Nhãn mức chắc chắn:** `đồng thuận mạnh` / `khuyến nghị chính thức, bằng chứng vừa` / `bằng chứng hạn chế` / `các nguồn khác nhau`. Ý nào do người soạn tự đề xuất, không có nguồn, thì gắn nhãn `đề xuất nội bộ`.
+3a. **Nhãn `suy từ lý thuyết`** (người dùng chốt 29/10/2026): lời khuyên suy ra từ một **cơ chế có nguồn**, nhưng chưa có nghiên cứu kiểm trực tiếp chính lời khuyên đó. Nằm giữa "có nguồn trực tiếp" và `đề xuất nội bộ` (không có nguồn nào). Quy tắc:
+   1. Phải trỏ tới một cơ chế cụ thể trong lớp kiến thức nền (`documents/knowledge/foundations/`), kèm mã nguồn của cơ chế, và một câu nói rõ bước suy luận.
+   2. Câu trả lời của Pal luôn kèm một câu kiểu "chưa có nghiên cứu kiểm trực tiếp việc này" (cách nói: `documents/pal/guide-cach-pal-tra-loi.md`, mục 5).
+   3. Có nghiên cứu trực tiếp nói ngược lại thì nghiên cứu trực tiếp thắng; lời khuyên suy luận phải sửa.
+   4. **Không dùng** cho Nền (an toàn), sức khỏe, thuốc, tình huống khẩn: các phần này bắt buộc có nguồn trực tiếp.
+   5. Mục nào gắn nhãn này cũng vào hàng đợi kiểm chứng (`documents/knowledge/ref-hang-doi-kiem-chung.md`) để tìm nghiên cứu trực tiếp.
 4. **Ngôn ngữ:** nội dung viết tiếng Việt; tên tài liệu và link giữ nguyên tiếng Anh.
 5. **Phạm vi y tế:** chỉ đưa "dấu hiệu cần đi khám"; không chẩn đoán, không điều trị, không liều thuốc.
 6. **An toàn không bù trừ:** tín hiệu về an toàn luôn được ưu tiên. Pal không bao giờ tổng kết "mọi thứ đều ổn" khi còn một tín hiệu an toàn chưa xử lý.
@@ -163,7 +170,7 @@ Nhóm 17 là nhóm mới của v5, sinh ra từ quyết định tách C2. Số t
 |---|---|---|
 | 1. Sức khỏe và thể chất | Tăng trưởng; dinh dưỡng (ăn gì, bao nhiêu); ngủ; **vận động thô và vận động tinh** (chủ đề con bắt buộc); khám định kỳ; tiêm chủng (chỉ nhắc lịch); răng; thị lực, thính lực; sinh lý đi vệ sinh (táo bón…); dậy thì | Thai kỳ: sức khỏe của mẹ và thai nằm ở đây |
 | 2. Nhận thức và tư duy | Ngôn ngữ (hiểu, nói, đọc); hiểu biết về thế giới; giải quyết vấn đề; song ngữ | Phần giao tiếp với người khác ở nhóm 4 |
-| 3. Cảm xúc và sức khỏe tâm lý | Ba chủ đề con cố định: **khí chất** (mô tả, không chấm điểm); **điều tiết cảm xúc** (ăn vạ, nỗi sợ, lo âu khi xa người thân, sợ người lạ, giằng co bữa ăn); **sức khỏe tâm thần** | Tuổi teen: trầm cảm, tự hại → nối lớp nền |
+| 3. Cảm xúc và sức khỏe tâm lý | Bốn chủ đề con cố định: **khí chất** (mô tả, không chấm điểm); **điều tiết cảm xúc** (ăn vạ, nỗi sợ, lo âu khi xa người thân, sợ người lạ, giằng co bữa ăn); **hình ảnh bản thân và tự tin** (mô tả theo từng việc, không chấm điểm; thêm 29/10); **sức khỏe tâm thần** | Tuổi teen: trầm cảm, tự hại → nối lớp nền. Lăng kính 4 nhu cầu tâm lý: §7.10 |
 | 4. Xã hội và quan hệ | Gắn bó với người chăm sóc; anh chị em; chơi cùng bạn; chia sẻ; xung đột; giao tiếp | — |
 | 5. Tự chủ và điều hành bản thân | **Tự phục vụ** (tự xúc ăn, mặc đồ, tập đi vệ sinh); **chức năng điều hành** (tập trung, trí nhớ làm việc, kiềm chế, linh hoạt); lựa chọn trong giới hạn; quản lý thời gian | Nhóm 5 là năng lực; nhóm 14 là kỹ năng áp dụng vào cuộc sống |
 | 6. Học tập và phát triển bản thân | Tò mò, động lực, thói quen học, học ở trường, học thêm | Không đồng nhất với điểm số |
@@ -444,7 +451,7 @@ Mẩu kiến thức trỏ tới mã nguồn. Khi một nguồn đổi trạng th
   - `giai_đoạn`, `chặng`, `tuổi_từ_tháng`, `tuổi_đến_tháng` (G1 dùng `tuần_thai_từ` / `tuần_thai_đến`);
   - `nhóm_chính`, `nhóm_phụ`; `cấp` suy ra từ nhóm;
   - `chủ_đề`;
-  - tùy chọn: `kiến_thức_nền` (không gắn tuổi: serve-and-return, stress độc hại…), `hoàn_cảnh_đặc_biệt` (chậm phát triển, sinh non, biến cố gia đình…), `phương_pháp`, `hiểu_lầm`, `an_toàn`, `thủ_tục`.
+  - tùy chọn: `kiến_thức_nền` (không gắn tuổi: serve-and-return, stress độc hại, nhu cầu tâm lý…; bài lưu ở `documents/knowledge/foundations/`, §7.10), `hoàn_cảnh_đặc_biệt` (chậm phát triển, sinh non, biến cố gia đình…), `phương_pháp`, `hiểu_lầm`, `an_toàn`, `thủ_tục`.
   - mẩu có nhãn `thủ_tục` bắt buộc thêm: `văn_bản_gốc`, `cơ_quan_ban_hành`, `địa_phương`, `năm_học`, `hạn_rà_soát` (§1.1).
 
 ### 7.6 Lớp thực thi: danh mục chung
@@ -533,6 +540,14 @@ Mã · Tên (tên gốc tiếng Anh) · Nhóm chính / phụ · Tuổi áp dụn
 Nguồn · Người soạn · Trạng thái · Hạn rà soát
 ```
 
+### 7.10 Bài kiến thức nền (nhãn `kiến_thức_nền`, thêm 29/10/2026)
+Lưu ở `documents/knowledge/foundations/`. Mã `KT-4FFNN`: FF là số thứ tự file, NN là số thứ tự mẩu trong file. Mỗi mẩu ghi nhóm chính riêng theo §9.2.
+- Nội dung là **cơ chế** (vì sao trẻ phản ứng như vậy) và cách các cơ chế thay đổi theo tuổi; không phải lời khuyên theo một tuổi cụ thể.
+- Mỗi mẩu có: điều có nguồn; Pal dùng thế nào; điều chưa có nguồn; điều Pal không nên nói.
+- Lời khuyên theo tuổi hoặc theo phương pháp có thể trỏ về đây để gắn nhãn `suy từ lý thuyết` (§2 mục 3a).
+- **Lăng kính 4 nhu cầu tâm lý** (`content-01-nhu-cau-tam-ly-va-tu-tin.md`, KT-40101): an toàn; gắn kết và được ghi nhận; năng lực; tự chủ. Với mỗi gợi ý, Pal kiểm việc đó nuôi nhu cầu nào và có thể làm tổn thương nhu cầu nào. Cách gộp 4 nhu cầu là `đề xuất nội bộ`; từng nhu cầu có nguồn.
+- **Không chấm điểm tự tin, lòng tự trọng** (KT-40104): chỉ quan sát, mô tả theo từng việc, so con với chính con (nguyên tắc 8).
+
 ## 8. Kiểm soát chất lượng
 
 > **Dùng agent (người dùng chốt 28/10/2026):** chỉ tạo agent khi chủ sản phẩm cho phép. Khi không dùng agent, Claude tự tìm và tự mở lại nguồn; nội dung ghi rõ **"chưa kiểm chứng độc lập"** (chưa có người hoặc agent thứ hai mở lại nguồn) cho đến khi có lượt kiểm thứ hai.
@@ -553,7 +568,7 @@ Nguồn: văn bản "Khung sơ bộ phát triển toàn diện trẻ và các v�
 ### 8.2 Nội dung do AI soạn
 - Mọi mẩu ghi rõ `người soạn` là AI hay người.
 - Mọi link nguồn do AI đưa ra phải được mở và kiểm tra trước khi chuyển "chờ duyệt".
-- Bắt buộc chuyên gia đúng chuyên môn duyệt các phần: Nền, nhóm 1 (phần y tế), nhóm 3 (sức khỏe tâm thần), thai kỳ.
+- Bắt buộc chuyên gia đúng chuyên môn duyệt các phần: Nền, nhóm 1 (phần y tế), nhóm 3 (sức khỏe tâm thần; hình ảnh bản thân và tự tin), lớp kiến thức nền tâm lý (§7.10), thai kỳ.
 - AI không được tự chuyển trạng thái sang "đã duyệt" hay "phát hành".
 
 ### 8.3 Tiêu chí nghiệm thu
@@ -611,7 +626,17 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 | Bắt nạt (ở trường, trên mạng) | 8 | 4, 11 | Phạm vi nhóm 8 gồm bắt nạt ở trường |
 | Khó đọc, rối loạn đọc | 2 (nhãn `hoàn_cảnh_đặc_biệt`) | 6 | Ngôn ngữ, đọc |
 | ADHD | 5 (nhãn `hoàn_cảnh_đặc_biệt`) | 6 | Tập trung, kiềm chế là chức năng điều hành |
-| Lòng tự trọng | 4 | 7 | Hình thành trong quan hệ, trước tiên là gia đình |
+| Lòng tự trọng, sự tự tin | 3 | 4, 7 | Chủ đề con "hình ảnh bản thân và tự tin" (đổi từ nhóm 4, 29/10); hình thành trong quan hệ nên có nhóm phụ 4, 7 |
+| Nhu cầu tâm lý (an toàn, gắn kết, năng lực, tự chủ) | 3 (nhãn `kiến_thức_nền`) | 4, 7 | Lăng kính chung (29/10) |
+| Lời khen | 7 | 3 | §3.2 đặt "cách khen" ở nhóm 7 (29/10) |
+| Phần thưởng, động lực bên trong, cho con tự chọn | 7 | 6 | Thực hành của cha mẹ (29/10) |
+| Tư duy phát triển (growth mindset) | 6 | 7 | Học tập (29/10) |
+| Làm gương, chú ý tích cực, tạm lờ đi hành vi đòi chú ý | 7 | 4 | Thực hành của cha mẹ (29/10) |
+| Trẻ nhút nhát, chậm làm quen | 3 | 4 | Khí chất (29/10) |
+| So sánh con với bạn, áp lực nhóm bạn | 3 | 4, 8 | Ảnh hưởng tới hình ảnh bản thân (29/10) |
+| Làm quen trước một bước chuyển | 17 | 3 | Bước chuyển (29/10) |
+| Lo âu ở trẻ, ngại đi học | 3 | 7, 17 | Điều tiết cảm xúc, sức khỏe tâm thần (29/10) |
+| Kỳ vọng, áp lực học tập, "nhà khác cho con học hết rồi" | 7 | 6 | Thực hành, tâm lý của cha mẹ (29/10) |
 | Dậy thì | 17 | 1, 3 | Bước chuyển; phần sinh lý ở nhóm 1 |
 | Tiền tiêu vặt, quản lý tiền | 14 | — | Kỹ năng sống |
 | Montessori, Reggio Emilia, Waldorf, HighScope (trường, lớp) | 8 (nhãn `phương_pháp`) | 6 | Môi trường giáo dục (28/10) |
@@ -655,7 +680,7 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 1. **Lấp nội dung 0–12 tháng** (ưu tiên kế tiếp).
 2. **Bản đồ chuyển tuyến:** dấu hiệu nào → gặp ai (bác sĩ nhi, chuyên khoa phát triển, âm ngữ trị liệu, tâm lý, mắt, tai mũi họng…), theo hệ thống y tế Việt Nam.
 3. Chuyên gia duyệt các ô "Không áp dụng" của lưới độ phủ (§5.1), danh sách bước chuyển (§5.2) và sổ quyết định phân loại (§9.2).
-4. Đối chiếu 17 nhóm với Nurturing Care Framework, CDC/AAP, WHO 2020 ECD guideline và chuẩn Việt Nam cho 0–6 tuổi: Chương trình giáo dục mầm non; Bộ chuẩn phát triển trẻ em 5 tuổi (nhiều khả năng là Thông tư 23/2010, cần kiểm số hiệu và hiệu lực).
+4. Đối chiếu 17 nhóm với Nurturing Care Framework, CDC/AAP, WHO 2020 ECD guideline và chuẩn Việt Nam cho 0–6 tuổi: Chương trình giáo dục mầm non; Bộ chuẩn phát triển trẻ em 5 tuổi (hiện hành là Quyết định 4222/QĐ-BGDĐT ngày 27/12/2024 [NG-058]; Thông tư 23/2010 đã bị bãi bỏ [NG-059]).
 5. Nguồn xác nhận khoảng tuổi dùng tuổi hiệu chỉnh cho trẻ sinh non.
 6. Kho nguồn có mã đã lập tại `documents/knowledge/ref-kho-nguon.md` (27/10). Còn lại: chuyển các nguồn ở §13 chưa có mã vào kho; đối chiếu bản gốc cho các nguồn thứ cấp (bậc TC).
 7. Chốt các mục "chưa chốt" của §1.1 (kiến thức chung của AI, danh sách trang được phép, lọc chủ đề, người duyệt hàng đợi kiểm chứng). Việc xử lý khi kho thiếu thông tin đã chốt 28/10.
@@ -664,6 +689,7 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 10. Lập danh sách thủ tục hành chính ưu tiên đưa vào kho (ví dụ tuyển sinh mầm non, lớp 1, lớp 6, lớp 10) và cách cập nhật theo năm học, theo tỉnh.
 11. Hàng đợi kiểm chứng (§1.1): chọn người duyệt và nhịp duyệt; khi có app, chuyển thành bảng dữ liệu có màn hình duyệt.
 12. Danh mục trường, lớp (§7.6): tiêu chí đưa một trường vào lớp thực thi; cách kiểm học phí hằng năm; có dùng chứng nhận của tổ chức phương pháp làm tiêu chí không.
+13. **Tâm lý trẻ (29/10):** tìm nguồn hiện hành cho tuổi 11–18 (WHO, AAP, CDC); chuyên gia tâm lý phát triển duyệt lớp kiến thức nền và danh sách dấu hiệu quan sát (KT-40104); kiểm chứng độc lập các nguồn NG-252 đến NG-321 (hàng đợi CK-026, CK-027); thêm bảng "nhu cầu tâm lý ở tuổi này" cho các giai đoạn còn lại khi soạn nội dung.
 
 ## 12. Ghi chú về file tham khảo "Khung 0–18 tuổi"
 - **Dùng:** cấu trúc theo giai đoạn.

@@ -112,7 +112,7 @@
 22. AAP [NG-047].
 23. Luật 36/2024 [NG-107]; ô tô ○ [NG-045].
 24. AAP [NG-013]; CDC ○ [NG-094]; WHO [NG-105].
-25. Hoạt động chuyển tiếp của trường **gắn với** kết quả học tập tốt hơn ở năm đầu (Mỹ, tương quan) [NG-248]; Bộ GD&ĐT yêu cầu phối hợp chuyển tiếp [NG-238]. **Cách làm cụ thể và ý "làm quen giúp con tự tin hơn" là gợi ý của Parent-Pal**, chưa có nghiên cứu (hàng đợi CK-024).
+25. Hoạt động chuyển tiếp của trường **gắn với** kết quả học tập tốt hơn ở năm đầu (Mỹ, tương quan) [NG-248]; Bộ GD&ĐT yêu cầu phối hợp chuyển tiếp [NG-238]. **Cách làm cụ thể** là gợi ý của Parent-Pal. Ý "làm quen giúp con tự tin hơn" suy từ nghiên cứu về sự tự tin (trẻ tự tin hơn khi tự làm được việc) [NG-252]; chưa có nghiên cứu kiểm trực tiếp việc làm quen trước lớp 1 (hàng đợi CK-024).
 26. [NG-060]; ○ [NG-236].
 27. ○ [NG-113]; [NG-115].
 28. NICHD [NG-098].

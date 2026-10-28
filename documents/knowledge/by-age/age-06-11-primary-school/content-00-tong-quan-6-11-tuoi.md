@@ -29,6 +29,7 @@ Thủ tục và quy định trường học (nhập học, học phí, BHYT họ
 | 1 Sức khỏe | Ngủ 9–12 giờ; trung bình 60 phút vận động vừa đến mạnh mỗi ngày; **vận động tinh** (cầm bút, cắt, cài cúc; mục 11.4); ăn sáng; ít đường; khám định kỳ hằng năm; mắt, răng; theo dõi dậy thì |
 | 2 Nhận thức | Đọc sách mỗi ngày; được để ý khi có dấu hiệu khó đọc |
 | 3 Cảm xúc | Được để ý các dấu hiệu lo âu, buồn chán; được tìm trợ giúp sớm |
+| 3 Cảm xúc, tự tin | Được an toàn, gắn kết, thấy mình làm được, được tự chọn (mục 8.3); không bị chấm điểm, so sánh |
 | 4 Quan hệ | Bạn bè; lòng tự trọng hình thành từ gia đình |
 | 5 Tự chủ | Rèn kỹ năng điều hành qua trò chơi; được hỗ trợ đúng nếu có ADHD |
 | 6 Học tập | Cha mẹ quan tâm bài vở và việc ở trường |
@@ -199,13 +200,30 @@ AAP [NG-097]:
 ## 8. Nhóm 4, 8 — Bạn bè, lòng tự trọng, bắt nạt
 
 ### 8.1 Lòng tự trọng
-`KT-2018` · Nhóm chính: 4 · Nhóm phụ: 7
+`KT-2018` · Nhóm chính: 3 (hình ảnh bản thân và tự tin; đổi từ nhóm 4 ngày 29/10/2026, bản đồ §9.2) · Nhóm phụ: 4, 7
 
 AAP (trẻ 5–12 tuổi) [NG-103]:
 - Lòng tự trọng của con **hình thành trước tiên trong gia đình**.
 - **Khen cả nỗ lực**, không chỉ khen khi đạt mục tiêu.
 - Giải thích rằng **thất bại là chuyện bình thường** của cuộc sống và việc học, con có thể học từ đó.
 - **Để con tự làm việc** mà không bị kiểm tra liên tục.
+- Khen **chân thành, cụ thể**, đúng việc con làm; tránh khen phóng đại. Bằng chứng "khen nỗ lực tốt hơn khen thông minh" chưa thống nhất: `documents/knowledge/foundations/content-02-co-che-tam-ly-trong-nuoi-day.md`, KT-40201.
+
+### 8.3 Nhu cầu tâm lý và sự tự tin 6–11 tuổi
+`KT-2028` · Nhóm chính: 3 (hình ảnh bản thân và tự tin) · Nhóm phụ: 4, 7 · Nhãn: `kiến_thức_nền` · Chưa kiểm chứng độc lập (thêm 29/10/2026)
+
+Lăng kính 4 nhu cầu, cơ chế và nguồn đầy đủ: `documents/knowledge/foundations/content-01-nhu-cau-tam-ly-va-tu-tin.md`. Nhu cầu ở cột đầu là cách Parent-Pal xếp (`đề xuất nội bộ`).
+
+| Nhu cầu | Cha mẹ làm |
+|---|---|
+| An toàn, đoán trước được | Trước mỗi bước chuyển (vào lớp 1, đổi trường, lên lớp 6): thăm trường, biết lịch một ngày [NG-281]; nếp sinh hoạt đều |
+| Gắn kết và được ghi nhận | "Being connected to other people who care about them is important for children's self-esteem" [NG-300]; trẻ vẫn cần cha mẹ dù tự lập hơn [NG-306] |
+| Năng lực | Khen nỗ lực và sự dũng cảm khi thử việc mới; khuyến khích thử lại; hướng dẫn qua tình huống khó với bạn [NG-300]. Giao việc vừa sức (mục 11.5) |
+| Tự chủ | Để con tự làm bài, tự quản lý một phần thời gian, tiền tiêu vặt (mục 10) [NG-103] |
+
+- **Con nhìn mình thế nào:** trẻ tự đánh giá sát thực tế hơn, niềm tin vào năng lực ở từng môn giảm dần qua tiểu học [NG-305]; trẻ so mình với bạn [NG-300]. Con nói "con kém môn X" là điều thường thấy; Pal gợi ý việc vừa sức để con có trải nghiệm làm được (`suy từ lý thuyết` [NG-252]).
+- **So sánh:** trẻ ở nhóm năng lực thấp trong lớp dễ tổn thương nhất do so sánh [NG-279]. Cha mẹ so con với chính con.
+- **Không chấm điểm tự tin**; quan sát theo từng việc (KT-40104). Dấu hiệu nên hỏi chuyên gia: mục 6 và KT-40105.
 
 ### 8.2 Bắt nạt
 `KT-2019` · Nhóm chính: 8 · Nhóm phụ: 4, 11

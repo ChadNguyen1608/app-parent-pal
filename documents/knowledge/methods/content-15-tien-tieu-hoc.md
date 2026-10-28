@@ -37,7 +37,7 @@
 - **Pal đề xuất** cho con **làm quen nhẹ nhàng** với lớp 1 trong vài tháng trước khi vào học, thay vì học trước chương trình hay không chuẩn bị gì. `đề xuất nội bộ` (chủ sản phẩm đề nghị 28/10/2026).
 - **Làm quen gồm:** thăm trường, gặp cô nếu được; tập nếp ngồi bàn 15–20 phút; đọc sách cùng con; chơi trò chơi với chữ cái, con số; cầm bút tô vẽ; tự đeo cặp, tự đi vệ sinh, tự mở hộp cơm. Thời lượng, cách làm cụ thể: `đề xuất nội bộ`.
 - **Có nguồn:** hoạt động chuyển tiếp của trường (thăm trường, gặp giáo viên, liên lạc với gia đình) **gắn với** điểm học tập cao hơn ở cuối năm đầu, nhất là ở trẻ nhà thu nhập thấp và trung bình (Mỹ, 17.212 trẻ; tương quan) [NG-248]; Bộ GD&ĐT yêu cầu trường phối hợp trong hoạt động chuyển tiếp [NG-238].
-- **Chưa có nguồn:** "học trước một chút giúp con tự tin, giảm áp lực". Pal nói đây là **gợi ý của Parent-Pal**. Hàng đợi CK-024.
+- **`suy từ lý thuyết`** (sửa 29/10/2026): "làm quen trước giúp con tự tin, giảm bỡ ngỡ". Cơ chế có nguồn: trẻ tự tin hơn khi tự làm được việc [NG-252]; căng thẳng ngắn có người lớn đỡ là căng thẳng chịu đựng được [NG-320]. **Chưa có nghiên cứu kiểm trực tiếp** việc làm quen trước lớp 1; lợi thế học sớm thường mờ dần [NG-282]. Pal nói theo cách ở `documents/pal/guide-cach-pal-tra-loi.md`, mục 5. Cơ chế, giới hạn: `documents/knowledge/foundations/content-02-co-che-tam-ly-trong-nuoi-day.md`, KT-40207. Hàng đợi CK-024.
 - **Giữ ở mức làm quen:** buổi ngắn, dừng khi con mệt; không chấm điểm, không chê chữ xấu; không ép con viết chữ theo vở.
 
 ## KT-31504 — Chuẩn bị ở nhà (có nguồn)
@@ -52,7 +52,7 @@
 
 | Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
 |---|---|---|
-| Chưa có nghiên cứu về lớp "tiền tiểu học" ở Việt Nam. Nghiên cứu nước ngoài: kỹ năng toán, đọc, chú ý lúc bắt đầu đi học **gắn với** kết quả sau này; lợi thế học chữ sớm thường mất dần | Có thể giúp con quen nếp lớp học, tự tin hơn (`đề xuất nội bộ`, chưa có nghiên cứu). **Chưa có bằng chứng** học trước giúp con học giỏi lâu dài; năm học 2026–2027 Bộ yêu cầu không khảo sát năng lực để tuyển lớp 1 (đọc qua báo) | Thấp: chưa có nghiên cứu trực tiếp |
+| Chưa có nghiên cứu về lớp "tiền tiểu học" ở Việt Nam. Nghiên cứu nước ngoài: kỹ năng toán, đọc, chú ý lúc bắt đầu đi học **gắn với** kết quả sau này; lợi thế học chữ sớm thường mất dần | Có thể giúp con quen nếp lớp học, tự tin hơn (`suy từ lý thuyết` [NG-252]; chưa có nghiên cứu trực tiếp). **Chưa có bằng chứng** học trước giúp con học giỏi lâu dài; năm học 2026–2027 Bộ yêu cầu không khảo sát năng lực để tuyển lớp 1 (đọc qua báo) | Thấp: chưa có nghiên cứu trực tiếp |
 
 ## Học thử
 > `đề xuất nội bộ`, chờ chuyên gia giáo dục duyệt.

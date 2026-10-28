@@ -12,6 +12,7 @@ documents/
 │   ├── by-age/                        Nội dung theo giai đoạn tuổi
 │   │   ├── age-00-06-early-childhood/ 0–6 tuổi (mầm non)
 │   │   └── age-06-11-primary-school/  6–11 tuổi (tiểu học)
+│   ├── foundations/                   Kiến thức nền: cơ chế tâm lý, nhu cầu tâm lý của trẻ
 │   ├── methods/                       Phương pháp giáo dục và chăm sóc
 │   └── procedures/                    Thủ tục hành chính, theo lĩnh vực
 └── pal/                               Cách Pal làm việc
@@ -38,7 +39,7 @@ documents/
 - **Thư mục giai đoạn tuổi:** `age-<từ>-<đến>-<tên giai đoạn>`, tuổi viết 2 chữ số để sắp xếp đúng. Dự kiến: `age-00-06-early-childhood`, `age-06-11-primary-school`, `age-11-15-lower-secondary`, `age-15-18-upper-secondary`, `age-18-24-young-adult`; thêm `pre-pregnancy` và `pregnancy` cho hai giai đoạn trước sinh.
 - **File nội dung trong một giai đoạn:** `content-<thứ tự>-<tên chặng>-<khoảng tuổi>-<thang|tuoi>.md`. Ví dụ `content-03-tap-di-12-18-thang.md`.
 - **Thủ tục** xếp theo lĩnh vực, không theo tuổi; mỗi mẩu trong file ghi độ tuổi áp dụng.
-- **Mã nội dung** (`KT-xxxx`, `NG-xxx`…) không đổi khi đổi tên hay chuyển file. Bài phương pháp dùng mã `KT-3FFNN` (FF: số thứ tự file, NN: số thứ tự mẩu).
+- **Mã nội dung** (`KT-xxxx`, `NG-xxx`…) không đổi khi đổi tên hay chuyển file. Bài phương pháp dùng mã `KT-3FFNN`, bài kiến thức nền dùng mã `KT-4FFNN` (FF: số thứ tự file, NN: số thứ tự mẩu).
 
 ## Nội dung 0–6 tuổi
 
@@ -81,7 +82,14 @@ documents/
 | `content-12-boi-som.md` | Bơi sớm | KT-31201–31203 |
 | `content-13-kich-hoat-nao-giua-tomatis-luyen-tri-nho.md` | Kích hoạt não giữa, Tomatis, luyện trí nhớ | KT-31301–31303 |
 | `content-14-toan-tu-duy.md` | "Toán tư duy", lớp toán cho trẻ mầm non, tiểu học | KT-31401–31404 |
-| `content-15-tien-tieu-hoc.md` | Tiền tiểu học, chuẩn bị vào lớp 1 | KT-31501–31504 |
+| `content-15-tien-tieu-hoc.md` | Tiền tiểu học, chuẩn bị vào lớp 1 | KT-31501–31505 |
+
+## Kiến thức nền (`foundations/`)
+
+| File | Nội dung | Mã |
+|---|---|---|
+| `content-01-nhu-cau-tam-ly-va-tu-tin.md` | Bốn nhu cầu tâm lý (lăng kính chung); tự tin là gì, thay đổi theo tuổi; không chấm điểm tự tin; dấu hiệu | KT-40101–40105 |
+| `content-02-co-che-tam-ly-trong-nuoi-day.md` | Lời khen, phần thưởng, tư duy phát triển, học qua quan sát, nhút nhát, so sánh, làm quen trước bước chuyển, lo âu, áp lực học tập | KT-40201–40209 |
 
 ## Thủ tục hành chính
 
