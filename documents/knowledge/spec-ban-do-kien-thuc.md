@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.9 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.10 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.10 (28/10):** soạn nội dung nháp 6–11 tuổi (`documents/knowledge/by-age/age-06-11-primary-school/`) theo quy trình mới: 3 agent tìm nguồn, 1 agent kiểm chứng độc lập, Claude tổng hợp; thêm thủ tục cho tiểu học; cập nhật lưới độ phủ và sổ quyết định phân loại.
 - **v5.9 (28/10):** phần mô tả trong tên file đổi sang tiếng Việt không dấu (file này thành `spec-ban-do-kien-thuc.md`); tên thư mục giữ tiếng Anh.
 - **v5.8 (28/10):** đổi toàn bộ thư mục và tên file sang tiếng Anh có tiền tố theo loại (`documents/README.md`); tách thủ tục hành chính ra `documents/knowledge/procedures/`, xếp theo lĩnh vực thay vì theo tuổi (§1.1).
 - **v5.7 (28/10):** đổi tên file thành `spec-ban-do-kien-thuc.md` và chuyển vào thư mục `documents/`; repo chỉ còn tài liệu (code bản thử đã gỡ).
@@ -202,7 +203,7 @@ Thay cho bảng "nhóm trọng tâm" của v5 (đã bỏ ở v5.3 vì không có
 | Đang soạn | Có ít nhất một mẩu kiến thức ở trạng thái nháp hoặc chờ duyệt |
 | Đã duyệt | Mọi chủ đề đã lên danh sách của ô đều đã được chuyên gia duyệt |
 
-**Hiện trạng (27/10/2026, sau đợt soạn nội dung 0–6 tuổi)**. Chưa có ô nào "Đã duyệt". Nội dung "Đang soạn" nằm ở `documents/knowledge/by-age/age-00-06-early-childhood/` (người soạn: AI, chờ chuyên gia duyệt).
+**Hiện trạng (28/10/2026, sau đợt soạn nội dung 0–6 và 6–11 tuổi)**. Chưa có ô nào "Đã duyệt". Nội dung "Đang soạn" nằm ở `documents/knowledge/by-age/age-00-06-early-childhood/` (người soạn: AI, chờ chuyên gia duyệt).
 
 | Độ tuổi | Đang soạn | Có danh sách | Không áp dụng | Chưa có | Tóm tắt |
 |---|---|---|---|---|---|
@@ -216,8 +217,8 @@ Thay cho bảng "nhóm trọng tâm" của v5 (đã bỏ ở v5.3 vì không có
 | 3–4 tuổi | Nền, 1, 2, 3, 4, 5, 7, 8, 11, 12, 14, 17 | — | 15 | 6, 9, 10, 13, 16 | 12 đang soạn · 5 chưa có · 1 không áp dụng |
 | 4–5 tuổi | Nền, 1, 2, 3, 4, 5, 7, 11, 12, 14 | — | 15 | 6, 8, 9, 10, 13, 16, 17 | 10 đang soạn · 7 chưa có · 1 không áp dụng |
 | 5–6 tuổi | Nền, 1, 2, 4, 11, 12, 14, 17 | 3, 5 | 15 | 6, 7, 8, 9, 10, 13, 16 | 8 đang soạn · 2 có danh sách · 7 chưa có · 1 không áp dụng |
-| Tiểu học 6–8 | — | — | 15 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
-| Tiểu học 9–11 | — | — | 15 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
+| Tiểu học 6–8 | Nền, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 14, 17 | — | 15 | 9, 10, 13, 16 | 13 đang soạn · 4 chưa có · 1 không áp dụng |
+| Tiểu học 9–11 | Nền, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 14, 17 | — | 15 | 9, 10, 13, 16 | 13 đang soạn · 4 chưa có · 1 không áp dụng |
 | THCS 11–15 | — | — | — | tất cả | 18 chưa có |
 | THPT 15–18 | — | — | — | tất cả | 18 chưa có |
 | 18–24 tuổi | — | — | 8 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
@@ -268,6 +269,8 @@ Danh sách bước chuyển dự kiến cho nhóm 17, dùng để lập chủ đ
 ⚠️ Phần lớn nội dung G1 thuộc vùng y tế. Người duyệt cần là **bác sĩ sản khoa hoặc hộ sinh**.
 
 ### 5.4 G0, G3–G6
+> G3 (6–11 tuổi) đã có nội dung nháp: `documents/knowledge/by-age/age-06-11-primary-school/`.
+
 Chưa lập chủ đề con. Vị trí dự kiến của các chủ đề lớn:
 
 | Chủ đề | Vị trí |
@@ -484,6 +487,8 @@ Quy tắc ước tính:
 
 ## 8. Kiểm soát chất lượng
 
+> **Quy trình soạn nội dung (từ đợt 6–11 tuổi):** (1) agent tìm nguồn theo mảng, mỗi ý kèm trích nguyên văn và URL; (2) một agent **khác** mở lại từng nguồn, chấm độ tin cậy nguồn (1–5) và mức khớp của từng nhận định (khớp / khớp một phần / không khớp / không kiểm được), đánh dấu phần nội suy; (3) chỉ đưa vào kho nhận định "khớp", hoặc "khớp một phần" đã sửa theo ghi chú; điểm kiểm chứng ghi trong kho nguồn.
+
 ### 8.1 Tám câu kiểm tra khái niệm khi duyệt
 Nguồn: văn bản "Khung sơ bộ phát triển toàn diện trẻ và các vấn đề chưa giải quyết" của người dùng.
 1. Mẩu này nói về **kết quả/năng lực của trẻ** hay về **môi trường**? Nếu là môi trường, có đang bị viết thành tính cách của trẻ không?
@@ -553,6 +558,14 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 | Nói dối ở trẻ 4–5 tuổi | 3 | 13 | Hiện tượng phát triển; liên kết giá trị trung thực |
 | Chuẩn bị vào lớp 1 (tổng quan) | 17 | 6 | Bước chuyển |
 | Thích nghi khi mới đi mẫu giáo | 17 | 3 | Bước chuyển |
+| Bắt nạt (ở trường, trên mạng) | 8 | 4, 11 | Phạm vi nhóm 8 gồm bắt nạt ở trường |
+| Khó đọc, rối loạn đọc | 2 (nhãn `hoàn_cảnh_đặc_biệt`) | 6 | Ngôn ngữ, đọc |
+| ADHD | 5 (nhãn `hoàn_cảnh_đặc_biệt`) | 6 | Tập trung, kiềm chế là chức năng điều hành |
+| Lòng tự trọng | 4 | 7 | Hình thành trong quan hệ, trước tiên là gia đình |
+| Dậy thì | 17 | 1, 3 | Bước chuyển; phần sinh lý ở nhóm 1 |
+| Tiền tiêu vặt, quản lý tiền | 14 | — | Kỹ năng sống |
+| Mạng xã hội | 11 | 3 | Môi trường số |
+| Quy định trường học (chương trình, đánh giá, dạy thêm) | 8 (nhãn `thủ_tục`) | 6 | Môi trường giáo dục |
 | Chia sẻ đồ chơi | 4 | 13 | Hành vi xã hội ở trẻ |
 | Thủ tục nhập học, tuyển sinh, chuyển trường, quy chế thi | 17 (nhãn `thủ_tục`) | 8 | Gắn với bước chuyển của con |
 | Thủ tục y tế cho con (thẻ bảo hiểm y tế, sổ tiêm chủng) | 1 (nhãn `thủ_tục`) | — | Sức khỏe |

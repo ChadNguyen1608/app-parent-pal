@@ -8,7 +8,8 @@ documents/
 │   ├── spec-ban-do-kien-thuc.md       Bản đồ bộ kiến thức (đặc tả)
 │   ├── ref-kho-nguon.md               Kho nguồn có mã NG-xxx
 │   ├── by-age/                        Nội dung theo giai đoạn tuổi
-│   │   └── age-00-06-early-childhood/ 0–6 tuổi (mầm non)
+│   │   ├── age-00-06-early-childhood/ 0–6 tuổi (mầm non)
+│   │   └── age-06-11-primary-school/  6–11 tuổi (tiểu học)
 │   └── procedures/                    Thủ tục hành chính, theo lĩnh vực
 └── pal/                               Cách Pal làm việc
     ├── guide-cach-pal-tra-loi.md      Cách Pal trả lời
@@ -50,13 +51,22 @@ documents/
 | `content-07-mau-giao-4-5-tuoi.md` | 4–5 tuổi |
 | `content-08-mau-giao-5-6-tuoi.md` | 5–6 tuổi |
 
+## Nội dung 6–11 tuổi
+
+| File | Chặng |
+|---|---|
+| `content-00-tong-quan-6-11-tuoi.md` | Tổng quan và kiến thức dùng chung 6–11 tuổi |
+| `content-01-tieu-hoc-dau-6-8-tuoi.md` | 6–8 tuổi (lớp 1–3) |
+| `content-02-tieu-hoc-cuoi-9-11-tuoi.md` | 9–11 tuổi (lớp 4–5) |
+
 ## Thủ tục hành chính
 
 | File | Lĩnh vực | Mã |
 |---|---|---|
 | `procedure-ho-tich-khai-sinh.md` | Khai sinh; liên thông khai sinh, thường trú, bảo hiểm y tế, căn cước | KT-0901, KT-0902 |
-| `procedure-bao-hiem-y-te.md` | Bảo hiểm y tế cho trẻ | KT-0903 |
+| `procedure-bao-hiem-y-te.md` | Bảo hiểm y tế cho trẻ, học sinh | KT-0903, KT-0912 |
 | `procedure-nghi-thai-san.md` | Nghỉ thai sản của mẹ, nghỉ của bố | KT-0904 |
-| `procedure-nhap-hoc.md` | Nhập học nhà trẻ, mẫu giáo, lớp 1 | KT-0905, KT-0907 |
-| `procedure-hoc-phi.md` | Học phí | KT-0906 |
-| `procedure-tiem-chung-bat-buoc.md` | Tiêm chủng bắt buộc | KT-0908 |
+| `procedure-nhap-hoc.md` | Nhập học nhà trẻ, mẫu giáo, lớp 1, lớp 6 | KT-0905, KT-0907, KT-0909, KT-0910 |
+| `procedure-hoc-phi.md` | Học phí mầm non, tiểu học | KT-0906, KT-0911 |
+| `procedure-tiem-chung-bat-buoc.md` | Tiêm chủng bắt buộc (gồm nhắc 7 tuổi, HPV) | KT-0908, KT-0913, KT-0914 |
+| `procedure-quy-dinh-hoc-tap-tieu-hoc.md` | Chương trình, đánh giá, dạy thêm ở tiểu học | KT-0915, KT-0916, KT-0917 |
