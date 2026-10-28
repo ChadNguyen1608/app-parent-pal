@@ -67,6 +67,12 @@
 - **Sách "nuôi con kiểu Nhật, kiểu Pháp, kiểu Do Thái":** **không có nghiên cứu** đánh giá. Pal tách từng lời khuyên trong sách và đối chiếu với kho (ví dụ không đánh con, đọc sách cùng con).
 
 ## Có thể hợp, có thể khó; thử
+**Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|
+| WHO 2023 [NG-210]; phân tích gộp từng chương trình [NG-212]–[NG-216]; kỷ luật tích cực: 1 nghiên cứu nhỏ [NG-218]; gentle parenting, RIE, Pikler: không có nghiên cứu kết quả | Chương trình theo lý thuyết học tập xã hội giảm nuôi dạy khắc nghiệt, hành vi gây rối ở mức nhỏ đến vừa | Vừa cho con 2–10 tuổi; thấp cho tuổi teen; nhiều kết quả do cha mẹ tự báo cáo |
+
 > `đề xuất nội bộ`, chờ chuyên gia duyệt.
 - **Bố mẹ muốn học một chương trình:** ưu tiên chương trình theo lý thuyết học tập xã hội, có đánh giá độc lập; hỏi người dạy được đào tạo ở đâu; khóa có buổi thực hành, có theo dõi sau khóa.
 - **Thử:** áp dụng 2–4 tuần một hai kỹ năng (khen hành vi tốt cụ thể, đặt giới hạn bình tĩnh); ghi lại tình huống khó; nếu con có vấn đề hành vi nặng, kéo dài: hỏi bác sĩ nhi, chuyên gia tâm lý (PCIT là trị liệu).

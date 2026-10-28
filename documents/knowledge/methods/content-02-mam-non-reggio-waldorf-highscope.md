@@ -47,6 +47,12 @@
 - **Ở Việt Nam:** Chỉ thị 2325/CT-BGDĐT (2013) **nghiêm cấm** giáo viên dạy trước chương trình lớp 1; cơ sở mầm non không dạy trước, không yêu cầu trẻ tập tô, tập viết chữ ○ [NG-182]. Sở GD&ĐT TP.HCM nhắc lại yêu cầu này năm 2025 ○ [NG-134]. Chi tiết: `content-08-kumon-ban-tinh-toan-tu-duy-phonics.md`, KT-30805. Chuẩn bị vào lớp 1: `documents/knowledge/by-age/age-00-06-early-childhood/content-08-mau-giao-5-6-tuoi.md`.
 
 ## KT-30205 — Học thử
+**Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|
+| Reggio: chưa mở được nghiên cứu về kết quả. Waldorf: 1 nghiên cứu ở New Zealand [NG-130]. HighScope: nghiên cứu Perry, 123 trẻ nhà nghèo [NG-131] | Waldorf: trẻ học đọc muộn đuổi kịp vào khoảng 11 tuổi. Perry: mầm non chất lượng hơn không đi học | Reggio: chưa có trong kho. Waldorf: thấp (không ngẫu nhiên). Perry: không so với phương pháp khác |
+
 Dùng chung danh sách ở `content-01-montessori.md` (KT-30107), thay 5 thành phần cốt lõi bằng câu hỏi: "Một ngày của lớp gồm những gì? Bao nhiêu giờ trẻ được chơi tự chọn, bao nhiêu giờ cô dạy cả lớp?" `đề xuất nội bộ`.
 
 ## Điều Pal không nên nói

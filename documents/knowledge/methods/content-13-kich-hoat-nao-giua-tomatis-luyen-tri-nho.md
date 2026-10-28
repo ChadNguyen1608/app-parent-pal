@@ -40,7 +40,15 @@
 - **Điều có bằng chứng giúp kỹ năng điều hành:** trò chơi, vận động, nếp sinh hoạt có người lớn hỗ trợ (`content-02-mam-non-reggio-waldorf-highscope.md` KT-30204; nội dung theo tuổi: trò chơi của Harvard).
 
 ## Có thể hợp, có thể khó; thử
-- Với nhóm này, như `content-04-day-som-the-hoc-nao-phai-van-tay.md`: Pal **không gợi ý học thử** các lớp có tuyên bố siêu năng lực (đọc khi bịt mắt) hay tuyên bố chữa bệnh; Pal sửa hiểu lầm và gợi ý hoạt động có bằng chứng. **Chờ chủ sản phẩm xác nhận** ngoại lệ này (cùng câu hỏi với sinh trắc vân tay).
+- **Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Chương trình | Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|---|
+| "Kích hoạt não giữa" | **Không có nghiên cứu có đối chứng nào được công bố**; chỉ có báo chí, phát biểu của cơ quan chức năng năm 2016 [NG-196] [NG-197] | Không có bằng chứng trẻ đọc được khi bịt mắt hay tăng tập trung, trí nhớ | Không đo được độ chính xác vì không có nghiên cứu |
+| Tomatis | Tổng quan Cochrane 7 thử nghiệm, trẻ tự kỷ; một thử nghiệm có giả dược [NG-199] [NG-200] | Không giúp ngôn ngữ hơn giả dược ở trẻ tự kỷ; trẻ bình thường: chưa có nghiên cứu | Thấp: nghiên cứu ít, chất lượng thấp; chưa đủ để nói chắc là vô hiệu |
+| Luyện trí nhớ, trò chơi luyện não | Phân tích gộp 87 công trình [NG-202] | Giỏi lên ở **chính bài luyện**; **không** lan sang trí thông minh, kết quả học tập | Khá chắc khi so với nhóm chứng có hoạt động tương đương |
+
+- **Rồi mới đề xuất học thử** (nếu phụ huynh vẫn muốn): hỏi chi phí cả khóa, quan sát con có vui, có bị áp lực không; không dùng kết quả "biểu diễn" để đánh giá con; Tomatis không thay cho trị liệu ngôn ngữ khi con có chẩn đoán. `đề xuất nội bộ`.
 - Trò chơi luyện não như **giải trí**: tính vào giờ màn hình của con.
 
 ## Điều Pal không nên nói

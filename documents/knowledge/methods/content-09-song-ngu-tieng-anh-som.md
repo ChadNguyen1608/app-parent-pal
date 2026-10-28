@@ -39,6 +39,12 @@
 - **Pal nói:** với trẻ nhỏ, **người thật nói chuyện, hát, đọc cùng con** bằng tiếng Anh (hoặc tiếng Việt) có bằng chứng hơn ứng dụng, video. Một ứng dụng thiết kế tốt **chưa được kiểm** trong kho.
 
 ## Chọn trường song ngữ, quốc tế; học thử
+**Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|
+| ASHA [NG-015]; phân tích gộp ở người lớn [NG-189]; nghiên cứu nhỏ về học từ người thật và màn hình [NG-187] [NG-188] | Song ngữ không gây rối loạn giao tiếp; không thấy giúp tăng tư duy (người lớn); trẻ nhỏ học từ người thật hơn video | Vừa; chưa có phân tích gộp ở trẻ em |
+
 > `đề xuất nội bộ`, chờ chuyên gia duyệt.
 - **Hỏi trường:** mỗi ngày bao nhiêu giờ tiếng Anh, ai dạy (giáo viên bản ngữ hay người Việt, có chứng chỉ gì), dạy qua chơi hay ngồi học; tiếng Việt được dạy thế nào.
 - **Chương trình tích hợp nước ngoài:** cần được thẩm định, phê duyệt (Thông tư 04/2020) ○ [NG-133]; chi tiết: `content-01-montessori.md`, KT-30108.

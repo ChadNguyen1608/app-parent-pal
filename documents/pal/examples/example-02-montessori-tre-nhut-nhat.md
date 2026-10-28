@@ -47,6 +47,11 @@ Phần này là **gợi ý của Parent-Pal**, suy từ cách lớp Montessori v
 - Mình gợi ý thêm: trước khi đi học thử, kể cho con nghe sẽ đi đâu, gặp ai; mỗi buổi giữ cùng một cách chào tạm biệt. *(Gợi ý của Parent-Pal.)*
 
 ### 4. Đề xuất cuối: cho con học thử
+Trước khi chị cho con học thử, mình tóm lại điều nghiên cứu nói⁽⁶⁾:
+- **Nghiên cứu nói gì:** nhiều nghiên cứu, chủ yếu ở trường công tại Mỹ, có giáo viên được đào tạo Montessori.
+- **Giúp được gì:** học tập và khả năng tự điều khiển bản thân tốt hơn trường thường **một chút**; không làm con kém kỹ năng xã hội.
+- **Chưa biết:** có giúp trẻ nhút nhát không (chưa ai nghiên cứu); lợi thế có kéo dài không; trường ở Việt Nam có giống trường được nghiên cứu không.
+
 **Học thử vài buổi**, không chỉ một buổi, vì con cần thời gian làm quen. *(Gợi ý của Parent-Pal.)*
 
 **Khi học thử, chị xem:**
@@ -86,7 +91,7 @@ Chị muốn mình nhắc lịch gọi cho trường nào trước không?
 3. AAP: với trẻ chậm làm quen, giữ nếp sinh hoạt đều đặn, dễ đoán [NG-016].
 4. Topaz.vn, "Top 10 trường mầm non Montessori tại Hà Nội", cập nhật 1/7/2025: https://topaz.vn/toplist/truong-mam-non-montessori-tai-ha-noi — **chưa kiểm chứng**.
 5. Kiddi.vn, trang Mầm non Việt Hàn Montessori Hà Đông, không ghi ngày: https://www.kiddi.vn/ha-noi/truong-mam-non-viet-han-montessori-ha-dong — **chưa kiểm chứng**.
-- Bằng chứng về Montessori (học tập tốt hơn ở mức nhỏ, chủ yếu ở trường công Mỹ; chưa có nghiên cứu về trẻ nhút nhát): `content-01-montessori.md`, KT-30102, KT-30105.
+6. Bằng chứng về Montessori (học tập tốt hơn ở mức nhỏ, chủ yếu ở trường công Mỹ; chưa có nghiên cứu về trẻ nhút nhát): `content-01-montessori.md`, KT-30102, KT-30105.
 
 ---
 
@@ -94,4 +99,5 @@ Chị muốn mình nhắc lịch gọi cho trường nào trước không?
 - **Điểm mấu chốt:** Pal sửa kỳ vọng "Montessori giúp hết nhút nhát". Pal không nói "không ảnh hưởng gì", vì điều đó chưa được nghiên cứu.
 - **Phần tự suy** (có gắn "gợi ý của Parent-Pal"): bảng hợp hay khó ở mục 2; cách chuẩn bị trước khi học thử; "học thử vài buổi"; "trẻ nghịch thì tò mò, thích khám phá".
 - **Không dùng tin báo chí** về một cơ sở cụ thể bị đình chỉ (NG-136), để tránh đánh giá xấu một trường cụ thể.
-- **Cần quyết định:** có cho Pal nêu tên trường tra mạng khi chưa có tiêu chí đưa trường vào lớp thực thi (bản đồ §11, mục 12) không. Ví dụ này làm theo quyết định ngày 28/10: nêu tên, gắn nhãn chưa kiểm chứng.
+- **Đã chốt (28/10/2026):** Pal được nêu tên trường tra mạng, chỉ đưa dữ kiện, gắn nhãn chưa kiểm chứng, không nhận xét chất lượng (bản đồ §1.3 mục 7). Bảng trên chỉ có dữ kiện từ nguồn.
+- **Đã chốt:** trước đề xuất học thử, Pal tóm bằng chứng (mục 4).

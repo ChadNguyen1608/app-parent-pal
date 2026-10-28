@@ -14,7 +14,7 @@
 | Bàn tính (Soroban, UCMAS) | Một thử nghiệm ở 1 trường ở Ấn Độ: **tính toán** tốt hơn; **không** cải thiện khả năng nhận thức chung | KT-30802 |
 | Toán Singapore, "toán tư duy" (cách dạy cụ thể → hình ảnh → ký hiệu) | Hiệu quả **nhỏ** sau 1 năm | KT-30803 |
 | Phonics (học đọc theo âm) | Bằng chứng **mạnh** cho tiếng Anh, tốt nhất ở 5–7 tuổi; chỉ là một phần của việc dạy đọc | KT-30804 |
-| Học trước chương trình lớp 1 | Chưa có nghiên cứu về kết quả trong kho. Việt Nam: Bộ GD&ĐT **nghiêm cấm** trường mầm non dạy trước chương trình lớp 1 | KT-30805 |
+| Học trước chương trình lớp 1 | Chưa có nghiên cứu về kết quả trong kho. Việt Nam: Bộ GD&ĐT **nghiêm cấm** trường mầm non dạy trước chương trình lớp 1. Chuẩn bị vào lớp 1: `content-15-tien-tieu-hoc.md` | KT-30805 |
 
 ## KT-30801 — Kumon
 - **Là gì:** phương pháp tự học bằng giấy bút, làm bài theo trình độ [NG-176].
@@ -37,7 +37,7 @@
 - **Bằng chứng:**
   - Thử nghiệm của Quỹ EEF (Anh, 83 trường, 4.176 học sinh lớp 1, 1 năm): chương trình Mathematics Mastery tiến bộ thêm khoảng **2 tháng**; chưa đạt mức ý nghĩa thống kê thông thường [NG-178].
   - Thử nghiệm nhỏ (12 trường, 576 học sinh lớp 1, Anh): hiệu quả **nhỏ nhưng có ý nghĩa** sau 3 học kỳ, với **cả gói** tài liệu Inspire Maths [NG-179]. CPA chưa được thử riêng.
-- **"Toán tư duy" ở Việt Nam** là tên gọi chung của nhiều chương trình khác nhau; kho chưa có mô tả hay đánh giá nào. Pal hỏi trung tâm dạy theo chương trình nào. `đề xuất nội bộ`.
+- **"Toán tư duy" ở Việt Nam:** bài riêng `content-14-toan-tu-duy.md`.
 
 ## KT-30804 — Phonics (học đọc theo âm)
 - **Ủy ban Đọc Quốc gia Mỹ (NRP, 2000)** [NG-180]:
@@ -64,6 +64,12 @@
 - Thủ tục tiểu học: `documents/knowledge/procedures/procedure-quy-dinh-hoc-tap-tieu-hoc.md` (KT-0917).
 
 ## Có thể hợp, có thể khó; học thử
+**Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|
+| Kumon: 1 thử nghiệm ở Bangladesh, 1 nghiên cứu quan sát ở Anh [NG-174] [NG-176]. Bàn tính: 1 thử nghiệm, 1 trường ở Ấn Độ [NG-177]. Toán Singapore: 2 thử nghiệm ở Anh [NG-178] [NG-179]. Phonics: tổng quan lớn [NG-180] [NG-181] | Kumon: tính đúng, nhanh hơn. Bàn tính: tính toán tốt hơn, **không** tăng nhận thức chung. Toán Singapore: tiến bộ thêm khoảng 2 tháng. Phonics: đọc tiếng Anh tốt hơn ở 5–7 tuổi | Kumon, bàn tính: thấp đến vừa, chưa lặp lại. Toán Singapore: hiệu quả nhỏ. Phonics: mạnh |
+
 > `đề xuất nội bộ`, chờ chuyên gia giáo dục duyệt.
 - **Hỏi trước khi cho học:** con học để làm gì (tính nhanh, hiểu bài, theo kịp lớp)? Chương trình dạy cụ thể gì, mỗi buổi bao lâu, bài về nhà bao nhiêu?
 - **Có thể hợp:** con thích luyện tập, thích thử thách tốc độ (Kumon, bàn tính); con cần hiểu bằng đồ vật, hình ảnh (CPA).

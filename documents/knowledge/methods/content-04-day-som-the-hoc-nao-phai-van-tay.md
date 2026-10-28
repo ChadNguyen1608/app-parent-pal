@@ -56,8 +56,17 @@
 - `đề xuất nội bộ`: các nguồn trên không so sánh với sản phẩm thương mại; câu "con người quan trọng hơn sản phẩm" là cách Parent-Pal tóm lại.
 
 ## Có thể hợp, có thể khó; học thử
-- Với nhóm chương trình này, Pal **không gợi ý học thử** như với trường học. Pal sửa hiểu lầm, rồi gợi ý **thay bằng** hoạt động ở KT-30405. Nếu phụ huynh vẫn muốn cho con học: quan sát con có vui không, có bị ép ngồi lâu không, có tăng giờ màn hình không. `đề xuất nội bộ`.
-- **Ngoại lệ so với bản đồ §1.3:** đề xuất "học thử" áp cho phương pháp giáo dục có bằng chứng hoặc chưa được nghiên cứu, không áp cho dịch vụ có tuyên bố chẩn đoán (sinh trắc vân tay). **Chờ chủ sản phẩm xác nhận.**
+- **Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Chương trình | Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|---|
+| Thẻ học, video dạy bé đọc | Một thử nghiệm ngẫu nhiên, 117 trẻ 9–18 tháng, một bộ sản phẩm [NG-162] | Trẻ **không học đọc được** từ bộ sản phẩm | Vừa: một thử nghiệm, một sản phẩm. Thẻ Glenn Doman: **chưa có thử nghiệm có đối chứng** |
+| "Não phải", "phong cách học" | Khảo sát giáo viên; tổng quan về phong cách học [NG-164] [NG-165] | Chưa có bằng chứng dạy theo "kiểu não" hay "phong cách học" giúp học tốt hơn | Tổng quan: **chưa có cơ sở bằng chứng đủ**; chưa phải mọi dạng đã được kiểm tra |
+| Nghe Mozart | Phân tích gộp khoảng 40 nghiên cứu, chủ yếu người lớn [NG-167] | Không có lợi ích riêng cho khả năng không gian | Không có nghiên cứu trên trẻ nhỏ |
+| Sinh trắc vân tay | Chỉ có báo chí; chưa có nghiên cứu khoa học nào được kiểm [NG-169] [NG-170] | **Không có bằng chứng** vân tay đo được năng khiếu, trí thông minh, hay phát hiện tự kỷ | Không đo được độ chính xác vì **không có nghiên cứu**; kết quả **không dùng để chẩn đoán** |
+
+- **Rồi mới đề xuất học thử** (nếu phụ huynh vẫn muốn): quan sát con có vui không, có bị ép ngồi lâu không, có tăng giờ màn hình không; với sinh trắc vân tay: coi kết quả như **tham khảo vui**, không dùng để chọn hướng học hay để chẩn đoán; lo con có dấu hiệu chậm phát triển, tự kỷ thì hỏi bác sĩ. `đề xuất nội bộ`.
+- Song song, gợi ý hoạt động có bằng chứng ở KT-30405.
 
 ## Điều Pal không nên nói
 - "Con bạn thuộc kiểu não phải", "con học bằng mắt".

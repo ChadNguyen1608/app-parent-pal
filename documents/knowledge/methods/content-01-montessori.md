@@ -81,6 +81,12 @@
 - Bất kể trường nào, với trẻ cần thời gian làm quen: nếp sinh hoạt đều đặn, dễ đoán [NG-016].
 
 ## KT-30107 — Học thử: điều cần xem và cần hỏi
+**Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|
+| Nhiều nghiên cứu, gồm 3 nghiên cứu xổ số và 1 tổng quan 32 nghiên cứu, chủ yếu ở trường công Mỹ [NG-119]–[NG-124] | Học tập, kỹ năng điều hành tốt hơn trường thường ở **mức nhỏ**; không hại kỹ năng xã hội; **chưa có nghiên cứu** về trẻ nhút nhát; lợi thế có thể không kéo dài | Vừa: kết quả không đều giữa các phân tích; tác giả chính ủng hộ phương pháp; phụ thuộc trường làm đúng |
+
 - **Đối chiếu 5 thành phần cốt lõi** (KT-30101) [NG-126]: có lớp ghép tuổi không; có giáo cụ Montessori không; trẻ có tự chọn việc không; có khoảng làm việc dài không bị ngắt không; giáo viên được đào tạo ở đâu.
 - **Hỏi trường** (`đề xuất nội bộ`):
   - Giáo viên chủ nhiệm có chứng chỉ Montessori của tổ chức nào, khóa bao lâu?

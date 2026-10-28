@@ -28,6 +28,12 @@
 - **Ngủ an toàn luôn đứng trên mọi lịch:** nằm ngửa mỗi lần ngủ, mặt phẳng cứng, không đồ mềm, ngủ cùng phòng nhưng không chung giường [NG-026]. Chi tiết: `content-07-luyen-ngu.md`.
 
 ## Có thể hợp, có thể khó; thử
+**Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|
+| **Không có nghiên cứu** đánh giá EASY hay lịch Gina Ford | Chưa có bằng chứng giúp bé ăn, ngủ tốt hơn | Không đo được vì không có nghiên cứu |
+
 > `đề xuất nội bộ`, chờ bác sĩ nhi duyệt.
 - **Có thể hợp:** gia đình muốn ngày có nếp, nhiều người cùng chăm cần cùng một cách làm.
 - **Cần cẩn thận:** trẻ sơ sinh, trẻ nhẹ cân, mẹ đang tạo nguồn sữa; không để lịch thay cho tín hiệu đói của con.

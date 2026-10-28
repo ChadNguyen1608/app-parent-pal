@@ -55,12 +55,12 @@ Kết hợp mức quan tâm và mức rủi ro:
 
 | Mức | Phương pháp | Trạng thái trong kho |
 |---|---|---|
-| **Cao** | Tiếng Anh cho bé, song ngữ; phonics; **toán tư duy**; **tiền tiểu học** (học trước lớp 1); STEM; Montessori | Đã có bài. **Còn mỏng:** "toán tư duy" (chưa có mô tả, đánh giá chương trình ở Việt Nam); tiền tiểu học (mới có quy định, chưa có hướng dẫn chuẩn bị theo nguồn) |
+| **Cao** | Tiếng Anh cho bé, song ngữ; phonics; **toán tư duy**; **tiền tiểu học** (học trước lớp 1); STEM; Montessori | Đã có bài. Toán tư duy, tiền tiểu học: bài riêng (28/10, chưa kiểm chứng độc lập); **còn thiếu** nghiên cứu ở Việt Nam |
 | **Cao vì an toàn** | Ngủ chung giường; bơi sớm; quấn chũn; ăn dặm (hóc) | Đã có bài |
 | Trung bình | Kumon, bàn tính, toán Singapore; luyện ngủ; sinh trắc vân tay; BLW; kỷ luật tích cực; EASY | Đã có bài |
 | Thấp | Reggio, Waldorf, HighScope; ăn dặm kiểu Nhật, 3 in 1; Glenn Doman, Shichida, Tomatis, kích hoạt não giữa; gentle parenting, kiểu Nhật, kiểu Do Thái | Đã có bài; rà soát sau |
 
-**Đề xuất đợt tìm nguồn tiếp theo:** các chương trình "toán tư duy" ở Việt Nam (mô tả, đánh giá); chuẩn bị vào lớp 1 (tiền tiểu học) theo nguồn chính thức; lấy số lượt tìm tuyệt đối khi có công cụ từ khóa.
+**Đề xuất tiếp theo:** kiểm chứng độc lập bài toán tư duy, tiền tiểu học; lấy số lượt tìm tuyệt đối khi có công cụ từ khóa.
 
 ## Cách lấy lại
 Mở Google Trends, Việt Nam, 12 tháng, so sánh "montessori" với 4 từ khóa khác, đọc mức trung bình. Lặp lại 6–12 tháng một lần; ghi ngày lấy.

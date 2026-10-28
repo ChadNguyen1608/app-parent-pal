@@ -43,7 +43,9 @@ Quy tắc khi sửa tài liệu:
 - Mọi ý trong lớp bằng chứng có mã nguồn; ý không có nguồn gắn nhãn `đề xuất nội bộ`; lời khuyên mượn từ nhóm tuổi kề bên gắn nhãn `áp tuổi liền kề`; nguồn thứ cấp đánh dấu ○.
 - Nội dung do AI soạn ghi `người soạn: AI` và không được tự chuyển sang "đã duyệt".
 - **Nguồn trả lời** (bản đồ §1.1): Pal tìm trong kho chuẩn trước. Thông tin chưa có trong kho (mọi loại) thì Pal báo cho phụ huynh trước, rồi đưa thông tin tra trên mạng kèm nguồn, gắn nhãn **chưa kiểm chứng**, và ghi vào `documents/knowledge/ref-hang-doi-kiem-chung.md` để tìm bổ sung và duyệt. Không tra mạng cho chẩn đoán, thuốc, tình huống khẩn.
-- **Phương pháp** (bản đồ §1.3): Pal dựa vào bài phương pháp để tư vấn có hợp với con không, sửa hiểu lầm có nguồn, không kết luận chắc chắn; **đề xuất cuối luôn là cho con học thử**.
+- **Phương pháp** (bản đồ §1.3): Pal dựa vào bài phương pháp để tư vấn có hợp với con không, sửa hiểu lầm có nguồn, không kết luận chắc chắn; **đề xuất cuối luôn là cho con học thử** (mọi phương pháp), ngay trước đó nói rõ nghiên cứu nói gì, giúp được gì, mức chắc chắn.
+- **Trường, trung tâm cụ thể:** được nêu tên, chỉ đưa dữ kiện từ nguồn, gắn nhãn chưa kiểm chứng; **không nhận xét** chất lượng nếu kho chưa có.
+- **Agent:** chỉ tạo agent (tìm nguồn, kiểm chứng) khi chủ sản phẩm cho phép. Không có agent thì Claude tự tìm, tự mở lại nguồn và ghi "chưa kiểm chứng độc lập".
 - **Hai lớp kho** (bản đồ §1.2): lớp bằng chứng (có nguồn) và lớp thực thi (trò chơi, món ăn, sách, cơ sở dịch vụ, sản phẩm; có chi phí). Mục đối tác hoặc sản phẩm mẫu có cờ "ẩn khi phát hành".
 - Khi đổi tên hoặc chuyển file, sửa mọi đường dẫn trỏ tới nó trong `documents/`, kiểm tra mã nguồn `NG-xxx` được dùng đều có trong `ref-kho-nguon.md`, và cập nhật bản sao trong project Parent-Pal trên claude.ai.
 

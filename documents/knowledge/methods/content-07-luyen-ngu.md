@@ -48,6 +48,12 @@ AAP [NG-149]:
 - Túi ngủ không bó tay, cho cử động tự do thì dùng được lâu.
 
 ## Có thể hợp, có thể khó; thử
+**Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|
+| Tổng quan 52 nghiên cứu [NG-144]; thử nghiệm nhỏ ở Úc [NG-146] [NG-147] | Hơn 80% trẻ ngủ tốt hơn, giữ 3–6 tháng; không thấy hại hay lợi lâu dài đến 5–6 tuổi | Hiệu quả: khá chắc. An toàn lâu dài: các thử nghiệm nhỏ |
+
 > `đề xuất nội bộ`, chờ bác sĩ nhi duyệt.
 - **Có thể hợp:** con trên 6 tháng, khỏe, cha mẹ kiệt sức vì con thức đêm nhiều; cả nhà thống nhất được một cách.
 - **Chưa nên:** con ốm, mọc răng đau, vừa có thay đổi lớn (chuyển nhà, đi nhà trẻ); cha mẹ không thống nhất.

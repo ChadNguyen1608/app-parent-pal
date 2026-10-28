@@ -47,6 +47,12 @@
 - Các văn bản trên quy định việc của nhà trường, **không quy định trung tâm STEM tư** và không yêu cầu mua bộ đồ.
 
 ## KT-30305 — Có thể hợp, có thể khó; học thử
+**Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|
+| Tổng hợp 124 nghiên cứu ở học sinh phổ thông [NG-160]; mầm non: 5 nghiên cứu nhỏ [NG-159] | Phổ thông: kiến thức, kỹ năng tư duy tốt hơn. Mầm non: chưa chắc | Phổ thông: khá chắc. Mầm non: thấp |
+
 > `đề xuất nội bộ`, chờ chuyên gia duyệt.
 - **Dấu hiệu lớp STEM tốt** (rút từ Công văn 3089 và Chen 2026): trẻ được **tự làm, thử, sai, sửa**; có nhiệm vụ tìm tòi hoặc thiết kế; dùng vật liệu đời thường; làm theo nhóm.
 - **Dấu hiệu nên cân nhắc:** lớp chủ yếu xem màn hình hoặc làm theo mẫu từng bước; nặng về thi đấu, giải thưởng.

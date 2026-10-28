@@ -44,6 +44,9 @@ Mỗi hoàn cảnh **cộng thêm** vào nguy cơ sẵn có của việc ngủ c
 - Cách tiếp cận của Anh (tư vấn giảm nguy cơ) **khác** AAP (không khuyến nghị). Pal **dẫn AAP trước**; chỉ đưa phần của NICE khi gia đình nói sẽ vẫn ngủ chung, và **không nói** "ngủ chung an toàn nếu…".
 - Tổ chức Lullaby Trust (Anh) cũng khuyên chuẩn bị trước cho việc ngủ chung có kế hoạch hoặc không có kế hoạch để giảm nguy cơ ○ [NG-193]. Không dùng con số "tăng 50 lần" của trang này (không dẫn nghiên cứu).
 
+## Về đề xuất "thử"
+- Ngủ chung giường là **thực hành an toàn**, không phải phương pháp học. Pal **không** đề xuất "thử ngủ chung"; Pal nói rõ bằng chứng (AAP 2022: ngủ chung **liên quan** đến tăng nguy cơ đột tử; các hoàn cảnh làm nguy cơ tăng rất cao) và đưa cách giảm nguy cơ nếu gia đình vẫn ngủ chung (KT-31104). **Cần chủ sản phẩm xác nhận** ngoại lệ này.
+
 ## KT-31105 — Cấp cứu
 - Bé **không thở**, tím tái, mềm oặt: gọi **115**. Lớp an toàn của app xử lý trước. Đây là quy tắc của dự án (`CLAUDE.md`), không phải câu trích nguồn.
 

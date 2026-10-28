@@ -72,8 +72,8 @@ Quy tắc nội dung ở bản đồ §1.3; dữ liệu ở `documents/knowledge
 | 2 | Phương pháp là gì | Các thành phần cốt lõi, viết ngắn, để phụ huynh nhận ra trường làm thật hay chỉ dùng tên |
 | 3 | Với con nhà mình | Điểm có thể hợp, điểm có thể khó, **theo đặc điểm của môi trường học**, không theo nhãn tính cách. Ghi rõ ý nào có nguồn, ý nào là gợi ý của Parent-Pal |
 | 4 | Việc cha mẹ làm được ngay | Điều có bằng chứng cho mối lo của phụ huynh, không phụ thuộc trường (ví dụ với trẻ chậm làm quen: nếp sinh hoạt đều, dễ đoán) |
-| 5 | **Học thử** | Luôn là đề xuất cuối. Điều cần quan sát; câu hỏi nên hỏi trường; Pal làm giúp (nhắc lịch học thử, ghi chép quan sát) |
-| 6 | Trường cụ thể (nếu được hỏi) | Bảng trường tra trên mạng, mỗi dòng gắn **chưa kiểm chứng**, kèm nguồn và ngày tra. Không xếp hạng trường. Nhắc hỏi lại học phí và các khoản thu thêm |
+| 5 | **Học thử** | Luôn là đề xuất cuối, **với mọi phương pháp**. Ngay trước đó, nói rõ bằng chứng: nghiên cứu nói gì, giúp được gì và không, mức chắc chắn (bản đồ §1.3 mục 6). Điều cần quan sát; câu hỏi nên hỏi trường; Pal làm giúp (nhắc lịch học thử, ghi chép quan sát) |
+| 6 | Trường cụ thể (nếu được hỏi) | Bảng trường tra trên mạng, mỗi dòng gắn **chưa kiểm chứng**, kèm nguồn và ngày tra. **Chỉ dữ kiện** (tên, địa chỉ, độ tuổi, học phí, chương trình trường tự giới thiệu); **không nhận xét** chất lượng, không xếp hạng, trừ khi kho có và đã duyệt (bản đồ §1.3 mục 7). Nhắc hỏi lại học phí và các khoản thu thêm |
 | 7 | Giải thích và nguồn | Để cuối cùng |
 
 ## 8. Còn mở

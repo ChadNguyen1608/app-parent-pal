@@ -80,6 +80,8 @@ documents/
 | `content-11-ngu-chung-giuong.md` | Ngủ chung giường | KT-31101–31105 |
 | `content-12-boi-som.md` | Bơi sớm | KT-31201–31203 |
 | `content-13-kich-hoat-nao-giua-tomatis-luyen-tri-nho.md` | Kích hoạt não giữa, Tomatis, luyện trí nhớ | KT-31301–31303 |
+| `content-14-toan-tu-duy.md` | "Toán tư duy", lớp toán cho trẻ mầm non, tiểu học | KT-31401–31404 |
+| `content-15-tien-tieu-hoc.md` | Tiền tiểu học, chuẩn bị vào lớp 1 | KT-31501–31504 |
 
 ## Thủ tục hành chính
 

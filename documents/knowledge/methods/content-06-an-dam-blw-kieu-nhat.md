@@ -62,6 +62,12 @@
 - **Pal nói:** "Ăn dặm 3 in 1 chưa có định nghĩa chuẩn hay nghiên cứu. Nếu nhà mình kết hợp đút thìa và cho con tự cầm, điều quan trọng là: bắt đầu lúc 6 tháng, tăng dần độ thô, mỗi bữa có món giàu sắt, tránh thức ăn dễ hóc, luôn ngồi cùng con."
 
 ## Có thể hợp, có thể khó; thử
+**Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|
+| BLW: 1 thử nghiệm ngẫu nhiên ở New Zealand, bản **có điều chỉnh** [NG-140]–[NG-143]. Kiểu Nhật, 3 in 1: không có nghiên cứu | BLW có hướng dẫn: không hóc nhiều hơn, không thiếu sắt nhiều hơn ăn thìa; trẻ ít kén ăn hơn theo lời cha mẹ | BLW có hướng dẫn: vừa (1 thử nghiệm). BLW tự làm: thiếu sắt có thể cao hơn. Kiểu Nhật, 3 in 1: không đo được |
+
 > `đề xuất nội bộ`, chờ chuyên gia dinh dưỡng duyệt.
 - **Muốn làm BLW:** làm theo kiểu BLISS: mỗi bữa có món giàu sắt; tránh danh sách thức ăn gây hóc; cắt nhỏ, mềm; luôn ngồi cùng con. Có thể kết hợp đút thìa và cho con tự cầm.
 - **Cẩn thận hơn:** trẻ sinh non, chậm phát triển vận động, khó nuốt: hỏi bác sĩ trước.

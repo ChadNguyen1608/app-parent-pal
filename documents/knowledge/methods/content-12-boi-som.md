@@ -31,6 +31,12 @@
 - **"Bé có phản xạ nín thở nên không sợ sặc"**: kho chưa có nguồn đã kiểm. Pal không nói về phản xạ này.
 
 ## Chọn lớp; thử
+**Trước khi đề xuất học thử, Pal nói rõ** (bản đồ §1.3 mục 6):
+
+| Nghiên cứu nói gì | Giúp được gì, không giúp được gì | Mức chắc chắn |
+|---|---|---|
+| AAP 2026 [NG-205] [NG-206]; WHO [NG-207] | Từ 1–4 tuổi, học bơi có thể giảm nguy cơ đuối nước; dưới 1 tuổi: **chưa có bằng chứng**; học bơi không thay giám sát | Vừa |
+
 > `đề xuất nội bộ`, chờ bác sĩ nhi duyệt.
 - **Dưới 1 tuổi:** chỉ lớp chơi nước **có bố mẹ xuống nước cùng**; hỏi bác sĩ trước nếu con có bệnh; hỏi về vệ sinh nước hồ, nhiệt độ nước, thời lượng buổi.
 - **Từ 1 tuổi:** hỏi giáo viên có chứng chỉ cứu hộ không, tỉ lệ người lớn trên trẻ, có dạy an toàn nước (không chỉ kỹ thuật bơi) không.

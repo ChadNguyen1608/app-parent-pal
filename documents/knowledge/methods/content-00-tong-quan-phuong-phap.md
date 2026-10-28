@@ -31,16 +31,19 @@
 | Ngủ chung giường | Nền | AAP **không thể khuyến nghị trong bất kỳ hoàn cảnh nào**; có các hoàn cảnh làm nguy cơ tăng rất cao | "Ngủ chung an toàn nếu…" | `content-11-ngu-chung-giuong.md` |
 | Bơi sớm | Nền | AAP: học bơi sau 1 tuổi; chưa có bằng chứng lớp bơi dưới 1 tuổi giảm đuối nước | "Biết bơi là yên tâm" | `content-12-boi-som.md` |
 | "Kích hoạt não giữa", Tomatis, luyện trí nhớ | 2 | Không có nghiên cứu có đối chứng (não giữa); không có bằng chứng hiệu quả (Tomatis, tự kỷ); luyện não không lan sang trí thông minh | "Bịt mắt đọc được chữ" | `content-13-kich-hoat-nao-giua-tomatis-luyen-tri-nho.md` |
+| "Toán tư duy" | 6 | Chưa có nghiên cứu về các chương trình ở Việt Nam; có bằng chứng hạn chế về dạy toán sớm (đếm ngón tay, toán mầm non) | "Toán tư duy phát triển trí não" | `content-14-toan-tu-duy.md` |
+| Tiền tiểu học | 17 | Chưa có nghiên cứu trực tiếp; lớp 1 không kiểm tra đầu vào; trường mầm non không được dạy trước | "Không biết chữ trước thì không theo kịp" | `content-15-tien-tieu-hoc.md` |
 
 ## Nguyên tắc chung khi Pal nói về phương pháp
 1. **Tên phương pháp trên biển hiệu chưa chắc là cách trường dạy.** Ở Mỹ, tên Montessori không được bảo hộ [NG-125]; lớp "Montessori pha trộn" cho kết quả như lớp thường [NG-120]. Pal hướng phụ huynh xem **các thành phần cốt lõi** của phương pháp.
 2. **Bằng chứng ở nước khác, trường khác.** Gần như mọi nghiên cứu ở Mỹ, Úc, New Zealand; chưa có nghiên cứu kết quả nào ở Việt Nam trong kho. Pal nói rõ điều này.
 3. **"Chưa có nghiên cứu" khác "đã chứng minh không hiệu quả".** Pal dùng đúng câu.
 4. **Nghiên cứu nhóm không kết luận được cho một đứa trẻ.** Pal đối chiếu đặc điểm của con với **đặc điểm của môi trường học**, gắn nhãn `đề xuất nội bộ` cho phần suy luận.
-5. **Đề xuất cuối luôn là cho con học thử** (với trường, lớp); với chương trình có tuyên bố chẩn đoán hay siêu năng lực (sinh trắc vân tay, kích hoạt não giữa), Pal không gợi ý học thử (chờ chủ sản phẩm xác nhận; xem `content-04-day-som-the-hoc-nao-phai-van-tay.md`).
-6. **An toàn luôn đứng trên phương pháp:** ngủ an toàn, phòng hóc [NG-026] [NG-039].
-7. **Điều có bằng chứng, không tốn tiền:** tương tác qua lại với con, đọc sách cùng con, chơi không thiết bị [NG-007] [NG-171] [NG-014].
+5. **Đề xuất cuối luôn là cho con học thử**, với **mọi** phương pháp. Ngay trước đó, Pal nói rõ **nghiên cứu nói gì, giúp được gì và không, mức chắc chắn** (bản đồ §1.3, người dùng chốt 28/10/2026). Mỗi bài có mục "Trước khi học thử, Pal nói rõ".
+6. **Trường, trung tâm cụ thể:** được nêu tên, chỉ đưa dữ kiện, **không nhận xét** chất lượng nếu kho chưa có (bản đồ §1.3 mục 7).
+7. **An toàn luôn đứng trên phương pháp:** ngủ an toàn, phòng hóc [NG-026] [NG-039].
+8. **Điều có bằng chứng, không tốn tiền:** tương tác qua lại với con, đọc sách cùng con, chơi không thiết bị [NG-007] [NG-171] [NG-014].
 
 ## Chưa có trong kho
-- Mô tả và đánh giá các chương trình "toán tư duy" ở Việt Nam; hướng dẫn chuẩn bị vào lớp 1 (tiền tiểu học) theo nguồn chính thức. Hai chủ đề này được tìm nhiều (`ref-muc-quan-tam-tim-kiem.md`).
+- Nghiên cứu đánh giá các chương trình "toán tư duy" ở Việt Nam; nghiên cứu Việt Nam về chuẩn bị vào lớp 1 (hàng đợi CK-014, CK-022).
 - Nghiên cứu ở Việt Nam về các phương pháp trên.

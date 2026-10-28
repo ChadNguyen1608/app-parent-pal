@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.12 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.13 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.13 (28/10):** theo quyết định của người dùng: đề xuất học thử cho **mọi** phương pháp, trước đó nói rõ bằng chứng (§1.3 mục 6); được nêu tên trường, chỉ dữ kiện, không nhận xét (§1.3 mục 7); chỉ dùng agent khi được cho phép (§8). Thêm bài "toán tư duy", "tiền tiểu học" (chưa kiểm chứng độc lập).
 - **v5.12 (28/10):** đợt 2 bài phương pháp (học thêm ở tuổi đi học, song ngữ, cách nuôi dạy, ngủ chung giường, bơi sớm, kích hoạt não giữa, Tomatis, luyện trí nhớ, ăn dặm 3 in 1); mã bài phương pháp đổi thành `KT-3FFNN`; thêm `ref-muc-quan-tam-tim-kiem.md` (Google Trends) để xếp ưu tiên.
 - **v5.11 (28/10):** theo quyết định của người dùng: mọi thông tin chưa có trong kho được tra trên mạng, gắn nhãn **chưa kiểm chứng** và ghi vào hàng đợi kiểm chứng (§1.1, `documents/knowledge/ref-hang-doi-kiem-chung.md`); thêm §1.3 cách Pal tư vấn "phương pháp X có hợp với con không" (đề xuất cuối luôn là học thử); thêm mẫu bài phương pháp (§7.9) và trường thông tin cho trường, lớp học (§7.6); soạn nội dung nháp các phương pháp (`documents/knowledge/methods/`).
 - **v5.10 (28/10):** soạn nội dung nháp 6–11 tuổi (`documents/knowledge/by-age/age-06-11-primary-school/`) theo quy trình mới: 3 agent tìm nguồn, 1 agent kiểm chứng độc lập, Claude tổng hợp; thêm thủ tục cho tiểu học; cập nhật lưới độ phủ và sổ quyết định phân loại.
@@ -91,8 +92,13 @@ Phụ huynh hay hiểu sai về phương pháp (ví dụ nghĩ một phương ph
 3. **Đối chiếu** đặc điểm của con với **đặc điểm của môi trường học** (ví dụ lớp ghép tuổi, tự chọn việc, ít giờ học tập trung cả lớp). Nói rõ điểm có thể hợp, điểm có thể khó, kèm nguồn.
 4. **Sửa hiểu lầm** nếu phụ huynh kỳ vọng điều mà bằng chứng không ủng hộ. Nói nhẹ nhàng, thẳng thắn, có nguồn; nói cả điều chưa được nghiên cứu.
 5. **Không kết luận chắc chắn** về một đứa trẻ. Một phương pháp tốt trên nghiên cứu nhóm chưa chắc hợp với từng em; tên phương pháp trên biển trường chưa chắc là cách trường thực sự dạy.
-6. **Đề xuất cuối luôn là cho con học thử**, kèm danh sách điều cần quan sát khi học thử (lấy từ bài phương pháp) và câu hỏi nên hỏi trường.
-7. Thông tin về trường cụ thể: theo quy tắc "khi kho chưa có thông tin" (§1.1), gắn nhãn chưa kiểm chứng.
+6. **Đề xuất cuối luôn là cho con học thử** (áp cho **mọi** phương pháp, kể cả phương pháp không có bằng chứng; người dùng chốt 28/10/2026), kèm danh sách điều cần quan sát khi học thử (lấy từ bài phương pháp) và câu hỏi nên hỏi trường.
+   - **Ngay trước đề xuất học thử, Pal nói rõ bằng chứng khoa học** của phương pháp, gồm ba điều: (a) **nghiên cứu nói gì**, loại nghiên cứu, ở đâu, trên trẻ nào; (b) **giúp được gì và không giúp được gì**; (c) **mức chắc chắn**, độ chính xác (ví dụ "chưa có nghiên cứu có đối chứng", "không đo được năng khiếu", "hiệu quả nhỏ, chỉ sau 1 năm").
+   - Với phương pháp không có bằng chứng hoặc có tuyên bố chẩn đoán (sinh trắc vân tay, kích hoạt não giữa), Pal vẫn để phụ huynh tự quyết, nhưng nói rõ điều trên và **không dùng kết quả của dịch vụ để chẩn đoán**; lo về phát triển thì hướng tới bác sĩ.
+7. **Thông tin về trường, trung tâm cụ thể** (người dùng chốt 28/10/2026): Pal **được nêu tên**, theo quy tắc "khi kho chưa có thông tin" (§1.1), gắn nhãn chưa kiểm chứng.
+   - Chỉ đưa **dữ kiện** lấy từ nguồn: tên, địa chỉ, độ tuổi nhận, học phí, chương trình trường tự giới thiệu, ngày tra, link.
+   - **Không đưa nhận xét** về chất lượng (tốt, uy tín, nên chọn, "dạy chuẩn"…), không xếp hạng, **trừ khi** nhận xét đó có trong kho (lớp thực thi, §7.6) và đã duyệt. Lời khen chê trên trang tổng hợp, mạng xã hội không phải dữ kiện.
+   - Pal có thể nói trường **tự giới thiệu** là theo phương pháp nào, và nhắc phụ huynh đối chiếu với các thành phần cốt lõi của phương pháp.
 
 ## 2. Nguyên tắc
 1. **Thứ bậc nguồn**
@@ -528,6 +534,8 @@ Nguồn · Người soạn · Trạng thái · Hạn rà soát
 
 ## 8. Kiểm soát chất lượng
 
+> **Dùng agent (người dùng chốt 28/10/2026):** chỉ tạo agent khi chủ sản phẩm cho phép. Khi không dùng agent, Claude tự tìm và tự mở lại nguồn; nội dung ghi rõ **"chưa kiểm chứng độc lập"** (chưa có người hoặc agent thứ hai mở lại nguồn) cho đến khi có lượt kiểm thứ hai.
+>
 > **Quy trình soạn nội dung (từ đợt 6–11 tuổi):** (1) agent tìm nguồn theo mảng, mỗi ý kèm trích nguyên văn và URL; (2) một agent **khác** mở lại từng nguồn, chấm độ tin cậy nguồn (1–5) và mức khớp của từng nhận định (khớp / khớp một phần / không khớp / không kiểm được), đánh dấu phần nội suy; (3) chỉ đưa vào kho nhận định "khớp", hoặc "khớp một phần" đã sửa theo ghi chú; điểm kiểm chứng ghi trong kho nguồn.
 
 ### 8.1 Tám câu kiểm tra khái niệm khi duyệt
@@ -618,6 +626,8 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 | Ngủ chung giường với trẻ dưới 1 tuổi | Nền (nhãn `phương_pháp`, `an_toàn`) | 1 | Nguy cơ tử vong đột ngột (28/10) |
 | Bơi cho trẻ nhỏ | Nền (nhãn `phương_pháp`, `an_toàn`) | 1 | Đuối nước (28/10) |
 | Kích hoạt não giữa, Tomatis, luyện trí nhớ | 2 (nhãn `phương_pháp`, `hiểu_lầm`) | 5 | Nhắm tới nhận thức, tập trung (28/10) |
+| "Toán tư duy" | 6 (nhãn `phương_pháp`) | 8 | Học tập (28/10) |
+| Lớp tiền tiểu học | 17 (nhãn `phương_pháp`) | 6 | Chuẩn bị vào lớp 1 là bước chuyển (28/10) |
 | Mạng xã hội | 11 | 3 | Môi trường số |
 | Quy định trường học (chương trình, đánh giá, dạy thêm) | 8 (nhãn `thủ_tục`) | 6 | Môi trường giáo dục |
 | Chia sẻ đồ chơi | 4 | 13 | Hành vi xã hội ở trẻ |
