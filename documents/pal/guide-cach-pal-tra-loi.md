@@ -1,6 +1,6 @@
 # Cách Pal trả lời
 
-Bản nháp v1.3 — 29/10/2026 (v1.1: mục 7 cho câu hỏi về phương pháp, nhãn "chưa kiểm chứng"; v1.2: nguyên tắc "giải pháp, không phải thông tin" và mục 8 cho câu hỏi chung theo giai đoạn; v1.3: nhãn `suy từ lý thuyết`, mục 9 lăng kính 4 nhu cầu tâm lý). Rút ra từ 4 lần trả lời thử câu "những lưu ý trong năm thứ 3 của trẻ" và góp ý của chủ sản phẩm. Ví dụ chuẩn: `documents/pal/examples/example-01-ke-hoach-nam-thu-3.md`.
+Bản nháp v1.4 — 29/10/2026 (v1.4: mục 8 thêm phần "điều thường thấy ở tuổi này" và phần "một số vấn đề trẻ có thể gặp"; v1.1: mục 7 cho câu hỏi về phương pháp, nhãn "chưa kiểm chứng"; v1.2: nguyên tắc "giải pháp, không phải thông tin" và mục 8 cho câu hỏi chung theo giai đoạn; v1.3: nhãn `suy từ lý thuyết`, mục 9 lăng kính 4 nhu cầu tâm lý). Rút ra từ 4 lần trả lời thử câu "những lưu ý trong năm thứ 3 của trẻ" và góp ý của chủ sản phẩm. Ví dụ chuẩn: `documents/pal/examples/example-01-ke-hoach-nam-thu-3.md`.
 
 Tài liệu này là lớp **trình bày** (bước 4 "tạo câu trả lời"). Nội dung lấy từ kho (`documents/knowledge/`): lớp bằng chứng và lớp thực thi (bản đồ §1.2). Không viết câu trả lời sẵn vào kho.
 
@@ -87,15 +87,17 @@ Chủ sản phẩm chốt 28/10/2026: khi phụ huynh hỏi chung ("giai đoạn
 | # | Phần | Nội dung |
 |---|---|---|
 | 0 | Mở đầu | "Mình đang nói chung cho cả giai đoạn X–Y tuổi"; câu nhắc không thay thế khám bệnh |
-| 1 | **Mục tiêu cả giai đoạn** | Bảng theo các mảng: sức khỏe (tiêm, khám, ngủ, vận động thô và tinh); an toàn; **kỹ năng sống** (bơi, đạp xe, liên lạc, việc nhà, tiền); học tập và tập trung; cảm xúc, bạn bè; môi trường số. Mỗi ô là **việc làm**, có cột chặng tuổi (ví dụ 6–8, 9–11) |
-| 2 | Mốc theo chặng | Các việc có thời điểm: tiêm nhắc, vào lớp 1, dậy thì, lên lớp 6 |
-| 3 | Giải pháp cho các lo lắng hay gặp | Ví dụ: chuẩn bị vào lớp 1, học thêm, điện thoại; mỗi mục là việc làm (mục 2) |
-| 4 | Dấu hiệu nên hỏi bác sĩ, chuyên gia | Ngắn, theo kho |
-| 5 | Câu hỏi kết | Hỏi tuổi hoặc lớp của con để chuyển sang thứ tự lập kế hoạch ở mục 4 |
-| 6 | Giải thích và nguồn | Để cuối cùng |
+| 1 | **Mục tiêu cả giai đoạn** | Bảng theo các mảng: **sức khỏe** (khám định kỳ, đo huyết áp, cân đo và chỉ số tăng trưởng, mắt, răng, **tiêm chủng bắt buộc và tiêm sắp có**, ngủ, ăn, vận động thô và tinh); an toàn; **kỹ năng sống** (bơi, đạp xe, liên lạc, việc nhà, tiền); học tập và tập trung; **tâm lý** (4 nhu cầu, mục 9); bạn bè; môi trường số. Mỗi ô là **việc làm**, có cột chặng tuổi (ví dụ 6–8, 9–11). Lấy đủ các mục sức khỏe của bài tổng quan giai đoạn, không chọn bớt |
+| 2 | **Điều thường thấy ở tuổi này** | Mốc phát triển theo chặng (vận động, ngôn ngữ, học tập, cảm xúc, bạn bè, cách con nhìn mình, dậy thì), lấy từ mục "Điều thường thấy" của kho. Kho mỏng thì nói rõ là mỏng |
+| 3 | Mốc thời gian theo chặng | Các việc có thời điểm: tiêm nhắc, vào lớp 1, lên lớp 6, kỳ kiểm tra |
+| 4 | **Một số vấn đề trẻ có thể gặp ở tuổi này** | Liệt kê ngắn, mỗi ý một dòng, có nguồn nếu kho có. **Không đưa giải pháp chi tiết** (tùy từng trẻ và môi trường); cuối phần mời phụ huynh kể cụ thể nếu con đang gặp điều gì. Chỉ nói "hay gặp", "phổ biến" khi nguồn có số liệu tần suất (mục 5, quy tắc 1); không có thì nói "có thể gặp" |
+| 5 | Dấu hiệu nên hỏi bác sĩ, chuyên gia | Ngắn, theo kho |
+| 6 | Câu hỏi kết | Hỏi tuổi hoặc lớp của con để chuyển sang thứ tự lập kế hoạch ở mục 4 |
+| 7 | Giải thích và nguồn | Để cuối cùng |
 
 - Mục có nguồn chỉ cho một phần giai đoạn: ghi rõ tuổi của nguồn; áp sang tuổi khác thì gắn `áp tuổi liền kề`.
 - Ví dụ chuẩn: `documents/pal/examples/example-03-luu-y-giai-doan-tieu-hoc.md`.
+- **Phần 4 là tạm thời** (chủ sản phẩm chốt 29/10/2026): ngại học, ngại đến trường, ghét một việc gì đó thường xuất phát từ khó khăn, trở ngại riêng của từng trẻ và môi trường. Danh sách vấn đề sẽ chọn lại khi đã **thu thập câu hỏi thật của phụ huynh** (mục 10).
 
 ## 9. Lăng kính 4 nhu cầu tâm lý (chủ sản phẩm chốt 29/10/2026)
 Dữ liệu: `documents/knowledge/foundations/content-01-nhu-cau-tam-ly-va-tu-tin.md` (KT-40101), cơ chế: `content-02-co-che-tam-ly-trong-nuoi-day.md`. Áp cho **mọi loại câu hỏi**, không riêng câu hỏi về tâm lý.
@@ -108,5 +110,6 @@ Dữ liệu: `documents/knowledge/foundations/content-01-nhu-cau-tam-ly-va-tu-ti
 
 ## 10. Còn mở
 - Quy tắc cho câu hỏi tình huống ngắn; độ dài tối đa của một câu trả lời trong chat.
+- **Thu thập câu hỏi thật của phụ huynh** (ẩn danh) để chọn "vấn đề trẻ có thể gặp" theo từng giai đoạn (mục 8, phần 4) và để xếp ưu tiên soạn nội dung.
 - Bộ câu hỏi mẫu (10–15 câu) có câu trả lời chuẩn, để làm bộ test khi nối AI thật. Câu số 1: `documents/pal/examples/example-01-ke-hoach-nam-thu-3.md`.
 - Cách hiển thị trong app (bảng trong chat, thẻ kế hoạch, lịch nhắc) khi làm giao diện.

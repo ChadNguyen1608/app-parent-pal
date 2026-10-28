@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.15 — 29/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.16 — 29/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.16 (29/10):** cách Pal trả lời v1.4: câu hỏi chung theo giai đoạn có thêm phần "điều thường thấy ở tuổi này" và phần "một số vấn đề trẻ có thể gặp" (liệt kê, không giải pháp chi tiết, tạm thời cho đến khi thu thập câu hỏi thật của phụ huynh); hàng đợi CK-028.
 - **v5.15 (29/10):** theo quyết định của người dùng: thêm nhãn **`suy từ lý thuyết`** (§2 mục 3a); thêm **lớp kiến thức nền tâm lý** (`documents/knowledge/foundations/`, §7.10) với lăng kính 4 nhu cầu tâm lý (an toàn, gắn kết và được ghi nhận, năng lực, tự chủ); nhóm 3 thêm chủ đề con cố định thứ tư **"hình ảnh bản thân và tự tin"** (§3.2); "lòng tự trọng" chuyển từ nhóm 4 sang nhóm 3 (§9.2); **không chấm điểm tự tin**, chỉ quan sát mô tả. Nguồn NG-252 đến NG-321, chưa kiểm chứng độc lập.
 - **v5.14 (28/10):** nội dung 6–11 thêm mục 11 kỹ năng sống và vận động (bơi, đạp xe, điện thoại liên lạc, số khẩn cấp, vận động tinh, việc nhà theo tuổi) và "làm quen nhẹ nhàng trước lớp 1"; cách Pal trả lời v1.2: giải pháp thay vì thông tin, câu hỏi chung theo giai đoạn liệt kê mục tiêu cả giai đoạn. Nguồn NG-244 đến NG-251, chưa kiểm chứng độc lập.
 - **v5.13 (28/10):** theo quyết định của người dùng: đề xuất học thử cho **mọi** phương pháp, trước đó nói rõ bằng chứng (§1.3 mục 6); được nêu tên trường, chỉ dữ kiện, không nhận xét (§1.3 mục 7); chỉ dùng agent khi được cho phép (§8). Thêm bài "toán tư duy", "tiền tiểu học" (đã qua một lượt kiểm chứng độc lập, được cho phép, và sửa theo ghi chú).
@@ -690,6 +691,7 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 11. Hàng đợi kiểm chứng (§1.1): chọn người duyệt và nhịp duyệt; khi có app, chuyển thành bảng dữ liệu có màn hình duyệt.
 12. Danh mục trường, lớp (§7.6): tiêu chí đưa một trường vào lớp thực thi; cách kiểm học phí hằng năm; có dùng chứng nhận của tổ chức phương pháp làm tiêu chí không.
 13. **Tâm lý trẻ (29/10):** tìm nguồn hiện hành cho tuổi 11–18 (WHO, AAP, CDC); chuyên gia tâm lý phát triển duyệt lớp kiến thức nền và danh sách dấu hiệu quan sát (KT-40104); kiểm chứng độc lập các nguồn NG-252 đến NG-321 (hàng đợi CK-026, CK-027); thêm bảng "nhu cầu tâm lý ở tuổi này" cho các giai đoạn còn lại khi soạn nội dung.
+14. **Câu hỏi thật của phụ huynh (29/10):** khi có app hoặc khảo sát, thu thập câu hỏi (ẩn danh) để chọn "vấn đề trẻ có thể gặp" theo giai đoạn và xếp ưu tiên soạn nội dung.
 
 ## 12. Ghi chú về file tham khảo "Khung 0–18 tuổi"
 - **Dùng:** cấu trúc theo giai đoạn.
