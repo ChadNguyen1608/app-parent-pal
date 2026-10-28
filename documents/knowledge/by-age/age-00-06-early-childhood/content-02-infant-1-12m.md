@@ -2,7 +2,7 @@
 
 - **Giai đoạn:** G2 · **Chặng:** 0b · **Tuổi:** 1–12 tháng
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 27/10/2026
-- Quy ước nguồn, nhãn và ký hiệu ○: xem `00-tong-quan.md`.
+- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-overview-0-6y.md`.
 
 ## Ở tuổi này con cần gì (tóm tắt)
 
@@ -137,12 +137,12 @@ Thêm:
 - **Tập xa con những lúc ngắn ở nhà**, để con dần thấy không có gì đáng sợ xảy ra khi cha mẹ vắng mặt.
 - Với **người trông trẻ mới**, đừng chỉ gửi con rồi đi ngay.
 
-**Gắn bó:** áp dụng 5 bước "giao và đáp" (`00-tong-quan.md`, mục 4.1); ôm ấp, bế con, chơi khi con tỉnh táo [NG-003].
+**Gắn bó:** áp dụng 5 bước "giao và đáp" (`content-00-overview-0-6y.md`, mục 4.1); ôm ấp, bế con, chơi khi con tỉnh táo [NG-003].
 
 ## 7 — Gia đình · 8 — Nhà trẻ · 17 — Bước chuyển: cha mẹ đi làm lại
 `KT-0209` · Nhóm chính: 17 · Nhóm phụ: 7, 8
 
-- Nghỉ thai sản của mẹ từ 1/7/2026 là **6 tháng** (sinh con thứ hai: 7 tháng) ○ [NG-068]. Chi tiết: `09-thu-tuc-hanh-chinh.md`.
+- Nghỉ thai sản của mẹ từ 1/7/2026 là **6 tháng** (sinh con thứ hai: 7 tháng) ○ [NG-068]. Chi tiết: `documents/knowledge/procedures/`.
 - Trường mầm non nhận trẻ **từ 3 tháng tuổi**; trẻ 3–36 tháng học ở nhóm trẻ [NG-056].
 
 **Tùy hoàn cảnh:**
@@ -157,7 +157,7 @@ Thêm:
 - **Tùy hoàn cảnh:** cha mẹ làm xa có thể gọi video với con, vì gọi video được AAP loại trừ khỏi khuyến nghị tránh màn hình [NG-029].
 
 ## Dấu hiệu nguy hiểm: đi khám ngay
-Từ 2 tháng tuổi, khi con ốm mà có: không uống hoặc bú được, nôn ra tất cả, co giật, li bì hoặc mất ý thức [NG-036]. Xem `00-tong-quan.md`, mục 5.
+Từ 2 tháng tuổi, khi con ốm mà có: không uống hoặc bú được, nôn ra tất cả, co giật, li bì hoặc mất ý thức [NG-036]. Xem `content-00-overview-0-6y.md`, mục 5.
 
 ## Chưa có nội dung có nguồn
 - **3 Cảm xúc:** khóc đêm, cách dỗ con.

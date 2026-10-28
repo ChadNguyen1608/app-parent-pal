@@ -2,7 +2,7 @@
 
 - **Giai đoạn:** G2 · **Chặng:** 2 · **Tuổi:** 18–24 tháng
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 27/10/2026
-- Quy ước nguồn, nhãn và ký hiệu ○: xem `00-tong-quan.md`.
+- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-overview-0-6y.md`.
 
 ## Ở tuổi này con cần gì (tóm tắt)
 
@@ -34,7 +34,7 @@ Việc **khoảng 75% trẻ trở lên** làm được ở 18 tháng [NG-001] [N
 ## Nền — An toàn
 `KT-0402` · Nhóm chính: Nền · Nhãn: `an_toàn`
 
-- Các việc "chống trẻ" cho tuổi 1–2 vẫn áp dụng [NG-004]: chắn cầu thang, bịt ổ điện, quay cán nồi vào trong, khóa thuốc và hóa chất, không để con một mình gần nước hay trong xe. Chi tiết: `03-12-18-thang.md`, mục Nền.
+- Các việc "chống trẻ" cho tuổi 1–2 vẫn áp dụng [NG-004]: chắn cầu thang, bịt ổ điện, quay cán nồi vào trong, khóa thuốc và hóa chất, không để con một mình gần nước hay trong xe. Chi tiết: `content-03-toddler-12-18m.md`, mục Nền.
 - Tránh thức ăn dễ gây hóc đến 4 tuổi trở lên [NG-039].
 - Trẻ có thể đuối nước chỉ trong khoảng 2,5 cm nước [NG-042].
 
@@ -75,7 +75,7 @@ Theo Thông tư 52/2025/TT-BYT [NG-032]:
   - không thích bỉm ướt;
   - tự đòi đi vệ sinh;
   - muốn mặc quần lót "như người lớn".
-- **Chưa cần kỳ vọng:** tuổi trung bình bắt đầu tập ở Mỹ là **2–3 tuổi** [NG-034]. Trẻ có thể thành công, nhưng **theo nhịp của riêng con** [NG-034]. Chi tiết: `05-2-3-tuoi.md`.
+- **Chưa cần kỳ vọng:** tuổi trung bình bắt đầu tập ở Mỹ là **2–3 tuổi** [NG-034]. Trẻ có thể thành công, nhưng **theo nhịp của riêng con** [NG-034]. Chi tiết: `content-05-toddler-2-3y.md`.
 
 ## 2 — Nhận thức và tư duy · 12 — Chơi
 `KT-0407` · Nhóm chính: 2 · Nhóm phụ: 12
@@ -97,7 +97,7 @@ Theo Thông tư 52/2025/TT-BYT [NG-032]:
 - **Khi gửi con đi nhà trẻ hoặc cho người trông mới** (nguồn năm 2009, cần kiểm [NG-017]):
   - làm quen dần, không chỉ gửi rồi đi ngay;
   - không làm ầm lên khi rời đi; con thường ngừng khóc vài phút sau đó.
-- Thủ tục và học phí: `09-thu-tuc-hanh-chinh.md`.
+- Thủ tục và học phí: `documents/knowledge/procedures/`.
 
 ## 7 — Gia đình
 `KT-0409` · Nhóm chính: 7
@@ -119,4 +119,4 @@ Theo Thông tư 52/2025/TT-BYT [NG-032]:
 - **13 Giá trị.**
 - **14 Kỹ năng sống.**
 - **17 Bước chuyển:** có em.
-- **3 Cảm xúc:** cắn, đánh, bắt đầu ăn vạ. Nguồn chung về ăn vạ: `05-2-3-tuoi.md`.
+- **3 Cảm xúc:** cắn, đánh, bắt đầu ăn vạ. Nguồn chung về ăn vạ: `content-05-toddler-2-3y.md`.

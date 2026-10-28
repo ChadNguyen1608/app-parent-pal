@@ -2,7 +2,7 @@
 
 - **Giai đoạn:** G2 · **Chặng:** 3 · **Tuổi:** 24–36 tháng
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 27/10/2026
-- Quy ước nguồn, nhãn và ký hiệu ○: xem `00-tong-quan.md`.
+- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-overview-0-6y.md`.
 
 ## Ở tuổi này con cần gì (tóm tắt)
 
@@ -47,7 +47,7 @@ Việc **khoảng 75% trẻ trở lên** làm được [NG-001] [NG-002]:
 Thêm:
 - Tránh thức ăn dễ gây hóc đến 4 tuổi trở lên [NG-039].
 - **Khóa cất thuốc, chất tẩy rửa và chất độc** [NG-004]. Lời khuyên này của CDC viết cho trẻ 1–2 tuổi: `áp tuổi liền kề`. Ngộ độc phần lớn xảy ra tại nhà khi người lớn ở gần nhưng mất tập trung [NG-040].
-- Đi xe máy: luật yêu cầu **người được chở trên xe mô tô, xe gắn máy phải đội mũ bảo hiểm** [NG-043]. Chi tiết về trẻ em: `08-5-6-tuoi.md`, mục Nền.
+- Đi xe máy: luật yêu cầu **người được chở trên xe mô tô, xe gắn máy phải đội mũ bảo hiểm** [NG-043]. Chi tiết về trẻ em: `content-08-preschool-5-6y.md`, mục Nền.
 
 ## 1 — Sức khỏe và thể chất
 
@@ -56,7 +56,7 @@ Thêm:
 
 - **Đồ uống:** cho con **sữa không đường hoặc nước lọc** thay cho nước ngọt có ga, nước thể thao, nước ép [NG-023]. Nếu cho nước ép, **tối đa 1 ly nhỏ** (khoảng 120–180 ml) mỗi ngày [NG-023]. Trang AAP này viết cho trẻ mẫu giáo: `áp tuổi liền kề`.
 - WHO khuyên người lớn và trẻ em giữ **đường tự do dưới 10% năng lượng** mỗi ngày [NG-022].
-- **Kén ăn:** cần nếm 10 lần trở lên; không ép, không phạt; một bữa chung cho cả nhà [NG-024]. Chi tiết: `04-18-24-thang.md`.
+- **Kén ăn:** cần nếm 10 lần trở lên; không ép, không phạt; một bữa chung cho cả nhà [NG-024]. Chi tiết: `content-04-toddler-18-24m.md`.
 
 **Tùy hoàn cảnh:**
 - **Ông bà hay cho kẹo, nước ngọt:** `đề xuất nội bộ` Pal giúp cha mẹ nói chuyện với ông bà bằng thông tin của WHO và AAP ở trên, không quy lỗi cho ông bà.
@@ -118,13 +118,13 @@ Thêm:
 `KT-0509` · Nhóm chính: 5 · Nhóm phụ: 1
 
 - Tuổi trung bình bắt đầu tập ở Mỹ: **2–3 tuổi**. Phần lớn trẻ ở Mỹ tự đi vệ sinh được **trước 4 tuổi** [NG-034]. Đây là số liệu Mỹ, chưa có số liệu Việt Nam.
-- Bắt đầu khi con có **dấu hiệu sẵn sàng** (`04-18-24-thang.md`) [NG-034]. Trẻ thành công **theo nhịp của riêng con** [NG-034].
+- Bắt đầu khi con có **dấu hiệu sẵn sàng** (`content-04-toddler-18-24m.md`) [NG-034]. Trẻ thành công **theo nhịp của riêng con** [NG-034].
 - Ở 30 tháng, con **tự cởi vài món đồ** và **làm theo nếp sinh hoạt đơn giản** [NG-002].
 
 ## 7 — Gia đình
 `KT-0510` · Nhóm chính: 7
 
-- Kỷ luật không bạo lực, khen hành vi tốt, đặt luật trước và nhất quán [NG-013]. Xem `00-tong-quan.md`, mục 4.4.
+- Kỷ luật không bạo lực, khen hành vi tốt, đặt luật trước và nhất quán [NG-013]. Xem `content-00-overview-0-6y.md`, mục 4.4.
 
 ## 11 — Môi trường số
 `KT-0511` · Nhóm chính: 11

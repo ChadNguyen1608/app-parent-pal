@@ -2,7 +2,7 @@
 
 - **Giai đoạn:** G2 · **Chặng:** 0a · **Tuổi:** 0–1 tháng
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 27/10/2026
-- Quy ước nguồn, nhãn và ký hiệu ○: xem `00-tong-quan.md`.
+- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-overview-0-6y.md`.
 
 ## Ở tuổi này con cần gì (tóm tắt)
 
@@ -28,7 +28,7 @@
 - **Không để ai hút thuốc trong nhà** [NG-003].
 - Không để con chơi với thứ có thể **che mặt** con [NG-003].
 - **Không mang đồ ăn, đồ uống nóng** gần con hoặc khi đang bế con [NG-003].
-- Đi ô tô: ghế an toàn quay mặt về phía sau, đặt ở hàng ghế sau [NG-003]. Quy định Việt Nam về ghế ô tô cho trẻ: xem `08-5-6-tuoi.md`, mục Nền.
+- Đi ô tô: ghế an toàn quay mặt về phía sau, đặt ở hàng ghế sau [NG-003]. Quy định Việt Nam về ghế ô tô cho trẻ: xem `content-08-preschool-5-6y.md`, mục Nền.
 
 **Tùy hoàn cảnh:**
 - **Nhà chật, cả nhà ngủ chung một phòng:** khuyến nghị "cùng phòng, không cùng giường" vẫn áp dụng; con nằm cũi hoặc nôi riêng đặt trong phòng [NG-026]. Cách sắp xếp cụ thể khi không có cũi: `đề xuất nội bộ`, cần bác sĩ nhi duyệt.
@@ -93,16 +93,16 @@
 **Cha mẹ có thể làm:**
 - **Ôm ấp, bế con** nhiều [NG-003].
 - **Chơi với con khi con tỉnh táo và thư thả** [NG-003].
-- Áp dụng 5 bước "giao và đáp" (`00-tong-quan.md`, mục 4.1).
+- Áp dụng 5 bước "giao và đáp" (`content-00-overview-0-6y.md`, mục 4.1).
 
 ## 7 — Gia đình và chăm sóc
 `KT-0108` · Nhóm chính: 7 · Nhóm phụ: Nền
 
-- Giai đoạn sau sinh là lúc **gần 1 trên 5 phụ nữ** có thể gặp vấn đề sức khỏe tâm thần [NG-051]. Xem `00-tong-quan.md`, mục 4.5.
+- Giai đoạn sau sinh là lúc **gần 1 trên 5 phụ nữ** có thể gặp vấn đề sức khỏe tâm thần [NG-051]. Xem `content-00-overview-0-6y.md`, mục 4.5.
 - Người bố là nguồn lực quan trọng cho sự phát triển của con, nhất là trong 1.000 ngày đầu [NG-055].
 - **Tùy hoàn cảnh:**
   - **Bố đi làm xa hoặc mẹ chăm con một mình:** `đề xuất nội bộ` Pal hỏi thăm chính phụ huynh, không chỉ hỏi về con.
-- **Thủ tục:** đăng ký khai sinh, thẻ bảo hiểm y tế, nghỉ thai sản của mẹ và bố: xem `09-thu-tuc-hanh-chinh.md`.
+- **Thủ tục:** đăng ký khai sinh, thẻ bảo hiểm y tế, nghỉ thai sản của mẹ và bố: xem `documents/knowledge/procedures/`.
 
 ## 11 — Môi trường số
 `KT-0109` · Nhóm chính: 11

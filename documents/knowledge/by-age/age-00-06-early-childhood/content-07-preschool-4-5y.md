@@ -2,7 +2,7 @@
 
 - **Giai đoạn:** G2 · **Chặng:** 5 · **Tuổi:** 48–60 tháng
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 27/10/2026
-- Quy ước nguồn, nhãn và ký hiệu ○: xem `00-tong-quan.md`.
+- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-overview-0-6y.md`.
 
 ## Ở tuổi này con cần gì (tóm tắt)
 
@@ -35,7 +35,7 @@ Việc **khoảng 75% trẻ trở lên** làm được ở 4 tuổi [NG-001] [NG
 
 **Cha mẹ có thể làm:**
 - CDC, 3–5 tuổi [NG-006]: giải thích vì sao tránh xa đường xe; đội mũ bảo hiểm khi đạp xe ba bánh; để mắt mọi lúc khi con chơi ngoài trời; dạy con bơi và luôn để mắt khi con gần nước; **dạy con cách an toàn với người lạ**.
-- **An toàn cơ thể:** tên đúng các bộ phận; kể với người lớn tin cậy; không ép con ôm hôn [NG-047]. Chi tiết: `06-3-4-tuoi.md`.
+- **An toàn cơ thể:** tên đúng các bộ phận; kể với người lớn tin cậy; không ép con ôm hôn [NG-047]. Chi tiết: `content-06-preschool-3-4y.md`.
 - **Hóc:** thức ăn nguy cơ cao tránh **đến 4 tuổi hoặc lâu hơn, tùy mức phát triển của từng trẻ** [NG-039]. **Bóng bay** vẫn có nguy cơ hóc **đến 8 tuổi** [NG-039].
 - **Ngộ độc:** dùng nước giặt dạng lỏng hoặc bột thay viên giặt đến khi mọi trẻ trong nhà đủ 6 tuổi [NG-040]; cất pin cúc xa tầm tay [NG-040].
 
