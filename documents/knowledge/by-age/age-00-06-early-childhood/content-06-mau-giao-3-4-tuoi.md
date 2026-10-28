@@ -2,7 +2,7 @@
 
 - **Giai đoạn:** G2 · **Chặng:** 4 · **Tuổi:** 36–48 tháng
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 27/10/2026
-- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-overview-0-6y.md`.
+- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-tong-quan-0-6-tuoi.md`.
 
 ## Ở tuổi này con cần gì (tóm tắt)
 
@@ -84,7 +84,7 @@ AAP khuyên [NG-047]:
 `KT-0606` · Nhóm chính: 3 · Nhóm phụ: 7
 
 - **Giúp con đi qua từng bước để giải quyết vấn đề** khi con bực bội [NG-006].
-- Ăn vạ: xem `content-05-toddler-2-3y.md`, mục 3 [NG-005] [NG-018].
+- Ăn vạ: xem `content-05-nha-tre-2-3-tuoi.md`, mục 3 [NG-005] [NG-018].
 
 ## 4 — Quan hệ
 `KT-0607` · Nhóm chính: 4
@@ -103,7 +103,7 @@ AAP khuyên [NG-047]:
 
 - **Rõ ràng và nhất quán** khi kỷ luật con [NG-006].
 - **Mỗi khi nói "không", nói tiếp điều con nên làm thay vào đó** [NG-006].
-- Kỷ luật không bạo lực: `content-00-overview-0-6y.md`, mục 4.4.
+- Kỷ luật không bạo lực: `content-00-tong-quan-0-6-tuoi.md`, mục 4.4.
 
 ## 8 — Giáo dục · 17 — Vào mẫu giáo
 `KT-0610` · Nhóm chính: 17 · Nhóm phụ: 8, 3

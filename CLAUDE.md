@@ -26,11 +26,11 @@ Mục lục và quy ước đặt tên: `documents/README.md`.
 
 | File, thư mục | Nội dung |
 |---|---|
-| `documents/knowledge/spec-knowledge-map.md` | Bản đồ bộ kiến thức: phạm vi, nguyên tắc, khung 17 nhóm, trục tuổi, lưới độ phủ, cấu trúc dữ liệu, hai lớp kho, kiểm soát chất lượng. **Đọc trước khi viết hay xếp bất kỳ nội dung lời khuyên nào** |
-| `documents/knowledge/ref-sources.md` | Kho nguồn có mã `NG-xxx` |
+| `documents/knowledge/spec-ban-do-kien-thuc.md` | Bản đồ bộ kiến thức: phạm vi, nguyên tắc, khung 17 nhóm, trục tuổi, lưới độ phủ, cấu trúc dữ liệu, hai lớp kho, kiểm soát chất lượng. **Đọc trước khi viết hay xếp bất kỳ nội dung lời khuyên nào** |
+| `documents/knowledge/ref-kho-nguon.md` | Kho nguồn có mã `NG-xxx` |
 | `documents/knowledge/by-age/` | Nội dung kiến thức theo giai đoạn tuổi (hiện có `age-00-06-early-childhood/`, nháp, người soạn AI) |
 | `documents/knowledge/procedures/` | Thủ tục hành chính, xếp theo lĩnh vực (không theo tuổi) |
-| `documents/pal/guide-pal-answers.md` | Cách Pal trả lời câu hỏi lập kế hoạch |
+| `documents/pal/guide-cach-pal-tra-loi.md` | Cách Pal trả lời câu hỏi lập kế hoạch |
 | `documents/pal/examples/` | Ví dụ câu trả lời chuẩn |
 
 Quy tắc khi sửa tài liệu:
@@ -41,10 +41,10 @@ Quy tắc khi sửa tài liệu:
 - Nội dung do AI soạn ghi `người soạn: AI` và không được tự chuyển sang "đã duyệt".
 - **Nguồn trả lời** (bản đồ §1.1): Pal tìm trong kho chuẩn trước. Thủ tục hành chính chưa có trong kho thì Pal báo cho phụ huynh trước, rồi mới đưa thông tin tra trên mạng kèm nguồn.
 - **Hai lớp kho** (bản đồ §1.2): lớp bằng chứng (có nguồn) và lớp thực thi (trò chơi, món ăn, sách, cơ sở dịch vụ, sản phẩm; có chi phí). Mục đối tác hoặc sản phẩm mẫu có cờ "ẩn khi phát hành".
-- Khi đổi tên hoặc chuyển file, sửa mọi đường dẫn trỏ tới nó trong `documents/`, kiểm tra mã nguồn `NG-xxx` được dùng đều có trong `ref-sources.md`, và cập nhật bản sao trong project Parent-Pal trên claude.ai.
+- Khi đổi tên hoặc chuyển file, sửa mọi đường dẫn trỏ tới nó trong `documents/`, kiểm tra mã nguồn `NG-xxx` được dùng đều có trong `ref-kho-nguon.md`, và cập nhật bản sao trong project Parent-Pal trên claude.ai.
 
 ## Viết tài liệu
 
 - Viết tiếng Việt; tên tài liệu gốc và link nguồn giữ nguyên tiếng Anh.
-- Tên thư mục và tên file: tiếng Anh, chữ thường, nối bằng gạch ngang; tên file có **tiền tố theo loại** (`spec-`, `guide-`, `ref-`, `content-`, `procedure-`, `example-`). Chi tiết: `documents/README.md`.
+- Chữ thường, nối bằng gạch ngang. Tên thư mục bằng tiếng Anh. Tên file có **tiền tố theo loại** bằng tiếng Anh (`spec-`, `guide-`, `ref-`, `content-`, `procedure-`, `example-`) và **phần mô tả bằng tiếng Việt không dấu**, ví dụ `content-03-tap-di-12-18-thang.md`. Chi tiết: `documents/README.md`.
 - Câu ngắn, rõ; bảng cho dữ liệu nhiều chiều; không dùng ký hiệu khó hiểu mà không giải thích.

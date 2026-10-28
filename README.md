@@ -11,11 +11,11 @@ Mục lục đầy đủ và quy ước đặt tên: `documents/README.md`.
 
 | Đường dẫn | Nội dung |
 | --- | --- |
-| `documents/knowledge/spec-knowledge-map.md` | Bản đồ bộ kiến thức (đặc tả cấu trúc dữ liệu kiến thức) |
-| `documents/knowledge/ref-sources.md` | Kho nguồn có mã |
+| `documents/knowledge/spec-ban-do-kien-thuc.md` | Bản đồ bộ kiến thức (đặc tả cấu trúc dữ liệu kiến thức) |
+| `documents/knowledge/ref-kho-nguon.md` | Kho nguồn có mã |
 | `documents/knowledge/by-age/age-00-06-early-childhood/` | Nội dung nháp cho trẻ 0–6 tuổi |
 | `documents/knowledge/procedures/` | Thủ tục hành chính, xếp theo lĩnh vực |
-| `documents/pal/guide-pal-answers.md` | Hướng dẫn cách Pal trả lời |
+| `documents/pal/guide-cach-pal-tra-loi.md` | Hướng dẫn cách Pal trả lời |
 | `documents/pal/examples/` | Ví dụ câu trả lời chuẩn |
 
 Mọi nội dung hiện ở trạng thái **nháp, người soạn: AI**, chưa qua chuyên gia duyệt.

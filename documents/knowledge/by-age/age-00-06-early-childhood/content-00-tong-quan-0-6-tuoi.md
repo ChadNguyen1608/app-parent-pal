@@ -10,15 +10,15 @@ Bộ nội dung trả lời câu hỏi chính: **ở tuổi này con cần gì, 
 
 | File | Chặng |
 |---|---|
-| `content-00-overview-0-6y.md` | Kiến thức nền dùng cho mọi chặng 0–6 tuổi (file này) |
-| `content-01-newborn-0-1m.md` | Sơ sinh 0–28 ngày |
-| `content-02-infant-1-12m.md` | 1–12 tháng |
-| `content-03-toddler-12-18m.md` | 12–18 tháng |
-| `content-04-toddler-18-24m.md` | 18–24 tháng |
-| `content-05-toddler-2-3y.md` | 2–3 tuổi |
-| `content-06-preschool-3-4y.md` | 3–4 tuổi |
-| `content-07-preschool-4-5y.md` | 4–5 tuổi |
-| `content-08-preschool-5-6y.md` | 5–6 tuổi |
+| `content-00-tong-quan-0-6-tuoi.md` | Kiến thức nền dùng cho mọi chặng 0–6 tuổi (file này) |
+| `content-01-so-sinh-0-1-thang.md` | Sơ sinh 0–28 ngày |
+| `content-02-nhu-nhi-1-12-thang.md` | 1–12 tháng |
+| `content-03-tap-di-12-18-thang.md` | 12–18 tháng |
+| `content-04-tap-di-18-24-thang.md` | 18–24 tháng |
+| `content-05-nha-tre-2-3-tuoi.md` | 2–3 tuổi |
+| `content-06-mau-giao-3-4-tuoi.md` | 3–4 tuổi |
+| `content-07-mau-giao-4-5-tuoi.md` | 4–5 tuổi |
+| `content-08-mau-giao-5-6-tuoi.md` | 5–6 tuổi |
 | `documents/knowledge/procedures/` | Thủ tục hành chính liên quan đến con 0–6 tuổi |
 
 **Mỗi file chặng** bắt đầu bằng phần tóm tắt "Ở tuổi này con cần gì", sau đó đi theo từng nhóm của bản đồ. Mỗi nhóm có các mục:
@@ -27,7 +27,7 @@ Bộ nội dung trả lời câu hỏi chính: **ở tuổi này con cần gì, 
 - **Tùy hoàn cảnh:** cách điều chỉnh cho các hoàn cảnh khác nhau (mục 3).
 - **Chưa cần kỳ vọng:** điều chưa cần lo nếu con chưa làm.
 - **Dấu hiệu:** chia 3 mức (theo dõi thêm / trao đổi với bác sĩ / đi khám ngay).
-- **Nguồn:** mã trong `documents/knowledge/ref-sources.md`.
+- **Nguồn:** mã trong `documents/knowledge/ref-kho-nguon.md`.
 
 **Quy ước:**
 - Mỗi ý có mã nguồn trong ngoặc vuông, ví dụ [NG-002].
@@ -161,7 +161,7 @@ Việc cần làm: nói với bác sĩ của con, chia sẻ lo lắng, và **h�
 ## 5. Dấu hiệu nguy hiểm cần đi khám ngay (mọi chặng)
 `KT-0010` · Nhóm chính: Nền · Nhóm phụ: 1 · Nhãn: `an_toàn`
 
-**Trẻ sơ sinh**: xem `content-01-newborn-0-1m.md`.
+**Trẻ sơ sinh**: xem `content-01-so-sinh-0-1-thang.md`.
 
 **Trẻ 2 tháng đến 5 tuổi đang bị ốm** (dấu hiệu nguy hiểm chung theo WHO IMCI) [NG-036]:
 - **không uống được hoặc không bú được**;

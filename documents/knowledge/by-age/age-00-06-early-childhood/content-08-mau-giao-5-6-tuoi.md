@@ -2,7 +2,7 @@
 
 - **Giai đoạn:** G2 · **Chặng:** 6 · **Tuổi:** 60–72 tháng
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 27/10/2026
-- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-overview-0-6y.md`.
+- Quy ước nguồn, nhãn và ký hiệu ○: xem `content-00-tong-quan-0-6-tuoi.md`.
 
 ## Ở tuổi này con cần gì (tóm tắt)
 

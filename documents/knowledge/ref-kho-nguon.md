@@ -1,6 +1,6 @@
 # Kho nguồn
 
-Theo §7.4 của bản đồ (`spec-knowledge-map.md`). Mẩu kiến thức trỏ tới mã nguồn ở đây. Khi một nguồn đổi trạng thái (đã thay thế, rút lại), lọc mã nguồn để tìm mọi mẩu phụ thuộc.
+Theo §7.4 của bản đồ (`spec-ban-do-kien-thuc.md`). Mẩu kiến thức trỏ tới mã nguồn ở đây. Khi một nguồn đổi trạng thái (đã thay thế, rút lại), lọc mã nguồn để tìm mọi mẩu phụ thuộc.
 
 - **Ngày kiểm:** 27/10/2026 cho mọi nguồn dưới đây. Mọi trang đều được mở trực tiếp (bởi agent tìm nguồn, một số được Claude mở lại để đối chiếu, ghi "đã đối chiếu").
 - **Bậc nguồn:** 1 = WHO, UNICEF, CDC · 2 = AAP, Harvard Center on the Developing Child, AASM · 2* = hội chuyên môn ngoài danh sách bậc 2 (cần chủ sản phẩm chấp nhận) · VN = văn bản chính thức của Nhà nước Việt Nam · TC = **thứ cấp** (báo chí, trang hỏi đáp pháp luật, bản tổng hợp, bản sao), phải đối chiếu bản gốc trước khi phát hành.
