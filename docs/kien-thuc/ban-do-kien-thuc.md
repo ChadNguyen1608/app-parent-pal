@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.5 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.6 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`docs/kien-thuc/noi-dung/0-6/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`docs/kien-thuc/nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.6 (28/10):** mục tiêu của gia đình chỉ làm tăng số gợi ý ở mảng tương ứng (ví dụ 2 → 3–5 sách khoa học), không bớt mảng khác; thêm bảng cấu hình số gợi ý (§7.7).
 - **v5.5 (28/10):** tách kho thành **lớp bằng chứng** và **lớp thực thi** (§1.2); thêm danh mục thực thi (§7.6), mục tiêu và danh sách của gia đình (§7.7), chi phí và ước tính chi phí (§7.8). Cách Pal trả lời viết riêng ở `docs/pal/cach-tra-loi.md`.
 
 > Bản chính lưu trong repo tại `docs/kien-thuc/ban-do-kien-thuc.md`; project Parent-Pal giữ bản sao `claude/ban-do-kien-thuc.md`. Đổi tên từ `ban-do-chu-de-kien-thuc-1-6-tuoi.md` ngày 27/10/2026 vì nội dung đã phủ toàn bộ trục tuổi.
@@ -441,7 +442,9 @@ Trường riêng theo loại:
 
 **Phần nền và phần theo mục tiêu:**
 - Mọi kế hoạch luôn có đủ **phần nền** theo lớp bằng chứng: an toàn, ngủ, ăn, vận động, đọc sách, khám và tiêm.
-- Phần theo mục tiêu được **thêm vào trong giới hạn thời gian và tài chính** mà phụ huynh khai báo.
+- **Mục tiêu chỉ làm tăng số gợi ý ở mảng tương ứng, không bớt mảng khác** (người dùng chốt 28/10/2026). Ví dụ: bình thường Pal gợi ý 2 sách khoa học trong tháng; gia đình chọn mục tiêu khoa học thì gợi ý **3–5 sách**. Sách về ngôn ngữ, vận động… vẫn giữ số lượng mặc định.
+- Số gợi ý mặc định theo từng loại (sách, trò chơi, hoạt động) và theo tuổi lưu trong một **bảng cấu hình**: `loại`, `kỹ_năng hoặc chủ_đề`, `tuổi`, `số_mặc_định`, `số_khi_có_mục_tiêu` (ví dụ 2 và 3–5).
+- Phần tăng thêm nằm **trong giới hạn thời gian và tài chính** mà phụ huynh khai báo.
 - Pal **cảnh báo** khi phần theo mục tiêu lấn vào phần nền (ví dụ lớp học thêm làm mất giờ ngủ trưa hoặc giờ vận động), khi kế hoạch vượt khả năng gia đình khai báo, hoặc khi mục tiêu không hợp tuổi (ví dụ "phát hiện năng khiếu sớm", nhóm 15).
 - Cơ sở: lớp bằng chứng hiện không có nguồn ủng hộ chuyên biệt hóa sớm ở 0–6 tuổi.
 

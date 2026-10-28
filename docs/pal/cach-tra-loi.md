@@ -31,7 +31,7 @@ Tài liệu này là lớp **trình bày** (bước 4 "tạo câu trả lời").
 | 1 | **Tiêm chủng** | Xếp theo tháng tuổi. Mỗi mũi: khi nào, tiêm ở đâu, Pal làm giúp gì |
 | 2 | **Khám và sàng lọc** | Xếp theo tháng tuổi. Mỗi việc: **chuẩn tham chiếu**, **ở nhà làm trước**, đi khám ở đâu, Pal làm giúp gì. Không xen kẽ với tiêm |
 | 3 | Lịch hằng ngày | Lịch đầy đủ như có người chăm cả ngày. Chỉ ghi **loại giờ** (giờ vận động thô, vận động tinh, chơi tự do, đọc sách, ngủ), không ghi tên trò chơi trong lịch |
-| 4 | Kế hoạch tuần | Trò chơi từng ngày (vận động thô, vận động tinh…), sách từng tối, thực đơn tuần. Chọn từ danh sách của gia đình (bản đồ §7.7) |
+| 4 | Kế hoạch tuần | Trò chơi từng ngày (vận động thô, vận động tinh…), sách từng tối, thực đơn tuần. Chọn từ danh sách của gia đình (bản đồ §7.7). Có mục tiêu thì **tăng số gợi ý ở mảng đó** (ví dụ 2 → 3–5 sách khoa học), các mảng khác giữ nguyên |
 | 5 | Chỉnh lại cho nhà mình | Các lựa chọn hoàn cảnh để Pal sửa lịch, trò chơi, thực đơn |
 | 6 | Chi phí và cảnh báo | Ước tính chi phí tháng (khoảng giá, phương án tiết kiệm, bản đồ §7.8); cảnh báo nếu vượt ngân sách, nếu phần theo mục tiêu lấn phần nền, nếu mục tiêu không hợp tuổi |
 | 7 | **Giải thích và nguồn** | Để cuối cùng. Mỗi số chú thích ⁽ⁿ⁾ ở trên trỏ xuống đây |
