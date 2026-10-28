@@ -8,6 +8,7 @@ documents/
 │   ├── spec-ban-do-kien-thuc.md       Bản đồ bộ kiến thức (đặc tả)
 │   ├── ref-kho-nguon.md               Kho nguồn có mã NG-xxx
 │   ├── ref-hang-doi-kiem-chung.md     Thông tin tra mạng chờ tìm bổ sung, duyệt
+│   ├── ref-muc-quan-tam-tim-kiem.md   Mức quan tâm tìm kiếm các phương pháp (Google Trends)
 │   ├── by-age/                        Nội dung theo giai đoạn tuổi
 │   │   ├── age-00-06-early-childhood/ 0–6 tuổi (mầm non)
 │   │   └── age-06-11-primary-school/  6–11 tuổi (tiểu học)
@@ -37,7 +38,7 @@ documents/
 - **Thư mục giai đoạn tuổi:** `age-<từ>-<đến>-<tên giai đoạn>`, tuổi viết 2 chữ số để sắp xếp đúng. Dự kiến: `age-00-06-early-childhood`, `age-06-11-primary-school`, `age-11-15-lower-secondary`, `age-15-18-upper-secondary`, `age-18-24-young-adult`; thêm `pre-pregnancy` và `pregnancy` cho hai giai đoạn trước sinh.
 - **File nội dung trong một giai đoạn:** `content-<thứ tự>-<tên chặng>-<khoảng tuổi>-<thang|tuoi>.md`. Ví dụ `content-03-tap-di-12-18-thang.md`.
 - **Thủ tục** xếp theo lĩnh vực, không theo tuổi; mỗi mẩu trong file ghi độ tuổi áp dụng.
-- **Mã nội dung** (`KT-xxxx`, `NG-xxx`…) không đổi khi đổi tên hay chuyển file.
+- **Mã nội dung** (`KT-xxxx`, `NG-xxx`…) không đổi khi đổi tên hay chuyển file. Bài phương pháp dùng mã `KT-3FFNN` (FF: số thứ tự file, NN: số thứ tự mẩu).
 
 ## Nội dung 0–6 tuổi
 
@@ -66,13 +67,19 @@ documents/
 | File | Nội dung | Mã |
 |---|---|---|
 | `content-00-tong-quan-phuong-phap.md` | Bảng tổng quan, nguyên tắc chung | — |
-| `content-01-montessori.md` | Montessori | KT-3101–3108 |
-| `content-02-mam-non-reggio-waldorf-highscope.md` | Reggio Emilia, Waldorf, HighScope; học qua chơi hay học chữ sớm | KT-3201–3205 |
-| `content-03-stem-steam.md` | STEM, STEAM | KT-3301–3305 |
-| `content-04-day-som-the-hoc-nao-phai-van-tay.md` | Glenn Doman, video dạy bé đọc, "não phải", Mozart, sinh trắc vân tay | KT-3401–3405 |
-| `content-05-easy-lich-sinh-hoat.md` | EASY, lịch Gina Ford | KT-3501–3503 |
-| `content-06-an-dam-blw-kieu-nhat.md` | Ăn dặm tự chỉ huy (BLW), kiểu Nhật | KT-3601–3605 |
-| `content-07-luyen-ngu.md` | Luyện ngủ, quấn chũn | KT-3701–3705 |
+| `content-01-montessori.md` | Montessori | KT-30101–30108 |
+| `content-02-mam-non-reggio-waldorf-highscope.md` | Reggio Emilia, Waldorf, HighScope; học qua chơi hay học chữ sớm | KT-30201–30205 |
+| `content-03-stem-steam.md` | STEM, STEAM | KT-30301–30305 |
+| `content-04-day-som-the-hoc-nao-phai-van-tay.md` | Glenn Doman, video dạy bé đọc, "não phải", Mozart, sinh trắc vân tay | KT-30401–30405 |
+| `content-05-easy-lich-sinh-hoat.md` | EASY, lịch Gina Ford | KT-30501–30503 |
+| `content-06-an-dam-blw-kieu-nhat.md` | Ăn dặm tự chỉ huy (BLW), kiểu Nhật, 3 in 1 | KT-30601–30606 |
+| `content-07-luyen-ngu.md` | Luyện ngủ, quấn chũn | KT-30701–30705 |
+| `content-08-kumon-ban-tinh-toan-tu-duy-phonics.md` | Kumon, bàn tính, toán Singapore, toán tư duy, phonics; học trước chương trình | KT-30801–30805 |
+| `content-09-song-ngu-tieng-anh-som.md` | Song ngữ, tiếng Anh sớm | KT-30901–30904 |
+| `content-10-cach-nuoi-day.md` | Chương trình nuôi dạy, kỷ luật tích cực, nuôi con gắn bó, gentle parenting, RIE, Pikler, kiểu hổ | KT-31001–31005 |
+| `content-11-ngu-chung-giuong.md` | Ngủ chung giường | KT-31101–31105 |
+| `content-12-boi-som.md` | Bơi sớm | KT-31201–31203 |
+| `content-13-kich-hoat-nao-giua-tomatis-luyen-tri-nho.md` | Kích hoạt não giữa, Tomatis, luyện trí nhớ | KT-31301–31303 |
 
 ## Thủ tục hành chính
 

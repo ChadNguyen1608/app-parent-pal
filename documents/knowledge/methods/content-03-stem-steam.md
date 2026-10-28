@@ -9,18 +9,18 @@
 
 | Phụ huynh hỏi | Trả lời ngắn | Mã |
 |---|---|---|
-| STEM là gì? | Cách dạy tích hợp khoa học, công nghệ, kỹ thuật, toán; học qua tìm tòi, làm thử, gắn với thực tế. STEAM thêm nghệ thuật | KT-3301 |
-| Có hiệu quả không? | Với học sinh phổ thông: có bằng chứng tốt (tổng hợp 124 nghiên cứu). Với trẻ mầm non: **bằng chứng còn mỏng** | KT-3302 |
-| Có cần mua bộ đồ STEM đắt tiền, học trung tâm? | Không bắt buộc. Bộ GD&ĐT khuyến khích dùng **vật liệu sẵn có, rẻ, an toàn** | KT-3303 |
-| Trường có dạy STEM không? | Có kế hoạch của Bộ cho tiểu học và hướng dẫn cho trung học; đây là việc của nhà trường | KT-3304 |
+| STEM là gì? | Cách dạy tích hợp khoa học, công nghệ, kỹ thuật, toán; học qua tìm tòi, làm thử, gắn với thực tế. STEAM thêm nghệ thuật | KT-30301 |
+| Có hiệu quả không? | Với học sinh phổ thông: có bằng chứng tốt (tổng hợp 124 nghiên cứu). Với trẻ mầm non: **bằng chứng còn mỏng** | KT-30302 |
+| Có cần mua bộ đồ STEM đắt tiền, học trung tâm? | Không bắt buộc. Bộ GD&ĐT khuyến khích dùng **vật liệu sẵn có, rẻ, an toàn** | KT-30303 |
+| Trường có dạy STEM không? | Có kế hoạch của Bộ cho tiểu học và hướng dẫn cho trung học; đây là việc của nhà trường | KT-30304 |
 
-## KT-3301 — Là gì
+## KT-30301 — Là gì
 - Công văn 3089/BGDĐT-GDTrH (14/8/2020) định nghĩa giáo dục STEM là **"một phương thức giáo dục nhằm trang bị cho học sinh những kiến thức khoa học…"** gắn với vận dụng vào thực tiễn ○ [NG-152]. **Cần kiểm:** trích trọn câu định nghĩa từ văn bản chính thức.
 - Công văn 3089 yêu cầu phương pháp dạy học **lôi cuốn học sinh tìm tòi, khám phá**; bài học STEM xây dựng theo **quy trình thiết kế kĩ thuật** (8 bước) ○ [NG-152]. Có ba hình thức: bài học STEM, hoạt động trải nghiệm STEM, nghiên cứu khoa học kĩ thuật ○ [NG-152].
 - Báo Viet Nam News (2025) mô tả STEM trong chương trình giáo dục phổ thông 2018 là **liên môn**, học sinh học qua **hoạt động thực hành gắn với bối cảnh thực tế** ○ [NG-155]. Đây là lời diễn giải của bài báo, không phải trích văn bản.
 - **STEAM:** thêm nghệ thuật (Arts). Đợt tìm nguồn này chưa có nguồn riêng cho STEAM. `đề xuất nội bộ`: Pal coi STEAM là biến thể của STEM.
 
-## KT-3302 — Bằng chứng
+## KT-30302 — Bằng chứng
 
 | Nguồn | Phạm vi | Kết quả | Giới hạn |
 |---|---|---|---|
@@ -31,7 +31,7 @@
 
 **Kết luận cho Pal:** STEM ở tuổi đi học có bằng chứng tốt. STEM ở mầm non **hứa hẹn nhưng chưa được chứng minh chắc chắn**.
 
-## KT-3303 — Lợi, hạn chế, chi phí
+## KT-30303 — Lợi, hạn chế, chi phí
 - **Lợi:** kiến thức và kỹ năng tư duy tốt hơn ở học sinh phổ thông [NG-160].
 - **Hạn chế:**
   - ở mầm non, bằng chứng còn ít [NG-158] [NG-159];
@@ -39,14 +39,14 @@
 - **Chi phí:** Công văn 3089 khuyến khích dùng **vật liệu, dụng cụ sẵn có trong đời sống**, công nghệ **dễ tiếp cận, rẻ, an toàn** ○ [NG-152]. Văn bản viết cho trung học; áp cho trẻ nhỏ hơn: `áp tuổi liền kề`.
 - **Chưa có:** học phí trung tâm STEM ở Việt Nam. Pal tra mạng, gắn **chưa kiểm chứng**.
 
-## KT-3304 — Ở Việt Nam
+## KT-30304 — Ở Việt Nam
 - **Trung học:** Công văn 3089/BGDĐT-GDTrH, 14/8/2020 ○ [NG-152].
 - **Tiểu học:**
   - Kế hoạch 526/KH-BGDĐT (17/5/2022): **tăng cường áp dụng giáo dục STEM ở tiểu học**; tập huấn giáo viên, thí điểm ở 15 tỉnh từ 3/2023, dự kiến mở rộng từ 9/2024 [NG-153]. Kế hoạch dành cho nhà trường, **không đặt yêu cầu cho phụ huynh**.
   - Công văn 909/BGDĐT-GDTH (8/3/2023) hướng dẫn tổ chức hoạt động giáo dục STEM ở tiểu học, với ba hình thức: bài học STEM, hoạt động trải nghiệm STEM, làm quen với nghiên cứu khoa học ○ [NG-154]. **Chưa đọc văn bản gốc**; hàng đợi CK-006.
 - Các văn bản trên quy định việc của nhà trường, **không quy định trung tâm STEM tư** và không yêu cầu mua bộ đồ.
 
-## KT-3305 — Có thể hợp, có thể khó; học thử
+## KT-30305 — Có thể hợp, có thể khó; học thử
 > `đề xuất nội bộ`, chờ chuyên gia duyệt.
 - **Dấu hiệu lớp STEM tốt** (rút từ Công văn 3089 và Chen 2026): trẻ được **tự làm, thử, sai, sửa**; có nhiệm vụ tìm tòi hoặc thiết kế; dùng vật liệu đời thường; làm theo nhóm.
 - **Dấu hiệu nên cân nhắc:** lớp chủ yếu xem màn hình hoặc làm theo mẫu từng bước; nặng về thi đấu, giải thưởng.

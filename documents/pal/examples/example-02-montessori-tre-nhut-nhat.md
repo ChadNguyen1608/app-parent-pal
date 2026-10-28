@@ -86,7 +86,7 @@ Chị muốn mình nhắc lịch gọi cho trường nào trước không?
 3. AAP: với trẻ chậm làm quen, giữ nếp sinh hoạt đều đặn, dễ đoán [NG-016].
 4. Topaz.vn, "Top 10 trường mầm non Montessori tại Hà Nội", cập nhật 1/7/2025: https://topaz.vn/toplist/truong-mam-non-montessori-tai-ha-noi — **chưa kiểm chứng**.
 5. Kiddi.vn, trang Mầm non Việt Hàn Montessori Hà Đông, không ghi ngày: https://www.kiddi.vn/ha-noi/truong-mam-non-viet-han-montessori-ha-dong — **chưa kiểm chứng**.
-- Bằng chứng về Montessori (học tập tốt hơn ở mức nhỏ, chủ yếu ở trường công Mỹ; chưa có nghiên cứu về trẻ nhút nhát): `content-01-montessori.md`, KT-3102, KT-3105.
+- Bằng chứng về Montessori (học tập tốt hơn ở mức nhỏ, chủ yếu ở trường công Mỹ; chưa có nghiên cứu về trẻ nhút nhát): `content-01-montessori.md`, KT-30102, KT-30105.
 
 ---
 

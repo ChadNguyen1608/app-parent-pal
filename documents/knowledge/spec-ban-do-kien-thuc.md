@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.11 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.12 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.12 (28/10):** đợt 2 bài phương pháp (học thêm ở tuổi đi học, song ngữ, cách nuôi dạy, ngủ chung giường, bơi sớm, kích hoạt não giữa, Tomatis, luyện trí nhớ, ăn dặm 3 in 1); mã bài phương pháp đổi thành `KT-3FFNN`; thêm `ref-muc-quan-tam-tim-kiem.md` (Google Trends) để xếp ưu tiên.
 - **v5.11 (28/10):** theo quyết định của người dùng: mọi thông tin chưa có trong kho được tra trên mạng, gắn nhãn **chưa kiểm chứng** và ghi vào hàng đợi kiểm chứng (§1.1, `documents/knowledge/ref-hang-doi-kiem-chung.md`); thêm §1.3 cách Pal tư vấn "phương pháp X có hợp với con không" (đề xuất cuối luôn là học thử); thêm mẫu bài phương pháp (§7.9) và trường thông tin cho trường, lớp học (§7.6); soạn nội dung nháp các phương pháp (`documents/knowledge/methods/`).
 - **v5.10 (28/10):** soạn nội dung nháp 6–11 tuổi (`documents/knowledge/by-age/age-06-11-primary-school/`) theo quy trình mới: 3 agent tìm nguồn, 1 agent kiểm chứng độc lập, Claude tổng hợp; thêm thủ tục cho tiểu học; cập nhật lưới độ phủ và sổ quyết định phân loại.
 - **v5.9 (28/10):** phần mô tả trong tên file đổi sang tiếng Việt không dấu (file này thành `spec-ban-do-kien-thuc.md`); tên thư mục giữ tiếng Anh.
@@ -508,7 +509,7 @@ Quy tắc ước tính:
 - So ước tính với ngân sách gia đình khai báo; vượt thì cảnh báo và đề xuất phương án rẻ hơn.
 
 ### 7.9 Bài phương pháp (nhãn `phương_pháp`)
-Lưu ở `documents/knowledge/methods/`, mỗi file một phương pháp hoặc một nhóm phương pháp gần nhau. Nhóm chính theo §9.2 (ví dụ Montessori: nhóm 8; EASY: nhóm 1). Mã `KT-3xxx`.
+Lưu ở `documents/knowledge/methods/`, mỗi file một phương pháp hoặc một nhóm phương pháp gần nhau. Nhóm chính theo §9.2 (ví dụ Montessori: nhóm 8; EASY: nhóm 1). Mã `KT-3FFNN`: FF là số thứ tự file (01–99), NN là số thứ tự mẩu trong file. Thứ tự ưu tiên soạn, rà soát: `documents/knowledge/ref-muc-quan-tam-tim-kiem.md`.
 ```
 Mã · Tên (tên gốc tiếng Anh) · Nhóm chính / phụ · Tuổi áp dụng · Nhãn phương_pháp
 1. Phương pháp là gì: nguồn gốc; các thành phần cốt lõi (để nhận ra trường làm thật hay chỉ dùng tên)
@@ -611,6 +612,12 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 | EASY, lịch sinh hoạt cố định cho trẻ nhỏ | 1 (nhãn `phương_pháp`) | 7 | Ăn, ngủ (28/10) |
 | Ăn dặm tự chỉ huy (BLW), ăn dặm kiểu Nhật | 1 (nhãn `phương_pháp`) | 5 | Dinh dưỡng; phần tự xúc ăn ở nhóm 5 (28/10) |
 | Luyện ngủ (để con tự ngủ) | 1 (nhãn `phương_pháp`) | 7 | Giấc ngủ (28/10) |
+| Kumon, bàn tính, toán Singapore, toán tư duy, phonics | 6 (nhãn `phương_pháp`) | 8 | Học tập; chọn lớp ở nhóm phụ (28/10) |
+| Học trước chương trình lớp 1 | 6 (nhãn `phương_pháp`) | 17 | Liên quan bước chuyển vào lớp 1 (28/10) |
+| Chương trình nuôi dạy, kỷ luật tích cực, nuôi con gắn bó, gentle parenting | 7 (nhãn `phương_pháp`) | Nền | Thực hành của cha mẹ (28/10) |
+| Ngủ chung giường với trẻ dưới 1 tuổi | Nền (nhãn `phương_pháp`, `an_toàn`) | 1 | Nguy cơ tử vong đột ngột (28/10) |
+| Bơi cho trẻ nhỏ | Nền (nhãn `phương_pháp`, `an_toàn`) | 1 | Đuối nước (28/10) |
+| Kích hoạt não giữa, Tomatis, luyện trí nhớ | 2 (nhãn `phương_pháp`, `hiểu_lầm`) | 5 | Nhắm tới nhận thức, tập trung (28/10) |
 | Mạng xã hội | 11 | 3 | Môi trường số |
 | Quy định trường học (chương trình, đánh giá, dạy thêm) | 8 (nhãn `thủ_tục`) | 6 | Môi trường giáo dục |
 | Chia sẻ đồ chơi | 4 | 13 | Hành vi xã hội ở trẻ |

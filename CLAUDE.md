@@ -31,6 +31,7 @@ Mục lục và quy ước đặt tên: `documents/README.md`.
 | `documents/knowledge/ref-hang-doi-kiem-chung.md` | Hàng đợi thông tin Pal tra trên mạng, chờ tìm bổ sung và duyệt |
 | `documents/knowledge/by-age/` | Nội dung kiến thức theo giai đoạn tuổi (hiện có `age-00-06-early-childhood/`, `age-06-11-primary-school/`; nháp, người soạn AI) |
 | `documents/knowledge/methods/` | Bài phương pháp giáo dục và chăm sóc (Montessori, STEM, EASY…), có lợi hại và hiểu lầm |
+| `documents/knowledge/ref-muc-quan-tam-tim-kiem.md` | Mức quan tâm tìm kiếm các phương pháp (Google Trends), thứ tự ưu tiên |
 | `documents/knowledge/procedures/` | Thủ tục hành chính, xếp theo lĩnh vực (không theo tuổi) |
 | `documents/pal/guide-cach-pal-tra-loi.md` | Cách Pal trả lời câu hỏi lập kế hoạch |
 | `documents/pal/examples/` | Ví dụ câu trả lời chuẩn |

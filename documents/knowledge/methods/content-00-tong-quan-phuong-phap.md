@@ -2,7 +2,8 @@
 
 - **Nhãn:** `phương_pháp` · **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 28/10/2026 · **Hạn rà soát:** 10/2027
 - **Mẫu bài:** bản đồ §7.9. **Cách Pal tư vấn "có hợp với con không":** bản đồ §1.3; `documents/pal/guide-cach-pal-tra-loi.md` mục 7.
-- **Quy trình soạn:** 3 agent tìm nguồn theo nhóm; 3 agent khác mở lại từng nguồn, chấm độ tin cậy và mức khớp; chỉ dùng nhận định đạt (bản đồ §8). Nguồn: `ref-kho-nguon.md` mục 8 (NG-119 đến NG-173).
+- **Quy trình soạn:** 2 đợt; mỗi đợt 3 agent tìm nguồn theo nhóm, 3 agent khác mở lại từng nguồn, chấm độ tin cậy và mức khớp; chỉ dùng nhận định đạt (bản đồ §8). Nguồn: `ref-kho-nguon.md` mục 8 (NG-119 đến NG-173) và mục 9 (NG-174 đến NG-226).
+- **Mức quan tâm tìm kiếm** (Google Trends) và thứ tự ưu tiên: `documents/knowledge/ref-muc-quan-tam-tim-kiem.md`.
 
 ## Bảng tổng quan
 
@@ -19,18 +20,27 @@
 | Hiệu ứng Mozart, video cho bé | 2 | Không có lợi ích riêng; video gắn với vốn từ thấp hơn ở 8–16 tháng | "Nghe Mozart con thông minh hơn" | như trên |
 | Sinh trắc vân tay | 6 | Chỉ có báo chí: chuyên gia nói không có cơ sở khoa học | "Vân tay cho biết năng khiếu, tự kỷ" | như trên |
 | EASY, lịch Gina Ford | 1 | **Chưa có nghiên cứu** | "EASY đã được chứng minh" | `content-05-easy-lich-sinh-hoat.md` |
-| Ăn dặm tự chỉ huy (BLW), kiểu Nhật | 1 | BLW **có điều chỉnh, có hướng dẫn**: không hóc nhiều hơn, không thiếu sắt nhiều hơn. Kiểu Nhật: chưa có nghiên cứu | "BLW đã chứng minh an toàn" | `content-06-an-dam-blw-kieu-nhat.md` |
+| Ăn dặm tự chỉ huy (BLW), kiểu Nhật, 3 in 1 | 1 | BLW **có điều chỉnh, có hướng dẫn**: không hóc nhiều hơn, không thiếu sắt nhiều hơn. Kiểu Nhật, 3 in 1: chưa có nghiên cứu | "BLW đã chứng minh an toàn" | `content-06-an-dam-blw-kieu-nhat.md` |
 | Luyện ngủ, quấn chũn | 1 | Luyện ngủ có hiệu quả; không thấy hại hay lợi lâu dài đến 5–6 tuổi | "Để con khóc làm hại não"; "luyện ngủ đã chứng minh an toàn" | `content-07-luyen-ngu.md` |
+| Kumon, bàn tính (Soroban, UCMAS), toán Singapore, "toán tư duy" | 6 | Kumon: chưa có bằng chứng nhân quả ngoài một thử nghiệm ở Bangladesh. Bàn tính: tính toán tốt hơn, không tăng nhận thức chung. Toán Singapore: hiệu quả nhỏ | "Bàn tính phát triển toàn não" | `content-08-kumon-ban-tinh-toan-tu-duy-phonics.md` |
+| Phonics | 6 | **Mạnh** cho tiếng Anh, tốt nhất 5–7 tuổi | "Phonics là đủ để dạy đọc" | như trên |
+| Học trước chương trình lớp 1 | 6 | Chưa có nghiên cứu về kết quả; Bộ GD&ĐT nghiêm cấm trường mầm non dạy trước | "Phải học trước kẻo không theo kịp" | như trên |
+| Song ngữ, tiếng Anh sớm | 2 | Song ngữ không phải rối loạn giao tiếp; trẻ nhỏ học từ người thật hơn từ màn hình | "Song ngữ làm chậm nói"; "song ngữ làm con thông minh hơn" | `content-09-song-ngu-tieng-anh-som.md` |
+| Chương trình nuôi dạy (Triple P, Incredible Years, PCIT), kỷ luật tích cực | 7 | WHO khuyến nghị mạnh loại chương trình theo lý thuyết học tập xã hội (con 2–10 tuổi); từng thương hiệu có bằng chứng khác nhau | "WHO khuyến nghị Triple P" | `content-10-cach-nuoi-day.md` |
+| "Nuôi con gắn bó", gentle parenting, RIE, Pikler, kiểu hổ, kiểu nước X | 7 | Chưa có nghiên cứu kết quả ở trẻ (trừ kiểu hổ: tương quan, kết quả kém hơn) | "Phải địu, ngủ chung mới gắn bó" | như trên |
+| Ngủ chung giường | Nền | AAP **không thể khuyến nghị trong bất kỳ hoàn cảnh nào**; có các hoàn cảnh làm nguy cơ tăng rất cao | "Ngủ chung an toàn nếu…" | `content-11-ngu-chung-giuong.md` |
+| Bơi sớm | Nền | AAP: học bơi sau 1 tuổi; chưa có bằng chứng lớp bơi dưới 1 tuổi giảm đuối nước | "Biết bơi là yên tâm" | `content-12-boi-som.md` |
+| "Kích hoạt não giữa", Tomatis, luyện trí nhớ | 2 | Không có nghiên cứu có đối chứng (não giữa); không có bằng chứng hiệu quả (Tomatis, tự kỷ); luyện não không lan sang trí thông minh | "Bịt mắt đọc được chữ" | `content-13-kich-hoat-nao-giua-tomatis-luyen-tri-nho.md` |
 
 ## Nguyên tắc chung khi Pal nói về phương pháp
 1. **Tên phương pháp trên biển hiệu chưa chắc là cách trường dạy.** Ở Mỹ, tên Montessori không được bảo hộ [NG-125]; lớp "Montessori pha trộn" cho kết quả như lớp thường [NG-120]. Pal hướng phụ huynh xem **các thành phần cốt lõi** của phương pháp.
 2. **Bằng chứng ở nước khác, trường khác.** Gần như mọi nghiên cứu ở Mỹ, Úc, New Zealand; chưa có nghiên cứu kết quả nào ở Việt Nam trong kho. Pal nói rõ điều này.
 3. **"Chưa có nghiên cứu" khác "đã chứng minh không hiệu quả".** Pal dùng đúng câu.
 4. **Nghiên cứu nhóm không kết luận được cho một đứa trẻ.** Pal đối chiếu đặc điểm của con với **đặc điểm của môi trường học**, gắn nhãn `đề xuất nội bộ` cho phần suy luận.
-5. **Đề xuất cuối luôn là cho con học thử** (với trường, lớp); với chương trình có tuyên bố chẩn đoán như sinh trắc vân tay, Pal không gợi ý học thử (chờ chủ sản phẩm xác nhận; xem `content-04-day-som-the-hoc-nao-phai-van-tay.md`).
+5. **Đề xuất cuối luôn là cho con học thử** (với trường, lớp); với chương trình có tuyên bố chẩn đoán hay siêu năng lực (sinh trắc vân tay, kích hoạt não giữa), Pal không gợi ý học thử (chờ chủ sản phẩm xác nhận; xem `content-04-day-som-the-hoc-nao-phai-van-tay.md`).
 6. **An toàn luôn đứng trên phương pháp:** ngủ an toàn, phòng hóc [NG-026] [NG-039].
 7. **Điều có bằng chứng, không tốn tiền:** tương tác qua lại với con, đọc sách cùng con, chơi không thiết bị [NG-007] [NG-171] [NG-014].
 
 ## Chưa có trong kho
-- Các phương pháp khác hay được hỏi ở Việt Nam: song ngữ sớm, Kumon, Singapore Math, giáo dục sớm kiểu Nhật, Tomatis, "kỷ luật tích cực" như một chương trình (phần kỷ luật đã có trong nội dung theo tuổi).
+- Mô tả và đánh giá các chương trình "toán tư duy" ở Việt Nam; hướng dẫn chuẩn bị vào lớp 1 (tiền tiểu học) theo nguồn chính thức. Hai chủ đề này được tìm nhiều (`ref-muc-quan-tam-tim-kiem.md`).
 - Nghiên cứu ở Việt Nam về các phương pháp trên.
