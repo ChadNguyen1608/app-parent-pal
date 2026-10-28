@@ -28,7 +28,9 @@ Mục lục và quy ước đặt tên: `documents/README.md`.
 |---|---|
 | `documents/knowledge/spec-ban-do-kien-thuc.md` | Bản đồ bộ kiến thức: phạm vi, nguyên tắc, khung 17 nhóm, trục tuổi, lưới độ phủ, cấu trúc dữ liệu, hai lớp kho, kiểm soát chất lượng. **Đọc trước khi viết hay xếp bất kỳ nội dung lời khuyên nào** |
 | `documents/knowledge/ref-kho-nguon.md` | Kho nguồn có mã `NG-xxx` |
-| `documents/knowledge/by-age/` | Nội dung kiến thức theo giai đoạn tuổi (hiện có `age-00-06-early-childhood/`, nháp, người soạn AI) |
+| `documents/knowledge/ref-hang-doi-kiem-chung.md` | Hàng đợi thông tin Pal tra trên mạng, chờ tìm bổ sung và duyệt |
+| `documents/knowledge/by-age/` | Nội dung kiến thức theo giai đoạn tuổi (hiện có `age-00-06-early-childhood/`, `age-06-11-primary-school/`; nháp, người soạn AI) |
+| `documents/knowledge/methods/` | Bài phương pháp giáo dục và chăm sóc (Montessori, STEM, EASY…), có lợi hại và hiểu lầm |
 | `documents/knowledge/procedures/` | Thủ tục hành chính, xếp theo lĩnh vực (không theo tuổi) |
 | `documents/pal/guide-cach-pal-tra-loi.md` | Cách Pal trả lời câu hỏi lập kế hoạch |
 | `documents/pal/examples/` | Ví dụ câu trả lời chuẩn |
@@ -39,7 +41,8 @@ Quy tắc khi sửa tài liệu:
 - Không điểm tổng, không so sánh trẻ với trẻ khác; tín hiệu an toàn luôn được ưu tiên.
 - Mọi ý trong lớp bằng chứng có mã nguồn; ý không có nguồn gắn nhãn `đề xuất nội bộ`; lời khuyên mượn từ nhóm tuổi kề bên gắn nhãn `áp tuổi liền kề`; nguồn thứ cấp đánh dấu ○.
 - Nội dung do AI soạn ghi `người soạn: AI` và không được tự chuyển sang "đã duyệt".
-- **Nguồn trả lời** (bản đồ §1.1): Pal tìm trong kho chuẩn trước. Thủ tục hành chính chưa có trong kho thì Pal báo cho phụ huynh trước, rồi mới đưa thông tin tra trên mạng kèm nguồn.
+- **Nguồn trả lời** (bản đồ §1.1): Pal tìm trong kho chuẩn trước. Thông tin chưa có trong kho (mọi loại) thì Pal báo cho phụ huynh trước, rồi đưa thông tin tra trên mạng kèm nguồn, gắn nhãn **chưa kiểm chứng**, và ghi vào `documents/knowledge/ref-hang-doi-kiem-chung.md` để tìm bổ sung và duyệt. Không tra mạng cho chẩn đoán, thuốc, tình huống khẩn.
+- **Phương pháp** (bản đồ §1.3): Pal dựa vào bài phương pháp để tư vấn có hợp với con không, sửa hiểu lầm có nguồn, không kết luận chắc chắn; **đề xuất cuối luôn là cho con học thử**.
 - **Hai lớp kho** (bản đồ §1.2): lớp bằng chứng (có nguồn) và lớp thực thi (trò chơi, món ăn, sách, cơ sở dịch vụ, sản phẩm; có chi phí). Mục đối tác hoặc sản phẩm mẫu có cờ "ẩn khi phát hành".
 - Khi đổi tên hoặc chuyển file, sửa mọi đường dẫn trỏ tới nó trong `documents/`, kiểm tra mã nguồn `NG-xxx` được dùng đều có trong `ref-kho-nguon.md`, và cập nhật bản sao trong project Parent-Pal trên claude.ai.
 

@@ -1,11 +1,12 @@
 # Cách Pal trả lời
 
-Bản nháp v1 — 28/10/2026. Rút ra từ 4 lần trả lời thử câu "những lưu ý trong năm thứ 3 của trẻ" và góp ý của chủ sản phẩm. Ví dụ chuẩn: `documents/pal/examples/example-01-ke-hoach-nam-thu-3.md`.
+Bản nháp v1.1 — 28/10/2026 (thêm mục 7 cho câu hỏi về phương pháp, nhãn "chưa kiểm chứng"). Rút ra từ 4 lần trả lời thử câu "những lưu ý trong năm thứ 3 của trẻ" và góp ý của chủ sản phẩm. Ví dụ chuẩn: `documents/pal/examples/example-01-ke-hoach-nam-thu-3.md`.
 
 Tài liệu này là lớp **trình bày** (bước 4 "tạo câu trả lời"). Nội dung lấy từ kho (`documents/knowledge/`): lớp bằng chứng và lớp thực thi (bản đồ §1.2). Không viết câu trả lời sẵn vào kho.
 
 ## 1. Áp dụng cho
 - **Câu hỏi định hướng, lập kế hoạch:** "con năm thứ 3 cần lưu ý gì", "con sắp vào lớp 1 cần chuẩn bị gì", "tháng này cần làm gì cho con".
+- **Câu hỏi về phương pháp** ("Montessori có hợp với con không"): thứ tự riêng ở mục 7.
 - Câu hỏi tình huống ngắn ("tối nay con ăn vạ, làm sao") **chưa có quy tắc riêng**; tạm dùng các quy tắc trung thực ở mục 5.
 
 ## 2. Nguyên tắc chính: giúp thực thi, không liệt kê
@@ -51,6 +52,7 @@ Rút ra từ 6 lỗi phát sinh lúc trả lời ở lần thử thứ nhất:
    | ○ nguồn thứ cấp | "Parent-Pal đang kiểm tra lại thông tin này" |
    | nguồn bậc 2* (ngoài danh sách chính) | nêu tên tổ chức, ví dụ "theo Hội Tâm thần Trẻ em và Vị thành niên Mỹ (AACAP)" |
    | `các nguồn khác nhau` | nói cả hai, không tự chọn |
+   | thông tin tra trên mạng (kho chưa có) | "Tài liệu của Parent-Pal chưa có thông tin này. Mình vừa tìm trên [tên trang], thông tin này **chưa kiểm chứng**." Ghi vào hàng đợi kiểm chứng (bản đồ §1.1) |
 
 5. **Giờ cụ thể, thứ tự trò chơi trong tuần, thực đơn** là gợi ý của Parent-Pal, dựng từ khoảng khuyến nghị; phần giải thích nói rõ con số nào là của tổ chức y tế, con số nào là của Parent-Pal.
 6. **Không chẩn đoán.** Công cụ ở nhà (đối chiếu mốc, M-CHAT-R, cân đo) chỉ để theo dõi và chuẩn bị câu hỏi cho bác sĩ. Kết quả tốt không có nghĩa là bỏ lịch khám; còn lo thì vẫn đi khám.
@@ -60,7 +62,21 @@ Rút ra từ 6 lỗi phát sinh lúc trả lời ở lần thử thứ nhất:
 - Mục mẫu dùng chỗ trống có mô tả ("Kem đánh răng trẻ em X: có fluoride, 2–6 tuổi"), không gắn tên nhãn hàng thật với thông tin chưa kiểm.
 - Bản phát hành loại bỏ mọi mục có cờ `chỉ_là_mẫu_ẩn_khi_phát_hành` (bản đồ §7.6). Việc giới thiệu sản phẩm thật sẽ có quyết định và tiêu chí riêng.
 
-## 7. Còn mở
+## 7. Câu hỏi "phương pháp X có hợp với con không"
+Quy tắc nội dung ở bản đồ §1.3; dữ liệu ở `documents/knowledge/methods/`. Ví dụ chuẩn: `documents/pal/examples/example-02-montessori-tre-nhut-nhat.md`.
+
+| # | Phần | Nội dung |
+|---|---|---|
+| 0 | Nghe trước | Nếu chưa biết: hỏi tuổi của con; hỏi đặc điểm phụ huynh kể trông ra sao trong đời thường. Một lượt hỏi ngắn |
+| 1 | **Trả lời thẳng** | Một hai câu: phương pháp này **có thể giúp gì, không giúp gì** cho điều phụ huynh lo. Sửa hiểu lầm ngay ở đây nếu có |
+| 2 | Phương pháp là gì | Các thành phần cốt lõi, viết ngắn, để phụ huynh nhận ra trường làm thật hay chỉ dùng tên |
+| 3 | Với con nhà mình | Điểm có thể hợp, điểm có thể khó, **theo đặc điểm của môi trường học**, không theo nhãn tính cách. Ghi rõ ý nào có nguồn, ý nào là gợi ý của Parent-Pal |
+| 4 | Việc cha mẹ làm được ngay | Điều có bằng chứng cho mối lo của phụ huynh, không phụ thuộc trường (ví dụ với trẻ chậm làm quen: nếp sinh hoạt đều, dễ đoán) |
+| 5 | **Học thử** | Luôn là đề xuất cuối. Điều cần quan sát; câu hỏi nên hỏi trường; Pal làm giúp (nhắc lịch học thử, ghi chép quan sát) |
+| 6 | Trường cụ thể (nếu được hỏi) | Bảng trường tra trên mạng, mỗi dòng gắn **chưa kiểm chứng**, kèm nguồn và ngày tra. Không xếp hạng trường. Nhắc hỏi lại học phí và các khoản thu thêm |
+| 7 | Giải thích và nguồn | Để cuối cùng |
+
+## 8. Còn mở
 - Quy tắc cho câu hỏi tình huống ngắn; độ dài tối đa của một câu trả lời trong chat.
 - Bộ câu hỏi mẫu (10–15 câu) có câu trả lời chuẩn, để làm bộ test khi nối AI thật. Câu số 1: `documents/pal/examples/example-01-ke-hoach-nam-thu-3.md`.
 - Cách hiển thị trong app (bảng trong chat, thẻ kế hoạch, lịch nhắc) khi làm giao diện.

@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.10 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.11 — 28/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.11 (28/10):** theo quyết định của người dùng: mọi thông tin chưa có trong kho được tra trên mạng, gắn nhãn **chưa kiểm chứng** và ghi vào hàng đợi kiểm chứng (§1.1, `documents/knowledge/ref-hang-doi-kiem-chung.md`); thêm §1.3 cách Pal tư vấn "phương pháp X có hợp với con không" (đề xuất cuối luôn là học thử); thêm mẫu bài phương pháp (§7.9) và trường thông tin cho trường, lớp học (§7.6); soạn nội dung nháp các phương pháp (`documents/knowledge/methods/`).
 - **v5.10 (28/10):** soạn nội dung nháp 6–11 tuổi (`documents/knowledge/by-age/age-06-11-primary-school/`) theo quy trình mới: 3 agent tìm nguồn, 1 agent kiểm chứng độc lập, Claude tổng hợp; thêm thủ tục cho tiểu học; cập nhật lưới độ phủ và sổ quyết định phân loại.
 - **v5.9 (28/10):** phần mô tả trong tên file đổi sang tiếng Việt không dấu (file này thành `spec-ban-do-kien-thuc.md`); tên thư mục giữ tiếng Anh.
 - **v5.8 (28/10):** đổi toàn bộ thư mục và tên file sang tiếng Anh có tiền tố theo loại (`documents/README.md`); tách thủ tục hành chính ra `documents/knowledge/procedures/`, xếp theo lĩnh vực thay vì theo tuổi (§1.1).
@@ -30,7 +31,7 @@ Lịch sử thay đổi:
   - tư vấn pháp lý;
   - dạy kiến thức môn học cho trẻ;
   - tư vấn tài chính gia đình;
-  - giới thiệu sản phẩm, trường, lớp cụ thể.
+  - **khẳng định** chất lượng của một sản phẩm, trường, lớp cụ thể. Pal được đưa thông tin trường, lớp tra trên mạng, gắn nhãn chưa kiểm chứng (§1.1); mục đối tác theo cờ "ẩn khi phát hành" (§7.6).
 - **Thêm chủ đề mới:** người soạn đề xuất → chủ sản phẩm duyệt có thuộc phạm vi không → xếp chỗ theo §9.
 
 ### 1.1 Kho chuẩn và nguồn trả lời
@@ -42,13 +43,22 @@ Pal trả lời từ hai loại nguồn:
 1. **Thông tin định hướng:** toàn bộ khung cấp độ và các nhóm ở §3. Đây là các mẩu kiến thức, hoạt động và dòng phát triển xây theo bản đồ này.
 2. **Thủ tục hành chính liên quan đến con:** nhập học, tuyển sinh, chuyển trường, quy chế thi…
    - Nếu kho chuẩn **chưa có** thông tin thủ tục được hỏi: Pal **báo cho phụ huynh** rằng tài liệu của Parent-Pal chưa có, **rồi mới** trả thông tin tra trên mạng, kèm nguồn.
-3. Các loại khác: **bổ sung sau**.
+3. **Phương pháp giáo dục và chăm sóc** (Montessori, STEM, EASY, ăn dặm tự chỉ huy…): bài có nhãn `phương_pháp`, lưu ở `documents/knowledge/methods/`, theo mẫu §7.9.
+4. Các loại khác: **bổ sung sau**.
+
+**Khi kho chưa có thông tin** (người dùng chốt 28/10, áp cho **mọi loại** câu hỏi: định hướng, thủ tục, phương pháp, trường lớp, cơ sở dịch vụ, giá):
+1. Pal **báo trước** rằng tài liệu của Parent-Pal chưa có thông tin này.
+2. Pal tra trên mạng và trả lời, **kèm nguồn**, mỗi ý lấy từ mạng gắn nhãn **"chưa kiểm chứng"**.
+3. Mỗi lần tra, ghi một dòng vào **hàng đợi kiểm chứng** (`documents/knowledge/ref-hang-doi-kiem-chung.md`; khi có app là một bảng dữ liệu): câu hỏi đã ẩn danh, thông tin đã đưa, nguồn, việc cần làm (tìm nguồn chính thức, liên hệ cơ sở, chuyên gia duyệt). Đội ngũ dùng hàng đợi này để **tìm bổ sung và duyệt** trước khi đưa vào kho.
+4. **Ngoại lệ, không tra mạng để trả lời:** chẩn đoán, thuốc và liều thuốc (ngoài phạm vi, §1); tình huống khẩn (lớp an toàn xử lý trước, chỉ đưa số hỗ trợ).
+5. Thông tin tra mạng **không được trái** với lớp bằng chứng. Nếu trái, Pal nói theo kho và nêu chỗ khác nhau.
+6. Câu tìm kiếm không chứa tên con, trường của con, địa chỉ (quy tắc trong `CLAUDE.md`). "Trường Montessori ở Hà Nội, 3–5 triệu" được phép.
 
 **Nơi lưu thủ tục:** `documents/knowledge/procedures/`, mỗi file một **lĩnh vực** (hộ tịch, bảo hiểm y tế, nghỉ thai sản, nhập học, học phí, tiêm chủng bắt buộc), **không xếp theo tuổi**. Mỗi mẩu ghi độ tuổi áp dụng, nên thủ tục của tuổi khác (ví dụ thi vào lớp 10) thêm vào đúng file lĩnh vực mà không trùng lặp.
 
 **Cách Pal nói rõ nguồn:**
 - Từ kho chuẩn: "Theo tài liệu của Parent-Pal…"
-- Từ mạng: "Tài liệu của Parent-Pal chưa có thông tin này. Mình vừa tìm trên [tên trang], thông tin này chưa được đội ngũ kiểm duyệt." Kèm link.
+- Từ mạng: "Tài liệu của Parent-Pal chưa có thông tin này. Mình vừa tìm trên [tên trang], thông tin này **chưa kiểm chứng**." Kèm link.
 
 **Quy tắc riêng cho thủ tục hành chính** (`đề xuất nội bộ`, chờ duyệt):
 - Chỉ dùng nguồn chính thức: văn bản của Bộ, Sở, Phòng GD&ĐT, Bộ Y tế, hoặc thông báo của chính trường.
@@ -60,7 +70,7 @@ Pal trả lời từ hai loại nguồn:
 - Kiến thức chung sẵn có của mô hình AI (không có nguồn) có được dùng không, dùng cho loại câu hỏi nào.
 - Danh sách trang được phép tra cứu.
 - Có lọc lại danh sách chủ đề trong bản đồ theo tiêu chí "rủi ro cao / định hướng lớn / hay bị hiểu sai / hỏi nhiều" không.
-- Khi kho chuẩn thiếu thông tin **định hướng**, Pal xử lý thế nào.
+- Ai duyệt hàng đợi kiểm chứng, bao lâu một lần.
 
 ### 1.2 Hai lớp của kho (người dùng chốt 28/10/2026)
 
@@ -72,6 +82,16 @@ Pal trả lời từ hai loại nguồn:
 - Từng mục của lớp thực thi không cần một bài nghiên cứu riêng, nhưng **không được trái** với lớp bằng chứng.
 - Pal dùng lớp thực thi để **giao việc cụ thể**, chọn sẵn một phương án; chỉ đưa phương án khác khi phụ huynh yêu cầu (`documents/pal/guide-cach-pal-tra-loi.md`).
 - Trên lớp thực thi có **danh sách của từng gia đình**: những mục Pal chọn cho riêng một con, theo tuổi, hoàn cảnh và mục tiêu (§7.7).
+
+### 1.3 Tư vấn "phương pháp X có hợp với con không" (người dùng chốt 28/10/2026)
+Phụ huynh hay hiểu sai về phương pháp (ví dụ nghĩ một phương pháp sẽ "chữa" tính nhút nhát của con). Pal phải **hiểu phương pháp** để tư vấn, không chỉ nói "tùy con".
+1. **Nghe trước:** hỏi tuổi của con và các đặc điểm phụ huynh kể trông ra sao trong đời thường. Không tự gán nhãn khí chất cho con.
+2. **Dựa vào bài phương pháp trong kho** (§7.9): phương pháp gồm những gì, bằng chứng cho thấy gì và chưa cho thấy gì.
+3. **Đối chiếu** đặc điểm của con với **đặc điểm của môi trường học** (ví dụ lớp ghép tuổi, tự chọn việc, ít giờ học tập trung cả lớp). Nói rõ điểm có thể hợp, điểm có thể khó, kèm nguồn.
+4. **Sửa hiểu lầm** nếu phụ huynh kỳ vọng điều mà bằng chứng không ủng hộ. Nói nhẹ nhàng, thẳng thắn, có nguồn; nói cả điều chưa được nghiên cứu.
+5. **Không kết luận chắc chắn** về một đứa trẻ. Một phương pháp tốt trên nghiên cứu nhóm chưa chắc hợp với từng em; tên phương pháp trên biển trường chưa chắc là cách trường thực sự dạy.
+6. **Đề xuất cuối luôn là cho con học thử**, kèm danh sách điều cần quan sát khi học thử (lấy từ bài phương pháp) và câu hỏi nên hỏi trường.
+7. Thông tin về trường cụ thể: theo quy tắc "khi kho chưa có thông tin" (§1.1), gắn nhãn chưa kiểm chứng.
 
 ## 2. Nguyên tắc
 1. **Thứ bậc nguồn**
@@ -439,7 +459,9 @@ Trường riêng theo loại:
 | Món ăn | nguyên liệu; nhóm thực phẩm; cách chế biến theo tuổi (thái nhỏ, gỡ xương, nấu mềm); cảnh báo hóc và dị ứng; vùng miền; thời gian nấu |
 | Thực đơn | ghép từ món ăn theo quy tắc của lớp bằng chứng (thịt, cá hoặc trứng mỗi ngày; không đồ uống có đường; không thức ăn dễ hóc dưới 4 tuổi; số bữa phụ); **cần chuyên gia dinh dưỡng duyệt quy tắc** |
 | Sách | tác giả; bản tiếng Việt (nhà xuất bản, năm); loại (bìa cứng, âm thanh, lật mở, có vần, tranh không chữ, kể chuyện); độ dài |
-| Cơ sở dịch vụ | loại (trạm y tế, bệnh viện nhi, trung tâm tiêm chủng, nha khoa, lớp học); địa chỉ; tỉnh, xã; công hay tư; dịch vụ; giờ làm việc; liên hệ; ngày cập nhật |
+| Cơ sở dịch vụ | loại (trạm y tế, bệnh viện nhi, trung tâm tiêm chủng, nha khoa, trường, lớp học); địa chỉ; tỉnh, xã; công hay tư; dịch vụ; giờ làm việc; liên hệ; ngày cập nhật; `mức_kiểm_chứng` (chưa kiểm chứng: tra mạng / đã liên hệ cơ sở / đã duyệt); nguồn thông tin |
+| Trường, lớp học (thêm vào cơ sở dịch vụ) | cấp học (nhà trẻ, mẫu giáo, tiểu học…); độ tuổi nhận; phương pháp trường tuyên bố (trỏ tới bài §7.9); bằng chứng về phương pháp (ví dụ chứng nhận của tổ chức phương pháp, giáo viên được đào tạo, có ghi nguồn); học phí tháng (khoảng), các khoản thu thêm (ăn, xe, nhập học), **ngày kiểm tra học phí**; sĩ số lớp, tỉ lệ cô trên trẻ; giấy phép hoạt động; có cho học thử không |
+| Mục hàng đợi kiểm chứng | mã `CK-xxx`; ngày; câu hỏi gốc **đã ẩn danh**; loại thông tin; thông tin Pal đã đưa; nguồn tra mạng; việc cần làm; trạng thái (chờ tìm nguồn / chờ duyệt / đã đưa vào kho / loại bỏ); người duyệt (§1.1) |
 | Sản phẩm | loại; tiêu chí khớp với khuyến nghị (ví dụ "kem đánh răng có fluoride"); tuổi |
 
 ### 7.7 Mục tiêu và danh sách của gia đình
@@ -484,6 +506,24 @@ Quy tắc ước tính:
 - Luôn hiện **phương án tiết kiệm** khi có (ví dụ tiêm chủng mở rộng ở trạm y tế, đồ chơi tự làm).
 - Ghi rõ đây là **ước tính tham khảo**, giá thực tế tùy nơi.
 - So ước tính với ngân sách gia đình khai báo; vượt thì cảnh báo và đề xuất phương án rẻ hơn.
+
+### 7.9 Bài phương pháp (nhãn `phương_pháp`)
+Lưu ở `documents/knowledge/methods/`, mỗi file một phương pháp hoặc một nhóm phương pháp gần nhau. Nhóm chính theo §9.2 (ví dụ Montessori: nhóm 8; EASY: nhóm 1). Mã `KT-3xxx`.
+```
+Mã · Tên (tên gốc tiếng Anh) · Nhóm chính / phụ · Tuổi áp dụng · Nhãn phương_pháp
+1. Phương pháp là gì: nguồn gốc; các thành phần cốt lõi (để nhận ra trường làm thật hay chỉ dùng tên)
+2. Bằng chứng: loại nghiên cứu, ở đâu, nhóm trẻ nào; kết quả từng mặt (học tập, kỹ năng điều hành, xã hội, cảm xúc…);
+   mức chắc chắn; điều CHƯA được nghiên cứu
+3. Lợi: điều có bằng chứng ủng hộ
+4. Hại, rủi ro, giới hạn: điều có bằng chứng; chi phí; rủi ro khi làm sai cách
+5. Hiểu lầm thường gặp của phụ huynh (nhãn hiểu_lầm), mỗi ý có nguồn
+6. Có thể hợp, có thể khó với trẻ thế nào: theo ĐẶC ĐIỂM CỦA MÔI TRƯỜNG HỌC, không theo nhãn tính cách;
+   ghi rõ phần nào có nguồn, phần nào là đề xuất nội bộ
+7. Học thử: điều cần quan sát; câu hỏi nên hỏi trường, trung tâm
+8. Ở Việt Nam: quy định liên quan; tình trạng dùng tên phương pháp; chi phí (nguồn thứ cấp, chưa kiểm chứng nếu tra mạng)
+9. Điều Pal không nên nói
+Nguồn · Người soạn · Trạng thái · Hạn rà soát
+```
 
 ## 8. Kiểm soát chất lượng
 
@@ -564,6 +604,13 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 | Lòng tự trọng | 4 | 7 | Hình thành trong quan hệ, trước tiên là gia đình |
 | Dậy thì | 17 | 1, 3 | Bước chuyển; phần sinh lý ở nhóm 1 |
 | Tiền tiêu vặt, quản lý tiền | 14 | — | Kỹ năng sống |
+| Montessori, Reggio Emilia, Waldorf, HighScope (trường, lớp) | 8 (nhãn `phương_pháp`) | 6 | Môi trường giáo dục (28/10) |
+| STEM, STEAM (lớp học, trung tâm) | 8 (nhãn `phương_pháp`) | 6 | Môi trường giáo dục (28/10) |
+| Glenn Doman, thẻ học, video dạy bé đọc, "giáo dục não phải" | 2 (nhãn `phương_pháp`, `hiểu_lầm`) | 11 | Nhắm tới nhận thức, đọc (28/10) |
+| Sinh trắc vân tay | 6 (nhãn `phương_pháp`, `hiểu_lầm`) | 15 | Hứa phát hiện năng khiếu, định hướng (28/10) |
+| EASY, lịch sinh hoạt cố định cho trẻ nhỏ | 1 (nhãn `phương_pháp`) | 7 | Ăn, ngủ (28/10) |
+| Ăn dặm tự chỉ huy (BLW), ăn dặm kiểu Nhật | 1 (nhãn `phương_pháp`) | 5 | Dinh dưỡng; phần tự xúc ăn ở nhóm 5 (28/10) |
+| Luyện ngủ (để con tự ngủ) | 1 (nhãn `phương_pháp`) | 7 | Giấc ngủ (28/10) |
 | Mạng xã hội | 11 | 3 | Môi trường số |
 | Quy định trường học (chương trình, đánh giá, dạy thêm) | 8 (nhãn `thủ_tục`) | 6 | Môi trường giáo dục |
 | Chia sẻ đồ chơi | 4 | 13 | Hành vi xã hội ở trẻ |
@@ -593,10 +640,12 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 4. Đối chiếu 17 nhóm với Nurturing Care Framework, CDC/AAP, WHO 2020 ECD guideline và chuẩn Việt Nam cho 0–6 tuổi: Chương trình giáo dục mầm non; Bộ chuẩn phát triển trẻ em 5 tuổi (nhiều khả năng là Thông tư 23/2010, cần kiểm số hiệu và hiệu lực).
 5. Nguồn xác nhận khoảng tuổi dùng tuổi hiệu chỉnh cho trẻ sinh non.
 6. Kho nguồn có mã đã lập tại `documents/knowledge/ref-kho-nguon.md` (27/10). Còn lại: chuyển các nguồn ở §13 chưa có mã vào kho; đối chiếu bản gốc cho các nguồn thứ cấp (bậc TC).
-7. Chốt các mục "chưa chốt" của §1.1 (kiến thức chung của AI, danh sách trang được phép, lọc chủ đề, xử lý khi thiếu thông tin định hướng).
+7. Chốt các mục "chưa chốt" của §1.1 (kiến thức chung của AI, danh sách trang được phép, lọc chủ đề, người duyệt hàng đợi kiểm chứng). Việc xử lý khi kho thiếu thông tin đã chốt 28/10.
 8. Viết mục "Cách Pal tìm câu trả lời" (hiểu câu hỏi → lọc theo tuổi và các nhóm liên quan → tìm trong kho chuẩn → tra mạng khi thiếu → trả lời, nói rõ nguồn), tách khỏi §9.
 9. Lớp thực thi (§7.6–7.8): xây trước các bảng sự kiện theo tháng tuổi, hoạt động, món ăn; chuyên gia dinh dưỡng duyệt quy tắc thực đơn; tìm hướng dẫn khẩu phần của Viện Dinh dưỡng Quốc gia; tải đủ bảng chuẩn tăng trưởng WHO; xin phép tác giả M-CHAT-R/F trước khi đưa bộ câu hỏi vào app; xác minh tiêm chủng mở rộng miễn phí tại trạm y tế.
 10. Lập danh sách thủ tục hành chính ưu tiên đưa vào kho (ví dụ tuyển sinh mầm non, lớp 1, lớp 6, lớp 10) và cách cập nhật theo năm học, theo tỉnh.
+11. Hàng đợi kiểm chứng (§1.1): chọn người duyệt và nhịp duyệt; khi có app, chuyển thành bảng dữ liệu có màn hình duyệt.
+12. Danh mục trường, lớp (§7.6): tiêu chí đưa một trường vào lớp thực thi; cách kiểm học phí hằng năm; có dùng chứng nhận của tổ chức phương pháp làm tiêu chí không.
 
 ## 12. Ghi chú về file tham khảo "Khung 0–18 tuổi"
 - **Dùng:** cấu trúc theo giai đoạn.
