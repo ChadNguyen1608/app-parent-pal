@@ -34,5 +34,7 @@
 ## KT-0910 — Tuyển sinh lớp 6
 - **Nhóm chính:** 17 · **Nhóm phụ:** 8 · **Nhãn:** `thủ_tục` · **Tuổi:** 11
 - **Nội dung:** đối tượng tuyển sinh lớp 6 là học sinh **đã hoàn thành chương trình giáo dục phổ thông cấp tiểu học** và **trong độ tuổi vào học lớp 6** theo Điều lệ trường trung học cơ sở [NG-115].
+- Tuyển sinh THCS theo phương thức **xét tuyển**; tiêu chí do Sở GD&ĐT đặt (thêm 29/10/2026) [NG-417].
+- Tuyển sinh lớp 10: `procedure-quy-dinh-hoc-tap-thcs.md`, KT-0940.
 - **Văn bản gốc:** Thông tư 30/2024/TT-BGDĐT (Quy chế tuyển sinh THCS và THPT), Điều 3 · **Cơ quan:** Bộ GD&ĐT · **Địa phương:** toàn quốc; phương thức tuyển sinh cụ thể do địa phương quyết định (chưa có trong kho) · **Áp dụng:** từ 14/2/2025.
 - **Hạn rà soát:** mỗi năm học.

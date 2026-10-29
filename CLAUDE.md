@@ -29,7 +29,7 @@ Mục lục và quy ước đặt tên: `documents/README.md`.
 | `documents/knowledge/spec-ban-do-kien-thuc.md` | Bản đồ bộ kiến thức: phạm vi, nguyên tắc, khung 17 nhóm, trục tuổi, lưới độ phủ, cấu trúc dữ liệu, hai lớp kho, kiểm soát chất lượng. **Đọc trước khi viết hay xếp bất kỳ nội dung lời khuyên nào** |
 | `documents/knowledge/ref-kho-nguon.md` | Kho nguồn có mã `NG-xxx` |
 | `documents/knowledge/ref-hang-doi-kiem-chung.md` | Hàng đợi thông tin Pal tra trên mạng, chờ tìm bổ sung và duyệt |
-| `documents/knowledge/by-age/` | Nội dung kiến thức theo giai đoạn tuổi (hiện có `age-00-06-early-childhood/`, `age-06-11-primary-school/`; nháp, người soạn AI) |
+| `documents/knowledge/by-age/` | Nội dung kiến thức theo giai đoạn tuổi (hiện có `age-00-06-early-childhood/`, `age-06-11-primary-school/`, `age-11-15-lower-secondary/`; nháp, người soạn AI) |
 | `documents/knowledge/foundations/` | Kiến thức nền: lăng kính 4 nhu cầu tâm lý (an toàn, gắn kết, năng lực, tự chủ), sự tự tin theo tuổi, cơ chế tâm lý trong nuôi dạy |
 | `documents/knowledge/seasonal/` | Nội dung theo mùa: bệnh hay tăng theo tháng và vùng, cách phòng, dấu hiệu cần đi khám |
 | `documents/knowledge/methods/` | Bài phương pháp giáo dục và chăm sóc (Montessori, STEM, EASY…), có lợi hại và hiểu lầm |

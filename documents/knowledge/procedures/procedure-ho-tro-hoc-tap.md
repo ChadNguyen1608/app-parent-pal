@@ -60,6 +60,7 @@
     - tối đa 9 tháng/năm học.
     - Nghị định này **vẫn viện dẫn** Nghị định 66/2025, nên có thể áp cho loại trường khác, không thay toàn bộ (CK-034).
 - **Văn bản gốc:** Nghị định 66/2025/NĐ-CP; Nghị định 188/2026/NĐ-CP (chưa đọc văn bản) · **Hạn rà soát:** **ngay**.
+- **Bữa trưa cho học sinh xã biên giới** (thêm 29/10/2026): Thông báo 177-TB/VPTW ngày 25/4/2025 của Văn phòng Trung ương Đảng đồng ý chủ trương **Nhà nước hỗ trợ bữa ăn trưa cho học sinh tiểu học và trung học cơ sở ở các xã biên giới**, bắt đầu từ năm học 2025–2026 ở các xã biên giới đất liền ○ [NG-428]. Đây là **chủ trương**, chưa nêu mức hỗ trợ; mức cụ thể cho trường nội trú, bán trú ở xã biên giới: Nghị định 188/2026 ở trên. Agent kiểm chứng (đợt 11–15 tuổi) xác nhận mức 936.000 đồng/tháng, tối đa 9 tháng, 15 kg gạo/tháng của Nghị định 66/2025 [NG-354]; trang tóm tắt không ghi cấp học áp dụng.
 
 ## KT-0929 — Học bổng cho học sinh
 - **Nhóm chính:** 6 · **Tuổi:** học sinh phổ thông
