@@ -80,7 +80,7 @@ Việc **khoảng 75% trẻ trở lên** làm được ở 5 tuổi [NG-001] [NG
   - **22 chuẩn, 70 chỉ số, thuộc 6 lĩnh vực**: thể chất; tình cảm và xã hội; ngôn ngữ và giao tiếp; nhận thức; thẩm mỹ; tiếp cận với việc học.
   - Là tập hợp chuẩn và chỉ số **định hướng về sự phát triển toàn diện** của trẻ 5 tuổi.
   - Bộ chuẩn cũ (Thông tư 23/2010, gồm 4 lĩnh vực, 28 chuẩn, 120 chỉ số) **đã bị bãi bỏ** từ 14/1/2025 [NG-059].
-  - **Chưa đọc** danh sách 70 chỉ số; chưa rõ bộ chuẩn dùng để đánh giá trẻ hay chỉ để định hướng. Pal **không dùng bộ chuẩn để chấm điểm con** (nguyên tắc 8 của bản đồ).
+  - Điều 2: bộ chuẩn "là định hướng cho giáo dục phát triển toàn diện trẻ em mầm non"; văn bản không có câu nào về xếp loại, so sánh trẻ (Claude đọc bản đăng lại, 29/10/2026) [NG-058]. Lĩnh vực tình cảm – xã hội có chuẩn 7 "Trẻ em nhận thức và thể hiện thái độ đối với bản thân", chỉ số 18 "Tự hào về những đặc điểm riêng và khả năng của bản thân" [NG-058]. Pal **không dùng bộ chuẩn để chấm điểm con** (nguyên tắc 8 của bản đồ; `documents/knowledge/foundations/content-01-nhu-cau-tam-ly-va-tu-tin.md`, KT-40104).
 - Tuyển sinh lớp 1 thay đổi theo địa phương và năm học: xem `documents/knowledge/procedures/`.
 
 **Tùy hoàn cảnh:**

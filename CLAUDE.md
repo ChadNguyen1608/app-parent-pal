@@ -28,8 +28,13 @@ Mục lục và quy ước đặt tên: `documents/README.md`.
 |---|---|
 | `documents/knowledge/spec-ban-do-kien-thuc.md` | Bản đồ bộ kiến thức: phạm vi, nguyên tắc, khung 17 nhóm, trục tuổi, lưới độ phủ, cấu trúc dữ liệu, hai lớp kho, kiểm soát chất lượng. **Đọc trước khi viết hay xếp bất kỳ nội dung lời khuyên nào** |
 | `documents/knowledge/ref-kho-nguon.md` | Kho nguồn có mã `NG-xxx` |
-| `documents/knowledge/by-age/` | Nội dung kiến thức theo giai đoạn tuổi (hiện có `age-00-06-early-childhood/`, nháp, người soạn AI) |
-| `documents/knowledge/procedures/` | Thủ tục hành chính, xếp theo lĩnh vực (không theo tuổi) |
+| `documents/knowledge/ref-hang-doi-kiem-chung.md` | Hàng đợi thông tin Pal tra trên mạng, chờ tìm bổ sung và duyệt |
+| `documents/knowledge/by-age/` | Nội dung kiến thức theo giai đoạn tuổi (hiện có `age-00-06-early-childhood/`, `age-06-11-primary-school/`, `age-11-15-lower-secondary/`; nháp, người soạn AI) |
+| `documents/knowledge/foundations/` | Kiến thức nền: lăng kính 4 nhu cầu tâm lý (an toàn, gắn kết, năng lực, tự chủ), sự tự tin theo tuổi, cơ chế tâm lý trong nuôi dạy |
+| `documents/knowledge/seasonal/` | Nội dung theo mùa: bệnh hay tăng theo tháng và vùng, cách phòng, dấu hiệu cần đi khám |
+| `documents/knowledge/methods/` | Bài phương pháp giáo dục và chăm sóc (Montessori, STEM, EASY…), có lợi hại và hiểu lầm |
+| `documents/knowledge/ref-muc-quan-tam-tim-kiem.md` | Mức quan tâm tìm kiếm các phương pháp (Google Trends), thứ tự ưu tiên |
+| `documents/knowledge/procedures/` | Thủ tục hành chính, xếp theo lĩnh vực (không theo tuổi); gồm các chương trình, chính sách hỗ trợ của Nhà nước cho trẻ và gia đình (tiêm chủng mở rộng, bảo hiểm y tế, học phí, hỗ trợ học tập, trợ cấp, bảo vệ trẻ em) |
 | `documents/pal/guide-cach-pal-tra-loi.md` | Cách Pal trả lời câu hỏi lập kế hoạch |
 | `documents/pal/examples/` | Ví dụ câu trả lời chuẩn |
 
@@ -37,9 +42,13 @@ Quy tắc khi sửa tài liệu:
 - Trục dọc là tuổi: tiền mang thai → thai kỳ → 0–6 → 6–11 → 11–15 → 15–18 → 18–24.
 - Mỗi nội dung thuộc **1 nhóm chính** trong 17 nhóm: lớp **Nền** an toàn; cấp **A** phát triển cốt lõi (1–6); cấp **B** môi trường (7–12); **C1** định hướng xuyên suốt (13, 14, 16); **C2** định hướng giai đoạn (15, 17). Xếp nhóm theo cây quyết định và sổ quyết định phân loại trong bản đồ, không tự đặt nhóm mới.
 - Không điểm tổng, không so sánh trẻ với trẻ khác; tín hiệu an toàn luôn được ưu tiên.
-- Mọi ý trong lớp bằng chứng có mã nguồn; ý không có nguồn gắn nhãn `đề xuất nội bộ`; lời khuyên mượn từ nhóm tuổi kề bên gắn nhãn `áp tuổi liền kề`; nguồn thứ cấp đánh dấu ○.
+- Mọi ý trong lớp bằng chứng có mã nguồn; ý không có nguồn gắn nhãn `đề xuất nội bộ`; lời khuyên suy từ một cơ chế có nguồn nhưng chưa được kiểm trực tiếp gắn nhãn `suy từ lý thuyết` (bản đồ §2 mục 3a: trỏ tới cơ chế trong `foundations/`, Pal nói rõ "chưa có nghiên cứu kiểm trực tiếp", không dùng cho an toàn, sức khỏe, thuốc); lời khuyên mượn từ nhóm tuổi kề bên gắn nhãn `áp tuổi liền kề`; nguồn thứ cấp đánh dấu ○.
 - Nội dung do AI soạn ghi `người soạn: AI` và không được tự chuyển sang "đã duyệt".
-- **Nguồn trả lời** (bản đồ §1.1): Pal tìm trong kho chuẩn trước. Thủ tục hành chính chưa có trong kho thì Pal báo cho phụ huynh trước, rồi mới đưa thông tin tra trên mạng kèm nguồn.
+- **Nguồn trả lời** (bản đồ §1.1): Pal tìm trong kho chuẩn trước. Thông tin chưa có trong kho (mọi loại) thì Pal báo cho phụ huynh trước, rồi đưa thông tin tra trên mạng kèm nguồn, gắn nhãn **chưa kiểm chứng**, và ghi vào `documents/knowledge/ref-hang-doi-kiem-chung.md` để tìm bổ sung và duyệt. Không tra mạng cho chẩn đoán, thuốc, tình huống khẩn.
+- **Phương pháp** (bản đồ §1.3): Pal dựa vào bài phương pháp để tư vấn có hợp với con không, sửa hiểu lầm có nguồn, không kết luận chắc chắn; **đề xuất cuối luôn là cho con học thử** (mọi phương pháp), ngay trước đó nói rõ nghiên cứu nói gì, giúp được gì, mức chắc chắn.
+- **Trường, trung tâm cụ thể:** được nêu tên, chỉ đưa dữ kiện từ nguồn, gắn nhãn chưa kiểm chứng; **không nhận xét** chất lượng nếu kho chưa có.
+- **Agent:** chỉ tạo agent (tìm nguồn, kiểm chứng) khi chủ sản phẩm cho phép. Không có agent thì Claude tự tìm, tự mở lại nguồn và ghi "chưa kiểm chứng độc lập".
+- **Tâm lý trẻ** (bản đồ §7.10): với mỗi gợi ý, Pal kiểm việc đó nuôi hay làm tổn thương nhu cầu nào trong 4 nhu cầu; nghe nhu cầu đằng sau lời kể, không chẩn đoán. **Không chấm điểm tự tin, lòng tự trọng**; chỉ quan sát, mô tả theo từng việc, so con với chính con.
 - **Hai lớp kho** (bản đồ §1.2): lớp bằng chứng (có nguồn) và lớp thực thi (trò chơi, món ăn, sách, cơ sở dịch vụ, sản phẩm; có chi phí). Mục đối tác hoặc sản phẩm mẫu có cờ "ẩn khi phát hành".
 - Khi đổi tên hoặc chuyển file, sửa mọi đường dẫn trỏ tới nó trong `documents/`, kiểm tra mã nguồn `NG-xxx` được dùng đều có trong `ref-kho-nguon.md`, và cập nhật bản sao trong project Parent-Pal trên claude.ai.
 

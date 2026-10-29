@@ -158,6 +158,21 @@ CDC khuyên **hành động sớm** khi [NG-002]:
 
 Việc cần làm: nói với bác sĩ của con, chia sẻ lo lắng, và **hỏi về sàng lọc phát triển** [NG-002]. Tài liệu mốc của CDC **không thay thế** công cụ sàng lọc phát triển đã chuẩn hóa [NG-001]. AAP khuyến nghị **sàng lọc phát triển bằng công cụ chuẩn hóa lúc 9, 18, 30 tháng** và **sàng lọc tự kỷ lúc 18, 24 tháng, hoặc bất cứ khi nào cha mẹ hoặc bác sĩ lo lắng** (nêu trên trang của CDC, đã đối chiếu nguyên văn 28/10/2026) [NG-001].
 
+### 4.9 Nhu cầu tâm lý và sự tự tin 0–6 tuổi
+`KT-0011` · Nhóm chính: 3 (hình ảnh bản thân và tự tin) · Nhóm phụ: 4, 7 · Nhãn: `kiến_thức_nền` · Chưa kiểm chứng độc lập (thêm 29/10/2026)
+
+Lăng kính 4 nhu cầu, cơ chế và nguồn đầy đủ: `documents/knowledge/foundations/content-01-nhu-cau-tam-ly-va-tu-tin.md`. Việc cha mẹ làm có nguồn; nhu cầu ghi ở cột đầu là cách Parent-Pal xếp (`đề xuất nội bộ`).
+
+| Nhu cầu | 0–3 tuổi | 3–6 tuổi |
+|---|---|---|
+| An toàn, đoán trước được | Chăm sóc đáp ứng; nếp sinh hoạt đều [NG-054] [NG-016] | Báo trước khi có người lạ, chỗ mới; để con tự chọn nhịp tham gia [NG-276] |
+| Gắn kết và được ghi nhận | Cho con thấy cha mẹ vui với con, với việc con làm; nhận xét hành vi, không gắn nhãn con người [NG-301] | Khen việc con làm, chân thành, cụ thể; không khen phóng đại [NG-263] [NG-265] |
+| Năng lực | Để con tự làm việc nhỏ (tự xúc ăn, tự mặc đồ) theo mốc của tuổi | Giao việc nhà đơn giản; AAP gợi ý từ 5 tuổi, áp cho 3–4 tuổi là `áp tuổi liền kề` [NG-249]; việc vừa sức để con thấy "mình làm được" (`suy từ lý thuyết` [NG-252]) |
+| Tự chủ | Cho chọn giữa các phương án an toàn; thỉnh thoảng cho con được nói "không" [NG-299] | Cho chọn trong khuôn khổ [NG-258] |
+
+- **Con nhìn mình thế nào:** trẻ chập chững bắt đầu hiểu mình là ai, làm được gì [NG-299]. Trẻ 3–6 tuổi thường lẫn mong muốn với thực tế, nên hay tự nhận mình giỏi; điều này bình thường [NG-302]. Bộ chuẩn 5 tuổi có chỉ số "Tự hào về những đặc điểm riêng và khả năng của bản thân" [NG-058].
+- **Không chấm điểm tự tin**: trẻ dưới 8 tuổi chưa tự đánh giá được lòng tự trọng nói chung [NG-312]. Cha mẹ quan sát theo từng việc, so con với chính con (KT-40104).
+
 ## 5. Dấu hiệu nguy hiểm cần đi khám ngay (mọi chặng)
 `KT-0010` · Nhóm chính: Nền · Nhóm phụ: 1 · Nhãn: `an_toàn`
 
@@ -170,5 +185,7 @@ Việc cần làm: nói với bác sĩ của con, chia sẻ lo lắng, và **h�
 - **li bì hoặc mất ý thức**.
 
 **Nuốt pin cúc (pin đồng xu):** tổn thương mô nghiêm trọng có thể xảy ra **chỉ trong khoảng 2 giờ** [NG-040], nên cần đi cấp cứu ngay.
+
+Bệnh hay tăng theo mùa (sốt xuất huyết, tay chân miệng, bệnh hô hấp, tiêu chảy, sởi, dại): `documents/knowledge/seasonal/content-01-benh-theo-mua.md`. Tiêm chủng mở rộng miễn phí, uống vitamin A, sàng lọc sơ sinh: `documents/knowledge/procedures/procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md`.
 
 Mọi tình huống khẩn do **lớp an toàn của app** xử lý trước (115 cấp cứu, 111 bảo vệ trẻ em, 113 công an). Đường dây 111 là **Tổng đài quốc gia bảo vệ trẻ em, miễn phí** ○ [NG-050].
