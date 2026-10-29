@@ -130,6 +130,7 @@ WHO, 5–17 tuổi [NG-028]:
 `KT-2011` · Nhóm chính: 1
 
 - AAP (Bright Futures): **khám sức khỏe định kỳ mỗi năm** từ 6 đến 11 tuổi; **đo huyết áp mỗi lần khám** [NG-088]. Đã có bản 2024 của lịch này, cần đối chiếu.
+- Ở Việt Nam, trường kiểm tra sức khỏe đầu năm học mỗi năm một lần ○ [NG-330] (`documents/knowledge/procedures/procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md`, KT-0921). Bệnh theo mùa: `documents/knowledge/seasonal/content-01-benh-theo-mua.md`.
 
 ### 4.8 Dậy thì
 `KT-2012` · Nhóm chính: 1 · Nhóm phụ: 17

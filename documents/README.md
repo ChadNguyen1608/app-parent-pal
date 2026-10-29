@@ -13,6 +13,7 @@ documents/
 │   │   ├── age-00-06-early-childhood/ 0–6 tuổi (mầm non)
 │   │   └── age-06-11-primary-school/  6–11 tuổi (tiểu học)
 │   ├── foundations/                   Kiến thức nền: cơ chế tâm lý, nhu cầu tâm lý của trẻ
+│   ├── seasonal/                      Nội dung theo mùa: bệnh hay tăng theo tháng, theo vùng
 │   ├── methods/                       Phương pháp giáo dục và chăm sóc
 │   └── procedures/                    Thủ tục hành chính, theo lĩnh vực
 └── pal/                               Cách Pal làm việc
@@ -39,7 +40,7 @@ documents/
 - **Thư mục giai đoạn tuổi:** `age-<từ>-<đến>-<tên giai đoạn>`, tuổi viết 2 chữ số để sắp xếp đúng. Dự kiến: `age-00-06-early-childhood`, `age-06-11-primary-school`, `age-11-15-lower-secondary`, `age-15-18-upper-secondary`, `age-18-24-young-adult`; thêm `pre-pregnancy` và `pregnancy` cho hai giai đoạn trước sinh.
 - **File nội dung trong một giai đoạn:** `content-<thứ tự>-<tên chặng>-<khoảng tuổi>-<thang|tuoi>.md`. Ví dụ `content-03-tap-di-12-18-thang.md`.
 - **Thủ tục** xếp theo lĩnh vực, không theo tuổi; mỗi mẩu trong file ghi độ tuổi áp dụng.
-- **Mã nội dung** (`KT-xxxx`, `NG-xxx`…) không đổi khi đổi tên hay chuyển file. Bài phương pháp dùng mã `KT-3FFNN`, bài kiến thức nền dùng mã `KT-4FFNN` (FF: số thứ tự file, NN: số thứ tự mẩu).
+- **Mã nội dung** (`KT-xxxx`, `NG-xxx`…) không đổi khi đổi tên hay chuyển file. Bài phương pháp dùng mã `KT-3FFNN`, bài kiến thức nền dùng mã `KT-4FFNN`, bài theo mùa dùng mã `KT-5FFNN` (FF: số thứ tự file, NN: số thứ tự mẩu).
 
 ## Nội dung 0–6 tuổi
 
@@ -102,6 +103,13 @@ documents/
 | `procedure-hoc-phi.md` | Học phí mầm non, tiểu học | KT-0906, KT-0911 |
 | `procedure-tiem-chung-bat-buoc.md` | Tiêm chủng bắt buộc (gồm nhắc 7 tuổi, HPV) | KT-0908, KT-0913, KT-0914 |
 | `procedure-quy-dinh-hoc-tap-tieu-hoc.md` | Chương trình, đánh giá, dạy thêm ở tiểu học | KT-0915, KT-0916, KT-0917 |
+| `procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md` | Chương trình miễn phí của Nhà nước: tiêm chủng mở rộng tại trạm y tế, vitamin A, sàng lọc sơ sinh, kiểm tra sức khỏe đầu năm học | KT-0918–0921 |
+
+## Nội dung theo mùa (`seasonal/`)
+
+| File | Nội dung | Mã |
+|---|---|---|
+| `content-01-benh-theo-mua.md` | Lịch bệnh trong năm theo vùng; sốt xuất huyết, tay chân miệng, bệnh hô hấp, tiêu chảy, sởi, dại | KT-50101–50107 |
 
 ## Ví dụ câu trả lời chuẩn (`documents/pal/examples/`)
 

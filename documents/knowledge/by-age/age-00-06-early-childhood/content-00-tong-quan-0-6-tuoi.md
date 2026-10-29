@@ -186,4 +186,6 @@ Lăng kính 4 nhu cầu, cơ chế và nguồn đầy đủ: `documents/knowledg
 
 **Nuốt pin cúc (pin đồng xu):** tổn thương mô nghiêm trọng có thể xảy ra **chỉ trong khoảng 2 giờ** [NG-040], nên cần đi cấp cứu ngay.
 
+Bệnh hay tăng theo mùa (sốt xuất huyết, tay chân miệng, bệnh hô hấp, tiêu chảy, sởi, dại): `documents/knowledge/seasonal/content-01-benh-theo-mua.md`. Tiêm chủng mở rộng miễn phí, uống vitamin A, sàng lọc sơ sinh: `documents/knowledge/procedures/procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md`.
+
 Mọi tình huống khẩn do **lớp an toàn của app** xử lý trước (115 cấp cứu, 111 bảo vệ trẻ em, 113 công an). Đường dây 111 là **Tổng đài quốc gia bảo vệ trẻ em, miễn phí** ○ [NG-050].

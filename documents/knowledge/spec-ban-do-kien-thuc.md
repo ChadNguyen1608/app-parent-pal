@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.16 — 29/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.17 — 29/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.17 (29/10):** theo yêu cầu của người dùng: thêm nội dung **bệnh theo mùa** (`documents/knowledge/seasonal/`, §7.11) và **các chương trình miễn phí, hỗ trợ của Nhà nước** cho trẻ (tiêm chủng mở rộng tại trạm y tế, vitamin A, sàng lọc sơ sinh, kiểm tra sức khỏe đầu năm học; `procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md`). Nguồn NG-322 đến NG-340, chưa kiểm chứng độc lập; hàng đợi CK-029 đến CK-031.
 - **v5.16 (29/10):** cách Pal trả lời v1.4: câu hỏi chung theo giai đoạn có thêm phần "điều thường thấy ở tuổi này" và phần "một số vấn đề trẻ có thể gặp" (liệt kê, không giải pháp chi tiết, tạm thời cho đến khi thu thập câu hỏi thật của phụ huynh); hàng đợi CK-028.
 - **v5.15 (29/10):** theo quyết định của người dùng: thêm nhãn **`suy từ lý thuyết`** (§2 mục 3a); thêm **lớp kiến thức nền tâm lý** (`documents/knowledge/foundations/`, §7.10) với lăng kính 4 nhu cầu tâm lý (an toàn, gắn kết và được ghi nhận, năng lực, tự chủ); nhóm 3 thêm chủ đề con cố định thứ tư **"hình ảnh bản thân và tự tin"** (§3.2); "lòng tự trọng" chuyển từ nhóm 4 sang nhóm 3 (§9.2); **không chấm điểm tự tin**, chỉ quan sát mô tả. Nguồn NG-252 đến NG-321, chưa kiểm chứng độc lập.
 - **v5.14 (28/10):** nội dung 6–11 thêm mục 11 kỹ năng sống và vận động (bơi, đạp xe, điện thoại liên lạc, số khẩn cấp, vận động tinh, việc nhà theo tuổi) và "làm quen nhẹ nhàng trước lớp 1"; cách Pal trả lời v1.2: giải pháp thay vì thông tin, câu hỏi chung theo giai đoạn liệt kê mục tiêu cả giai đoạn. Nguồn NG-244 đến NG-251, chưa kiểm chứng độc lập.
@@ -549,6 +550,11 @@ Lưu ở `documents/knowledge/foundations/`. Mã `KT-4FFNN`: FF là số thứ t
 - **Lăng kính 4 nhu cầu tâm lý** (`content-01-nhu-cau-tam-ly-va-tu-tin.md`, KT-40101): an toàn; gắn kết và được ghi nhận; năng lực; tự chủ. Với mỗi gợi ý, Pal kiểm việc đó nuôi nhu cầu nào và có thể làm tổn thương nhu cầu nào. Cách gộp 4 nhu cầu là `đề xuất nội bộ`; từng nhu cầu có nguồn.
 - **Không chấm điểm tự tin, lòng tự trọng** (KT-40104): chỉ quan sát, mô tả theo từng việc, so con với chính con (nguyên tắc 8).
 
+### 7.11 Nội dung theo mùa (thêm 29/10/2026)
+Lưu ở `documents/knowledge/seasonal/`. Mã `KT-5FFNN`. Nội dung gắn với **tháng trong năm và vùng** (không gắn tuổi): bệnh hay tăng theo mùa, cách phòng, dấu hiệu cần đi khám. Lấy thời điểm từ kế hoạch phòng chống bệnh truyền nhiễm hằng năm của Bộ Y tế; rà soát mỗi năm.
+- Pal hỏi **tỉnh, thành** để nhắc đúng mùa; không hỏi địa chỉ cụ thể.
+- Không chẩn đoán, không nêu thuốc, không tra mạng cho câu hỏi chẩn đoán, thuốc, khẩn cấp (§1.1, §2 nguyên tắc 5).
+
 ## 8. Kiểm soát chất lượng
 
 > **Dùng agent (người dùng chốt 28/10/2026):** chỉ tạo agent khi chủ sản phẩm cho phép. Khi không dùng agent, Claude tự tìm và tự mở lại nguồn; nội dung ghi rõ **"chưa kiểm chứng độc lập"** (chưa có người hoặc agent thứ hai mở lại nguồn) cho đến khi có lượt kiểm thứ hai.
@@ -660,6 +666,8 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 | Chia sẻ đồ chơi | 4 | 13 | Hành vi xã hội ở trẻ |
 | Thủ tục nhập học, tuyển sinh, chuyển trường, quy chế thi | 17 (nhãn `thủ_tục`) | 8 | Gắn với bước chuyển của con |
 | Thủ tục y tế cho con (thẻ bảo hiểm y tế, sổ tiêm chủng) | 1 (nhãn `thủ_tục`) | — | Sức khỏe |
+| Chương trình miễn phí của Nhà nước về y tế (tiêm chủng mở rộng, vitamin A, sàng lọc sơ sinh, kiểm tra sức khỏe đầu năm học) | 1 (nhãn `thủ_tục`) | 10 | Sức khỏe; nhóm 10 có "tiếp cận dịch vụ" (29/10) |
+| Bệnh theo mùa (sốt xuất huyết, tay chân miệng, bệnh hô hấp, tiêu chảy, sởi, dại) | 1 | Nền | Sức khỏe; dấu hiệu nặng nối lớp Nền (29/10) |
 | Giấy tờ hộ tịch của con (khai sinh…) | 7 (nhãn `thủ_tục`) | — | Việc của gia đình |
 
 ## 10. Đối chiếu hệ làn v3 → khung hiện tại
@@ -686,7 +694,7 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 6. Kho nguồn có mã đã lập tại `documents/knowledge/ref-kho-nguon.md` (27/10). Còn lại: chuyển các nguồn ở §13 chưa có mã vào kho; đối chiếu bản gốc cho các nguồn thứ cấp (bậc TC).
 7. Chốt các mục "chưa chốt" của §1.1 (kiến thức chung của AI, danh sách trang được phép, lọc chủ đề, người duyệt hàng đợi kiểm chứng). Việc xử lý khi kho thiếu thông tin đã chốt 28/10.
 8. Viết mục "Cách Pal tìm câu trả lời" (hiểu câu hỏi → lọc theo tuổi và các nhóm liên quan → tìm trong kho chuẩn → tra mạng khi thiếu → trả lời, nói rõ nguồn), tách khỏi §9.
-9. Lớp thực thi (§7.6–7.8): xây trước các bảng sự kiện theo tháng tuổi, hoạt động, món ăn; chuyên gia dinh dưỡng duyệt quy tắc thực đơn; tìm hướng dẫn khẩu phần của Viện Dinh dưỡng Quốc gia; tải đủ bảng chuẩn tăng trưởng WHO; xin phép tác giả M-CHAT-R/F trước khi đưa bộ câu hỏi vào app; xác minh tiêm chủng mở rộng miễn phí tại trạm y tế.
+9. Lớp thực thi (§7.6–7.8): xây trước các bảng sự kiện theo tháng tuổi, hoạt động, món ăn; chuyên gia dinh dưỡng duyệt quy tắc thực đơn; tìm hướng dẫn khẩu phần của Viện Dinh dưỡng Quốc gia; tải đủ bảng chuẩn tăng trưởng WHO; xin phép tác giả M-CHAT-R/F trước khi đưa bộ câu hỏi vào app; tiêm chủng mở rộng miễn phí tại trạm y tế: đã có căn cứ Luật Phòng bệnh 2025 Điều 22 (29/10, `procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md`), còn phải đọc văn bản gốc.
 10. Lập danh sách thủ tục hành chính ưu tiên đưa vào kho (ví dụ tuyển sinh mầm non, lớp 1, lớp 6, lớp 10) và cách cập nhật theo năm học, theo tỉnh.
 11. Hàng đợi kiểm chứng (§1.1): chọn người duyệt và nhịp duyệt; khi có app, chuyển thành bảng dữ liệu có màn hình duyệt.
 12. Danh mục trường, lớp (§7.6): tiêu chí đưa một trường vào lớp thực thi; cách kiểm học phí hằng năm; có dùng chứng nhận của tổ chức phương pháp làm tiêu chí không.

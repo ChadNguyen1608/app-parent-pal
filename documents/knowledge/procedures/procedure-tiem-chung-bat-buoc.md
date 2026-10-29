@@ -12,6 +12,7 @@
 - **Nội dung:**
   - Lịch theo tuổi từ sơ sinh đến 7 tuổi theo Thông tư 52/2025/TT-BYT: xem các file chặng, mục 1 [NG-032].
   - ○ Thông tư 13/2026/TT-BYT về hoạt động tiêm chủng có hiệu lực từ **1/7/2026**, bổ sung HPV vào danh mục tiêm chủng bắt buộc [NG-033].
+  - Danh mục 13 bệnh, việc tiêm miễn phí tại trạm y tế, vắc xin mới theo tỉnh (rota, phế cầu, HPV): `procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md`, KT-0918 (thêm 29/10/2026).
 - **Văn bản gốc:** Thông tư 52/2025/TT-BYT ngày 31/12/2025; Thông tư 13/2026/TT-BYT · **Cơ quan:** Bộ Y tế · **Địa phương:** toàn quốc (phế cầu có phạm vi triển khai riêng [NG-032]).
 - **Hạn rà soát:** **ngay**, để đối chiếu lịch theo tuổi trong Thông tư 13/2026/TT-BYT.
 
@@ -27,5 +28,6 @@
   - Thông tư 13/2026/TT-BYT (ký 16/5/2026, hiệu lực **1/7/2026**) đưa **bệnh do virus HPV** vào danh mục bệnh phải dùng vắc xin trong tiêm chủng bắt buộc ○ [NG-090].
   - **Độ tuổi, giới tính, lịch tiêm đang chờ Bộ Y tế hướng dẫn.** Báo chí đưa các con số khác nhau (bé gái khoảng 11 hoặc 12 tuổi, ở một số tỉnh trước) ○ [NG-090]. Báo Chính phủ (30/9/2026) cho biết vắc xin còn đang được mua sắm, dự kiến triển khai 2026–2027.
   - Pal **không nêu một độ tuổi cụ thể** cho đến khi có văn bản chính thức.
+  - Cập nhật 29/10/2026: kế hoạch 2026–2028 ghi giai đoạn đầu ở 4 tỉnh; các nguồn ghi tuổi khác nhau (11, 12, 9 đến dưới 15). Chi tiết: `procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md`, KT-0918.
 - **Văn bản gốc:** Thông tư 13/2026/TT-BYT (chưa đọc toàn văn) · **Cơ quan:** Bộ Y tế · **Địa phương:** toàn quốc; giai đoạn đầu ở một số tỉnh (theo báo chí).
 - **Hạn rà soát:** **ngay**, và mỗi khi Bộ Y tế ban hành hướng dẫn.
