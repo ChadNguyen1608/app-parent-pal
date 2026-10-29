@@ -97,13 +97,15 @@ documents/
 | File | Lĩnh vực | Mã |
 |---|---|---|
 | `procedure-ho-tich-khai-sinh.md` | Khai sinh; liên thông khai sinh, thường trú, bảo hiểm y tế, căn cước | KT-0901, KT-0902 |
-| `procedure-bao-hiem-y-te.md` | Bảo hiểm y tế cho trẻ, học sinh | KT-0903, KT-0912 |
-| `procedure-nghi-thai-san.md` | Nghỉ thai sản của mẹ, nghỉ của bố | KT-0904 |
+| `procedure-bao-hiem-y-te.md` | Bảo hiểm y tế cho trẻ, học sinh (mức hưởng, mức đóng, hỗ trợ theo tỉnh) | KT-0903, KT-0912 |
+| `procedure-nghi-thai-san.md` | Nghỉ thai sản của mẹ, nghỉ của bố; trợ cấp một lần khi sinh; nghỉ chăm con ốm | KT-0904, KT-0923, KT-0924 |
 | `procedure-nhap-hoc.md` | Nhập học nhà trẻ, mẫu giáo, lớp 1, lớp 6 | KT-0905, KT-0907, KT-0909, KT-0910 |
-| `procedure-hoc-phi.md` | Học phí mầm non, tiểu học | KT-0906, KT-0911 |
+| `procedure-hoc-phi.md` | Học phí mầm non, tiểu học; hỗ trợ học phí trường tư; hỗ trợ chi phí học tập | KT-0906, KT-0911, KT-0922 |
 | `procedure-tiem-chung-bat-buoc.md` | Tiêm chủng bắt buộc (gồm nhắc 7 tuổi, HPV) | KT-0908, KT-0913, KT-0914 |
 | `procedure-quy-dinh-hoc-tap-tieu-hoc.md` | Chương trình, đánh giá, dạy thêm ở tiểu học | KT-0915, KT-0916, KT-0917 |
-| `procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md` | Chương trình miễn phí của Nhà nước: tiêm chủng mở rộng tại trạm y tế, vitamin A, sàng lọc sơ sinh, kiểm tra sức khỏe đầu năm học | KT-0918–0921 |
+| `procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md` | Chương trình y tế miễn phí của Nhà nước: tiêm chủng mở rộng tại trạm y tế, vitamin A, sàng lọc sơ sinh, kiểm tra sức khỏe đầu năm học, khám miễn phí theo lộ trình | KT-0918–0921, KT-0934 |
+| `procedure-ho-tro-hoc-tap.md` | Sách giáo khoa miễn phí, ăn trưa 3–5 tuổi, con công nhân khu công nghiệp, nội trú, học bổng, vay vốn | KT-0925–0930 |
+| `procedure-ho-tro-gia-dinh-va-tre-em.md` | Hỗ trợ khi sinh con, trợ cấp xã hội hằng tháng cho trẻ, bảo vệ trẻ em (111) | KT-0931–0933 |
 
 ## Nội dung theo mùa (`seasonal/`)
 

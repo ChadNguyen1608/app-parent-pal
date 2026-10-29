@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.17 — 29/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
+Bản v5.18 — 29/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có đợt nội dung nháp đầu tiên cho 0–6 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.18 (29/10):** chính sách hỗ trợ của Nhà nước cho trẻ em và gia đình (3 agent haiku tìm nguồn, được cho phép): bảo hiểm y tế học sinh, khám miễn phí theo lộ trình, hỗ trợ chi phí học tập, sách giáo khoa miễn phí từ 2029–2030, ăn trưa 3–5 tuổi, nội trú, học bổng, vay vốn, hỗ trợ khi sinh con, trợ cấp xã hội hằng tháng (NĐ 335/2026), nghỉ chăm con ốm, bảo vệ trẻ em. File mới `procedure-ho-tro-hoc-tap.md`, `procedure-ho-tro-gia-dinh-va-tre-em.md`. Nguồn NG-341 đến NG-372, chưa kiểm chứng độc lập; hàng đợi CK-032 đến CK-034.
 - **v5.17 (29/10):** theo yêu cầu của người dùng: thêm nội dung **bệnh theo mùa** (`documents/knowledge/seasonal/`, §7.11) và **các chương trình miễn phí, hỗ trợ của Nhà nước** cho trẻ (tiêm chủng mở rộng tại trạm y tế, vitamin A, sàng lọc sơ sinh, kiểm tra sức khỏe đầu năm học; `procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md`). Nguồn NG-322 đến NG-340, chưa kiểm chứng độc lập; hàng đợi CK-029 đến CK-031.
 - **v5.16 (29/10):** cách Pal trả lời v1.4: câu hỏi chung theo giai đoạn có thêm phần "điều thường thấy ở tuổi này" và phần "một số vấn đề trẻ có thể gặp" (liệt kê, không giải pháp chi tiết, tạm thời cho đến khi thu thập câu hỏi thật của phụ huynh); hàng đợi CK-028.
 - **v5.15 (29/10):** theo quyết định của người dùng: thêm nhãn **`suy từ lý thuyết`** (§2 mục 3a); thêm **lớp kiến thức nền tâm lý** (`documents/knowledge/foundations/`, §7.10) với lăng kính 4 nhu cầu tâm lý (an toàn, gắn kết và được ghi nhận, năng lực, tự chủ); nhóm 3 thêm chủ đề con cố định thứ tư **"hình ảnh bản thân và tự tin"** (§3.2); "lòng tự trọng" chuyển từ nhóm 4 sang nhóm 3 (§9.2); **không chấm điểm tự tin**, chỉ quan sát mô tả. Nguồn NG-252 đến NG-321, chưa kiểm chứng độc lập.
@@ -668,6 +669,9 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 | Thủ tục y tế cho con (thẻ bảo hiểm y tế, sổ tiêm chủng) | 1 (nhãn `thủ_tục`) | — | Sức khỏe |
 | Chương trình miễn phí của Nhà nước về y tế (tiêm chủng mở rộng, vitamin A, sàng lọc sơ sinh, kiểm tra sức khỏe đầu năm học) | 1 (nhãn `thủ_tục`) | 10 | Sức khỏe; nhóm 10 có "tiếp cận dịch vụ" (29/10) |
 | Bệnh theo mùa (sốt xuất huyết, tay chân miệng, bệnh hô hấp, tiêu chảy, sởi, dại) | 1 | Nền | Sức khỏe; dấu hiệu nặng nối lớp Nền (29/10) |
+| Hỗ trợ học tập của Nhà nước (chi phí học tập, sách giáo khoa, ăn trưa, nội trú, học bổng, vay vốn) | 6 (nhãn `thủ_tục`) | 8, 10 | Học tập; ăn trưa mầm non, nội trú có nhóm phụ 8 (29/10) |
+| Hỗ trợ khi sinh con, trợ cấp xã hội cho trẻ, chế độ BHXH khi con ốm | 7 (nhãn `thủ_tục`) | 10 | Việc của gia đình (29/10) |
+| Tổng đài 111, hỗ trợ trẻ bị xâm hại | Nền (nhãn `an_toàn`, `thủ_tục`) | 7 | An toàn (29/10) |
 | Giấy tờ hộ tịch của con (khai sinh…) | 7 (nhãn `thủ_tục`) | — | Việc của gia đình |
 
 ## 10. Đối chiếu hệ làn v3 → khung hiện tại

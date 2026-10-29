@@ -34,7 +34,7 @@ Mục lục và quy ước đặt tên: `documents/README.md`.
 | `documents/knowledge/seasonal/` | Nội dung theo mùa: bệnh hay tăng theo tháng và vùng, cách phòng, dấu hiệu cần đi khám |
 | `documents/knowledge/methods/` | Bài phương pháp giáo dục và chăm sóc (Montessori, STEM, EASY…), có lợi hại và hiểu lầm |
 | `documents/knowledge/ref-muc-quan-tam-tim-kiem.md` | Mức quan tâm tìm kiếm các phương pháp (Google Trends), thứ tự ưu tiên |
-| `documents/knowledge/procedures/` | Thủ tục hành chính, xếp theo lĩnh vực (không theo tuổi); gồm các chương trình miễn phí của Nhà nước (tiêm chủng mở rộng tại trạm y tế…) |
+| `documents/knowledge/procedures/` | Thủ tục hành chính, xếp theo lĩnh vực (không theo tuổi); gồm các chương trình, chính sách hỗ trợ của Nhà nước cho trẻ và gia đình (tiêm chủng mở rộng, bảo hiểm y tế, học phí, hỗ trợ học tập, trợ cấp, bảo vệ trẻ em) |
 | `documents/pal/guide-cach-pal-tra-loi.md` | Cách Pal trả lời câu hỏi lập kế hoạch |
 | `documents/pal/examples/` | Ví dụ câu trả lời chuẩn |
 

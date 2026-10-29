@@ -17,6 +17,7 @@
 | Uống vitamin A | Trẻ 6 tháng đến dưới 5 tuổi, 2 đợt mỗi năm | Điểm uống ở xã, phường | KT-0919 |
 | Sàng lọc sơ sinh 5 bệnh | Từ 1/7/2026: nhóm ưu tiên. Từ 1/1/2027: mọi trẻ sơ sinh | Cơ sở y tế | KT-0920 |
 | Kiểm tra sức khỏe đầu năm học | Trẻ mầm non, học sinh phổ thông; mỗi năm một lần | Trường học | KT-0921 |
+| Khám sức khỏe định kỳ, khám sàng lọc miễn phí | Theo lộ trình; trẻ em, học sinh khám theo y tế trường học | Cơ sở y tế, trường học | KT-0934 |
 
 ## KT-0918 — Tiêm chủng mở rộng: miễn phí tại trạm y tế
 - **Nhóm chính:** 1 · **Nhóm phụ:** 10 · **Nhãn:** `thủ_tục` · **Tuổi:** theo lịch từng vắc xin
@@ -35,10 +36,10 @@
     - năm 2027: Điện Biên, Phú Thọ, Nghệ An;
     - năm 2028: Đắk Lắk, Gia Lai, Lai Châu.
     - Hà Nội, TP.HCM **không có** trong danh sách đến năm 2028.
-    - Đầu năm 2026, Cục Phòng bệnh cho biết vắc xin đã về Việt Nam, đang kiểm định, sẽ triển khai quy mô nhỏ trước ○ [NG-326]. **Chưa xác nhận** tỉnh nào đã thực sự tiêm (CK-029).
+    - Đầu năm 2026, Cục Phòng bệnh cho biết vắc xin đã về Việt Nam, đang kiểm định, sẽ triển khai quy mô nhỏ trước ○ [NG-326]. **Chưa xác nhận** tỉnh nào đã thực sự tiêm (CK-029). Chỉ thị của Bộ Y tế ngày 22/8/2026 về tăng tốc tiêm chủng mở rộng **không nêu** phế cầu và HPV trong danh sách vắc xin ○ [NG-346].
   - **HPV:** xem `procedure-tiem-chung-bat-buoc.md`, KT-0914.
     - Các nguồn khác nhau về tuổi: kế hoạch 2026–2028 ghi bé gái 11 tuổi ○ [NG-324]; báo tháng 6/2026 ghi bé gái 12 tuổi (học sinh lớp 6 và bé gái 12 tuổi không đi học) ○ [NG-327]; một cổng thông tin tỉnh ghi 9 đến dưới 15 tuổi ○ [NG-339].
-    - Cả hai nguồn đầu đều nói giai đoạn đầu chỉ ở **4 tỉnh** vùng khó khăn. Kế hoạch 2026–2028 nêu tên Tuyên Quang, Quảng Ngãi, Đắk Lắk, Trà Vinh (nay thuộc Vĩnh Long) ○ [NG-324].
+    - Cả hai nguồn đầu đều nói giai đoạn đầu chỉ ở **4 tỉnh** vùng khó khăn. Kế hoạch 2026–2028 nêu tên Tuyên Quang, Quảng Ngãi, Đắk Lắk, Trà Vinh (nay thuộc Vĩnh Long) ○ [NG-324]; báo VOH cũng ghi bé gái 11 tuổi ở 4 tỉnh này ○ [NG-347].
     - Pal **không nêu một độ tuổi cụ thể** cho đến khi có hướng dẫn chính thức.
   - **Cúm mùa:** dự kiến đưa vào tiêm chủng mở rộng **năm 2030** ở 20 tỉnh ○ [NG-326] [NG-340].
 - **Vắc xin nằm ngoài 13 bệnh trên** (ví dụ cúm, thủy đậu, quai bị, viêm gan A, viêm màng não do não mô cầu): thuộc **tiêm chủng tự nguyện**, gia đình **tự trả phí** khi tiêm ở cơ sở có dịch vụ. Danh sách ví dụ này do Parent-Pal suy ra từ danh mục 13 bệnh [NG-323] và Điều 22 [NG-322] (`đề xuất nội bộ`).
@@ -82,10 +83,22 @@
   - Trẻ mầm non: dấu hiệu sinh tồn, dinh dưỡng, phát triển tinh thần – vận động (trẻ 16–30 tháng có đánh giá nguy cơ tự kỷ), tiêm chủng; khám đầu cổ, mắt, tai – mũi – họng, răng – miệng, cơ – xương – thần kinh.
   - Học sinh phổ thông: khám thể lực và khám lâm sàng.
   - Kinh phí "được bảo đảm từ nhiều nguồn"; báo **không nói** có miễn phí hay không (CK-031).
+  - **Sàng lọc 5 nhóm bệnh tật học đường** (Thông tư 34/2026/TT-BYT, theo báo): thừa cân, béo phì; tật khúc xạ; cong vẹo cột sống; bệnh răng miệng; rối loạn sức khỏe tâm thần; cho học sinh từ mầm non đến trung học phổ thông. Bài báo ghi tiêu đề "từ 2028" nhưng thân bài ghi bắt đầu từ 2026 ○ [NG-345] (CK-031).
 - Pal gợi ý phụ huynh **xin kết quả** kiểm tra để nhập vào hồ sơ của con (cân nặng, chiều cao, thị lực). `đề xuất nội bộ`. Kiểm tra ở trường **không thay** khám định kỳ với bác sĩ (`documents/knowledge/by-age/age-06-11-primary-school/content-00-tong-quan-6-11-tuoi.md`, mục 4.7). `đề xuất nội bộ`.
 - **Văn bản gốc:** thông tư chưa rõ số hiệu · **Cơ quan:** Bộ Y tế · **Địa phương:** toàn quốc · **Hạn rà soát:** khi tìm được số hiệu thông tư.
 
+## KT-0934 — Khám sức khỏe định kỳ, khám sàng lọc miễn phí
+- **Nhóm chính:** 1 · **Nhóm phụ:** 10 · **Nhãn:** `thủ_tục`
+- **Nội dung:**
+  - Luật Phòng bệnh 2025, Điều 27 khoản 1 (hiệu lực 1/7/2026): người dân được "khám sức khỏe định kỳ hoặc khám sàng lọc miễn phí ít nhất mỗi năm một lần", **theo lộ trình** và nhóm ưu tiên ○ [NG-322].
+  - Hướng dẫn lập dự toán của Bộ Y tế (Công văn 4499/BYT-KHTC, 18/6/2026): nhóm do ngân sách chi gồm người cao tuổi, người khuyết tật, hộ nghèo, cận nghèo, người có công, người bệnh mạn tính, người dân tộc thiểu số, miền núi, vùng khó khăn… **Trẻ em, học sinh khám theo quy định y tế trường học** (KT-0921) ○ [NG-344].
+  - Nhiều báo đưa tin "toàn dân được khám miễn phí từ 2026"; theo văn bản, quyền này **đi theo lộ trình** ○ [NG-344].
+  - "Miễn viện phí ở mức cơ bản" trong Nghị quyết 72-NQ/TW (2025) là **mục tiêu**, chưa phải quy định cho từng người ○ [NG-372] (CK-032).
+- **Pal nói:** với trẻ đi học, lần khám miễn phí chính là kiểm tra sức khỏe đầu năm học ở trường; khám với bác sĩ nhi vẫn theo lịch khám định kỳ. `đề xuất nội bộ`.
+- **Hạn rà soát:** mỗi năm.
+
 ## Điều Pal không nên nói
+- "Cả nhà được khám sức khỏe miễn phí mỗi năm" khi chưa biết tỉnh, nhóm ưu tiên.
 - "Tiêm ở trạm y tế kém hơn" hay "tiêm dịch vụ tốt hơn" (không có trong kho; không nhận xét cơ sở).
 - "Con được tiêm phế cầu, HPV miễn phí" khi chưa biết tỉnh của phụ huynh có trong lộ trình hay không.
 - Liều vitamin A, liều vắc xin.
