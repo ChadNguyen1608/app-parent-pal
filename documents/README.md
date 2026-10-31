@@ -12,7 +12,8 @@ documents/
 │   ├── by-age/                        Nội dung theo giai đoạn tuổi
 │   │   ├── age-00-06-early-childhood/ 0–6 tuổi (mầm non)
 │   │   ├── age-06-11-primary-school/  6–11 tuổi (tiểu học)
-│   │   └── age-11-15-lower-secondary/ 11–15 tuổi (trung học cơ sở)
+│   │   ├── age-11-15-lower-secondary/ 11–15 tuổi (trung học cơ sở)
+│   │   └── age-15-18-upper-secondary/ 15–18 tuổi (trung học phổ thông)
 │   ├── foundations/                   Kiến thức nền: cơ chế tâm lý, nhu cầu tâm lý của trẻ
 │   ├── seasonal/                      Nội dung theo mùa: bệnh hay tăng theo tháng, theo vùng
 │   ├── methods/                       Phương pháp giáo dục và chăm sóc
@@ -73,6 +74,14 @@ documents/
 | `content-01-thcs-dau-11-13-tuoi.md` | 11–13 tuổi (lớp 6–7) (KT-2401–2408) |
 | `content-02-thcs-cuoi-13-15-tuoi.md` | 13–15 tuổi (lớp 8–9) (KT-2501–2505) |
 
+## Nội dung 15–18 tuổi
+
+| File | Chặng |
+|---|---|
+| `content-00-tong-quan-15-18-tuoi.md` | Tổng quan và kiến thức dùng chung 15–18 tuổi (KT-2601–2623) |
+| `content-01-thpt-dau-15-17-tuoi.md` | 15–17 tuổi (lớp 10–11) (KT-2701–2705) |
+| `content-02-thpt-cuoi-17-18-tuoi.md` | 17–18 tuổi (lớp 12, tròn 18 tuổi) (KT-2801–2805) |
+
 ## Phương pháp giáo dục và chăm sóc (`methods/`)
 
 | File | Nội dung | Mã |
@@ -113,6 +122,8 @@ documents/
 | `procedure-tiem-chung-bat-buoc.md` | Tiêm chủng bắt buộc (gồm nhắc 7 tuổi, HPV) | KT-0908, KT-0913, KT-0914 |
 | `procedure-quy-dinh-hoc-tap-tieu-hoc.md` | Chương trình, đánh giá, dạy thêm ở tiểu học | KT-0915, KT-0916, KT-0917 |
 | `procedure-quy-dinh-hoc-tap-thcs.md` | Chương trình, đánh giá, lên lớp, dạy thêm, hoàn thành THCS, thi vào lớp 10, trung học nghề | KT-0935 đến KT-0941 |
+| `procedure-quy-dinh-hoc-tap-thpt.md` | Chọn môn, đổi môn, đánh giá, thi và công nhận tốt nghiệp THPT, tuyển sinh đại học, chi phí, học bổng, vay vốn, dạy thêm, hướng nghiệp | KT-0942 đến KT-0950 |
+| `procedure-moc-phap-ly-14-18-tuoi.md` | Căn cước, nghĩa vụ quân sự, làm thêm, giao dịch dân sự, tài khoản, mốc 16 và 18 tuổi | KT-0951 đến KT-0955 |
 | `procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md` | Chương trình y tế miễn phí của Nhà nước: tiêm chủng mở rộng tại trạm y tế, vitamin A, sàng lọc sơ sinh, kiểm tra sức khỏe đầu năm học, khám miễn phí theo lộ trình | KT-0918–0921, KT-0934 |
 | `procedure-ho-tro-hoc-tap.md` | Sách giáo khoa miễn phí, ăn trưa 3–5 tuổi, con công nhân khu công nghiệp, nội trú, học bổng, vay vốn | KT-0925–0930 |
 | `procedure-ho-tro-gia-dinh-va-tre-em.md` | Hỗ trợ khi sinh con, trợ cấp xã hội hằng tháng cho trẻ, bảo vệ trẻ em (111) | KT-0931–0933 |

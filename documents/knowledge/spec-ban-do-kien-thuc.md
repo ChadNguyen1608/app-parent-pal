@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.19 — 29/10/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có nội dung nháp cho 0–6, 6–11 và 11–15 tuổi (chờ chuyên gia duyệt).
+Bản v5.20 — 1/11/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có nội dung nháp cho 0–6, 6–11, 11–15 và 15–18 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.20 (1/11):** nội dung **15–18 tuổi** (THPT) theo yêu cầu của người dùng: 3 agent haiku tìm nguồn, 1 agent khác kiểm chứng 218 nhận định (183 khớp, 32 khớp một phần đã sửa theo ghi chú, 0 sai, 3 dòng "không tìm thấy"). Thêm `documents/knowledge/by-age/age-15-18-upper-secondary/` (KT-2601–2623, KT-2701–2705, KT-2801–2805), `procedures/procedure-quy-dinh-hoc-tap-thpt.md` (KT-0942–0950), `procedures/procedure-moc-phap-ly-14-18-tuoi.md` (KT-0951–0955), nguồn NG-430 đến NG-508, hàng đợi CK-044 đến CK-047. Cập nhật §4 (G5), §5.1 (hàng THPT), §9.2 (9 dòng mới).
 - **v5.19 (29/10):** nội dung **11–15 tuổi** (THCS) theo yêu cầu của người dùng: 3 agent haiku tìm nguồn, 1 agent khác kiểm chứng 165 nhận định (139 khớp, 25 khớp một phần đã sửa, 1 sai đã sửa theo văn bản). Thêm `documents/knowledge/by-age/age-11-15-lower-secondary/` (KT-2301–2321, KT-2401–2408, KT-2501–2505), `procedures/procedure-quy-dinh-hoc-tap-thcs.md` (KT-0935–0941), nguồn NG-373 đến NG-429, hàng đợi CK-035 đến CK-039. Cập nhật §4 (G3, G4), §5.1 (hàng THCS), §9.2 (9 dòng mới).
 - **v5.18 (29/10):** chính sách hỗ trợ của Nhà nước cho trẻ em và gia đình (3 agent haiku tìm nguồn, được cho phép): bảo hiểm y tế học sinh, khám miễn phí theo lộ trình, hỗ trợ chi phí học tập, sách giáo khoa miễn phí từ 2029–2030, ăn trưa 3–5 tuổi, nội trú, học bổng, vay vốn, hỗ trợ khi sinh con, trợ cấp xã hội hằng tháng (NĐ 335/2026), nghỉ chăm con ốm, bảo vệ trẻ em. File mới `procedure-ho-tro-hoc-tap.md`, `procedure-ho-tro-gia-dinh-va-tre-em.md`. Nguồn NG-341 đến NG-372, chưa kiểm chứng độc lập; hàng đợi CK-032 đến CK-034.
 - **v5.17 (29/10):** theo yêu cầu của người dùng: thêm nội dung **bệnh theo mùa** (`documents/knowledge/seasonal/`, §7.11) và **các chương trình miễn phí, hỗ trợ của Nhà nước** cho trẻ (tiêm chủng mở rộng tại trạm y tế, vitamin A, sàng lọc sơ sinh, kiểm tra sức khỏe đầu năm học; `procedure-chuong-trinh-mien-phi-cua-nha-nuoc.md`). Nguồn NG-322 đến NG-340, chưa kiểm chứng độc lập; hàng đợi CK-029 đến CK-031.
@@ -204,7 +205,7 @@ Mốc tuổi bám theo hệ thống trường học Việt Nam, vì phụ huynh 
 | G2 Mầm non | 0–6 tuổi | 8 chặng (bảng dưới) | CDC: 0–1, 1–2, 2–3, 3–5; AASM: 4–12 tháng, 1–2, 3–5 | **chi tiết nhất** (§6) |
 | G3 Tiểu học | 6–11 tuổi | 6–8; 9–11 | CDC: 6–8, 9–11; AAP Bright Futures: 5–10; AASM: 6–12 | có nội dung nháp |
 | G4 THCS | 11–15 tuổi | 11–13 (lớp 6–7); 13–15 (lớp 8–9) | WHO: vị thành niên 10–19; UNICEF: 10–14; UNICEF Mỹ: 11–13, 14–18; CDC: 12–14; Bright Futures: 11–14; AASM: 6–12, 13–18 | có nội dung nháp |
-| G5 THPT | 15–18 tuổi | — | UNICEF: 15–19; CDC: 15–17; Bright Futures: 15–17; AASM: 13–18 | chỉ có khung |
+| G5 THPT | 15–18 tuổi | 15–17 (lớp 10–11); 17–18 (lớp 12, tròn 18 tuổi) | UNICEF: 15–19; CDC: 15–17; Bright Futures: 15–17; AASM: 13–18; AAP 5Cs: 15–17; OECD/INFE: 15–18 | có nội dung nháp |
 | G6 Trưởng thành sớm | 18–24 tuổi | — | WHO: thanh niên 15–24; Bright Futures: 18–21; Sawyer (Lancet 2018) đề xuất vị thành niên kéo dài 10–24 (còn tranh luận) | chỉ có khung; tập trung vào **vai trò của cha mẹ** |
 
 Ghi chú pháp lý (dùng cho bước tuỳ biến Việt Nam): Luật Trẻ em 2016 định nghĩa trẻ em là người dưới 16 tuổi; Công ước Liên Hợp Quốc về Quyền trẻ em dùng mốc dưới 18 tuổi.
@@ -259,7 +260,7 @@ Thay cho bảng "nhóm trọng tâm" của v5 (đã bỏ ở v5.3 vì không có
 | Tiểu học 6–8 | Nền, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 14, 17 | — | 15 | 9, 10, 13, 16 | 13 đang soạn · 4 chưa có · 1 không áp dụng |
 | Tiểu học 9–11 | Nền, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 14, 17 | — | 15 | 9, 10, 13, 16 | 13 đang soạn · 4 chưa có · 1 không áp dụng |
 | THCS 11–15 | Nền, 1, 3, 4, 6, 7, 8, 11, 14, 15, 17 | — | — | 2, 5, 9, 10, 12, 13, 16 | 11 đang soạn · 7 chưa có |
-| THPT 15–18 | — | — | — | tất cả | 18 chưa có |
+| THPT 15–18 | Nền, 1, 3, 4, 6, 7, 8, 11, 14, 15, 16, 17 | — | — | 2, 5, 9, 10, 12, 13 | 12 đang soạn · 6 chưa có |
 | 18–24 tuổi | — | — | 8 | các nhóm còn lại | 17 chưa có · 1 không áp dụng |
 
 Một ô "Đang soạn" chỉ có nghĩa là ô đã có ít nhất một mẩu nháp; chủ đề còn thiếu của từng ô ghi ở mục "Chưa có nội dung có nguồn" cuối mỗi file chặng.
@@ -683,6 +684,15 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 | Ý nghĩ tự tử, tự hại | 3 (nhãn `an_toàn`) | Nền | Sức khỏe tâm thần; phần khẩn do lớp an toàn xử lý (29/10) |
 | Giám sát, theo dõi con tuổi teen; con tự kể | 7 | 4 | Thực hành của cha mẹ (29/10) |
 | Hướng nghiệp ở THCS; lựa chọn sau lớp 9 (THPT, trung học nghề) | 15 | 17, 6 | Định hướng nghề; phần thủ tục tuyển sinh ở nhóm 17 (29/10) |
+| Sức khỏe sinh sản tuổi teen (mang thai sớm, giáo dục giới tính, xét nghiệm) | 1 | Nền, 4 | Sức khỏe; luật về tuổi ở lớp Nền (1/11) |
+| Luật về tình dục với người dưới 16 tuổi, tuổi kết hôn | Nền (nhãn `an_toàn`) | 1, 4 | Bảo vệ trẻ khỏi xâm hại (1/11) |
+| Yêu đương tuổi teen, bạo lực trong quan hệ yêu đương | 4 | Nền, 3 | Quan hệ; rủi ro bạo lực nối lớp Nền (1/11) |
+| Bản dạng giới, xu hướng tính dục | 3 | 4, 7 | Hình ảnh bản thân; cách cha mẹ đón nhận ở nhóm 7 (1/11) |
+| Rối loạn chơi game, giới hạn giờ chơi | 11 | 3 | Môi trường số; Pal không chẩn đoán (1/11) |
+| Khám trước khi chơi thể thao thi đấu, chấn động não | 1 | 12 | Sức khỏe (1/11) |
+| Mốc pháp lý theo tuổi (căn cước, nghĩa vụ quân sự, bầu cử, bằng lái) | 16 (nhãn `thủ_tục`) | 17 | Quyền, nghĩa vụ công dân (1/11) |
+| Làm thêm khi 15–18 tuổi, tài khoản ngân hàng, giao dịch dân sự | 14 (nhãn `thủ_tục`) | 16, 15 | Kỹ năng sống tự lập (1/11) |
+| Chọn môn lớp 10, thi tốt nghiệp THPT, tuyển sinh đại học | 17 (nhãn `thủ_tục`) | 8, 15 | Bước chuyển (1/11) |
 
 ## 10. Đối chiếu hệ làn v3 → khung hiện tại
 | Làn v3 | Chuyển thành |
