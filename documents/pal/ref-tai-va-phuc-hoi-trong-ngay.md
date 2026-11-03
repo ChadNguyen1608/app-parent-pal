@@ -3,7 +3,7 @@
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày tra cứu:** 3/11/2026
 - **Dùng cho:** skill lập lịch sinh hoạt (`lap-lich-sinh-hoat-tre`), phần chia khối thời gian.
 - **Phạm vi:** bản thu hẹp của đề xuất "Cognitive Activity & Recovery Framework" (chủ sản phẩm đồng ý 3/11/2026). Chỉ trả lời câu hỏi **việc gì xếp trước, việc gì xếp sau**, không đặt chuẩn thời lượng.
-- **Kiểm chứng:** Claude tự tìm. Ngày 3/11/2026, một agent kiểm chứng khác mở lại từng nguồn và chấm 51 nhận định: 40 khớp, 10 khớp một phần (đã sửa theo ghi chú), 0 sai, 1 không kiểm được (đã bỏ). Agent kiểm chứng cũng là AI, nên vẫn **chưa kiểm chứng độc lập** bởi người. Nguồn đã nhập `ref-kho-nguon.md`, mục 17.
+- **Kiểm chứng:** Claude tự tìm. Ngày 3/11/2026, một agent kiểm chứng khác mở lại từng nguồn và chấm 51 nhận định: 40 khớp, 10 khớp một phần (đã sửa theo ghi chú), 0 sai, 1 không kiểm được (đã bỏ). Agent kiểm chứng cũng là AI, nên vẫn **chưa kiểm chứng độc lập** bởi người. Nguồn đã nhập `documents/knowledge/ref-kho-nguon.md`, mục 17.
 
 ## 1. Kết luận ngắn
 
@@ -113,7 +113,7 @@ Nhãn bổ sung: `người lớn` (nghiên cứu chỉ làm trên người lớn
   Cả hai nghiên cứu nhỏ, chỉ nam khoảng 16 tuổi, không so với nhóm không chơi. Gợi ý chơi lâu hại hơn chơi vừa (E4).
 
 **Áp vào lịch:**
-- Màn hình giải trí **kết thúc ít nhất 60 phút trước giờ tắt đèn**; thiết bị **để ngoài phòng ngủ**. Khớp với `example-03-luu-y-giai-doan-tieu-hoc.md`.
+- Màn hình giải trí **kết thúc ít nhất 60 phút trước giờ tắt đèn**; thiết bị **để ngoài phòng ngủ**. Khớp với `documents/pal/examples/example-03-luu-y-giai-doan-tieu-hoc.md`.
 - Bản skill hiện tại ghi "tắt trước khối vệ sinh buổi tối", thường chưa đủ 60 phút; cần sửa.
 
 ### NT-07 — Tuổi dậy thì: nhịp ngủ lùi muộn
@@ -187,7 +187,7 @@ Quy tắc ghép:
 
   Cơ sở: việc con tự kể là thứ giúp cha mẹ biết chuyện của con nhiều nhất [NG-393] (`suy từ`).
 - **Dấu hiệu cần chuyển mức:**
-  - các dấu hiệu ở `content-6-11-tuoi.md` KT-2016 (thay đổi giấc ngủ, ăn uống, thu mình, tự nói xấu bản thân, đau đầu, đau bụng kéo dài) [NG-101]: Pal gợi ý bố mẹ trao đổi với bác sĩ nhi;
+  - các dấu hiệu ở `documents/knowledge/by-age/age-06-11-primary-school/content-00-tong-quan-6-11-tuoi.md` KT-2016 (thay đổi giấc ngủ, ăn uống, thu mình, tự nói xấu bản thân, đau đầu, đau bụng kéo dài) [NG-101]: Pal gợi ý bố mẹ trao đổi với bác sĩ nhi;
   - con nói về tự hại, ý nghĩ tự tử: **lớp an toàn của app** xử lý ngay, báo bố mẹ.
 
   Pal **không chẩn đoán**, không gọi là "tư vấn tâm lý".
@@ -204,7 +204,7 @@ Quy tắc ghép:
 
 ## 6. Nguồn
 
-Bảng đầy đủ (bậc, loại, điểm kiểm chứng, link): `ref-kho-nguon.md`, mục 17 (NG-509 đến NG-529). Tóm tắt:
+Bảng đầy đủ (bậc, loại, điểm kiểm chứng, link): `documents/knowledge/ref-kho-nguon.md`, mục 17 (NG-509 đến NG-529). Tóm tắt:
 
 | Mã | Nguồn | Năm | Kiểm chứng |
 |---|---|---|---|
