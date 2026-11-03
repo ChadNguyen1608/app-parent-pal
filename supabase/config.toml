@@ -1,0 +1,5 @@
+# Cấu hình Supabase CLI cho chạy cục bộ. Không chứa khóa.
+project_id = "parent-pal"
+
+[auth]
+enable_anonymous_sign_ins = true
