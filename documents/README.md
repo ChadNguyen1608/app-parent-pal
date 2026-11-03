@@ -12,6 +12,9 @@ documents/
 │   └── procedures/                    Thủ tục hành chính, theo lĩnh vực
 └── pal/                               Cách Pal làm việc
     ├── guide-cach-pal-tra-loi.md      Cách Pal trả lời
+    ├── spec-quy-tac-lap-lich.md       Quy tắc lập lịch của Pal (nguồn chuẩn)
+    ├── spec-quy-thoi-gian-va-tab-cua-con.md  Đặc tả quỹ thời gian, giai đoạn tạm thời, tab của con
+    ├── ref-tai-va-phuc-hoi-trong-ngay.md     Căn cứ về tải và phục hồi (NT-01 đến NT-09)
     └── examples/                      Ví dụ câu trả lời chuẩn
 ```
 

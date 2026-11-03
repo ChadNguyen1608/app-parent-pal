@@ -1,6 +1,6 @@
 # Parent-Pal: hướng dẫn cho Claude
 
-Repo này hiện **chỉ chứa tài liệu** của Parent-Pal (thư mục `documents/`). Code bản thử Expo cũ đã được gỡ ngày 28/10/2026; muốn xem hoặc khôi phục, dùng lịch sử git (commit `9abc286` là bản cuối còn code).
+Repo này chứa **tài liệu** của Parent-Pal (thư mục `documents/`) và **bản thử lập lịch** dạng một trang HTML chạy trên artifact claude.ai (thư mục `prototype/`, xem `prototype/README.md`). Code bản thử Expo cũ đã được gỡ ngày 28/10/2026; muốn xem hoặc khôi phục, dùng lịch sử git (commit `9abc286` là bản cuối còn code).
 
 ## Sản phẩm
 
@@ -31,6 +31,10 @@ Mục lục và quy ước đặt tên: `documents/README.md`.
 | `documents/knowledge/by-age/` | Nội dung kiến thức theo giai đoạn tuổi (hiện có `age-00-06-early-childhood/`, nháp, người soạn AI) |
 | `documents/knowledge/procedures/` | Thủ tục hành chính, xếp theo lĩnh vực (không theo tuổi) |
 | `documents/pal/guide-cach-pal-tra-loi.md` | Cách Pal trả lời câu hỏi lập kế hoạch |
+| `documents/pal/spec-quy-tac-lap-lich.md` | **Quy tắc lập lịch của Pal, nguồn chuẩn.** Đổi quy tắc thì sửa ở đây trước, rồi mới sửa prompt trong `prototype/index.html` và skill `lap-lich-sinh-hoat-tre` |
+| `documents/pal/spec-quy-thoi-gian-va-tab-cua-con.md` | Đặc tả quỹ thời gian, hoạt động cố định, giai đoạn tạm thời, tab của con |
+| `documents/pal/ref-tai-va-phuc-hoi-trong-ngay.md` | Căn cứ về thứ tự hoạt động, tải và phục hồi (NT-01 đến NT-09) |
+| `prototype/` | Bản thử "Pal – Lập lịch cho con" (`index.html`) |
 | `documents/pal/examples/` | Ví dụ câu trả lời chuẩn |
 
 Quy tắc khi sửa tài liệu:
