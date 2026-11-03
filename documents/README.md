@@ -4,6 +4,9 @@
 
 ```
 documents/
+├── app/                               Dựng app
+│   ├── spec-phuong-an-a-app-android.md  Đặc tả app Android phương án A
+│   └── ref-nhat-ky-test.md            Nhật ký test trên máy thật
 ├── knowledge/                         Kho kiến thức
 │   ├── spec-ban-do-kien-thuc.md       Bản đồ bộ kiến thức (đặc tả)
 │   ├── ref-kho-nguon.md               Kho nguồn có mã NG-xxx

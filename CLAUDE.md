@@ -2,6 +2,17 @@
 
 Repo này chứa **tài liệu** của Parent-Pal (thư mục `documents/`) và **bản thử lập lịch** dạng một trang HTML chạy trên artifact claude.ai (thư mục `prototype/`, xem `prototype/README.md`). Code bản thử Expo cũ đã được gỡ ngày 28/10/2026; muốn xem hoặc khôi phục, dùng lịch sử git (commit `9abc286` là bản cuối còn code).
 
+## Dựng app Android (phương án A, chốt 04/11/2026)
+
+Đang dựng app Expo thử nghiệm cho 5 tính năng: nhắc giờ, vùng GPS, ghi âm, chụp ảnh, thông báo đẩy. **Đọc `documents/app/spec-phuong-an-a-app-android.md` trước khi viết mã.** File đó ghi công nghệ đã chốt, cấu trúc thư mục (`mobile/`, `supabase/`), ràng buộc bắt buộc, các bước và điều kiện đạt.
+
+- Mỗi bước một nhánh, một PR. Không đẩy thẳng lên `main`.
+- Repo công khai: không commit khóa, `.env`, `google-services.json`, khóa ký, dữ liệu thật của trẻ.
+- Khóa Claude API chỉ nằm trong secret của Supabase; app gọi qua Edge Function `pal-chat`, có ẩn danh và lớp an toàn chạy trước.
+- `prototype/index.html` là hành vi chuẩn để chuyển sang app; giữ nguyên, không xóa.
+- Tạo tài khoản, dự án dịch vụ hay phát sinh chi phí: hỏi chủ sản phẩm trước.
+- Ghi kết quả test trên máy thật vào `documents/app/ref-nhat-ky-test.md`.
+
 ## Sản phẩm
 
 App đồng hành nuôi con cho phụ huynh trẻ ở Việt Nam. Trung tâm là **Pal**, một người bạn trò chuyện có trí nhớ, giúp phụ huynh **thực thi** việc nuôi dạy con (kế hoạch, nhắc lịch, trò chơi, sách, thực đơn), không chỉ liệt kê thông tin.
@@ -40,6 +51,8 @@ Mục lục và quy ước đặt tên: `documents/README.md`.
 | `documents/pal/spec-quy-thoi-gian-va-tab-cua-con.md` | Đặc tả quỹ thời gian, hoạt động cố định, giai đoạn tạm thời, tab của con |
 | `documents/pal/ref-tai-va-phuc-hoi-trong-ngay.md` | Căn cứ về thứ tự hoạt động, tải và phục hồi (NT-01 đến NT-09) |
 | `prototype/` | Bản thử "Pal – Lập lịch cho con" (`index.html`) |
+| `documents/app/spec-phuong-an-a-app-android.md` | **Đặc tả dựng app Android phương án A** (công nghệ, ràng buộc, các bước, điều kiện đạt) |
+| `documents/app/ref-nhat-ky-test.md` | Nhật ký test trên máy thật |
 | `documents/pal/examples/` | Ví dụ câu trả lời chuẩn |
 
 Quy tắc khi sửa tài liệu:
