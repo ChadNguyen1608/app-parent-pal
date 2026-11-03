@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pal – Lập lịch cho con (bản thử)</title>
+<style>
+:root{
+  --bg:#f6f5f2;--card:#fff;--ink:#1d1d1b;--muted:#6b6a66;--line:#e4e2dc;
+  --accent:#2f6fde;--accent-soft:#e8f0fd;--red:#c62828;--red-soft:#fdecea;--ok:#2e7d32;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#161615;--card:#21201e;--ink:#eeece6;--muted:#a19f98;--line:#33312d;--accent:#7aa7ff;--accent-soft:#1f2b44;--red:#ff6b6b;--red-soft:#3a1f1f;--ok:#7bd88f}
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+body{display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--card)}
+header h1{font-size:17px;margin:0;flex:1}
+header .sub{font-size:12px;color:var(--muted)}
+.iconbtn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:6px 10px;font-size:14px}
+.iconbtn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+main{flex:1;overflow:hidden;position:relative}
+.view{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none}
+.view.active{display:block}
+nav{display:flex;border-top:1px solid var(--line);background:var(--card)}
+nav button{flex:1;border:0;background:none;padding:10px 0 12px;font-size:13px;color:var(--muted)}
+nav button.active{color:var(--accent);font-weight:600}
+nav button .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-left:4px;vertical-align:middle}
+/* chat */
+/* màn Lên kế hoạch: quỹ giờ (trái) + hoạt động (phải) + trò chuyện (dưới) */
+.setup{max-width:1200px;margin:0 auto;padding:12px 12px 20px}
+.sgrid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr);gap:12px;align-items:start}
+.sgrid .wrap{padding:0}
+.schat{display:flex;flex-direction:column;height:min(72vh,680px);min-height:420px;margin-top:12px;border:1px solid var(--line);border-radius:14px;background:var(--bg);overflow:hidden}
+.schead{padding:10px 14px;border-bottom:1px solid var(--line);font-weight:600;background:var(--card);display:flex;align-items:center;gap:8px}
+.schead .muted{font-weight:400;font-size:12px}
+.sjump{display:none}
+#chatBox,#actWrap,#budgetWrap{scroll-margin-top:52px}
+@media (max-width:760px){
+  .sgrid{grid-template-columns:1fr}
+  #actWrap{order:-1}
+  .setup{padding:10px 10px 16px}
+  .schat{height:calc(100dvh - 196px);min-height:360px}
+  .schead .muted{display:none}
+  .sjump{display:flex;gap:6px;position:sticky;top:0;z-index:3;background:var(--bg);padding:6px 0 8px}
+  .sjump button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 0;font-size:13px}
+}
+/* hoạt động của con */
+.acts .aweek{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:8px 0 10px}
+.acts .aweek div{text-align:center;font-size:11px;border-radius:8px;padding:4px 0;background:var(--bg);color:var(--muted)}
+.acts .aweek div.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.aitem{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:var(--card)}
+.aitem.new{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.aitem .at{display:flex;align-items:center;gap:6px;font-weight:600}
+.aitem .at .lb{font-size:11px;font-weight:500;border-radius:6px;padding:1px 7px;background:var(--bg);color:var(--muted)}
+.aitem .at .nw{font-size:11px;font-weight:600;color:var(--accent)}
+.aitem .ad{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 2px}
+.aitem .ad span{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+.aitem .am{font-size:12px;color:var(--muted)}
+.aitem .ab{display:flex;gap:6px;margin-top:6px}
+.aitem .ab button,.acts .addb{border:1px solid var(--line);background:none;color:var(--ink);border-radius:8px;font-size:12px;padding:3px 9px}
+.aform{display:grid;gap:6px;margin-top:6px}
+.aform input,.aform select{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 8px;font:inherit;font-size:14px;min-width:0}
+.aform .r2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.aform .dpk{display:flex;gap:4px;flex-wrap:wrap}
+.aform .dpk button{border:1px solid var(--line);background:none;color:var(--ink);border-radius:8px;padding:4px 8px;font-size:12px}
+.aform .dpk button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.aform .row{display:flex;gap:6px;justify-content:flex-end}
+.aform .row button{border:1px solid var(--line);background:none;color:var(--ink);border-radius:8px;padding:5px 12px}
+.aform .row button.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.adirty{font-size:13px;border:1px dashed var(--accent);border-radius:10px;padding:8px 10px;margin-bottom:8px}
+.adirty button{margin-left:6px;border:0;background:var(--accent);color:#fff;border-radius:8px;padding:3px 9px;font-size:12px}
+#msgs{flex:1;overflow-y:auto;padding:14px 12px 8px}
+.msg{max-width:86%;margin:0 0 10px;padding:9px 12px;border-radius:14px;white-space:pre-wrap;word-wrap:break-word}
+.msg.user{margin-left:auto;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+.msg.pal{background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
+.msg.pal .act{display:flex;gap:6px;margin-top:6px}
+.msg.pal .act button{border:1px solid var(--line);background:none;color:var(--muted);border-radius:8px;font-size:12px;padding:2px 8px}
+.msg .usage{font-size:11px;color:var(--muted);margin-top:6px;font-variant-numeric:tabular-nums}
+.tai{display:inline-block;font-size:11px;border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+.tai.cao{background:#fde2e1;color:#a12622}.tai.vua{background:#fff1d6;color:#8a5a00}.tai.thap{background:#e6f2e6;color:#2e6b2e}.tai.phuc_hoi{background:#e3eefc;color:#1f5bb5}
+.prof{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:14px;margin-top:4px}.prof b{color:var(--muted);font-weight:500}
+.msg.sys{max-width:100%;text-align:center;font-size:12px;color:var(--muted);background:none;padding:2px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 12px 8px}
+.chip{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:13px}
+.composer{display:flex;gap:8px;align-items:flex-end;padding:8px 10px;border-top:1px solid var(--line);background:var(--card)}
+.composer textarea{flex:1;resize:none;border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-family:inherit;font-size:16px;line-height:1.4;background:var(--bg);color:var(--ink);max-height:140px}
+.composer button{border:0;border-radius:12px;padding:10px 14px;font-size:15px}
+#micBtn,#attBtn{background:var(--accent-soft);color:var(--accent)}
+.composer button#attBtn{padding:10px 11px}
+#preview{display:none;gap:8px;padding:6px 12px 0;background:var(--card);border-top:1px solid var(--line);overflow-x:auto}
+#preview .th{position:relative;flex:none}
+#preview img{width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+#preview .th button{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;border:0;background:#333;color:#fff;font-size:12px;padding:0}
+.msg img{display:block;max-width:180px;max-height:180px;border-radius:10px;margin-top:6px}
+#micBtn.rec{background:var(--red);color:#fff}
+#sendBtn{background:var(--accent);color:#fff;font-weight:600}
+#sendBtn:disabled{opacity:.5}
+.hint{font-size:12px;color:var(--muted);padding:0 14px 6px;background:var(--card)}
+/* plan */
+.wrap{padding:14px 12px 24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.card h2{font-size:15px;margin:0 0 6px}
+.card ul{margin:4px 0 0 18px;padding:0}
+.muted{color:var(--muted);font-size:13px}
+.days{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:6px}
+.day{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:6px 11px;font-size:14px;position:relative}
+.day.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.day .dot{position:absolute;top:3px;right:3px;width:7px;height:7px;border-radius:50%;background:var(--red)}
+.banner{background:var(--accent-soft);border-radius:10px;padding:8px 10px;font-size:13px;margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.banner button{margin-left:auto;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;font-size:12px;padding:3px 8px}
+.block{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.block .t{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.block .k{font-weight:600;margin:2px 0}
+.block ul{margin:4px 0 0 18px;padding:0;font-size:14px}
+.block .x{display:inline-block;margin-top:6px;font-size:12px;border-radius:6px;padding:1px 7px;background:var(--bg);color:var(--muted)}
+.block.changed,.block.changed .t,.block.changed .x{color:var(--red)}
+.block.changed{border-color:var(--red);background:var(--red-soft)}
+.block.cancel .k,.block.cancel ul{text-decoration:line-through}
+.tag{font-size:11px;border-radius:6px;padding:1px 6px;margin-left:6px;background:var(--red);color:#fff;vertical-align:middle;text-decoration:none;display:inline-block}
+.empty{text-align:center;color:var(--muted);padding:40px 20px}
+.warn{background:#fff6e0;border:1px solid #f0c36d;color:#6b4a00;border-radius:12px;padding:8px 12px;margin-bottom:10px;font-size:14px}.warn ul{margin:4px 0 0 18px;padding:0}
+@media (prefers-color-scheme:dark){.warn{background:#3a3020;border-color:#7a5c1e;color:#f3d79a}}
+.msg .cb{margin-top:8px;background:#fff6e0;color:#6b4a00;border-radius:10px;padding:6px 9px;font-size:13px;white-space:pre-wrap}
+@media (prefers-color-scheme:dark){.msg .cb{background:#3a3020;color:#f3d79a}}
+.period{border-color:#b9a4f0}.prow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.prow button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:6px 10px;font-size:13px}.prow button.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.brow{border-top:1px solid var(--line);padding:10px 0}.brow:first-child{border-top:0}.brow.sub{border-top:0;padding-top:0;margin-left:14px}
+.brow .gname{font-weight:600;font-size:15px}.brow.sub .gname{font-weight:500;font-size:13.5px}.brow .gex{font-size:12px;color:var(--muted);margin-top:1px}
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}.clab{font-size:11.5px;color:var(--muted);margin-bottom:3px}
+.rng input{width:72px;font-size:15px}
+.presetbar{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.presetbar select{flex:1;min-width:130px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font-size:15px}
+.presetbar button,.newp button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:7px 10px;font-size:13px}
+.presetbar button.pri,.newp button.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.newp{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.newp input{flex:1;min-width:150px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font-size:15px}
+.fx{font-size:15px;padding:4px 0}
+.wline{font-size:12px;margin-top:4px;line-height:1.35}.wline.cam{color:#b35c00}.wline.do{color:#c62828}.wline.okd{color:var(--muted)}
+.wline button{display:inline-block;margin-left:6px;border:1px solid currentColor;background:none;color:inherit;border-radius:8px;padding:1px 7px;font-size:11.5px}
+.bt{width:100%;border-collapse:collapse;font-size:14px}.bt th{font-size:12px;color:var(--muted);font-weight:500;text-align:left;padding:4px 2px}
+.bt td{padding:8px 2px;border-top:1px solid var(--line);vertical-align:top}.bt .gname{font-weight:600}.bt .gex{font-size:11.5px;color:var(--muted);margin-top:2px}
+.bt .sub td{border-top:0;padding-top:0}.rng{display:flex;align-items:center;gap:3px;white-space:nowrap}
+.rng input{width:72px;padding:5px 4px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:14px;text-align:center}
+.cdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.c-xanh{background:#2e9d4f}.c-cam{background:#ef8a17}.c-do{background:#d93025}.c-xam{background:#b9b6ae}
+.act{font-size:11.5px;color:var(--muted);margin-top:3px}.act.out{color:#b35c00}
+.sumbar{border-radius:10px;padding:8px 10px;font-size:13px;margin-bottom:10px;background:var(--accent-soft)}.sumbar.bad{background:#fde2e1;color:#8c1d18}
+.legend{font-size:12px;color:var(--muted);margin-top:8px}
+.kid h2{font-size:18px}.kblk{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.kblk.now{border:2px solid var(--accent)}.kblk.done{opacity:.6}.kblk .t{font-size:13px;color:var(--muted)}.kblk .k{font-size:17px;font-weight:600;margin:2px 0}
+.kblk ul{margin:4px 0 0 18px;padding:0;font-size:15px}.kbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.kbtns button{border:0;border-radius:12px;padding:9px 14px;font-size:15px;background:var(--accent-soft);color:var(--accent)}
+.kbtns button.ok{background:var(--accent);color:#fff}.kbtns .st{font-size:13px;color:var(--muted);padding:9px 0}
+.prog{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin:6px 0 4px}.prog i{display:block;height:100%;background:#2e9d4f}
+.nowtag{font-size:11px;background:var(--accent);color:#fff;border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+.kfb{margin-top:8px;background:var(--bg);border-radius:10px;padding:8px 10px;font-size:14px;white-space:pre-wrap}
+.mood{display:flex;gap:8px;margin-top:8px}.mood button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 4px;font-size:15px}
+.mood button.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.doneMark{font-size:12px;color:#2e7d32;margin-left:6px}
+.prop{font-size:14px;border-top:1px solid var(--line);padding:8px 0}.prop .prow{margin-top:6px}
+.removed{font-size:13px;color:var(--red);margin:0 0 8px}
+.toast{position:fixed;left:12px;right:12px;bottom:calc(80px + env(safe-area-inset-bottom));background:#333;color:#fff;border-radius:12px;padding:10px 14px;font-size:14px;display:none;z-index:9}
+.dlg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:10;padding:20px}
+.dlg .box{background:var(--card);border-radius:14px;padding:16px;max-width:360px}
+.dlg .opts{display:flex;flex-direction:column;gap:8px;margin-top:12px}.dlg .opts button{text-align:left;padding:10px 12px}
+.dlg .row{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+.dlg button{border:1px solid var(--line);background:none;color:var(--ink);border-radius:10px;padding:7px 12px}
+.dlg button.danger{background:var(--red);color:#fff;border-color:var(--red)}
+</style>
+</head>
+<body>
+<header>
+  <div style="flex:1">
+    <h1>Pal · Lịch của con</h1>
+    <div class="sub" id="saveState">Bản thử nghiệm</div>
+  </div>
+  <button class="iconbtn" id="ttsBtn" title="Pal đọc to câu trả lời">🔈 Đọc to</button>
+  <button class="iconbtn" id="resetBtn" title="Làm lại để test">↺ Làm lại</button>
+</header>
+<main>
+  <section class="view active" id="setupView"><div class="setup">
+   <div class="sjump"><button data-j="actWrap">🧩 Hoạt động</button><button data-j="budgetWrap">⏱️ Quỹ giờ</button><button data-j="chatBox">💬 Trò chuyện</button></div>
+   <div class="sgrid"><div class="wrap" id="budgetWrap"></div><div id="actWrap"></div></div>
+   <div class="schat" id="chatBox">
+    <div class="schead">💬 Trò chuyện với Pal <span class="muted">· kể về con, Pal ghi hoạt động và xếp lịch</span></div>
+    <div id="msgs"></div>
+    <div class="chips" id="chips"></div>
+    <div class="hint" id="hint">Muốn nói thay vì gõ: chạm vào ô nhập, rồi bấm biểu tượng 🎤 trên bàn phím điện thoại.</div>
+    <div id="preview"></div>
+    <div class="composer">
+      <button id="attBtn" title="Đính kèm ảnh">📎</button>
+      <input type="file" id="fileIn" accept="image/*" multiple hidden>
+      <button id="micBtn" title="Nói">🎤</button>
+      <textarea id="input" rows="1" placeholder="Nói hoặc gõ cho Pal…"></textarea>
+      <button id="sendBtn">Gửi</button>
+    </div>
+   </div>
+  </div></section>
+  <section class="view" id="planView"><div class="wrap" id="planWrap"></div></section>
+  <section class="view" id="todayView"><div class="wrap" id="todayWrap"></div><input type="file" id="kidFile" accept="image/*" capture="environment" hidden></section>
+</main>
+<nav>
+  <button class="active" data-view="setupView">🧭 Lên kế hoạch</button>
+  <button data-view="planView" id="planTab">🗓️ Lịch tuần</button>
+  <button data-view="todayView">🧒 Của con</button>
+</nav>
+<div class="toast" id="toast"></div>
+<div class="dlg" id="ask"><div class="box"><div style="font-weight:600;margin-bottom:6px">Pal nhắc một lần</div><div id="askText" class="muted"></div><div class="opts"><button class="danger" id="askYes">Giữ mức này, bố mẹ đã cân nhắc</button><button id="askNo">Đổi lại</button></div></div></div>
+<div class="dlg" id="dlg"><div class="box"><div style="font-weight:600;margin-bottom:6px">Làm lại để test</div><div id="dlgText" class="muted"></div>
+<div class="opts"><button id="dlgKeep">Giữ hồ sơ của con, xóa lịch và hội thoại</button><button id="dlgPlan">Chỉ xóa lịch, giữ hồ sơ và hội thoại</button><button class="danger" id="dlgYes">Xóa hết, bắt đầu từ đầu</button><button id="dlgNo">Thôi</button></div></div></div>
+
+<script>
+(() => {
+const DAYS = ["T2","T3","T4","T5","T6","T7","CN"];
+const DAY_NAME = {T2:"Thứ Hai",T3:"Thứ Ba",T4:"Thứ Tư",T5:"Thứ Năm",T6:"Thứ Sáu",T7:"Thứ Bảy",CN:"Chủ Nhật"};
+const blank = () => ({profile:{}, plan:{tong_quan:null, ngay:{}, ngoai_le:{}}, changed:{}, removed:{}, messages:[], totals:{calls:0, inTok:0, outTok:0}, budget:null, budgetOk:{}, log:{}, proposals:[], activities:[], actNew:[], actDirty:false, v:1});
+let S = blank();
+let curDay = "T2", showTemplate = false, busy = false, lastFailed = false;
+let db = null, docRef = null, sample = null;
+const $ = id => document.getElementById(id);
+
+/* ---------- storage ---------- */
+function loadLocal(){ try{ const s = localStorage.getItem("pal-state"); if(s) S = Object.assign(blank(), JSON.parse(s)); }catch(e){} }
+function saveLocal(){ try{ localStorage.setItem("pal-state", JSON.stringify(S)); }catch(e){} }
+let saving = false, saveAgain = false;
+async function save(){
+  saveLocal();
+  if(!docRef){ setStatus("Lưu trên máy này"); return; }
+  if(saving){ saveAgain = true; return; }
+  saving = true;
+  try{ await docRef.set(JSON.parse(JSON.stringify(S))); setStatus("Đã lưu"); }
+  catch(e){ setStatus("Chưa lưu được lên máy chủ (đã lưu trên máy này)"); }
+  saving = false;
+  if(saveAgain){ saveAgain = false; save(); }
+}
+async function initCaps(){
+  try{
+    const [d, u, s] = await Promise.all([claude.use("db"), claude.use("user"), claude.use("sample")]);
+    sample = s;
+    if(!sample){ addSys("Trang này chưa được phép gọi AI. Hãy mở trang trên claude.ai khi đã đăng nhập."); }
+    if(d && u){
+      const id = await u.id();
+      if(id){
+        db = d; docRef = db.doc("data/users/" + id + "/state");
+        const timer = setTimeout(() => { setStatus("Chưa kết nối được nơi lưu"); }, 10000);
+        try{
+          const snap = await docRef.get(); clearTimeout(timer);
+          if(snap.exists){ S = Object.assign(blank(), JSON.parse(JSON.stringify(snap.data()))); checkPeriodExpiry(); renderAll(); }
+          setStatus("Đã đồng bộ");
+        }catch(e){ clearTimeout(timer); }
+      }
+    }
+  }catch(e){}
+}
+
+/* ---------- views ---------- */
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("nav button").forEach(x => x.classList.toggle("active", x === b));
+  document.querySelectorAll(".view").forEach(v => v.classList.toggle("active", v.id === b.dataset.view));
+  if(b.dataset.view === "planView") renderPlan();
+  if(b.dataset.view === "setupView"){ renderBudget(); renderActs(); }
+  if(b.dataset.view === "todayView") renderToday();
+});
+function navChat(){ document.querySelector('nav button[data-view="setupView"]').click(); setTimeout(() => $("chatBox").scrollIntoView({behavior: "smooth", block: "end"}), 30); }
+document.querySelectorAll(".sjump button").forEach(b => b.onclick = () => $(b.dataset.j).scrollIntoView({behavior: "smooth", block: "start"}));
+function toast(t, ms){ const el = $("toast"); el.textContent = t; el.style.display = "block"; clearTimeout(toast._t); toast._t = setTimeout(() => el.style.display = "none", ms || 3500); }
+
+/* ---------- chat render ---------- */
+function fmtK(n){ return n >= 1000 ? (Math.round(n / 100) / 10).toLocaleString("vi-VN") + "k" : String(Math.round(n)); }
+function usageLine(u){ return "≈ vào " + fmtK(u.inTok) + " · ra " + fmtK(u.outTok) + " token (ước tính)" + (u.tools ? " · " + u.tools + " mục cập nhật" : "") + (u.imgs ? ", " + u.imgs + " ảnh" : "") + " · " + u.secs + " giây" + (u.tier ? " · " + u.tier : ""); }
+function bubble(role, text, imgs, usage){
+  const d = document.createElement("div"); d.className = "msg " + role;
+  const body = document.createElement("div"); body.textContent = text; d.appendChild(body);
+  (imgs || []).forEach(u => { const im = document.createElement("img"); im.src = u; d.appendChild(im); });
+  if(role === "pal"){
+    const a = document.createElement("div"); a.className = "act";
+    const r = document.createElement("button"); r.textContent = "🔊 Nghe"; r.onclick = () => speak(body.textContent, true);
+    a.appendChild(r); d.appendChild(a);
+    const ul = document.createElement("div"); ul.className = "usage"; if(usage) ul.textContent = usageLine(usage); d.appendChild(ul); body._usage = ul;
+  }
+  $("msgs").appendChild(d); $("msgs").scrollTop = $("msgs").scrollHeight;
+  return body;
+}
+function addSys(t){ const d = document.createElement("div"); d.className = "msg sys"; d.textContent = t; $("msgs").appendChild(d); $("msgs").scrollTop = $("msgs").scrollHeight; }
+function renderChat(){
+  $("msgs").innerHTML = "";
+  if(!S.messages.length && S.profile && Object.keys(S.profile).length){
+    bubble("pal", "Mình vẫn nhớ hồ sơ của con (xem ở tab Lịch tuần). Bạn muốn mình lập lịch luôn, hay bổ sung thêm gì về con trước?");
+  } else if(!S.messages.length){
+    bubble("pal", "Chào bạn, mình là Pal. Mình giúp bạn lập kế hoạch và thời khóa biểu chi tiết cho con (6–15 tuổi), rồi sửa lại bằng giọng nói khi có thay đổi. Các lớp học thêm, tập luyện bạn kể sẽ hiện ở khung Hoạt động của con.\n\nĐể xếp lịch hợp với con, mình sẽ hỏi cả về sức khỏe và tính cách của con. Trước tiên bạn kể cho mình: con mấy tuổi, học lớp mấy, mấy giờ vào học và tan học nhé. Có thời khóa biểu thì bấm 📎 gửi ảnh cho mình đọc luôn.");
+  }
+  S.messages.forEach(m => {
+    const txt = m.warn ? m.content.replace(/\n\[Cảnh báo cân bằng:[\s\S]*\]$/, "") : m.content;
+    const body = bubble(m.role === "user" ? "user" : "pal", txt, null, m.usage);
+    if(m.warn){ const cb = document.createElement("div"); cb.className = "cb"; cb.textContent = "⚠️ Lưu ý cân bằng:\n" + m.warn; body.parentNode.insertBefore(cb, body.nextSibling); }
+  });
+  renderTotals();
+  renderChips();
+}
+let statusMsg = "Bản thử nghiệm";
+function setStatus(m){ statusMsg = m; renderTotals(); }
+function renderTotals(){
+  const t = S.totals;
+  $("saveState").textContent = (t && t.calls ? "Tổng " + t.calls + " lượt · ≈ vào " + fmtK(t.inTok) + " · ra " + fmtK(t.outTok) + " token · " : "") + statusMsg;
+}
+function renderChips(){
+  const G = S.plan.giai_doan;
+  if(G && G.trang_thai === "het_han"){
+    $("chips").innerHTML = "";
+    const add = (t, f) => { const c = document.createElement("button"); c.className = "chip"; c.textContent = t; c.onclick = f; $("chips").appendChild(c); };
+    if(G.lich_goc) add("Quay về lịch trước giai đoạn", revertPeriod);
+    add("Nhờ Pal sắp xếp lại", () => send("Giai đoạn \"" + G.ten + "\" đã hết. Hãy sắp xếp lại lịch cân bằng cho con, bỏ các quy tắc tạm thời."));
+    add("Giữ lịch hiện tại", () => { G.trang_thai = "da_ket_thuc"; delete G.lich_goc; renderAll(); save(); });
+    return;
+  }
+  const has = DAYS.some(d => (S.plan.ngay[d] || []).length);
+  const list = has
+    ? ["Con thi ngày 28/11: đến hôm đó bỏ bơi, giảm nửa thời gian chơi, không tivi và điện thoại ngày thường", "Thứ Hai con phải đến sớm 30 phút để chào cờ", "Thứ Năm tuần này con bị ốm, hủy toàn bộ lịch", "Lớp tiếng Anh chuyển từ thứ Tư sang thứ Năm", "Thêm 20 phút từ vựng tiếng Anh mỗi tối"]
+    : (S.profile && Object.keys(S.profile).length ? ["Lập lịch luôn theo hồ sơ"] : []).concat(["Dùng ví dụ học sinh lớp 3", "Dùng ví dụ học sinh lớp 8", "📎 Gửi ảnh thời khóa biểu"]);
+  $("chips").innerHTML = "";
+  list.forEach(t => { const c = document.createElement("button"); c.className = "chip"; c.textContent = t; c.onclick = () => t.startsWith("📎") ? $("fileIn").click() : send(EXAMPLES[t] || t, t); $("chips").appendChild(c); });
+}
+const EXAMPLES = {
+  "Dùng ví dụ học sinh lớp 3": "Con mình 8 tuổi, học lớp 3, học bán trú 2 buổi/ngày từ 7:30 đến 16:15. Thời khóa biểu: Thứ Hai chào cờ tiết 1, mặc đồng phục xanh tím than; Thứ Ba có thể dục tiết 4; Thứ Tư có thể dục tiết 3; Thứ Sáu mặc đồng phục xanh tím than. Con học tiếng Anh ở trung tâm thứ Tư và thứ Sáu từ 17:30 đến 19:00. Mình muốn con vận động buổi sáng, đọc sách và viết nhật ký trước khi ngủ. Nhà cách trường và trung tâm khoảng 15 phút.",
+  "Dùng ví dụ học sinh lớp 8": "Con mình 13 tuổi, học lớp 8, học từ 7:00 đến 11:30 sáng, chiều thứ Ba và thứ Năm học thêm ở trường từ 14:00 đến 16:30. Tối thứ Hai và thứ Tư học Toán ở trung tâm 18:00–19:30. Con thích bóng rổ, hay thức khuya chơi điện thoại. Mình muốn con ngủ trước 22:30 và tự quản lý bài tập nhiều hơn."
+};
+
+/* ---------- plan render ---------- */
+function effDay(d){ return (!showTemplate && S.plan.ngoai_le[d]) ? S.plan.ngoai_le[d].khoi : (S.plan.ngay[d] || []); }
+function renderPlan(){
+  const w = $("planWrap"); w.innerHTML = "";
+  const has = DAYS.some(d => (S.plan.ngay[d] || []).length);
+  if(!has && !S.plan.tong_quan){ w.innerHTML = '<div class="empty">Chưa có kế hoạch.<br>Hãy trò chuyện với Pal để lập kế hoạch cho con.</div>'; return; }
+  const P = S.profile || {};
+  const PF = [["Tuổi, lớp","tuoi_lop"],["Giờ học","gio_hoc"],["Nơi ở","noi_o"],["Ăn uống","an_uong"],["Học thêm","hoc_them"],["Sức khỏe","suc_khoe"],["Thể lực, năng lượng","the_luc"],["Giấc ngủ","giac_ngu"],["Tính cách","tinh_cach"],["Học tập","hoc_tap"],["Sở thích","so_thich"],["Con không thích","khong_thich"],["Mong muốn của bố mẹ","muc_tieu_bo_me"]];
+  const rows = PF.filter(([, k]) => P[k]);
+  if(rows.length){
+    const pc = document.createElement("div"); pc.className = "card";
+    pc.innerHTML = "<h2>Hồ sơ của con</h2>" + '<div class="prof">' + rows.map(([l, k]) => "<b>" + l + "</b><span>" + esc(Array.isArray(P[k]) ? P[k].join(", ") : P[k]) + "</span>").join("") + "</div>" + '<div class="muted" style="margin-top:6px">Nói với Pal để sửa hoặc bổ sung.</div>';
+    w.appendChild(pc);
+  }
+  const G = S.plan.giai_doan;
+  if(G && G.trang_thai !== "da_ket_thuc"){
+    const gc = document.createElement("div"); gc.className = "card period";
+    const st = G.trang_thai === "cho_xac_nhan" ? "Chờ bố mẹ xác nhận" : G.trang_thai === "het_han" ? "Đã hết hạn" : "Đang áp dụng · còn " + Math.max(0, daysLeft(G)) + " ngày";
+    gc.innerHTML = "<h2>⏳ " + esc(G.ten) + "</h2>" + '<div class="muted">' + vnDate(G.tu_ngay) + " → " + vnDate(G.den_ngay) + " · " + st + (G.ly_do ? " · " + esc(G.ly_do) : "") + "</div>" +
+      (G.quy_tac_tam && G.quy_tac_tam.length ? "<ul>" + G.quy_tac_tam.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul>" : "") +
+      '<div class="muted" style="margin-top:6px">Luôn giữ: đủ giờ ngủ, nghỉ sau giờ học ít nhất 15 phút, nghỉ ngắn giữa các khối học, không bỏ bữa.</div>';
+    const row = document.createElement("div"); row.className = "prow";
+    const btn = (t, f, cls) => { const b = document.createElement("button"); b.textContent = t; if(cls) b.className = cls; b.onclick = f; row.appendChild(b); };
+    if(G.trang_thai === "cho_xac_nhan") btn("✔ Bố mẹ xác nhận", () => { navChat(); send("Bố mẹ xác nhận giai đoạn \"" + G.ten + "\". Hãy áp các quy tắc tạm thời vào lịch."); }, "pri");
+    if(G.trang_thai === "dang_ap_dung"){ btn("Kết thúc sớm", () => { navChat(); send("Kết thúc sớm giai đoạn \"" + G.ten + "\"."); }); btn("Thử: giả lập đã hết hạn", () => { const y = new Date(Date.now() - 864e5); G.den_ngay = y.getFullYear() + "-" + pad(y.getMonth() + 1) + "-" + pad(y.getDate()); if(checkPeriodExpiry()){ renderAll(); navChat(); } }); }
+    if(G.trang_thai === "het_han"){ if(G.lich_goc) btn("Quay về lịch trước giai đoạn", revertPeriod, "pri"); btn("Nhờ Pal sắp xếp lại", () => { navChat(); send("Giai đoạn \"" + G.ten + "\" đã hết. Hãy sắp xếp lại lịch cân bằng cho con, bỏ các quy tắc tạm thời."); }); btn("Giữ lịch hiện tại", () => { G.trang_thai = "da_ket_thuc"; delete G.lich_goc; renderAll(); save(); }); }
+    gc.appendChild(row); w.appendChild(gc);
+  }
+  const tq = S.plan.tong_quan;
+  if(tq){
+    const c = document.createElement("div"); c.className = "card";
+    let h = "<h2>Kế hoạch tổng quan</h2>";
+
+    if(tq.muc_tieu && tq.muc_tieu.length) h += "<b>Mục tiêu</b><ul>" + tq.muc_tieu.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul>";
+    if(tq.nguyen_tac && tq.nguyen_tac.length) h += '<div style="margin-top:6px"><b>Nguyên tắc</b></div><ul>' + tq.nguyen_tac.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul>";
+    if(tq.gio_ngu) h += '<div style="margin-top:6px"><b>Giờ ngủ:</b> ' + esc(tq.gio_ngu) + "</div>";
+    if(tq.ghi_chu) h += '<div class="muted" style="margin-top:6px">' + esc(tq.ghi_chu) + "</div>";
+    c.innerHTML = h; w.appendChild(c);
+  }
+  const ds = document.createElement("div"); ds.className = "days";
+  DAYS.forEach(d => {
+    const b = document.createElement("button"); b.className = "day" + (d === curDay ? " active" : "");
+    b.innerHTML = d + ((S.changed[d] && S.changed[d].length) || S.removed[d] ? '<span class="dot"></span>' : "");
+    b.onclick = () => { curDay = d; showTemplate = false; renderPlan(); };
+    ds.appendChild(b);
+  });
+  w.appendChild(ds);
+  const ov = S.plan.ngoai_le[curDay];
+  if(ov){
+    const bn = document.createElement("div"); bn.className = "banner";
+    bn.innerHTML = "<span>" + (showTemplate ? "Đang xem lịch mẫu. " : "Chỉ áp dụng tuần này: ") + esc(ov.ly_do || "thay đổi tạm thời") + "</span>";
+    const t = document.createElement("button"); t.textContent = showTemplate ? "Xem tuần này" : "Xem lịch mẫu";
+    t.onclick = () => { showTemplate = !showTemplate; renderPlan(); }; bn.appendChild(t); w.appendChild(bn);
+  }
+  const h = document.createElement("div"); h.className = "muted"; h.style.margin = "0 0 8px"; h.textContent = DAY_NAME[curDay]; w.appendChild(h);
+
+
+  if(S.removed[curDay] && !showTemplate){ const r = document.createElement("div"); r.className = "removed"; r.textContent = "Vừa bỏ " + S.removed[curDay] + " khối khỏi ngày này."; w.appendChild(r); }
+  const blocks = effDay(curDay);
+  if(!blocks.length){ const e = document.createElement("div"); e.className = "empty"; e.textContent = "Chưa có khối nào cho ngày này."; w.appendChild(e); }
+  const ch = new Set(showTemplate ? [] : (S.changed[curDay] || []));
+  blocks.forEach((b, i) => {
+    const el = document.createElement("div");
+    const cancel = b.trang_thai === "huy";
+    el.className = "block" + (ch.has(i) ? " changed" : "") + (cancel ? " cancel" : "");
+    let x = '<div class="t">' + esc(b.bat_dau || "") + (b.ket_thuc && b.ket_thuc !== b.bat_dau ? "–" + esc(b.ket_thuc) : "") + "</div>";
+    const TAI = {cao:"Tải cao", vua:"Tải vừa", thap:"Nhẹ", phuc_hoi:"Phục hồi"};
+    x += '<div class="k">' + esc(b.khoi || "") + (b.tai && TAI[b.tai] ? '<span class="tai ' + b.tai + '">' + TAI[b.tai] + "</span>" : "") + (cancel ? '<span class="tag">Hủy</span>' : "") + (ch.has(i) && !cancel ? '<span class="tag">Vừa đổi</span>' : "") + "</div>";
+    if(b.viec && b.viec.length) x += "<ul>" + b.viec.map(v => "<li>" + esc(v) + "</li>").join("") + "</ul>";
+    if(b.xac_nhan) x += '<span class="x">Xác nhận: ' + esc(b.xac_nhan) + "</span>";
+    if(b.ghi_chu) x += '<div class="muted" style="margin-top:4px">' + esc(b.ghi_chu) + "</div>";
+    if(curDay === todayKey() && !showTemplate){ const L = todayLog().k[blockKey(b)]; if(L && L.xong) x += '<div class="doneMark">✓ Con đã xong lúc ' + esc(L.xong) + (L.tom_tat ? " · " + esc(L.tom_tat) : "") + "</div>"; }
+    el.innerHTML = x; w.appendChild(el);
+  });
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function renderDot(){
+  const any = DAYS.some(d => (S.changed[d] && S.changed[d].length) || S.removed[d]);
+  $("planTab").innerHTML = "🗓️ Lịch tuần" + (any ? '<span class="dot"></span>' : "");
+}
+function renderAll(){ renderChat(); renderPlan(); renderDot(); try{ renderBudget(); renderActs(); renderToday(); }catch(e){ console.error(e); } }
+
+/* ---------- tools for Pal ---------- */
+let clearedThisTurn = false;
+function startChanges(){ if(!clearedThisTurn){ S.changed = {}; S.removed = {}; clearedThisTurn = true; } }
+const sig = b => JSON.stringify([b.bat_dau, b.ket_thuc, b.khoi, b.viec || [], b.xac_nhan || "", b.trang_thai || "", b.ghi_chu || "", b.tai || ""]);
+function normBlocks(arr){
+  return (arr || []).map(b => ({bat_dau: String(b.bat_dau || ""), ket_thuc: String(b.ket_thuc || b.bat_dau || ""), khoi: String(b.khoi || ""), viec: Array.isArray(b.viec) ? b.viec.map(String) : [], xac_nhan: b.xac_nhan ? String(b.xac_nhan) : "", trang_thai: b.trang_thai === "huy" ? "huy" : "binh_thuong", ghi_chu: b.ghi_chu ? String(b.ghi_chu) : "", tai: ["cao","vua","thap","phuc_hoi"].includes(b.tai) ? b.tai : ""}))
+    .sort((a, b) => a.bat_dau.localeCompare(b.bat_dau));
+}
+const BLOCK_SCHEMA = {type:"object", properties:{
+  bat_dau:{type:"string", description:"HH:MM"}, ket_thuc:{type:"string", description:"HH:MM"},
+  khoi:{type:"string", description:"Tên khối, ngắn"}, viec:{type:"array", items:{type:"string"}, description:"Các việc nhỏ trong khối"},
+  xac_nhan:{type:"string", description:"Cách xác nhận cả khối: Tự động / Con bấm Xong / Ảnh / Giọng nói / Bố mẹ xác nhận / Không cần"},
+  trang_thai:{type:"string", enum:["binh_thuong","huy"]}, ghi_chu:{type:"string"},
+  tai:{type:"string", enum:["cao","vua","thap","phuc_hoi"], description:"Nhãn tải của khối"}}, required:["bat_dau","ket_thuc","khoi","tai"]};
+const TOOLS = [
+  {name:"luu_ho_so", description:"Lưu hoặc cập nhật hồ sơ của con. Gộp vào hồ sơ cũ.",
+   inputSchema:{type:"object", properties:{ho_so:{type:"object", description:"Các trường (chuỗi ngắn): tuoi_lop, gio_hoc, hoc_them, suc_khoe (bệnh nền, dị ứng, thuốc đang dùng, hay ốm vặt), the_luc (năng lượng, sức bền, môn thể thao), giac_ngu (giờ ngủ, khó ngủ), tinh_cach (khí chất, cách phản ứng khi đổi lịch, dễ nản hay quá tải, cần thời gian yên tĩnh), hoc_tap (điểm mạnh, môn khó, khả năng tập trung), so_thich, khong_thich, muc_tieu_bo_me. Ghi rõ điều do bố mẹ nói, không tự suy diễn thành nhãn."}}, required:["ho_so"]},
+   execute: async (inp) => { S.profile = Object.assign({}, S.profile, inp.ho_so || {}); return "Đã lưu hồ sơ."; }},
+  {name:"cap_nhat_tong_quan", description:"Ghi kế hoạch tổng quan (thay toàn bộ phần tổng quan).",
+   inputSchema:{type:"object", properties:{muc_tieu:{type:"array", items:{type:"string"}}, nguyen_tac:{type:"array", items:{type:"string"}}, gio_ngu:{type:"string"}, ghi_chu:{type:"string"}}, required:["muc_tieu","nguyen_tac"]},
+   execute: async (inp) => { S.plan.tong_quan = {muc_tieu: inp.muc_tieu || [], nguyen_tac: inp.nguyen_tac || [], gio_ngu: inp.gio_ngu || "", ghi_chu: inp.ghi_chu || ""}; renderPlan(); return "Đã lưu tổng quan."; }},
+  {name:"cap_nhat_ngay", description:"Ghi TOÀN BỘ danh sách khối của một ngày. pham_vi='mau_tuan' sửa lịch mẫu lặp lại mỗi tuần; pham_vi='chi_tuan_nay' tạo ngoại lệ chỉ cho tuần này (lịch mẫu giữ nguyên). Giữ y nguyên các khối không đổi.",
+   inputSchema:{type:"object", properties:{ngay:{type:"string", enum:DAYS}, pham_vi:{type:"string", enum:["mau_tuan","chi_tuan_nay"]}, ly_do:{type:"string"}, khoi:{type:"array", items:BLOCK_SCHEMA}}, required:["ngay","pham_vi","khoi"]},
+   execute: async (inp) => {
+     const d = inp.ngay; if(!DAYS.includes(d)) throw new Error("Ngày không hợp lệ");
+     startChanges();
+     const nb = normBlocks(inp.khoi);
+     const before = (S.plan.ngoai_le[d] ? S.plan.ngoai_le[d].khoi : S.plan.ngay[d]) || [];
+     if(inp.pham_vi === "chi_tuan_nay"){ S.plan.ngoai_le[d] = {khoi: nb, ly_do: inp.ly_do || ""}; }
+     else { S.plan.ngay[d] = nb; delete S.plan.ngoai_le[d]; }
+     let changedIdx = [], removed = 0;
+     if(before.length){
+       const oldSigs = new Set(before.map(sig)); const newSigs = new Set(nb.map(sig));
+       nb.forEach((b, i) => { if(!oldSigs.has(sig(b))) changedIdx.push(i); });
+       removed = Math.max(0, before.filter(b => !newSigs.has(sig(b))).length - changedIdx.length);
+     }
+     S.changed[d] = changedIdx; if(removed) S.removed[d] = removed; else delete S.removed[d];
+     curDay = d; showTemplate = false; renderPlan(); renderDot();
+     return "Đã lưu " + DAY_NAME[d] + ": " + nb.length + " khối, " + changedIdx.length + " khối thay đổi" + (removed ? ", bỏ " + removed + " khối" : "") + ".";
+   }},
+  {name:"xoa_ngoai_le", description:"Bỏ ngoại lệ tuần này của một ngày, quay về lịch mẫu.",
+   inputSchema:{type:"object", properties:{ngay:{type:"string", enum:DAYS}}, required:["ngay"]},
+   execute: async (inp) => { startChanges(); delete S.plan.ngoai_le[inp.ngay]; S.changed[inp.ngay] = []; renderPlan(); renderDot(); return "Đã quay về lịch mẫu cho " + DAY_NAME[inp.ngay] + "."; }}
+];
+
+const RULES = `Bạn là Pal, trợ lý nuôi dạy con của ứng dụng Parent-Pal. Xưng "mình", gọi phụ huynh là "bạn". Tiếng Việt.
+NHIỆM VỤ: (1) trò chuyện để hiểu con; (2) lập kế hoạch tổng quan và thời khóa biểu chi tiết cả tuần cho trẻ 6–15 tuổi; (3) sửa kế hoạch khi phụ huynh báo thay đổi.
+
+CÁCH TRẢ LỜI (câu trả lời có thể được đọc to): tối đa 3 câu ngắn, văn nói tự nhiên, KHÔNG markdown, không gạch đầu dòng (trừ phản hồi bài làm qua ảnh, xem dưới), không bảng, không emoji. Chi tiết lịch nằm ở tab Lịch tuần, không đọc lại toàn bộ lịch. Mỗi lượt hỏi tối đa 1 câu.
+
+PHẢN HỒI BÀI LÀM QUA ẢNH (ngoại lệ với quy tắc không gạch đầu dòng):
+- Khi ảnh là bài làm của con, "tra_loi" viết thành danh sách, mỗi ý một dòng bắt đầu bằng "- ", mỗi dòng dưới 20 chữ, tối đa 7 dòng, KHÔNG viết thành đoạn văn. Thứ tự:
+  Dòng đầu (không gạch): tên sách/trang, số bài. Ví dụ "Toán 3, trang 59 (bài 141–145):"
+  - Kết quả: số bài đúng trên tổng số; nêu số bài sai nếu có.
+  - Mỗi bài sai một dòng: sai ở bước nào, gợi ý một bước để con tự sửa; KHÔNG viết đáp án đúng.
+  - Trình bày: chỗ thiếu đơn vị, ô hoặc gạch ngang chưa điền, phép tính gộp khó nhìn (nêu đúng bài).
+  - Chữ viết: chỉ nhắc khi thật sự khó đọc, nêu đúng chỗ; không nhận xét chung chung.
+  - Một điểm con làm tốt, nói cụ thể.
+  - Việc tiếp theo: nếu có bài sai thì đề nghị 2–3 bài tương tự; nếu cần thông tin để xếp lịch (ví dụ con làm mất bao lâu) thì hỏi 1 câu.
+- Tự tính lại từng phép tính trước khi kết luận đúng hay sai. Chỗ nào đọc không rõ thì ghi "chưa đọc rõ bài X", không đoán.
+- Lời dành cho bố mẹ; không gắn nhãn tính cách cho con (không "ẩu", "lười").
+
+THU THẬP THÔNG TIN (hiểu con trước khi xếp lịch):
+- Bắt buộc: tuổi/lớp, giờ vào học và tan học, học bán trú hay không.
+- Cần hỏi trước khi lập lịch (gộp tối đa 2 câu ngắn một lượt, hỏi bằng lời tự nhiên):
+  + Sức khỏe: bệnh nền (hen, dị ứng, tim mạch…), thuốc đang dùng, hay ốm vặt, có hạn chế vận động không.
+  + Thể lực và năng lượng: con khỏe hay nhanh mệt, mệt nhất vào lúc nào trong ngày, môn thể thao con thích.
+  + Giấc ngủ: giờ ngủ, giờ dậy hiện tại, có khó ngủ hay thức khuya không.
+  + Tính cách: con quen nếp hay thích thay đổi, phản ứng khi lịch đổi đột ngột, dễ nản hay kiên trì, cần thời gian yên tĩnh sau giờ học hay thích chạy nhảy, tập trung được lâu không.
+  + Học tập: môn mạnh, môn khó.
+  + Thời khóa biểu, học thêm, giờ đi lại, mục tiêu của bố mẹ.
+  + Nơi ở (tỉnh/thành, để tính mùa và thời tiết) và ăn uống ở trường: mấy giờ ăn trưa, có bữa phụ buổi chiều không; con có hay kêu đói vào lúc nào không. Ghi vào ho_so.noi_o và ho_so.an_uong.
+- Ghi đúng điều bố mẹ kể vào "ho_so"; không tự gắn nhãn tính cách (lười, nhút nhát, tăng động…). Không chẩn đoán.
+- Nếu phụ huynh muốn nhanh hoặc bỏ qua câu nào, tự đặt giả định hợp lý, nói ngắn giả định chính, rồi lập lịch; sau đó mời bổ sung để chỉnh.
+- Lịch phải phản ánh hồ sơ, và khi trả lời nói ngắn 1 điều đã điều chỉnh theo con. Ví dụ: hen hoặc dị ứng thì vận động có khởi động kỹ, tránh giờ nắng gắt; con nhanh mệt thì khối phục hồi dài hơn; con dễ nản thì ôn bài mở đầu bằng việc dễ; con khó chịu khi đổi lịch thì thêm nhắc trước 5 phút trước mỗi lần chuyển khối; con cần yên tĩnh thì khối phục hồi là đọc truyện, chơi xếp hình thay vì chạy nhảy.
+- Hồ sơ là thông tin động: khi bố mẹ kể thêm, cập nhật "ho_so" và hỏi có muốn chỉnh lịch theo không.
+
+KHI LẬP KẾ HOẠCH: điền "ho_so", "tong_quan" và "ngay" cho đủ 7 ngày T2, T3, T4, T5, T6, T7, CN (pham_vi="mau_tuan"). "tra_loi" 1–2 câu, mời bạn mở tab Lịch tuần.
+
+NGUYÊN TẮC CÂN BẰNG (ĐẶT CAO HƠN YÊU CẦU CỦA PHỤ HUYNH):
+- Pal là người tư vấn, không chỉ làm theo. Trước khi thêm giờ học hoặc hoạt động, tự kiểm tra: (1) giờ ngủ đủ mức tối thiểu theo tuổi; (2) sau giờ học ở trường có khối phục hồi 20–30 phút trước việc học; (3) không có hai khối tải cao liền nhau mà không nghỉ; (4) không có khối học trước giờ đi học buổi sáng (buổi sáng chỉ dành cho vệ sinh, vận động, ăn sáng, chuẩn bị); (5) tổng thời gian học ở nhà do BỐ MẸ quyết định qua quỹ thời gian (hoc_nha), Pal không tự đặt mức trần riêng và không nhận xét con số đó; Pal chỉ lo CÁCH XẾP: chia thành các phiên ngắn theo độ tập trung (phiên liên tục tối đa khoảng 20–30 phút với lớp 1–3, 30–40 phút với lớp 4–5, 40–45 phút với lớp 6–9; giữa hai phiên nghỉ 5–10 phút đứng dậy, uống nước, hoặc đặt hai phiên ở hai buổi khác nhau); ngày có học thêm buổi tối thì hỏi bố mẹ có muốn bớt học ở nhà không; (6) tập luyện mạnh kết thúc trước giờ tắt đèn ít nhất 1 giờ, màn hình giải trí kết thúc trước 60 phút.
+- Nếu yêu cầu của phụ huynh phạm một điều trên: KHÔNG tự xếp phương án phạm quy tắc ở lượt này. Trong "tra_loi": nói nhẹ nhàng, không giảng giải, 1 câu lý do cụ thể (ví dụ "thêm 30 phút ngay sau giờ học sẽ thành hai khối học liền nhau, con dễ căng thẳng"), rồi đưa 1–2 phương án cân bằng (thay một phần ôn bài bằng nội dung mới, rút ngắn còn 15–20 phút, chuyển sang sáng cuối tuần, xen kẽ ngày, đổi thành hoạt động học qua chơi) và hỏi bạn chọn cách nào. Ghi lý do vào "canh_bao". Để "ngay": [].
+- Nếu phụ huynh đã nghe cảnh báo mà vẫn muốn giữ: được xếp, nhưng vẫn giữ khoảng nghỉ 3–5 phút giữa các khối học, ghi cảnh báo vào "ghi_chu" của khối đó và vào "canh_bao", đề nghị theo dõi con 1–2 tuần (dấu hiệu mệt: hay báo "Rất mệt", khó ngủ, cáu gắt, đau đầu, đau bụng). Tuyệt đối không cắt giờ ngủ dưới mức tối thiểu theo tuổi, không bỏ khối phục hồi sau giờ học.
+- Pal KHÔNG bao giờ tự đề xuất kéo dài thời gian học. Khi muốn con học tốt hơn, ưu tiên: ngủ đủ, phục hồi tốt, học đúng lúc tỉnh táo, chất lượng hơn thời lượng.
+
+GIAI ĐOẠN TẠM THỜI (BẤT KHẢ KHÁNG):
+- Khi BỐ MẸ nêu lý do chính đáng có thời hạn (ôn thi, kiểm tra; chỉ định của bác sĩ về ăn uống, vận động, nghỉ ngơi; hồi phục sau ốm; thi đấu; việc gia đình), coi đây là giai đoạn tạm thời. Không phản đối, không giảng giải, không cảnh báo lặp lại.
+- Quy trình trong một lượt: (1) xác định thời gian: nếu chưa có ngày kết thúc thì hỏi; quá 6 tuần thì đặt mốc xem lại sau mỗi 2 tuần; (2) cảnh báo nhẹ ĐÚNG MỘT LẦN trong "tra_loi" (1 câu, chỉ khi có điều lệch nguyên tắc cân bằng) kèm 1 cách giữ cân bằng tối thiểu; (3) điền "giai_doan" với hanh_dong="tao", quy_tac_tam rõ ràng, noi_long là các kiểm tra được tạm nới; (4) ghi các ngày bị ảnh hưởng vào "ngay" (pham_vi="mau_tuan"; app tự lưu lịch cũ để khôi phục); (5) nói rằng khi hết hạn Pal sẽ nhắc để sắp xếp lại.
+- Trong lúc giai đoạn đang áp dụng: KHÔNG nhắc lại cảnh báo về những điều đã nới; "canh_bao" để [] trừ khi có vấn đề mới ngoài phạm vi đã nới. Mọi lần sửa lịch tiếp theo đều theo quy_tac_tam.
+- noi_long chỉ được chọn trong: "tong_gio_hoc" (cho phép vượt quỹ học ở nhà của bố mẹ), "truoc_gio_hoc" (ôn nhẹ buổi sáng), "van_dong" (bớt vận động vui), "man_hinh" (đổi giờ màn hình), "an_uong" (theo chỉ định bác sĩ).
+- GIỚI HẠN KHÔNG BAO GIỜ NỚI: giờ ngủ tối thiểu theo tuổi; khối phục hồi sau giờ học ít nhất 15 phút; nghỉ 3–5 phút giữa hai khối học; không bỏ bữa; không phạt thể chất; không dùng đồ ăn làm thưởng hay phạt; không bỏ hẳn thời gian nghỉ ngơi. Yêu cầu vượt giới hạn này: làm phần hợp lý, nói ngắn phần không làm và lý do.
+- Ăn uống, cân nặng: chỉ xếp theo chỉ định cụ thể của bác sĩ mà bố mẹ kể lại (giờ ăn, số bữa, loại món). KHÔNG tự đặt số calo, khẩu phần hay mục tiêu cân; không nói về cân nặng trong lời dành cho con; chỉ định chưa rõ thì khuyên hỏi lại bác sĩ.
+- Nếu đề xuất đến từ CON (tin nhắn nói con muốn, hoặc bố mẹ thuật lại con xin): điền "giai_doan" với can_xac_nhan=true, "ngay": [], và hỏi bố mẹ xác nhận. Chỉ khi bố mẹ xác nhận mới áp vào lịch (hanh_dong="xac_nhan" kèm "ngay").
+- Khi bố mẹ muốn dừng sớm: hanh_dong="ket_thuc".
+
+QUỸ THỜI GIAN CỦA GIA ĐÌNH ("quy_thoi_gian" trong trạng thái):
+- Bố mẹ đã chọn SỐ PHÚT mỗi ngày cho hoc_nha, sinh_hoat, ngu và mức tối đa man_hinh, riêng ngày đi học và cuối tuần. truong và hoc_them cố định theo lịch đã đăng ký (không tự thêm bớt lớp học thêm). choi_nghi là phần còn lại. Xếp lịch sao cho mỗi nhóm lệch không quá ±30 phút so với số đã chọn (ngủ thì không thấp hơn số đã chọn quá 30 phút và không dưới mức tối thiểu theo tuổi); nếu không xếp vừa thì nói ngắn nhóm nào lệch.
+- Mỗi khối ghi "nhom" (nhóm chính): hoc_them gồm cả trung tâm, gia sư, lớp năng khiếu và tập thể thao có huấn luyện viên (đặt "the_thao": true nếu là thể thao), tính cả đi lại; hoc_nha là bài cô giao, ôn bài, học theo định hướng bố mẹ, tự luyện đàn hay chữ, đọc sách theo yêu cầu; choi_nghi là chơi tự do, vận động vui, nghỉ; sinh_hoat là ăn uống, vệ sinh, thay đồ, soạn cặp, đọc truyện trước ngủ, nhật ký; khối có tivi, điện thoại, game đặt "man_hinh": true.
+- Các nhóm bố mẹ đã xác nhận vùng đỏ ("da_xac_nhan_vung_do") là lựa chọn của gia đình: KHÔNG cảnh báo lại. Màu cảnh báo chỉ ở bảng quỹ giờ; trong "canh_bao" chỉ nêu lỗi sàn cố định hoặc điều mới.
+- Lỗi về thứ tự (hai khối học liền nhau, học ngay sau giờ đi học về, học trước giờ đi học): tự sửa luôn khi xếp, không hỏi lại.
+
+QUY TẮC LẬP LỊCH:
+- Chia ngày thành KHỐI (ví dụ "Dậy và vệ sinh buổi sáng"); mỗi khối gồm vài việc nhỏ trong "viec"; chỉ xác nhận 1 lần cho cả khối. Chọn mức xác nhận nhẹ nhất đủ tin cậy: Tự động (vào/ra vùng địa điểm, buổi tập), Con bấm Xong, Ảnh, Giọng nói, Bố mẹ xác nhận; khối nghỉ/chơi tự do "Không cần". Không kiểm tra trong giờ học.
+- Ngủ: 6–12 tuổi 9–12 tiếng; 13–15 tuổi 8–10 tiếng. Tính giờ dậy theo giờ phải có mặt ở trường rồi lùi ra giờ tắt đèn.
+- Mỗi khối có nhãn tải "tai": cao (giờ học ở trường, học thêm, ôn môn khó, viết văn, tập luyện có huấn luyện viên hoặc thi đấu), vua (đọc to, học thuộc, soạn cặp, vận động có hướng dẫn), thap (vệ sinh, ăn uống, đọc sách trên giường), phuc_hoi (ăn nhẹ và chơi tự do, nghỉ ngắn, giấc ngủ). Sau khối cao kéo dài luôn có khối phục hồi; không xếp hai khối cao liền nhau; khối cuối trước giờ ngủ là thap.
+- VẬN ĐỘNG VUI LÀ GIẢI TRÍ, KHÔNG PHẢI TẢI: bơi chơi, nhảy dây, đạp xe dạo, đá bóng với bạn, chơi công viên giúp con hồi sức và tập trung tốt hơn khi học sau đó. Xếp chúng vào khối phục hồi hoặc thời gian tự do (tai="phuc_hoi"), do con chọn. Chỉ tập luyện có bài bản, cường độ cao hoặc thi đấu mới tính tải; loại này kết thúc ít nhất 1 giờ trước giờ tắt đèn.
+- Vận động buổi sáng 15–25 phút (khởi động, phần chính như đạp xe 500–1.000 m hoặc cardio nhẹ, giãn cơ; có phương án trong nhà khi mưa; trẻ dưới 12 tuổi đạp xe ngoài đường có người lớn đi cùng, đội mũ bảo hiểm).
+- Vừa về nhà: khối 10 phút "Ghi lại việc được giao và hỏi thăm" (chụp sổ hoặc kể cho Pal; Pal hỏi một câu "Hôm nay con thấy thế nào?" Ổn / Hơi mệt / Rất mệt). Sau đó khối phục hồi 20–30 phút trước ôn bài: ăn nhẹ trước, rồi chơi tự do do con chọn, có thể là vận động vui ngoài trời (nếu tiện thì chỗ có cây); không giao việc, không màn hình. Ghi vào ghi_chu: nếu con báo "Rất mệt" thì kéo dài phục hồi thêm khoảng 15 phút và bỏ phần học theo định hướng bố mẹ hôm đó.
+- Màn hình không phải là nghỉ: không dùng màn hình giải trí làm khoảng nghỉ trước hoặc giữa các khối học.
+- Ngày có học thêm buổi tối: bữa phụ chắc sau giờ học, bỏ ôn bài ở nhà, giờ ngủ lùi tối đa 15–30 phút; nhắc mang túi đồ học thêm đã soạn sẵn từ tối hôm trước.
+- Buổi tối theo thứ tự (trừ khi phụ huynh đã chọn soạn cặp buổi sáng): ôn bài (việc cô giao trước; còn thời gian hoặc sổ trống thì học theo định hướng bố mẹ; lớp 1–3 khoảng 30 phút; trong khối mở đầu bằng một việc ngắn dễ khoảng 5 phút, rồi việc cần tập trung nhất, cuối là việc nhẹ; khối dài hơn 30 phút với lớp 1–3 hoặc 40 phút với lớp 4–9 thì chèn 3–5 phút đứng dậy uống nước), SOẠN CẶP NGAY SAU ÔN BÀI (theo thời khóa biểu ngày mai và sổ việc), tự do (màn hình giải trí tối đa 30 phút với trẻ nhỏ, 60 phút với 11–15 tuổi, và phải KẾT THÚC ÍT NHẤT 60 PHÚT TRƯỚC GIỜ TẮT ĐÈN; thiết bị để ngoài phòng ngủ), vệ sinh buổi tối, đọc sách 15 phút và nhật ký 2–3 câu trên giường bằng sách/sổ giấy, tắt đèn.
+- NHÌN THEO CHUỖI HAI NGÀY: buổi tối hôm nay và buổi sáng hôm sau là một chuỗi liền (giờ ngủ, việc chuẩn bị, việc còn dở). Khi xếp hoặc sửa một ngày, luôn xem cả sáng hôm sau; khi dời việc sang hôm sau thì ghi cả hai ngày vào "ngay".
+- Soạn cặp mặc định ngay sau ôn bài buổi tối. Nếu phụ huynh muốn dời sang SÁNG HÔM SAU để tối có thêm thời gian ôn bài: được, với điều kiện buổi sáng còn ít nhất 10 phút trống trước giờ đi mà không cắt vận động, ăn sáng hay giờ ngủ (nếu phải dậy sớm hơn thì tính lại giờ tắt đèn tối hôm trước). Khi dời: xếp khối "Soạn cặp" (tai="vua") ở sáng hôm sau; tối hôm trước giữ khối 2–3 phút "Xem sổ việc" để chuẩn bị trước những thứ không làm kịp buổi sáng (giấy cần ký, đồ cần mua, đồng phục cần giặt, túi học thêm). Nói rõ đánh đổi trong 1 câu: buổi sáng gấp hơn, dễ quên đồ, nên chỉ hợp với trẻ dậy đúng giờ, không hay cuống buổi sáng. Thời gian tối được giải phóng vẫn tính vào quỹ học ở nhà bố mẹ đã chọn.
+- BỮA ĂN VÀ NGHỈ: bữa ăn là khối tải thấp (tai="thap"), có thể gộp 5–10 phút nghỉ sau ăn vào cùng khối (ghi trong "viec"). Sau khối ăn được xếp việc tải vừa (đọc to, học thuộc, ôn nhẹ). Việc tải cao cần tập trung nên cách bữa chính khoảng 15–20 phút (mặc định nội bộ, chỉnh theo con). Bữa ăn KHÔNG thay cho khối phục hồi sau giờ học, vì phục hồi cần chơi tự do do con chọn.
+- Không xếp việc nhà trừ khi phụ huynh yêu cầu. Không dùng màn hình khi ăn.
+- Tiểu học học 2 buổi/ngày không có bài tập về nhà theo chỉ đạo của Bộ GD&ĐT: khối ôn bài là ôn nhẹ.
+- 11–15 tuổi: ít khối hơn, để con tự sắp xếp trong khối học, xác nhận nhẹ hơn, tôn trọng quyền tự chủ; với thói quen thức khuya, đặt giờ cất điện thoại ngoài phòng ngủ. Tuổi dậy thì nhịp ngủ lùi muộn: ưu tiên đủ giờ ngủ hơn thêm giờ học tối, không xếp việc nặng đầu óc vào cuối ngày, cuối tuần giữ giờ dậy gần ngày thường.
+- Cuối tuần: việc học mới hoặc khó xếp buổi sáng.
+- Ghi đồng phục và đồ cần mang vào khối thay đồ/soạn cặp của đúng ngày.
+- Cuối tuần: dậy muộn hơn một chút (13–15 tuổi giữ gần giờ ngày thường), có buổi ôn tuần, buổi vận động vui dài, tối Chủ Nhật soạn đồ cho thứ Hai.
+
+KHI SỬA KẾ HOẠCH:
+- Xác định mọi ngày bị ảnh hưởng, kể cả hệ quả (tối hôm trước soạn cặp hoặc túi học thêm, giờ ngủ tối hôm trước nếu sáng phải dậy sớm, ngày hôm sau).
+- Trong "ngay", ghi TỪNG ngày bị ảnh hưởng với danh sách khối đầy đủ của ngày đó (ngày không đổi thì KHÔNG ghi); các khối không đổi phải giữ Y NGUYÊN từng chữ (để chỉ khối đổi được tô đỏ).
+- Thay đổi lâu dài (đổi lịch học, đổi giờ cố định) -> pham_vi="mau_tuan". Sự cố một lần (ốm, nghỉ lễ, sự kiện tuần này) -> pham_vi="chi_tuan_nay" kèm ly_do.
+- Hủy cả ngày vì ốm: đặt trang_thai="huy" cho các khối cũ (giữ tên khối), thêm khối cho bố mẹ: báo nghỉ học/học thêm, theo dõi sức khỏe, buổi tối quyết định lịch hôm sau; tắt các mốc kiểm tra vị trí.
+- Nếu không rõ là lâu dài hay một lần, hoặc không rõ ngày nào, hỏi lại 1 câu trước khi sửa.
+- Sau khi sửa, trả lời 1–2 câu nói đã đổi gì.
+
+AN TOÀN: không chẩn đoán bệnh, không nêu liều thuốc. Con ốm thì gợi ý theo dõi và hỏi bác sĩ khi cần. Dấu hiệu khẩn cấp (khó thở, co giật, bất tỉnh, nguy hiểm tính mạng) thì khuyên gọi 115 ngay. Trẻ bị bạo hành, xâm hại thì gợi ý gọi 111.`;
+
+const ACT_RULES = `
+HOẠT ĐỘNG CỐ ĐỊNH CỦA CON ("hoat_dong" trong trạng thái): danh sách lớp học thêm, tập luyện, năng khiếu đã đăng ký hằng tuần. Bố mẹ xem và tự sửa ở khung "Hoạt động của con"; app tính giờ học thêm trong quỹ thời gian từ danh sách này.
+- Khi thu thập thông tin, hỏi các hoạt động ngoài giờ hiện tại của con (một câu, khi phù hợp).
+- Khi bố mẹ kể một hoạt động định kỳ (ví dụ "con học tiếng Anh thứ 4, thứ 6 lúc 17h đến 18h30"): ghi vào "hoat_dong" với hanh_dong "them". Thiếu ngày hoặc giờ thì hỏi 1 câu trước, chưa ghi. Thời gian đi lại (phút, cả đi và về) nếu bố mẹ nói thì ghi, không bắt buộc hỏi.
+- Đổi ngày giờ dùng "sua", nghỉ hẳn dùng "xoa", kèm "id" có sẵn trong trạng thái. Không tạo trùng hoạt động đã có.
+- Không tự thêm hoạt động bố mẹ chưa nói; muốn gợi ý thì chỉ nói trong "tra_loi".
+- Thay đổi chỉ trong tuần này (nghỉ một buổi, học bù) thì KHÔNG sửa "hoat_dong", dùng lịch "chi_tuan_nay".
+- Nếu đã có lịch tuần: cùng lượt đó cập nhật các ngày bị ảnh hưởng trong "ngay" (khối nhom="hoc_them", gồm cả đi lại) và kiểm tra cân bằng như thường. Nếu chưa có lịch: chỉ ghi hoạt động, "tra_loi" xác nhận ngắn đã ghi.
+- "hoat_dong_doi_chua_xep" = true nghĩa là bố mẹ vừa tự sửa danh sách: khi được nhờ, xếp lại các ngày có liên quan cho khớp danh sách.
+`;
+const LIFE_RULES = `
+THỜI TIẾT THEO MÙA (dựa vào "hom_nay" và ho_so.noi_o; chưa biết nơi ở thì hỏi 1 câu khi phù hợp):
+- Miền Bắc mùa lạnh (khoảng tháng 12–2) và nồm (khoảng tháng 2–4): tắm nước ấm, phòng kín gió, có thời gian sấy khô tóc, mặc ấm ngay sau tắm, nên khối tắm và vệ sinh tối dài hơn khoảng 10–15 phút; tắm xong trước giờ tắt đèn ít nhất khoảng 1 giờ; buổi sáng thêm vài phút mặc ấm. Nồm ẩm thì nhắc phơi sấy đồng phục từ tối hôm trước.
+- Mùa nóng (khoảng tháng 5–8 miền Bắc; mùa khô nóng tháng 3–5 miền Nam): có thể tắm tráng thêm sau vận động hoặc khi về; nhắc uống nước, mang bình nước; vận động vui ngoài trời dời sang sáng sớm hoặc chiều muộn, tránh nắng gắt buổi trưa.
+- Mùa mưa (miền Nam khoảng tháng 5–11, mưa hay vào buổi chiều): khối vận động ngoài trời có phương án trong nhà; nhắc áo mưa.
+- Các mốc thời gian trên là mặc định của Pal. Điều chỉnh sinh hoạt theo mùa nằm trong quỹ sinh_hoat của bố mẹ (±30 phút); nếu cần vượt thì nói ngắn với bố mẹ một lần, đề xuất lưu thành preset (ví dụ "Mùa đông").
+THỜI TIẾT THEO NGÀY: Pal không có dự báo trực tiếp. Khối soạn cặp buổi tối luôn có việc "Xem dự báo ngày mai, mang đồ theo thời tiết" (mưa: ô hoặc áo mưa; lạnh: áo khoác; nắng nóng: mũ, bình nước). Nếu bố mẹ hoặc con đã báo thời tiết ("thoi_tiet_bao" trong trạng thái), ghi đúng đồ cần mang vào khối soạn cặp và khối chuẩn bị đi học của ngày đó.
+KHOẢNG CÁCH GIỮA CÁC BỮA:
+- Mốc tham khảo: trẻ và thiếu niên cần ăn khoảng 3–4 giờ một lần (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ); trẻ 7–12 tuổi có thể giãn 4–5 giờ. Tính cả bữa ở trường (hỏi giờ ăn trưa, bữa phụ chiều; chưa biết thì giả định ăn trưa khoảng 11h và nói rõ giả định).
+- Khi lập lịch: nếu hai bữa liền nhau cách quá khoảng 4 giờ (6 tuổi) hoặc 5 giờ (7 tuổi trở lên), thêm bữa phụ nhỏ ở giữa, cách bữa chính tiếp theo khoảng 1–2 giờ để con không bỏ bữa. Thường gặp nhất: bữa phụ ngay khi về nhà, trước khối phục hồi hoặc cùng khối phục hồi.
+- Bữa phụ là bữa nhỏ, không thay bữa chính, không ăn trước màn hình: trái cây, sữa, sữa chua, bánh mì nhỏ, khoai, ngô. Lưu ý dị ứng trong ho_so.suc_khoe. Không đưa định lượng calo.
+- Nếu "con_bao_doi" có lần báo đói, hoặc bố mẹ kể con hay kêu đói, cáu gắt hay mất tập trung trước bữa: xem khoảng cách bữa quanh giờ đó và đề xuất một bữa phụ (giờ, món gợi ý) với bố mẹ, một lần, kèm lý do ngắn. Bố mẹ đồng ý thì cập nhật lịch.
+`;
+const OUTPUT_FORMAT = `ĐỊNH DẠNG TRẢ LỜI: chỉ một đối tượng JSON, không chữ nào ngoài JSON, không code fence:
+{"tra_loi": "câu nói với phụ huynh (tối đa 3 câu, văn nói; phản hồi bài làm thì theo danh sách gạch đầu dòng, xuống dòng bằng \\n)",
+ "ho_so": {các trường hồ sơ MỚI hoặc ĐỔI; bỏ trống {} nếu không có} ,
+ "tong_quan": {"muc_tieu":[...],"nguyen_tac":[...],"gio_ngu":"...","ghi_chu":"..."} hoặc null nếu không đổi,
+ "ngay": [ {"ngay":"T2","pham_vi":"mau_tuan" hoặc "chi_tuan_nay","ly_do":"...","khoi":[ {"bat_dau":"HH:MM","ket_thuc":"HH:MM","khoi":"tên khối","viec":["việc nhỏ",...],"xac_nhan":"...","tai":"cao|vua|thap|phuc_hoi","nhom":"truong|hoc_them|hoc_nha|choi_nghi|sinh_hoat|ngu","the_thao":false,"man_hinh":false,"trang_thai":"binh_thuong|huy","ghi_chu":"..."} ]} ],
+ "xoa_ngoai_le": ["T5"],
+ "hoat_dong": [ {"hanh_dong":"them|sua|xoa","id":"(bắt buộc khi sua/xoa)","ten":"Tiếng Anh","loai":"hoc_them|the_thao|nang_khieu|khac","thu":["T4","T6"],"bat_dau":"17:00","ket_thuc":"18:30","di_lai":30,"dia_diem":"","ghi_chu":""} ] hoặc [] nếu không đổi,
+ "canh_bao": ["cảnh báo ngắn về cân bằng, nếu có; [] nếu không có"],
+ "giai_doan": null hoặc {"hanh_dong":"tao|xac_nhan|sua|ket_thuc","ten":"Ôn thi giữa kỳ","ly_do":"...","nguon":"bo_me|bac_si|con_de_xuat","tu_ngay":"YYYY-MM-DD","den_ngay":"YYYY-MM-DD","quy_tac_tam":["..."],"noi_long":["tong_gio_hoc",...],"can_xac_nhan":false} }
+Các trường hồ sơ: tuoi_lop, gio_hoc, noi_o, an_uong, hoc_them, suc_khoe, the_luc, giac_ngu, tinh_cach, hoc_tap, so_thich, khong_thich, muc_tieu_bo_me (chuỗi ngắn).
+Chỉ trò chuyện, chưa lập hay sửa lịch: "ngay": [], "tong_quan": null. Viết "viec" ngắn gọn, mỗi việc dưới 12 chữ; "ghi_chu" chỉ khi cần.`;
+
+/* ---------- kiểm tra cân bằng (chạy trong app, không phụ thuộc Pal) ---------- */
+const toMin = t => { const m = /^(\d{1,2}):(\d{2})/.exec(t || ""); return m ? (+m[1]) * 60 + (+m[2]) : null; };
+const fmtMin = n => Math.floor(n / 60) + " giờ" + (n % 60 ? " " + (n % 60) + " phút" : "");
+const STUDY = /(ôn|học|bài|toán|tiếng việt|tiếng anh|từ vựng|đọc to|luyện|làm đề|văn|chính tả)/i;
+const NOT_HOME = /(ở trường|đi học|tại trường|trung tâm|học thêm|tan học|về nhà|đồng phục|soạn cặp|chuẩn bị)/i;
+const SPORT = /(tập|thi đấu|bóng|bơi|võ|chạy|đạp xe|thể thao|gym)/i;
+const BED = /(tắt đèn|đi ngủ|^ngủ)/i;
+function gradeOf(){ const t = (S.profile && (S.profile.tuoi_lop || "")) + ""; const g = /lớp\s*(\d{1,2})/i.exec(t); if(g) return +g[1]; const a = /(\d{1,2})\s*tuổi/i.exec(t); return a ? Math.max(1, +a[1] - 5) : null; }
+function ageOf(){ const t = (S.profile && (S.profile.tuoi_lop || "")) + ""; const a = /(\d{1,2})\s*tuổi/i.exec(t); if(a) return +a[1]; const g = gradeOf(); return g ? g + 5 : null; }
+function liveBlocks(d){ return effDayRaw(d).filter(b => b.trang_thai !== "huy" && toMin(b.bat_dau) !== null).map(b => Object.assign({}, b, {s: toMin(b.bat_dau), e: toMin(b.ket_thuc) ?? toMin(b.bat_dau)})).sort((a, b) => a.s - b.s); }
+function effDayRaw(d){ return S.plan.ngoai_le[d] ? S.plan.ngoai_le[d].khoi : (S.plan.ngay[d] || []); }
+const isStudy = b => (b.tai === "cao" || b.tai === "vua") && STUDY.test(b.khoi + " " + (b.viec || []).join(" ")) && !NOT_HOME.test(b.khoi);
+const isSchool = b => /(ở trường|tại trường|học ở trường)/i.test(b.khoi) && (b.e - b.s) >= 150;
+function checkDay(d){ return checkDayK(d).filter(w => !relaxed().has(w.k)).map(w => w.t); }
+function relaxedCount(d){ const r = relaxed(); return checkDayK(d).filter(w => r.has(w.k)).length; }
+function relaxed(){ const G = S.plan.giai_doan; return new Set(G && G.trang_thai === "dang_ap_dung" ? (G.noi_long || []) : []); }
+function checkDayK(d){
+  const W = [], B = liveBlocks(d); if(!B.length) return W;
+  const push = W.push.bind(W); W.push = (t, k) => push({t, k: k || "khac"});
+  const school = B.find(isSchool);
+  // (4) học trước giờ đi học
+  if(school){ B.filter(b => b.e <= school.s && isStudy(b)).forEach(b => W.push("Có khối học \"" + b.khoi + "\" ngay trước giờ đi học; buổi sáng nên để con vệ sinh, vận động, ăn sáng.", "truoc_gio_hoc")); }
+  // (2) phục hồi sau giờ học
+  if(school){
+    const after = B.filter(b => b.s >= school.e);
+    const firstStudy = after.find(isStudy);
+    if(firstStudy && !after.some(b => b.tai === "phuc_hoi" && b.s < firstStudy.s)) W.push("Sau giờ học ở trường chưa có khối phục hồi trước \"" + firstStudy.khoi + "\".", "phuc_hoi");
+  }
+  // (3) hai khối tải cao liền nhau
+  for(let i = 1; i < B.length; i++){
+    const a = B[i - 1], b = B[i];
+    if(a.tai === "cao" && b.tai === "cao" && b.s - a.e < 5 && !isSchool(a) && !isSchool(b)) W.push("\"" + a.khoi + "\" và \"" + b.khoi + "\" là hai khối tải cao liền nhau, nên chèn nghỉ ngắn.", "cao_lien");
+  }
+  // (5) tổng giờ học ở nhà
+  { const col = (d === "T7" || d === "CN") ? "we" : "wd", lim = getBudget()[col].hoc_nha;
+    const total = B.filter(isStudy).reduce((n, b) => n + Math.max(0, b.e - b.s), 0);
+    if(total > lim + SOFT) W.push("Tổng giờ học ở nhà khoảng " + total + " phút, vượt quỹ bố mẹ đã chọn " + lim + " phút (cho phép lệch ±" + SOFT + " phút).", "tong_gio_hoc");
+  }
+  // (7) khoảng cách giữa các bữa
+  { const ev = []; const ML = /(ăn sáng|ăn trưa|ăn tối|bữa|ăn nhẹ|ăn phụ|^ăn )/i;
+    B.forEach(b => { if(ML.test(b.khoi) || (b.viec || []).some(v => /(ăn nhẹ|bữa phụ|ăn phụ|ăn sáng|ăn tối)/i.test(v))) ev.push({t: b.s, n: b.khoi}); });
+    if(school && school.s <= 660 && school.e >= 720 && !ev.some(x => x.t >= 600 && x.t <= 780)) ev.push({t: 675, n: "bữa trưa ở trường (giả định 11h15)"});
+    ev.sort((a, b) => a.t - b.t);
+    const lim = (ageOf() || 9) <= 6 ? 240 : 300;
+    for(let i = 1; i < ev.length; i++){ const gap = ev[i].t - ev[i - 1].t; if(gap > lim) W.push("Từ " + ev[i - 1].n + " đến " + ev[i].n + " cách khoảng " + fmtMin(gap) + " không có gì ăn. Mốc tham khảo: trẻ cần ăn khoảng 3–4 giờ một lần, 7–12 tuổi có thể 4–5 giờ (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ). Nên thêm bữa phụ nhỏ ở giữa.", "an_xa"); }
+  }
+  // (1) giờ ngủ
+  const bed = [...B].reverse().find(b => BED.test(b.khoi));
+  const nd = DAYS[(DAYS.indexOf(d) + 1) % 7], NB = liveBlocks(nd);
+  const age = ageOf();
+  if(bed && NB.length && age){
+    let sleep = NB[0].s + 1440 - bed.s; if(sleep > 1440) sleep -= 1440;
+    const need = age <= 12 ? 540 : 480;
+    if(sleep < need) W.push("Từ tắt đèn " + bed.bat_dau + " đến dậy " + NB[0].bat_dau + " hôm sau chỉ khoảng " + fmtMin(sleep) + ", dưới mức " + (need / 60) + " giờ cho " + age + " tuổi.", "ngu");
+  }
+  // (6) tập mạnh sát giờ ngủ
+  if(bed){ B.filter(b => b.tai === "cao" && SPORT.test(b.khoi) && bed.s - b.e < 60 && b.e <= bed.s).forEach(b => W.push("\"" + b.khoi + "\" kết thúc chưa tới 1 giờ trước giờ tắt đèn.", "tap_muon")); }
+  return W;
+}
+function allWarnings(){ const o = {}; DAYS.forEach(d => { const w = checkDay(d); if(w.length) o[d] = w; }); return o; }
+
+/* ---------- giai đoạn tạm thời ---------- */
+const pad = n => (n < 10 ? "0" : "") + n;
+function todayStr(){ const t = new Date(); return t.getFullYear() + "-" + pad(t.getMonth() + 1) + "-" + pad(t.getDate()); }
+const vnDate = s => s ? s.slice(8, 10) + "/" + s.slice(5, 7) : "?";
+function daysLeft(G){ return Math.round((Date.parse(G.den_ngay) - Date.parse(todayStr())) / 864e5); }
+function snapshotPlan(){ return JSON.parse(JSON.stringify({ngay: S.plan.ngay, tong_quan: S.plan.tong_quan})); }
+function applyPeriod(g){
+  if(!g || typeof g !== "object") return;
+  const G = S.plan.giai_doan, act = g.hanh_dong;
+  const clean = {ten: String(g.ten || "Giai đoạn tạm thời"), ly_do: String(g.ly_do || ""), nguon: String(g.nguon || "bo_me"), tu_ngay: String(g.tu_ngay || todayStr()).slice(0, 10), den_ngay: String(g.den_ngay || "").slice(0, 10), quy_tac_tam: (Array.isArray(g.quy_tac_tam) ? g.quy_tac_tam : []).map(String), noi_long: (Array.isArray(g.noi_long) ? g.noi_long : []).map(String).filter(k => ["tong_gio_hoc","truoc_gio_hoc","van_dong","man_hinh","an_uong"].includes(k))};
+  if(act === "tao"){
+    const pendingConfirm = !!g.can_xac_nhan || clean.nguon === "con_de_xuat";
+    S.plan.giai_doan = Object.assign(clean, {trang_thai: pendingConfirm ? "cho_xac_nhan" : "dang_ap_dung", lich_goc: pendingConfirm ? null : snapshotPlan()});
+  } else if(act === "xac_nhan" && G){
+    Object.assign(G, clean.quy_tac_tam.length ? clean : {}, {trang_thai: "dang_ap_dung"}); if(!G.lich_goc) G.lich_goc = snapshotPlan();
+  } else if(act === "sua" && G){
+    Object.keys(clean).forEach(k => { if((Array.isArray(clean[k]) && clean[k].length) || (!Array.isArray(clean[k]) && clean[k] && g[k] !== undefined)) G[k] = clean[k]; });
+  } else if(act === "ket_thuc" && G){
+    G.trang_thai = "het_han"; G.ket_thuc_som = todayStr();
+  }
+}
+function checkPeriodExpiry(){
+  const G = S.plan.giai_doan;
+  if(G && G.trang_thai === "dang_ap_dung" && G.den_ngay && todayStr() > G.den_ngay){
+    G.trang_thai = "het_han";
+    S.messages.push({role: "assistant", content: "Giai đoạn \"" + G.ten + "\" đã kết thúc ngày " + vnDate(G.den_ngay) + ". Các quy tắc tạm thời không còn áp dụng. Bạn muốn quay về lịch trước giai đoạn, hay để mình sắp xếp lại lịch cho phù hợp với con lúc này?"});
+    save(); return true;
+  }
+  return false;
+}
+function revertPeriod(){
+  const G = S.plan.giai_doan; if(!G || !G.lich_goc) return;
+  clearedThisTurn = false; startChanges();
+  DAYS.forEach(d => {
+    const before = S.plan.ngay[d] || [], after = G.lich_goc.ngay[d] || [];
+    const oldSigs = new Set(before.map(sig)); const idx = []; after.forEach((b, i) => { if(!oldSigs.has(sig(b))) idx.push(i); });
+    S.changed[d] = idx;
+  });
+  S.plan.ngay = G.lich_goc.ngay; if(G.lich_goc.tong_quan) S.plan.tong_quan = G.lich_goc.tong_quan;
+  G.trang_thai = "da_ket_thuc"; delete G.lich_goc;
+  S.messages.push({role: "assistant", content: "Mình đã đưa lịch về như trước giai đoạn \"" + G.ten + "\". Phần đổi lại hiện màu đỏ trong tab Lịch tuần."});
+  renderAll(); save();
+}
+
+/* ---------- quỹ thời gian ---------- */
+// Nhóm: truong, hoc_them = cố định theo lịch đăng ký; choi_nghi = phần còn lại; bố mẹ nhập: hoc_nha, sinh_hoat, ngu, man_hinh
+const GROUPS = [
+  {k:"truong", n:"Ở trường và đi lại", ex:"Theo thời khóa biểu", mode:"fixed"},
+  {k:"hoc_them", n:"Học thêm và tập luyện ngoài trường", ex:"Lấy từ khung Hoạt động của con: trung tâm, gia sư, năng khiếu, CLB thể thao (tính cả đi lại)", mode:"fixed"},
+  {k:"hoc_nha", n:"Học và rèn luyện ở nhà", ex:"Bài cô giao, ôn bài, học theo định hướng bố mẹ, tự luyện đàn, luyện chữ", mode:"input"},
+  {k:"sinh_hoat", n:"Ăn uống, vệ sinh, việc cá nhân", ex:"Bữa ăn, tắm, thay đồ, soạn cặp, đọc truyện trước ngủ", mode:"input"},
+  {k:"ngu", n:"Ngủ", ex:"Từ tắt đèn đến lúc dậy", mode:"input"},
+  {k:"choi_nghi", n:"Chơi tự do, vận động vui, nghỉ ngơi", ex:"Phần thời gian còn lại trong ngày (đã gồm một nửa giờ ăn)", mode:"rest"},
+  {k:"man_hinh", n:"↳ trong đó: màn hình giải trí (tối đa)", ex:"Tivi, điện thoại, game", mode:"input", sub:true}
+];
+const COLS = [{k:"wd", n:"Ngày đi học", days:["T2","T3","T4","T5","T6"]}, {k:"we", n:"Cuối tuần", days:["T7","CN"]}];
+const SOFT = 30; // Pal được xê dịch ±30 phút
+function sleepNeed(){ const a = ageOf() || 9; return a <= 12 ? 540 : 480; }
+function defaultBudget(){
+  const g = gradeOf() || 3, a = ageOf() || 9, young = a <= 10, need = sleepNeed();
+  return {wd: {hoc_nha: g * 10, sinh_hoat: 105, ngu: need + 30, man_hinh: young ? 30 : 60},
+          we: {hoc_nha: g * 10, sinh_hoat: 120, ngu: need + 60, man_hinh: young ? 60 : 120}, ok: {}};
+}
+function validBudget(B){ return B && B.wd && typeof B.wd.hoc_nha === "number" && B.we && typeof B.we.ngu === "number"; }
+function getBudget(){
+  if(!validBudget(S.budget)) S.budget = defaultBudget();
+  if(!S.budget.ok) S.budget.ok = {};
+  if(!S.presets || !Object.keys(S.presets).length){ S.presets = {"Bình thường": JSON.parse(JSON.stringify(S.budget))}; S.presetActive = "Bình thường"; }
+  return S.budget;
+}
+// thời gian cố định lấy từ lịch
+const MEAL = /(ăn sáng|ăn trưa|ăn tối|bữa|ăn nhẹ|^ăn )/i;
+function groupOf(b){
+  if(b.nhom && ["truong","hoc_them","hoc_nha","choi_nghi","sinh_hoat","ngu"].includes(b.nhom)) return b.nhom;
+  const t = b.khoi + " " + (b.viec || []).join(" ");
+  if(BED.test(b.khoi)) return "ngu";
+  if(isSchool(b) || /(đi học|về nhà|tan học)/i.test(b.khoi)) return "truong";
+  if(/(trung tâm|học thêm|gia sư|lớp bơi|lớp vẽ|lớp đàn|câu lạc bộ|clb|võ|taekwondo|karate|múa|đi học tiếng anh)/i.test(t)) return "hoc_them";
+  if(b.tai === "phuc_hoi") return "choi_nghi";
+  if(isStudy(b)) return "hoc_nha";
+  if(/(ăn|bữa|vệ sinh|tắm|đánh răng|thay đồ|soạn cặp|dậy|nhật ký|đọc sách|đọc truyện)/i.test(t)) return "sinh_hoat";
+  if(b.tai === "cao" || b.tai === "vua") return "hoc_nha";
+  return "choi_nghi";
+}
+function fixedDay(d){
+  const R = {truong:0, hoc_them:0}; const useActs = (S.activities || []).length > 0;
+  liveBlocks(d).forEach(b => { const g = groupOf(b); if(g === "truong" || (g === "hoc_them" && !useActs)) R[g] += Math.max(0, b.e - b.s); });
+  if(useActs) S.activities.filter(a => (a.thu || []).includes(d)).forEach(a => { R.hoc_them += actDur(a) + (+a.di_lai || 0); });
+  return R;
+}
+function actDur(a){ const x = toMin(a.bat_dau), y = toMin(a.ket_thuc); return x !== null && y !== null && y > x ? y - x : 0; }
+function actualDay(d){
+  const R = {truong:0, hoc_them:0, hoc_nha:0, choi_nghi:0, man_hinh:0, sinh_hoat:0, ngu:0};
+  const B = liveBlocks(d); if(!B.length) return null;
+  let last = null;
+  B.forEach(b => {
+    const g = groupOf(b), dur = Math.max(0, b.e - b.s);
+    if(g !== "ngu"){ R[g] += dur; if(g === "sinh_hoat" && MEAL.test(b.khoi)) R.choi_nghi += Math.round(dur / 2); }
+    if(b.man_hinh || /(tivi|ti vi|điện thoại|game|màn hình|ipad)/i.test(b.khoi)) R.man_hinh += dur;
+    if(last !== null && b.s > last && g !== "ngu") R.choi_nghi += b.s - last;
+    last = Math.max(last || 0, b.e);
+  });
+  const bed = [...B].reverse().find(b => BED.test(b.khoi));
+  const nb = liveBlocks(DAYS[(DAYS.indexOf(d) + 1) % 7]);
+  if(bed && nb.length){ let sl = nb[0].s + 1440 - bed.s; if(sl > 1440) sl -= 1440; R.ngu = sl; }
+  return R;
+}
+function rangeOf(col, fn, key){
+  const xs = COLS.find(c => c.k === col).days.map(fn).filter(Boolean).map(v => v[key]);
+  return xs.length ? [Math.min(...xs), Math.max(...xs)] : null;
+}
+const hm = m => { m = Math.round(m); const neg = m < 0; m = Math.abs(m); const h = Math.floor(m / 60), r = m % 60; return (neg ? "−" : "") + (h ? h + "h" + (r ? pad(r) : "") : r + "′"); };
+const hmR = ([a, b]) => a === b ? hm(a) : hm(a) + "–" + hm(b);
+// phần còn lại = 24h − cố định − các ô bố mẹ nhập (ăn uống tính một nửa vào nghỉ)
+function restRange(col){
+  const B = getBudget()[col], days = COLS.find(c => c.k === col).days;
+  const vals = days.map(d => { const f = fixedDay(d); return 1440 - f.truong - f.hoc_them - B.hoc_nha - B.sinh_hoat - B.ngu + Math.round(B.sinh_hoat * 0.25); });
+  return [Math.min(...vals), Math.max(...vals)];
+}
+// màu so với khuyến nghị (bản nháp, đặc tả mục 2.1)
+function judge(gk, col, v){
+  const g = gradeOf() || 3, wd = col === "wd", need = sleepNeed();
+  const up = (x, base, why) => x <= base ? ["xanh", ""] : x <= base * 1.5 ? ["cam", why] : ["do", why];
+  const lo = (x, ok, warn, why) => x >= ok ? ["xanh", ""] : x >= warn ? ["cam", why] : ["do", why];
+  switch(gk){
+    case "ngu": { const a = ageOf(); const rng = (a || 9) <= 12 ? "9–12 giờ cho trẻ 6–12 tuổi" : "8–10 giờ cho trẻ 13–18 tuổi";
+      return lo(v, need, need - 30, "Ngủ " + hm(v) + ", thấp hơn mức tối thiểu " + hm(need) + ". Mốc tham khảo: " + rng + " (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."); }
+    case "hoc_nha": return ["xam", ""]; // bố mẹ tự quản lý; ảnh hưởng thể hiện qua ô chơi và nghỉ, giấc ngủ
+    case "man_hinh": return v <= 60 ? ["xanh", ""] : v <= 120
+      ? ["cam", "Màn hình giải trí " + hm(v) + ", trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."]
+      : ["do", "Màn hình giải trí " + hm(v) + ", vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."];
+    case "sinh_hoat": return lo(v, 90, 60, "Ăn uống, vệ sinh còn " + hm(v) + ". Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)");
+    case "choi_nghi": return v < 0 ? ["do", "Các nhóm cộng lại vượt 24 giờ khoảng " + hm(-v) + ". Cần giảm giờ học ở nhà, sinh hoạt hoặc ngủ cho đủ một ngày."]
+      : lo(v, wd ? 60 : 120, wd ? 30 : 60, "Chơi và nghỉ chỉ còn " + hm(v) + ". Mốc tham khảo " + (wd ? "ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối" : "cuối tuần ít nhất 2 giờ chơi tự do") + "; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này.");
+    case "hoc_them": return v <= (wd ? 120 : 180) ? ["xanh", ""] : ["" + (v <= (wd ? 180 : 270) ? "cam" : "do"), "Học thêm " + hm(v) + (wd ? ", trên 2 giờ sau 6–7 giờ ở trường" : ", trên 3 giờ trong ngày nghỉ") + ", làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"];
+    default: return ["xam", ""];
+  }
+}
+function budgetForPrompt(){
+  const B = getBudget();
+  const fx = c => ({truong: rangeOf(c, fixedDay, "truong"), hoc_them: rangeOf(c, fixedDay, "hoc_them")});
+  return {don_vi: "phút/ngày", xe_dich_toi_da: SOFT, preset: S.presetActive || "", ngay_di_hoc: Object.assign({}, B.wd, {choi_nghi_con_lai: restRange("wd")}, {co_dinh: fx("wd")}),
+          cuoi_tuan: Object.assign({}, B.we, {choi_nghi_con_lai: restRange("we")}, {co_dinh: fx("we")}), da_xac_nhan_vung_do: Object.keys(B.ok || {})};
+}
+function presetDirty(){ const P = S.presets && S.presets[S.presetActive]; if(!P) return true; const strip = x => JSON.stringify({wd: x.wd, we: x.we}); return strip(P) !== strip(getBudget()); }
+function renderBudget(){
+  const w = $("budgetWrap"); if(!w) return; w.innerHTML = "";
+  const B = getBudget();
+  // menu preset
+  const pc = document.createElement("div"); pc.className = "card";
+  pc.innerHTML = '<h2>⏱️ Quỹ thời gian một ngày của con</h2><div class="muted">Bố mẹ nhập số giờ cho các ô trắng. Ở trường và học thêm lấy theo lịch; chơi tự do là phần còn lại. Pal xếp lịch theo quỹ, xê dịch tối đa ±30 phút.</div>';
+  const pr = document.createElement("div"); pr.className = "presetbar";
+  const sel = document.createElement("select");
+  Object.keys(S.presets).forEach(n => { const o = document.createElement("option"); o.value = n; o.textContent = n; if(n === S.presetActive) o.selected = true; sel.appendChild(o); });
+  sel.onchange = () => { S.presetActive = sel.value; S.budget = JSON.parse(JSON.stringify(S.presets[sel.value])); if(!S.budget.ok) S.budget.ok = {}; renderBudget(); save(); toast("Đã chuyển sang \"" + sel.value + "\"."); };
+  pr.appendChild(sel);
+  const mk = (t, f, cls) => { const x = document.createElement("button"); x.textContent = t; if(cls) x.className = cls; x.onclick = f; pr.appendChild(x); return x; };
+  const dirty = presetDirty();
+  mk(dirty ? "💾 Lưu •" : "💾 Lưu", () => { S.presets[S.presetActive] = JSON.parse(JSON.stringify(getBudget())); renderBudget(); save(); toast("Đã lưu \"" + S.presetActive + "\"."); }, dirty ? "pri" : "");
+  mk("＋ Lưu thành mới", () => {
+    const box = document.createElement("div"); box.className = "newp";
+    const inp = document.createElement("input"); inp.placeholder = "Tên, ví dụ: Thi cử, Nghỉ hè";
+    const ok = document.createElement("button"); ok.className = "pri"; ok.textContent = "Lưu";
+    ok.onclick = () => { const n = inp.value.trim(); if(!n) return; S.presets[n] = JSON.parse(JSON.stringify(getBudget())); S.presetActive = n; renderBudget(); save(); toast("Đã lưu preset \"" + n + "\"."); };
+    box.appendChild(inp); box.appendChild(ok);
+    ["Thi cử","Nghỉ hè","Nghỉ lễ"].filter(n => !S.presets[n]).forEach(n => { const c = document.createElement("button"); c.textContent = n; c.onclick = () => { inp.value = n; }; box.appendChild(c); });
+    pc.appendChild(box); inp.focus();
+  });
+  if(Object.keys(S.presets).length > 1) mk("🗑", () => { delete S.presets[S.presetActive]; S.presetActive = Object.keys(S.presets)[0]; S.budget = JSON.parse(JSON.stringify(S.presets[S.presetActive])); renderBudget(); save(); });
+  pc.appendChild(pr);
+  w.appendChild(pc);
+  // bảng
+  const card = document.createElement("div"); card.className = "card";
+  GROUPS.forEach(g => {
+    const row = document.createElement("div"); row.className = "brow" + (g.sub ? " sub" : "");
+    row.innerHTML = '<div class="gname">' + esc(g.n) + '</div><div class="gex">' + esc(g.ex) + "</div>";
+    const grid = document.createElement("div"); grid.className = "bgrid"; row.appendChild(grid);
+    COLS.forEach(c => {
+      const cell = document.createElement("div"); cell.innerHTML = '<div class="clab">' + c.n + "</div>";
+      let col = "xam", why = "", val = null;
+      if(g.mode === "fixed"){
+        const r = rangeOf(c.k, fixedDay, g.k);
+        val = r ? r[1] : 0; [col, why] = g.k === "hoc_them" ? judge(g.k, c.k, val) : ["xam", ""];
+        cell.innerHTML += '<div class="fx"><span class="cdot c-' + col + '"></span>' + (r ? hmR(r) : "—") + '</div><div class="act">' + (g.k === "truong" ? "theo thời khóa biểu" : "theo danh sách hoạt động") + "</div>";
+      } else if(g.mode === "rest"){
+        const r = restRange(c.k); [col, why] = judge("choi_nghi", c.k, r[0]);
+        cell.innerHTML += '<div class="fx"><span class="cdot c-' + col + '"></span>' + hmR(r) + '</div><div class="act">tự tính, phần còn lại</div>';
+      } else {
+        val = B[c.k][g.k]; [col, why] = judge(g.k, c.k, val);
+        const box = document.createElement("div"); box.className = "rng";
+        box.innerHTML = '<span class="cdot c-' + col + '"></span>';
+        const inp = document.createElement("input"); inp.type = "number"; inp.inputMode = "decimal"; inp.step = "0.25"; inp.min = "0"; inp.max = "14";
+        inp.value = String(Math.round(val / 15) / 4);
+        inp.onchange = () => setBudget(c.k, g.k, parseFloat(String(inp.value).replace(",", ".")));
+        box.appendChild(inp); const u = document.createElement("span"); u.className = "muted"; u.textContent = "giờ"; box.appendChild(u);
+        cell.appendChild(box);
+      }
+      if(why){
+        const key = c.k + "." + g.k, okd = B.ok[key];
+        const wl = document.createElement("div"); wl.className = "wline " + col + (okd ? " okd" : "");
+        wl.textContent = (col === "do" ? "⛔ " : "⚠️ ") + why + (okd ? " · bố mẹ đã xác nhận" : "");
+        if(col === "do" && !okd && g.mode === "input"){ const k = document.createElement("button"); k.textContent = "Giữ mức này"; k.onclick = () => { B.ok[key] = true; renderBudget(); save(); }; wl.appendChild(k); }
+        cell.appendChild(wl);
+      }
+      grid.appendChild(cell);
+    });
+    card.appendChild(row);
+  });
+  const lg = document.createElement("div"); lg.className = "legend";
+  lg.innerHTML = '<span class="cdot c-xanh"></span>cân bằng <span class="cdot c-cam" style="margin-left:8px"></span>hơi lệch <span class="cdot c-do" style="margin-left:8px"></span>lệch nhiều · Học ở nhà do bố mẹ quyết định, không chấm màu; nếu quá nhiều sẽ thấy ở ô chơi và nghỉ hoặc giấc ngủ. Mỗi cảnh báo ghi mốc và nguồn; mốc ghi “mặc định của Pal” là chưa kiểm chứng.';
+  card.appendChild(lg);
+  const row = document.createElement("div"); row.className = "prow";
+  const b1 = document.createElement("button"); b1.className = "pri"; b1.textContent = "Nhờ Pal xếp lịch theo quỹ này"; b1.onclick = () => { navChat(); send("Hãy xếp lại lịch cả tuần cho khớp với quỹ thời gian \"" + (S.presetActive || "") + "\" bố mẹ vừa chốt."); };
+  const b2 = document.createElement("button"); b2.textContent = "Về mặc định theo tuổi"; b2.onclick = () => { S.budget = defaultBudget(); renderBudget(); save(); };
+  row.appendChild(b1); row.appendChild(b2); card.appendChild(row);
+  w.appendChild(card);
+  // đề xuất của con
+  const P = (S.proposals || []).filter(p => !p.xong);
+  if(P.length){
+    const qc = document.createElement("div"); qc.className = "card"; qc.innerHTML = "<h2>💬 Con đề xuất và báo</h2>";
+    P.forEach(p => {
+      const d = document.createElement("div"); d.className = "prop"; d.innerHTML = "<div>" + esc(p.text) + '</div><div class="muted">' + esc(p.ngay) + "</div>";
+      const r = document.createElement("div"); r.className = "prow";
+      const a = document.createElement("button"); a.className = "pri"; a.textContent = "Nhờ Pal xem đề xuất"; a.onclick = () => { p.xong = true; save(); navChat(); send(p.loai === "doi" ? p.text + ". Hãy xem khoảng cách các bữa quanh giờ đó và đề xuất bữa phụ nếu cần." : "Con đề xuất: \"" + p.text + "\". Bố mẹ muốn xem xét. Hãy cho biết ảnh hưởng tới quỹ thời gian và đưa phương án."); };
+      const x = document.createElement("button"); x.textContent = "Để sau"; x.onclick = () => { p.xong = true; renderBudget(); save(); };
+      r.appendChild(a); r.appendChild(x); d.appendChild(r); qc.appendChild(d);
+    });
+    w.appendChild(qc);
+  }
+}
+function setBudget(col, gk, hours){
+  if(!isFinite(hours) || hours < 0){ renderBudget(); return; }
+  const B = getBudget(); B[col][gk] = Math.round(hours * 60 / 5) * 5;
+  if(judge(gk, col, B[col][gk])[0] !== "do") delete B.ok[col + "." + gk];
+  renderBudget(); save();
+}
+
+/* ---------- hoạt động cố định của con ---------- */
+const LOAI = {hoc_them: "Học thêm", the_thao: "Tập luyện", nang_khieu: "Năng khiếu", khac: "Khác"};
+const hhmm = t => { const m = toMin(t); return m === null ? "" : pad(Math.floor(m / 60)) + ":" + pad(m % 60); };
+function cleanAct(a, base){
+  const o = Object.assign({}, base || {});
+  ["ten","dia_diem","ghi_chu"].forEach(k => { if(a[k] !== undefined) o[k] = String(a[k] || "").trim(); });
+  if(a.loai !== undefined) o.loai = LOAI[a.loai] ? a.loai : "khac";
+  if(Array.isArray(a.thu)) o.thu = DAYS.filter(d => a.thu.includes(d));
+  ["bat_dau","ket_thuc"].forEach(k => { if(a[k] !== undefined) o[k] = hhmm(a[k]); });
+  if(a.di_lai !== undefined) o.di_lai = Math.max(0, Math.round(+a.di_lai || 0));
+  if(!o.loai) o.loai = "hoc_them"; if(!o.thu) o.thu = []; if(!o.ten) o.ten = "Hoạt động";
+  return o;
+}
+function applyActs(list){
+  S.activities = S.activities || []; S.actNew = S.actNew || []; let n = 0;
+  list.forEach((a, i) => {
+    if(!a || typeof a !== "object") return;
+    const find = () => S.activities.findIndex(x => x.id === a.id || (!a.id && a.ten && x.ten.toLowerCase() === String(a.ten).toLowerCase()));
+    if(a.hanh_dong === "xoa"){ const k = find(); if(k >= 0){ S.activities.splice(k, 1); n++; } return; }
+    if(a.hanh_dong === "sua"){ const k = find(); if(k >= 0){ S.activities[k] = cleanAct(a, S.activities[k]); S.actNew.push(S.activities[k].id); n++; return; } }
+    const o = cleanAct(a); o.id = "a" + Date.now().toString(36) + i; o.nguon = "pal";
+    S.activities.push(o); S.actNew.push(o.id); n++;
+  });
+  return n;
+}
+let actEdit = null; // id đang sửa, hoặc "new"
+function actForm(a, onDone){
+  const f = document.createElement("div"); f.className = "aform";
+  const ten = document.createElement("input"); ten.placeholder = "Tên, ví dụ: Tiếng Anh, Bơi, Piano"; ten.value = a.ten || "";
+  const loai = document.createElement("select"); Object.keys(LOAI).forEach(k => { const o = document.createElement("option"); o.value = k; o.textContent = LOAI[k]; if(k === (a.loai || "hoc_them")) o.selected = true; loai.appendChild(o); });
+  const r1 = document.createElement("div"); r1.className = "r2"; r1.appendChild(ten); r1.appendChild(loai);
+  const thu = new Set(a.thu || []);
+  const dp = document.createElement("div"); dp.className = "dpk";
+  DAYS.forEach(d => { const b = document.createElement("button"); b.textContent = d; b.className = thu.has(d) ? "on" : ""; b.onclick = () => { thu.has(d) ? thu.delete(d) : thu.add(d); b.className = thu.has(d) ? "on" : ""; }; dp.appendChild(b); });
+  const t1 = document.createElement("input"); t1.type = "time"; t1.value = a.bat_dau || "";
+  const t2 = document.createElement("input"); t2.type = "time"; t2.value = a.ket_thuc || "";
+  const r2 = document.createElement("div"); r2.className = "r2"; r2.appendChild(t1); r2.appendChild(t2);
+  const dl = document.createElement("input"); dl.type = "number"; dl.min = "0"; dl.step = "5"; dl.placeholder = "Đi lại (phút, cả đi và về)"; if(a.di_lai) dl.value = a.di_lai;
+  const dd = document.createElement("input"); dd.placeholder = "Địa điểm (không bắt buộc)"; dd.value = a.dia_diem || "";
+  const r3 = document.createElement("div"); r3.className = "r2"; r3.appendChild(dl); r3.appendChild(dd);
+  const gc = document.createElement("input"); gc.placeholder = "Ghi chú (mang gì, ai đưa đón…)"; gc.value = a.ghi_chu || "";
+  const row = document.createElement("div"); row.className = "row";
+  const no = document.createElement("button"); no.textContent = "Thôi"; no.onclick = () => { actEdit = null; renderActs(); };
+  const ok = document.createElement("button"); ok.className = "pri"; ok.textContent = "Lưu";
+  ok.onclick = () => {
+    if(!ten.value.trim() || !thu.size || !t1.value || !t2.value || toMin(t2.value) <= toMin(t1.value)){ toast("Cần tên, ít nhất một ngày, giờ bắt đầu và kết thúc hợp lệ."); return; }
+    onDone(cleanAct({ten: ten.value, loai: loai.value, thu: [...thu], bat_dau: t1.value, ket_thuc: t2.value, di_lai: dl.value, dia_diem: dd.value, ghi_chu: gc.value}, a));
+  };
+  row.appendChild(no); row.appendChild(ok);
+  [r1, dp, r2, r3, gc, row].forEach(x => f.appendChild(x));
+  return f;
+}
+function renderActs(){
+  const w = $("actWrap"); if(!w) return; w.innerHTML = "";
+  const A = (S.activities || []).slice().sort((x, y) => (DAYS.indexOf((x.thu || [])[0]) - DAYS.indexOf((y.thu || [])[0])) || ((toMin(x.bat_dau) || 0) - (toMin(y.bat_dau) || 0)));
+  const c = document.createElement("div"); c.className = "card acts";
+  c.innerHTML = '<h2>🧩 Hoạt động của con</h2><div class="muted">Lớp học thêm, tập luyện, năng khiếu cố định hằng tuần. Pal ghi lại khi bố mẹ kể trong trò chuyện; bố mẹ sửa trực tiếp ở đây.</div>';
+  const wk = document.createElement("div"); wk.className = "aweek";
+  DAYS.forEach(d => { const n = A.filter(a => a.thu.includes(d)); const x = document.createElement("div"); x.className = n.length ? "on" : ""; x.title = n.map(a => a.ten).join(", "); x.textContent = d + (n.length ? " · " + n.length : ""); wk.appendChild(x); });
+  c.appendChild(wk);
+  if(S.actDirty && Object.keys(S.plan.ngay || {}).length){
+    const dz = document.createElement("div"); dz.className = "adirty"; dz.textContent = "Lịch tuần chưa cập nhật theo thay đổi vừa sửa.";
+    const b = document.createElement("button"); b.textContent = "Nhờ Pal cập nhật lịch"; b.onclick = () => { navChat(); send("Bố mẹ vừa sửa danh sách hoạt động của con. Hãy xếp lại các ngày bị ảnh hưởng cho khớp."); };
+    dz.appendChild(b); c.appendChild(dz);
+  }
+  if(!A.length && actEdit !== "new"){
+    const e = document.createElement("div"); e.className = "muted"; e.style.margin = "4px 0 8px";
+    e.textContent = "Chưa có hoạt động nào. Kể cho Pal ở khung trò chuyện, ví dụ: “Con học tiếng Anh thứ 4 và thứ 6, 17h đến 18h30”.";
+    c.appendChild(e);
+  }
+  const markDirty = () => { S.actDirty = true; actEdit = null; renderActs(); renderBudget(); save(); };
+  A.forEach(a => {
+    const it = document.createElement("div"); it.className = "aitem" + ((S.actNew || []).includes(a.id) ? " new" : "");
+    if(actEdit === a.id){
+      it.appendChild(actForm(a, o => { Object.assign(a, o); markDirty(); toast("Đã lưu \"" + a.ten + "\"."); }));
+    } else {
+      const d = actDur(a);
+      it.innerHTML = '<div class="at">' + esc(a.ten) + ' <span class="lb">' + esc(LOAI[a.loai] || "Khác") + "</span>" + ((S.actNew || []).includes(a.id) ? '<span class="nw">● Pal vừa ghi</span>' : "") + "</div>"
+        + '<div class="ad">' + a.thu.map(x => "<span>" + x + "</span>").join("") + "<span>" + esc(a.bat_dau) + "–" + esc(a.ket_thuc) + (d ? " · " + hm(d) : "") + "</span></div>"
+        + '<div class="am">' + [a.di_lai ? "đi lại " + hm(a.di_lai) : "", a.dia_diem ? "📍 " + esc(a.dia_diem) : "", a.ghi_chu ? esc(a.ghi_chu) : ""].filter(Boolean).join(" · ") + "</div>";
+      const ab = document.createElement("div"); ab.className = "ab";
+      const e1 = document.createElement("button"); e1.textContent = "✏️ Sửa"; e1.onclick = () => { actEdit = a.id; renderActs(); };
+      const e2 = document.createElement("button"); e2.textContent = "🗑 Xóa"; e2.onclick = () => { S.activities = S.activities.filter(x => x.id !== a.id); markDirty(); toast("Đã xóa \"" + a.ten + "\"."); };
+      ab.appendChild(e1); ab.appendChild(e2); it.appendChild(ab);
+    }
+    c.appendChild(it);
+  });
+  if(actEdit === "new"){
+    const it = document.createElement("div"); it.className = "aitem new";
+    it.appendChild(actForm({}, o => { o.id = "a" + Date.now().toString(36); o.nguon = "bo_me"; S.activities = S.activities || []; S.activities.push(o); markDirty(); toast("Đã thêm \"" + o.ten + "\"."); }));
+    c.appendChild(it);
+  } else {
+    const add = document.createElement("button"); add.className = "addb"; add.textContent = "＋ Thêm hoạt động"; add.onclick = () => { actEdit = "new"; renderActs(); };
+    c.appendChild(add);
+  }
+  if(A.length){
+    const tot = A.reduce((n, a) => n + (actDur(a) + (+a.di_lai || 0)) * a.thu.length, 0);
+    const t = document.createElement("div"); t.className = "muted"; t.style.marginTop = "8px"; t.textContent = "Tổng mỗi tuần khoảng " + hm(tot) + " (kể cả đi lại). Giờ này tự vào ô Học thêm của quỹ thời gian.";
+    c.appendChild(t);
+  }
+  w.appendChild(c);
+}
+
+/* ---------- hôm nay của con ---------- */
+function todayKey(){ return DAYS[(new Date().getDay() + 6) % 7]; }
+const blockKey = b => (b.bat_dau || "") + "|" + (b.khoi || "");
+function todayLog(){ const k = todayStr(); S.log = S.log || {}; if(!S.log[k]) S.log[k] = {k:{}, met:""}; return S.log[k]; }
+function nowMin(){ const t = new Date(); return t.getHours() * 60 + t.getMinutes(); }
+function kindOf(x){ x = (x || "").toLowerCase(); if(/ảnh|chụp/.test(x)) return "anh"; if(/giọng|kể|nói/.test(x)) return "noi"; if(/tự động|vùng|buổi tập/.test(x)) return "tu"; if(/bố mẹ|phụ huynh/.test(x)) return "bm"; if(/không cần/.test(x) || !x) return "khong"; return "bam"; }
+let kidTarget = null;
+const WX = {nang: {n: "☀️ Nắng nóng", d: ["Mũ", "Bình nước đầy"]}, mua: {n: "🌧 Mưa", d: ["Áo mưa hoặc ô", "Túi ni lông bọc sách"]}, lanh: {n: "🧥 Lạnh", d: ["Áo khoác", "Khăn quàng"]}, thuong: {n: "🌤 Bình thường", d: []}};
+const dateAdd = (n) => { const t = new Date(Date.now() + n * 864e5); return t.getFullYear() + "-" + pad(t.getMonth() + 1) + "-" + pad(t.getDate()); };
+function wxForPrompt(){ const o = {}; Object.keys(S.wx || {}).filter(k => k >= todayStr()).forEach(k => { o[k] = WX[S.wx[k]] ? WX[S.wx[k]].n.replace(/^\S+ /, "") : S.wx[k]; }); return o; }
+function hungerForPrompt(){ const L = S.log || {}; return Object.keys(L).filter(k => k >= dateAdd(-14) && (L[k].doi || []).length).map(k => k + ": " + L[k].doi.join(", ")); }
+function wxBox(dateK, title){
+  const q = document.createElement("div"); q.innerHTML = '<div style="margin-top:8px;font-size:15px">' + title + "</div>";
+  const m = document.createElement("div"); m.className = "mood"; S.wx = S.wx || {};
+  Object.keys(WX).forEach(k => { const x = document.createElement("button"); x.textContent = WX[k].n; if(S.wx[dateK] === k) x.className = "sel"; x.onclick = () => { S.wx[dateK] = k; renderToday(); save(); }; m.appendChild(x); });
+  q.appendChild(m);
+  const c = S.wx[dateK]; if(c && WX[c].d.length){ const n = document.createElement("div"); n.className = "kfb"; n.textContent = "Nhớ cho vào cặp: " + WX[c].d.join(", ") + "."; q.appendChild(n); }
+  return q;
+}
+function renderToday(){
+  const w = $("todayWrap"); if(!w) return; w.innerHTML = "";
+  const d = todayKey(), L = todayLog();
+  const blocks = (S.plan.ngoai_le[d] ? S.plan.ngoai_le[d].khoi : (S.plan.ngay[d] || [])).filter(b => b.trang_thai !== "huy");
+  const top = document.createElement("div"); top.className = "card kid";
+  const checkable = blocks.filter(b => kindOf(b.xac_nhan) !== "khong");
+  const done = checkable.filter(b => L.k[blockKey(b)] && L.k[blockKey(b)].xong).length;
+  top.innerHTML = "<h2>Chào con! Hôm nay " + DAY_NAME[d] + "</h2>" + (checkable.length ? '<div class="prog"><i style="width:' + Math.round(done / checkable.length * 100) + '%"></i></div><div class="muted">Đã xong ' + done + "/" + checkable.length + " việc</div>" : '<div class="muted">Hôm nay chưa có lịch. Nhờ bố mẹ lập lịch với Pal nhé.</div>');
+  const hb = document.createElement("div"); hb.className = "kbtns"; hb.style.marginTop = "8px";
+  const hx = document.createElement("button"); hx.textContent = "🍎 Con thấy đói";
+  hx.onclick = () => {
+    const now = pad(new Date().getHours()) + ":" + pad(new Date().getMinutes()), nm0 = nowMin();
+    L.doi = L.doi || []; L.doi.push(now);
+    const meals = blocks.filter(b => /(ăn|bữa)/i.test(b.khoi + " " + (b.viec || []).join(" ")));
+    const prev = meals.filter(b => toMin(b.bat_dau) <= nm0).pop(), next = meals.find(b => toMin(b.bat_dau) > nm0);
+    if(L.doi.length === 1){ S.proposals = S.proposals || []; S.proposals.push({text: "Con báo đói lúc " + now + (prev ? " (lần ăn gần nhất trong lịch: " + prev.khoi + " " + prev.bat_dau + ")" : "") + (next ? ", bữa tiếp theo: " + next.khoi + " " + next.bat_dau : ""), ngay: todayStr(), tu: "con", loai: "doi"}); }
+    save(); renderToday();
+    toast(next && toMin(next.bat_dau) - nm0 <= 45 ? "Sắp đến " + next.khoi.toLowerCase() + " rồi, con uống nước và chờ chút nhé." : "Pal đã báo bố mẹ. Con uống nước trước nhé.", 4500);
+  };
+  hb.appendChild(hx); top.appendChild(hb);
+  w.appendChild(top);
+  const nm = nowMin();
+  blocks.forEach(b => {
+    const s = toMin(b.bat_dau), e = toMin(b.ket_thuc) ?? s, K = blockKey(b), lg = L.k[K] || {}, kind = kindOf(b.xac_nhan);
+    const el = document.createElement("div"); el.className = "kblk" + (s !== null && nm >= s && nm < Math.max(e, s + 1) ? " now" : "") + (lg.xong ? " done" : "");
+    el.innerHTML = '<div class="t">' + esc(b.bat_dau || "") + (b.ket_thuc && b.ket_thuc !== b.bat_dau ? "–" + esc(b.ket_thuc) : "") + (el.classList.contains("now") ? '<span class="nowtag">Bây giờ</span>' : "") + '</div><div class="k">' + esc(b.khoi) + (lg.xong ? " ✓" : "") + "</div>" + (b.viec && b.viec.length ? "<ul>" + b.viec.map(v => "<li>" + esc(v) + "</li>").join("") + "</ul>" : "");
+    const bt = document.createElement("div"); bt.className = "kbtns";
+    const mk = (t, f, cls) => { const x = document.createElement("button"); x.textContent = t; if(cls) x.className = cls; x.onclick = f; bt.appendChild(x); };
+    const markDone = (extra) => { L.k[K] = Object.assign({}, L.k[K] || {}, {xong: pad(new Date().getHours()) + ":" + pad(new Date().getMinutes())}, extra || {}); renderToday(); save(); };
+    if(lg.xong){ mk("Hoàn tác", () => { delete L.k[K]; renderToday(); save(); }); }
+    else if(kind === "bam") mk("✓ Xong", () => markDone(), "ok");
+    else if(kind === "anh"){ mk("📷 Chụp gửi Pal", () => { kidTarget = b; $("kidFile").click(); }, "ok"); mk("✓ Xong", () => markDone()); }
+    else if(kind === "noi"){ mk("🎤 Kể cho Pal", () => { navChat(); $("input").value = "Con kể: "; $("input").focus(); markDone(); }, "ok"); }
+    else if(kind === "tu"){ const st = document.createElement("span"); st.className = "st"; st.textContent = "Tự ghi nhận"; bt.appendChild(st); mk("✓ Xong", () => markDone()); }
+    else if(kind === "bm"){ const st = document.createElement("span"); st.className = "st"; st.textContent = "Chờ bố mẹ xác nhận"; bt.appendChild(st); }
+    if(/soạn cặp|chuẩn bị cặp/i.test(b.khoi + " " + (b.viec || []).join(" "))) el.appendChild(wxBox(dateAdd(s !== null && s >= 720 ? 1 : 0), s !== null && s >= 720 ? "Ngày mai trời thế nào? (xem dự báo cùng bố mẹ)" : "Hôm nay trời thế nào?"));
+    if(s !== null && s < 720 && /(thay đồ|chuẩn bị đi học|đi học)/i.test(b.khoi) && S.wx && S.wx[todayStr()] && WX[S.wx[todayStr()]].d.length && !/soạn cặp/i.test(b.khoi)){ const n = document.createElement("div"); n.className = "kfb"; n.textContent = WX[S.wx[todayStr()]].n + " hôm nay: nhớ mang " + WX[S.wx[todayStr()]].d.join(", ").toLowerCase() + "."; el.appendChild(n); }
+    if(/hỏi thăm|ghi lại việc|việc được giao/i.test(b.khoi)){
+      const q = document.createElement("div"); q.innerHTML = '<div style="margin-top:8px;font-size:15px">Hôm nay con thấy thế nào?</div>';
+      const m = document.createElement("div"); m.className = "mood";
+      ["Ổn","Hơi mệt","Rất mệt"].forEach(o => { const x = document.createElement("button"); x.textContent = o; if(L.met === o) x.className = "sel"; x.onclick = () => { L.met = o; renderToday(); save(); }; m.appendChild(x); });
+      q.appendChild(m);
+      if(L.met === "Rất mệt"){ const n = document.createElement("div"); n.className = "kfb"; n.textContent = "Hôm nay con nghỉ thêm một chút nhé. Tối nay mình chỉ làm phần cô giao thôi."; q.appendChild(n); }
+      el.appendChild(q);
+    }
+    if(kind !== "khong" || bt.children.length) el.appendChild(bt);
+    if(lg.loi_cho_con){ const f = document.createElement("div"); f.className = "kfb"; f.textContent = lg.loi_cho_con; el.appendChild(f); }
+    w.appendChild(el);
+  });
+  // quỹ thời gian (chỉ xem) + đề xuất
+  const qc = document.createElement("div"); qc.className = "card";
+  const B = getBudget();
+  const vOf = g => g.mode === "input" ? hm(B.wd[g.k]) : g.mode === "rest" ? hmR(restRange("wd")) : (rangeOf("wd", fixedDay, g.k) ? hmR(rangeOf("wd", fixedDay, g.k)) : "—");
+  qc.innerHTML = "<h2>Thời gian của con mỗi ngày đi học</h2>" + '<div class="prof">' + GROUPS.map(g => "<b>" + esc(g.n.replace("↳ trong đó: ", "").replace(" (tối đa)", "")) + "</b><span>" + vOf(g) + "</span>").join("") + "</div>";
+  const pr = document.createElement("div"); pr.className = "prow";
+  const pb = document.createElement("button"); pb.textContent = "💬 Con muốn đề xuất"; pb.onclick = () => {
+    const box = document.createElement("div"); box.className = "composer"; box.style.marginTop = "8px"; box.style.borderRadius = "12px";
+    const ta = document.createElement("textarea"); ta.rows = 2; ta.placeholder = "Ví dụ: con muốn thêm giờ chơi thứ Ba";
+    const ok = document.createElement("button"); ok.id = "x"; ok.textContent = "Gửi bố mẹ"; ok.style.background = "var(--accent)"; ok.style.color = "#fff";
+    ok.onclick = () => { const t = ta.value.trim(); if(!t) return; S.proposals = S.proposals || []; S.proposals.push({text: t, ngay: todayStr(), tu: "con"}); save(); qc.removeChild(box); toast("Đã gửi đề xuất cho bố mẹ ở màn Lên kế hoạch."); };
+    box.appendChild(ta); box.appendChild(ok); qc.appendChild(box); ta.focus();
+  };
+  pr.appendChild(pb); qc.appendChild(pr); w.appendChild(qc);
+}
+$("kidFile").onchange = async () => {
+  const f = ($("kidFile").files || [])[0]; $("kidFile").value = ""; if(!f || !kidTarget) return;
+  const b = kidTarget, K = blockKey(b), L = todayLog();
+  if(!sample) sample = await claude.use("sample").catch(() => null);
+  if(!sample){ toast("Chưa gọi được Pal."); return; }
+  let img; try{ img = await shrink(f); }catch(e){ toast("Không đọc được ảnh."); return; }
+  L.k[K] = Object.assign({}, L.k[K] || {}, {loi_cho_con: "Pal đang xem bài của con…"}); renderToday();
+  const P = S.profile || {};
+  const prompt = `Bạn là Pal, bạn đồng hành của một bạn nhỏ (${P.tuoi_lop || "học sinh tiểu học"}). Bạn ấy vừa chụp gửi bài làm cho việc "${b.khoi}". Hãy kiểm tra bài trong ảnh.
+Trả lời CHỈ bằng JSON: {"loi_cho_con":"...","tom_tat_bo_me":"...","dung":số bài đúng,"tong":tổng số bài}
+- loi_cho_con: nói với bạn nhỏ, xưng "mình", gọi "con"; tối đa 5 dòng, mỗi dòng bắt đầu bằng "- ", câu ngắn, thân thiện. Khen một điều cụ thể. Bài sai: chỉ ra sai ở bước nào và gợi ý bằng một câu hỏi để con tự sửa; TUYỆT ĐỐI không viết đáp án đúng. Thiếu đơn vị hay ô trống thì nhắc nhẹ. Không chê chữ trừ khi thật khó đọc. Không dùng từ "ẩu", "lười", "kém".
+- tom_tat_bo_me: một dòng cho bố mẹ, ví dụ "Toán tr.59: 5/5 đúng; thiếu đơn vị cm".
+- Tự tính lại từng phép tính trước khi kết luận. Chỗ nào ảnh mờ, ghi là chưa đọc rõ, không đoán.`;
+  try{
+    let ok = false; try{ ok = !!(await sample.limits()).images; }catch(e){}
+    if(!ok){ L.k[K].loi_cho_con = "Trang chưa được phép gửi ảnh cho Pal."; renderToday(); return; }
+    const r = await sample.json([{role:"user", content: prompt}], {modelTier:"default", cache:false, images:[img.blob]});
+    L.k[K] = Object.assign({}, L.k[K], {loi_cho_con: String(r.loi_cho_con || "Pal đã xem bài của con."), tom_tat: String(r.tom_tat_bo_me || ""), xong: pad(new Date().getHours()) + ":" + pad(new Date().getMinutes())});
+    S.totals = S.totals || {calls:0, inTok:0, outTok:0}; S.totals.calls++; S.totals.inTok += Math.round(prompt.length / 2.5 + 1600); S.totals.outTok += Math.round(JSON.stringify(r).length / 2.5);
+  }catch(e){ L.k[K].loi_cho_con = "Pal chưa xem được bài [mã lỗi: " + ((e && e.code) || "loi_khac") + "]. Con thử chụp lại nhé."; }
+  renderToday(); renderTotals(); save();
+};
+
+/* ---------- send ---------- */
+function stateForPrompt(){
+  const G = S.plan.giai_doan ? Object.assign({}, S.plan.giai_doan) : null; if(G) delete G.lich_goc;
+  const p = {quy_thoi_gian: budgetForPrompt(), hom_nay: todayStr() + " (" + DAY_NAME[DAYS[(new Date().getDay() + 6) % 7]] + ")", ho_so: S.profile, tong_quan: S.plan.tong_quan, lich_mau: S.plan.ngay, ngoai_le_tuan_nay: S.plan.ngoai_le, giai_doan: G, hoat_dong: S.activities || [], hoat_dong_doi_chua_xep: !!S.actDirty, thoi_tiet_bao: wxForPrompt(), con_bao_doi: hungerForPrompt(), canh_bao_app_dang_thay: allWarnings()};
+  return JSON.stringify(p);
+}
+function historyText(){
+  return S.messages.slice(-14).map(m => (m.role === "user" ? "Phụ huynh: " : "Pal: ") + m.content).join("\n");
+}
+async function send(text, shown){
+  text = (text || "").trim();
+  const imgs = pending.slice();
+  if(!text && imgs.length) text = "Mình gửi ảnh, Pal xem giúp nhé.";
+  if(!text || busy) return;
+  if(!sample){ sample = await claude.use("sample").catch(() => null); }
+  if(!sample){ toast("Chưa gọi được AI. Hãy mở trang trên claude.ai khi đã đăng nhập.", 5000); return; }
+  unlockTTS();
+  busy = true; $("sendBtn").disabled = true; $("input").value = ""; autoGrow();
+  bubble("user", shown && shown !== text ? shown : text, imgs.map(x => x.url));
+  pending = []; renderPreview();
+  S.messages.push({role:"user", content: text + (imgs.length ? " [kèm " + imgs.length + " ảnh]" : "")});
+  const out = bubble("pal", "Pal đang nghĩ…");
+  clearedThisTurn = false; S.actNew = [];
+  const prompt = RULES + "\n" + ACT_RULES + "\n" + LIFE_RULES + "\n" + OUTPUT_FORMAT + "\n\nTRẠNG THÁI HIỆN TẠI (JSON): " + stateForPrompt() + "\n\nHỘI THOẠI GẦN ĐÂY:\n" + historyText() + "\n\nHãy trả lời tin nhắn cuối cùng của phụ huynh, CHỈ bằng một đối tượng JSON đúng định dạng trên.";
+  let finalText = "";
+  let warnText = "";
+  const t0 = Date.now(); let nTools = 0, toolInChars = 0, toolResChars = 0, sentImgs = 0, tierApplied = "", rawLen = 0;
+  const T = n => TOOLS.find(t => t.name === n);
+  try{
+    const opts = {modelTier: "default", cache: false};
+    if(imgs.length){
+      let ok = false; try{ ok = !!(await sample.limits()).images; }catch(e){}
+      if(ok){ opts.images = imgs.map(x => x.blob); sentImgs = imgs.length; }
+      else toast("Trang chưa được phép gửi ảnh cho Pal, chỉ gửi phần chữ.", 4000);
+    }
+    const t1 = Date.now();
+    opts.onText = ({text}) => {
+      rawLen = text.length;
+      const m = text.match(/"tra_loi"\s*:\s*"((?:[^"\\]|\\.)*)/);
+      const said = m ? m[1].replace(/\\n/g, "\n").replace(/\\"/g, '"') : "";
+      out.textContent = (said || "Pal đang trả lời…") + (rawLen > 600 ? "\n\n(Pal đang viết lịch… " + Math.round(rawLen / 1000) + "k ký tự, " + Math.round((Date.now() - t1) / 1000) + " giây)" : "");
+      $("msgs").scrollTop = $("msgs").scrollHeight;
+    };
+    const fullPrompt = prompt + (opts.images ? "\n\nPhụ huynh gửi kèm " + imgs.length + " ảnh (thời khóa biểu, sổ việc, bài làm…). Đọc kỹ nội dung ảnh; nếu chữ mờ hoặc không chắc thì nói rõ phần không đọc được." : "");
+    const r = await sample.json([{role:"user", content: fullPrompt}], opts);
+    if(!r || typeof r !== "object") throw {code: "invalid_json", message: "Pal không trả về đúng định dạng"};
+    // áp vào trạng thái
+    if(r.ho_so && typeof r.ho_so === "object" && Object.keys(r.ho_so).length){ nTools++; await T("luu_ho_so").execute({ho_so: r.ho_so}); }
+    if(r.giai_doan && typeof r.giai_doan === "object"){ nTools++; applyPeriod(r.giai_doan); }
+    if(Array.isArray(r.hoat_dong) && r.hoat_dong.length){ nTools += applyActs(r.hoat_dong); }
+    if(r.tong_quan && typeof r.tong_quan === "object"){ nTools++; await T("cap_nhat_tong_quan").execute(r.tong_quan); }
+    const days = (S.plan.giai_doan && S.plan.giai_doan.trang_thai === "cho_xac_nhan" && r.giai_doan && r.giai_doan.hanh_dong === "tao") ? [] : (Array.isArray(r.ngay) ? r.ngay : []);
+    for(const d of days){ if(d && DAYS.includes(d.ngay)){ nTools++; await T("cap_nhat_ngay").execute({ngay: d.ngay, pham_vi: d.pham_vi === "chi_tuan_nay" ? "chi_tuan_nay" : "mau_tuan", ly_do: d.ly_do || "", khoi: Array.isArray(d.khoi) ? d.khoi : []}); } }
+    for(const d of (Array.isArray(r.xoa_ngoai_le) ? r.xoa_ngoai_le : [])){ if(DAYS.includes(d)){ nTools++; await T("xoa_ngoai_le").execute({ngay: d}); } }
+    if(days.length) S.actDirty = false;
+    toolInChars = rawLen;
+    // cảnh báo: của Pal + của app cho các ngày vừa đổi
+    const touched = days.map(d => d && d.ngay).filter(d => DAYS.includes(d));
+    const appW = []; touched.forEach(d => checkDayK(d).filter(x => ["ngu","phuc_hoi","cao_lien","an_xa"].includes(x.k)).forEach(x => appW.push(DAY_NAME[d] + ": " + x.t)));
+    const palW = (Array.isArray(r.canh_bao) ? r.canh_bao : []).map(String).filter(x => x.trim());
+    warnText = palW.concat(appW.filter(x => !palW.some(p => p.includes(x.slice(0, 20))))).slice(0, 5).join("\n");
+    finalText = String(r.tra_loi || "").trim() || (days.length ? "Mình đã cập nhật lịch, bạn mở tab Lịch tuần để xem nhé." : "Mình đã ghi nhận.");
+    out.textContent = finalText;
+    if(warnText){ const cb = document.createElement("div"); cb.className = "cb"; cb.textContent = "⚠️ Lưu ý cân bằng:\n" + warnText; out.parentNode.insertBefore(cb, out.nextSibling); }
+  }catch(e){
+    finalText = "";
+    const code = (e && e.code) || "loi_khac";
+    const msg = {
+      rate_limited: "Pal đang bận hoặc bạn đã dùng hết lượt, thử lại sau ít phút nhé.",
+      not_granted: "Bạn chưa cho phép trang gọi Claude.",
+      session_expired: "Phiên đăng nhập hết hạn, hãy đăng nhập lại claude.ai.",
+      prompt_too_large: "Hội thoại quá dài. Bấm ↺ Làm lại (giữ hồ sơ) rồi thử lại.",
+      invalid_json: "Pal trả lời sai định dạng (có thể do lịch quá dài).",
+      image_rejected: "Ảnh không dùng được, hãy chọn ảnh khác.",
+      refused: "Pal không trả lời được yêu cầu này.",
+      upstream_error: "Kết nối tới Claude bị gián đoạn."
+    }[code] || "Có lỗi khi gọi Pal.";
+    out.textContent = msg + "\n[mã lỗi: " + code + (e && e.message ? " – " + e.message : "") + "]";
+    const rb = document.createElement("button"); rb.textContent = "↻ Thử lại"; rb.className = "chip"; rb.style.marginTop = "8px";
+    rb.onclick = () => { rb.remove(); send(text, shown); };
+    out.parentNode.insertBefore(rb, out.nextSibling);
+    lastFailed = true;
+  }
+  // Ước tính token: không có số liệu thật từ nền tảng, nên đếm ký tự rồi chia cho TOK.
+  const TOK = 2.5, IMG_TOK = 1600;
+  const rounds = 1;
+  const promptChars = prompt.length + 500; // + khung của nền tảng (ước lượng)
+  const inTok = Math.round(promptChars / TOK + sentImgs * IMG_TOK);
+  const outTok = Math.round((rawLen || (finalText || "").length) / TOK);
+  const usage = {inTok, outTok, rounds, tools: nTools, imgs: sentImgs, secs: Math.round((Date.now() - t0) / 1000), tier: tierApplied, promptChars: prompt.length};
+  if(out._usage) out._usage.textContent = usageLine(usage);
+  S.totals = S.totals || {calls:0, inTok:0, outTok:0}; S.totals.calls++; S.totals.inTok += inTok; S.totals.outTok += outTok;
+  if(finalText){ S.messages.push({role:"assistant", content: finalText + (warnText ? "\n[Cảnh báo cân bằng: " + warnText.replace(/\n/g, "; ") + "]" : ""), usage, warn: warnText}); if(S.messages.length > 40) S.messages = S.messages.slice(-40); speak(finalText); }
+  else S.messages.pop();
+  busy = false; $("sendBtn").disabled = false;
+  renderChips(); renderDot(); renderPlan(); renderTotals(); try{ renderActs(); renderBudget(); }catch(e){} save();
+  if(DAYS.some(d => (S.changed[d] && S.changed[d].length) || S.removed[d])) toast("Đã cập nhật kế hoạch. Dòng đỏ là phần vừa đổi.");
+  else if(clearedThisTurn) toast("Đã lưu kế hoạch. Mở tab Lịch tuần để xem.");
+}
+$("sendBtn").onclick = () => send($("input").value);
+$("input").addEventListener("keydown", e => { if(e.key === "Enter" && !e.shiftKey && !e.isComposing && window.matchMedia("(pointer:fine)").matches){ e.preventDefault(); send($("input").value); } });
+function autoGrow(){ const t = $("input"); t.style.height = "auto"; t.style.height = Math.min(140, t.scrollHeight) + "px"; }
+$("input").addEventListener("input", autoGrow);
+
+/* ---------- voice out ---------- */
+let ttsOn = false; try{ ttsOn = localStorage.getItem("pal-tts") === "1"; }catch(e){}
+function setTTSBtn(){ $("ttsBtn").classList.toggle("on", ttsOn); $("ttsBtn").textContent = ttsOn ? "🔊 Đọc to" : "🔈 Đọc to"; }
+setTTSBtn();
+$("ttsBtn").onclick = () => { ttsOn = !ttsOn; try{ localStorage.setItem("pal-tts", ttsOn ? "1" : "0"); }catch(e){} setTTSBtn(); unlockTTS(); toast(ttsOn ? "Pal sẽ đọc to câu trả lời." : "Đã tắt đọc to."); };
+let unlocked = false;
+function unlockTTS(){ if(unlocked || !("speechSynthesis" in window)) return; try{ const u = new SpeechSynthesisUtterance(" "); u.volume = 0; speechSynthesis.speak(u); unlocked = true; }catch(e){} }
+function viVoice(){ try{ const vs = speechSynthesis.getVoices(); return vs.find(v => /^vi/i.test(v.lang)) || null; }catch(e){ return null; } }
+function speak(text, force){
+  if(!(ttsOn || force) || !("speechSynthesis" in window)) return;
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text); u.lang = "vi-VN"; const v = viVoice(); if(v) u.voice = v; u.rate = 1;
+    speechSynthesis.speak(u);
+    if(!v && !speak._warned){ speak._warned = true; toast("Máy chưa có giọng đọc tiếng Việt; vào Cài đặt > Trợ năng > Nội dung được đọc để thêm giọng.", 5000); }
+  }catch(e){}
+}
+try{ speechSynthesis.onvoiceschanged = () => {}; speechSynthesis.getVoices(); }catch(e){}
+
+/* ---------- voice in ---------- */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null, recOn = false, micBlocked = false;
+$("micBtn").onclick = () => {
+  if(micBlocked || !SR){ $("input").focus(); toast("Bấm biểu tượng 🎤 trên bàn phím điện thoại để nói tiếng Việt.", 4500); return; }
+  if(recOn){ try{ rec.stop(); }catch(e){} return; }
+  try{
+    rec = new SR(); rec.lang = "vi-VN"; rec.interimResults = true; rec.continuous = false;
+    let finalT = "";
+    rec.onresult = ev => { let t = ""; for(const r of ev.results){ t += r[0].transcript; if(r.isFinal) finalT = t; } $("input").value = t; autoGrow(); };
+    rec.onerror = ev => { recOn = false; $("micBtn").classList.remove("rec"); if(ev.error === "not-allowed" || ev.error === "service-not-allowed" || ev.error === "audio-capture"){ micBlocked = true; $("input").focus(); toast("Trang này không được dùng micro trực tiếp. Hãy bấm 🎤 trên bàn phím điện thoại để nói.", 5000); } };
+    rec.onend = () => { recOn = false; $("micBtn").classList.remove("rec"); const t = $("input").value.trim(); if(finalT && t) send(t); };
+    rec.start(); recOn = true; $("micBtn").classList.add("rec");
+  }catch(e){ micBlocked = true; $("input").focus(); toast("Bấm biểu tượng 🎤 trên bàn phím điện thoại để nói tiếng Việt.", 4500); }
+};
+
+/* ---------- images ---------- */
+let pending = [];
+$("attBtn").onclick = () => $("fileIn").click();
+$("fileIn").onchange = async () => {
+  const files = Array.from($("fileIn").files || []).slice(0, 4 - pending.length);
+  for(const f of files){ try{ pending.push(await shrink(f)); }catch(e){ toast("Không đọc được ảnh này."); } }
+  $("fileIn").value = ""; renderPreview();
+};
+function shrink(file){
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file); const im = new Image();
+    im.onload = () => {
+      const max = 1600, k = Math.min(1, max / Math.max(im.width, im.height));
+      const c = document.createElement("canvas"); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+      c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      c.toBlob(b => b ? res({blob: b, url: URL.createObjectURL(b)}) : rej(), "image/jpeg", 0.85);
+    };
+    im.onerror = () => { URL.revokeObjectURL(url); rej(); };
+    im.src = url;
+  });
+}
+function renderPreview(){
+  const p = $("preview"); p.innerHTML = ""; p.style.display = pending.length ? "flex" : "none";
+  pending.forEach((x, i) => { const d = document.createElement("div"); d.className = "th"; d.innerHTML = '<img src="' + x.url + '">'; const b = document.createElement("button"); b.textContent = "✕"; b.onclick = () => { pending.splice(i, 1); renderPreview(); }; d.appendChild(b); p.appendChild(d); });
+}
+
+/* ---------- reset ---------- */
+$("resetBtn").onclick = () => { if(busy){ toast("Đợi Pal trả lời xong rồi làm lại nhé."); return; } $("dlgText").textContent = "Chọn phần muốn xóa. Bộ đếm token cũng về 0."; $("dlg").style.display = "flex"; };
+$("dlgNo").onclick = () => $("dlg").style.display = "none";
+function doReset(keepProfile, keepChat){
+  const prof = S.profile, msgs = S.messages, bud = S.budget, pre = S.presets, pa = S.presetActive;
+  const acts = S.activities;
+  S = blank(); if(keepProfile){ S.profile = prof; S.budget = bud; S.presets = pre; S.presetActive = pa; S.activities = acts || []; } if(keepChat) S.messages = msgs;
+  curDay = "T2"; showTemplate = false; pending = []; renderPreview();
+  $("dlg").style.display = "none"; try{ speechSynthesis.cancel(); }catch(e){}
+  renderAll(); save(); toast(keepProfile ? "Đã làm lại, vẫn giữ hồ sơ của con." : "Đã xóa hết, bắt đầu từ đầu.");
+}
+$("dlgYes").onclick = () => doReset(false, false);
+$("dlgKeep").onclick = () => doReset(true, false);
+$("dlgPlan").onclick = () => doReset(true, true);
+
+loadLocal(); checkPeriodExpiry(); renderAll(); initCaps();
+})();
+</script>
+</body>
+</html>
