@@ -1,0 +1,8 @@
+# Nút 2: đặt vùng. Quyền vị trí nền cấp bằng adb trước. Vào/ra vùng thật xem mục "test sau".
+appId: vn.parentpal.app
+---
+- launchApp
+- tapOn: "2. Vùng GPS"
+- extendedWaitUntil:
+    visible: "Đã đặt vùng bán kính 100 m.*"
+    timeout: 30000

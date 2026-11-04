@@ -1,0 +1,15 @@
+# Nút 1: hẹn nhắc 60 giây, đợi thông báo, mở lại app, kiểm nhật ký có giờ tới.
+# Quyền thông báo đã được cấp bằng adb trước khi chạy (scripts/test-loop.ps1).
+appId: vn.parentpal.app
+---
+- launchApp
+- tapOn: "1. Nhắc giờ"
+- assertVisible: "Đã hẹn nhắc sau 60 giây.*"
+- pressKey: home
+- extendedWaitUntil:
+    visible: "Thử nhắc giờ"
+    timeout: 120000
+    optional: true
+- launchApp
+- assertVisible: "Nhắc giờ đã tới"
+- assertVisible: '.*lệch [+].*'

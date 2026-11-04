@@ -53,7 +53,7 @@ export async function testReminder(): Promise<string> {
       channelId: 'lab',
     },
   });
-  await logEvent({ kind: 'nhac', label: `Đã hẹn nhắc sau ${REMINDER_DELAY_S} giây`, scheduledAt });
+  await logEvent({ kind: 'nhac', label: `Đã hẹn nhắc lúc ${new Date(scheduledAt).toTimeString().slice(0, 8)} (sau ${REMINDER_DELAY_S} giây)` });
   return `Đã hẹn nhắc sau ${REMINDER_DELAY_S} giây. Khóa máy để thử.`;
 }
 
@@ -82,7 +82,9 @@ export async function testGeofence(): Promise<string> {
       return 'Cần "Luôn cho phép" vị trí: mở cài đặt app, Quyền, Vị trí, chọn "Luôn cho phép" và bật "Dùng vị trí chính xác", rồi bấm lại nút này.';
     }
     step = 'lấy vị trí';
-    const pos = await Location.getCurrentPositionAsync({});
+    const pos =
+      (await Location.getLastKnownPositionAsync()) ??
+      (await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }));
     step = 'đặt vùng';
     await Location.startGeofencingAsync(GEOFENCE_TASK, [
       {
@@ -138,7 +140,6 @@ export async function testPush(): Promise<string> {
   await logEvent({
     kind: 'day',
     label: res.ok ? 'Đã gửi yêu cầu đẩy' : `Gửi đẩy lỗi HTTP ${res.status}`,
-    scheduledAt,
   });
   return res.ok ? 'Đã gửi. Chờ thông báo về.' : `Gửi đẩy lỗi HTTP ${res.status}.`;
 }

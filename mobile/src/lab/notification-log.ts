@@ -1,3 +1,4 @@
+import { AppState } from 'react-native';
 import * as Notifications from 'expo-notifications';
 
 import { logEvent } from './log';
@@ -43,6 +44,10 @@ export function startNotificationLogging(onChange: () => void): () => void {
     onChange();
   };
   void sync();
+  // Quay lại app (không mở mới): đọc lại khay để ghi thông báo đã tới trong lúc app ở nền.
+  const appState = AppState.addEventListener('change', (s) => {
+    if (s === 'active') void sync();
+  });
 
   // Đang mở app: giờ nhận gần đúng giờ tới.
   const received = Notifications.addNotificationReceivedListener((n) => {
@@ -63,6 +68,7 @@ export function startNotificationLogging(onChange: () => void): () => void {
     })();
   });
   return () => {
+    appState.remove();
     received.remove();
     response.remove();
   };
