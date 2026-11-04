@@ -1,0 +1,21 @@
+# Pal thật qua cầu nối máy dev (cần chạy scripts/pal-bridge.mjs và đã đăng nhập claude). Emulator gọi 10.0.2.2:8787.
+appId: vn.parentpal.app
+---
+- launchApp:
+    clearState: true
+- scrollUntilVisible:
+    element: "Cầu nối máy dev"
+- tapOn: "Cầu nối máy dev"
+- scrollUntilVisible:
+    element: "Dùng ví dụ học sinh lớp 3"
+- tapOn: "Dùng ví dụ học sinh lớp 3"
+- extendedWaitUntil:
+    visible: "Pal đang nghĩ.*"
+    timeout: 10000
+- extendedWaitUntil:
+    notVisible: "Pal đang nghĩ.*"
+    timeout: 300000
+- takeScreenshot: pal-that-tra-loi
+- tapOn: "Lịch tuần"
+- assertVisible: ".*lớp 3.*"
+- takeScreenshot: pal-that-lich-tuan
