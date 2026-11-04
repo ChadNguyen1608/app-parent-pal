@@ -66,25 +66,39 @@ export async function testGeofence(): Promise<string> {
   }
   const fg = await Location.requestForegroundPermissionsAsync();
   if (!fg.granted) {
-    await logEvent({ kind: 'gps', label: 'Chưa được cấp quyền vị trí' });
-    return 'Chưa được cấp quyền vị trí.';
+    await logEvent({
+      kind: 'gps',
+      label: `Quyền vị trí bị từ chối (${fg.status}, hỏi lại được: ${fg.canAskAgain})`,
+    });
+    return 'Chưa được cấp quyền vị trí. Mở cài đặt app, chọn Quyền, Vị trí.';
   }
-  const bg = await Location.requestBackgroundPermissionsAsync();
-  if (!bg.granted) {
-    await logEvent({ kind: 'gps', label: 'Chưa chọn "Luôn cho phép" vị trí' });
-    return 'Cần chọn "Luôn cho phép" vị trí trong phần cài đặt của app.';
+  // Android 11+: không có hộp thoại "Luôn cho phép"; hệ thống đưa người dùng sang màn cài đặt.
+  let step = 'xin quyền nền';
+  try {
+    let bg = await Location.getBackgroundPermissionsAsync();
+    if (!bg.granted) bg = await Location.requestBackgroundPermissionsAsync();
+    if (!bg.granted) {
+      await logEvent({ kind: 'gps', label: `Chưa có "Luôn cho phép" vị trí (${bg.status})` });
+      return 'Cần "Luôn cho phép" vị trí: mở cài đặt app, Quyền, Vị trí, chọn "Luôn cho phép" và bật "Dùng vị trí chính xác", rồi bấm lại nút này.';
+    }
+    step = 'lấy vị trí';
+    const pos = await Location.getCurrentPositionAsync({});
+    step = 'đặt vùng';
+    await Location.startGeofencingAsync(GEOFENCE_TASK, [
+      {
+        identifier: 'lab-here',
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+        radius: GEOFENCE_RADIUS_M,
+        notifyOnEnter: true,
+        notifyOnExit: true,
+      },
+    ]);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    await logEvent({ kind: 'gps', label: `Lỗi khi ${step}: ${msg.slice(0, 160)}` });
+    return `Lỗi khi ${step}: ${msg.slice(0, 120)}`;
   }
-  const pos = await Location.getCurrentPositionAsync({});
-  await Location.startGeofencingAsync(GEOFENCE_TASK, [
-    {
-      identifier: 'lab-here',
-      latitude: pos.coords.latitude,
-      longitude: pos.coords.longitude,
-      radius: GEOFENCE_RADIUS_M,
-      notifyOnEnter: true,
-      notifyOnExit: true,
-    },
-  ]);
   await logEvent({ kind: 'gps', label: `Đã đặt vùng thử bán kính ${GEOFENCE_RADIUS_M} m` });
   return `Đã đặt vùng bán kính ${GEOFENCE_RADIUS_M} m. Đi ra xa rồi quay lại để thử.`;
 }
