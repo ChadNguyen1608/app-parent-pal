@@ -5,6 +5,7 @@ import mau from '@/pal/fixtures/lich-mau.json';
 import { blank, usePal, type AppState } from '@/pal/store';
 import { ActivitiesCard } from './ActivitiesCard';
 import { BudgetCard } from './BudgetCard';
+import { ChatCard } from './ChatCard';
 import { Btn, C, Card, H2, Muted, Row } from './kit';
 
 type Mau = Pick<AppState, 'profile' | 'plan' | 'budget' | 'activities'>;
@@ -49,9 +50,10 @@ export function KeHoachScreen() {
             ))}
           </Card>
         )}
+        <ChatCard />
         <Card>
-          <H2>💬 Trò chuyện với Pal</H2>
-          <Muted>Pal chưa được nối vào app ở bước này (cần máy chủ Supabase và khóa Claude, sẽ làm khi chủ sản phẩm cho phép). Trong lúc đó bạn nạp lịch mẫu để thử các tab Lịch tuần, Của con và quỹ giờ.</Muted>
+          <H2>Dữ liệu thử</H2>
+          <Muted>Nạp lịch mẫu để thử các tab khi không muốn trò chuyện.</Muted>
           <Row style={{ marginTop: 10 }}>
             {SAMPLES.map((x) => <Btn key={x.key} small label={x.label} onPress={() => loadSample(x.key)} />)}
           </Row>

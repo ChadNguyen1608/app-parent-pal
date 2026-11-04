@@ -1,42 +1,12 @@
 import * as SQLite from 'expo-sqlite';
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 
-import type { Activity, Block, Budget, Day, PalState, Plan } from './types.ts';
+import type { Block, Day } from './types.ts';
 
-export type DayLog = { k: Record<string, { xong?: string; loi_cho_con?: string; tom_tat?: string }>; met: string; doi?: string[] };
-export type Proposal = { text: string; ngay: string; tu: 'con'; loai?: 'doi'; xong?: boolean };
+import { blank, type AppState } from './appstate.ts';
 
-/** Toàn bộ dữ liệu app. Phần đầu là PalState mà bộ kiểm tra đọc. */
-export type AppState = PalState & {
-  presets: Record<string, Budget>;
-  presetActive: string;
-  budgetOk?: Record<string, boolean>;
-  log: Record<string, DayLog>;
-  wx: Record<string, string>;
-  proposals: Proposal[];
-  actNew: string[];
-  actDirty: boolean;
-  changed: Partial<Record<Day, number[]>>;
-  removed: Partial<Record<Day, number>>;
-  v: 1;
-};
-
-export const blank = (): AppState => ({
-  profile: {},
-  plan: { tong_quan: null, ngay: {}, ngoai_le: {} } as Plan,
-  budget: null,
-  activities: [] as Activity[],
-  presets: {},
-  presetActive: '',
-  log: {},
-  wx: {},
-  proposals: [],
-  actNew: [],
-  actDirty: false,
-  changed: {},
-  removed: {},
-  v: 1,
-});
+export { blank };
+export type { AppState, DayLog, Proposal, ChatMsg } from './appstate.ts';
 
 const db = SQLite.openDatabaseSync('lab.db');
 db.execSync('CREATE TABLE IF NOT EXISTS app_state (k TEXT PRIMARY KEY, v TEXT NOT NULL)');
