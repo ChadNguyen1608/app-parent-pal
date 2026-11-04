@@ -9,7 +9,8 @@ appId: vn.parentpal.app
 - scrollUntilVisible:
     element: "Mình đã ghi hồ sơ và lập lịch.*"
 - scrollUntilVisible:
-    element: "Tiếng Anh"
+    direction: UP
+    element: "Tiếng Anh.*"
 - tapOn: "Lịch tuần"
 - assertVisible: "8 tuổi, lớp 3"
 - tapOn: "T2"
@@ -23,4 +24,4 @@ appId: vn.parentpal.app
 - tapOn: "Lịch tuần"
 - tapOn: "T5"
 - assertVisible: "Chỉ áp dụng tuần này: Con bị ốm"
-- assertVisible: "Hủy"
+- assertVisible: ".*Hủy"

@@ -11,7 +11,9 @@ appId: vn.parentpal.app
     visible: "Thử nhắc giờ"
     timeout: 120000
     optional: true
-- launchApp
+# Không ép dừng app: ép dừng làm Android xóa luôn thông báo, khác với người dùng vuốt đóng.
+- launchApp:
+    stopApp: false
 - tapOn: "Phòng thử"
 - assertVisible: "Nhắc giờ đã tới"
 - assertVisible: '.*lệch [+].*'

@@ -21,14 +21,22 @@ APK lấy từ EAS (hồ sơ `preview`) hoặc build trên máy. Luồng nằm �
 
 | Việc | Luồng |
 |---|---|
-| Mở app, đủ 5 nút, nhật ký | `01-mo-app` |
+| Mở app, đủ 4 tab, màn Phòng thử có 5 nút | `01-mo-app` |
 | Nhắc giờ: hẹn, thông báo tới, độ lệch ra số dương | `02-nhac-gio` |
 | Ghi âm 5 giây | `03-ghi-am` |
 | Chụp ảnh, ảnh được thu nhỏ | `04-chup-anh` |
-| Đặt vùng GPS (vị trí giả) | `05-vung-gps` |
+| Đường xin quyền vị trí; đặt vùng GPS (emulator không cấp vị trí ổn định, nên luồng chấp nhận cả lỗi "lấy vị trí") | `05-vung-gps` |
+| Nạp lịch mẫu: quỹ giờ, Lịch tuần có cảnh báo cân bằng, tab Của con | `06-lich-mau` |
+| Trò chuyện với Pal giả lập: tạo hồ sơ, hoạt động, lịch tuần; hủy ngày ốm chỉ tuần này | `07-tro-chuyen` |
 | Lỗi chạy, lỗi JS, quyền thiếu | logcat |
 
 Quyền được cấp bằng `adb shell pm grant`, nên hộp thoại xin quyền không được test ở đây.
+
+## Lưu ý khi viết luồng
+
+- `launchApp` mặc định ép dừng app, và Android xóa thông báo của app bị ép dừng. Muốn kiểm thông báo thì dùng `launchApp` với `stopApp: false`.
+- Maestro chỉ thấy chữ đang nằm trong màn hình và so khớp cả đoạn chữ của một ô (nên dùng `.*`). Phần dưới màn hình cần `scrollUntilVisible`.
+- Thỉnh thoảng Maestro báo `Connection timed out` khi mở app: chạy lại.
 
 ## Chỉ test được trên máy thật (ghi lại để test sau)
 
