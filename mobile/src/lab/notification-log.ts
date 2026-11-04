@@ -4,16 +4,33 @@ import { logEvent } from './log';
 
 type Data = { kind?: string; scheduledAt?: number };
 
-/** Giờ thật = giờ hệ thống giao thông báo (notification.date), không phải giờ app mở. */
-async function logDelivered(n: Notifications.Notification, ref: string) {
+/**
+ * Giờ tới thật = postTime mà hệ thống ghi cho thông báo đang nằm trong khay
+ * (getPresentedNotificationsAsync). Không dùng `date` của listener: với thông báo hẹn giờ
+ * nó là giờ lúc hẹn, nên độ lệch ra âm đúng bằng thời gian chờ.
+ */
+async function postTimeOf(identifier: string): Promise<number | null> {
+  const presented = await Notifications.getPresentedNotificationsAsync();
+  const found = presented.find((p) => p.request.identifier === identifier);
+  return found ? found.date : null;
+}
+
+async function logDelivered(n: Notifications.Notification, fallbackNow: boolean) {
   const data = n.request.content.data as Data;
   if (!data?.kind) return;
+  const id = n.request.identifier;
+  const postTime = (await postTimeOf(id)) ?? (fallbackNow ? Date.now() : null);
+  const label = data.kind === 'day' ? 'Thông báo đẩy đã tới' : 'Nhắc giờ đã tới';
+  if (postTime === null) {
+    await logEvent({ kind: data.kind, label: `${label} (không đo được giờ tới)`, ref: `sent:${id}` });
+    return;
+  }
   await logEvent({
     kind: data.kind,
-    label: data.kind === 'day' ? 'Thông báo đẩy đã tới' : 'Nhắc giờ đã tới',
+    label,
     scheduledAt: data.scheduledAt ?? null,
-    actualAt: n.date,
-    ref: `sent:${ref}`,
+    actualAt: postTime,
+    ref: `sent:${id}`,
   });
 }
 
@@ -21,24 +38,24 @@ async function logDelivered(n: Notifications.Notification, ref: string) {
 export function startNotificationLogging(onChange: () => void): () => void {
   const sync = async () => {
     for (const n of await Notifications.getPresentedNotificationsAsync()) {
-      await logDelivered(n, n.request.identifier);
+      await logDelivered(n, false);
     }
     onChange();
   };
   void sync();
 
+  // Đang mở app: giờ nhận gần đúng giờ tới.
   const received = Notifications.addNotificationReceivedListener((n) => {
-    void logDelivered(n, n.request.identifier).then(onChange);
+    void logDelivered(n, true).then(onChange);
   });
   const response = Notifications.addNotificationResponseReceivedListener((r) => {
     const data = r.notification.request.content.data as Data;
     void (async () => {
-      await logDelivered(r.notification, r.notification.request.identifier);
+      await logDelivered(r.notification, false);
       if (r.actionIdentifier === 'done') {
         await logEvent({
           kind: data.kind ?? 'nhac',
           label: 'Bấm "Xong" trên thông báo',
-          scheduledAt: data.scheduledAt ?? null,
           ref: `done:${r.notification.request.identifier}`,
         });
       }
