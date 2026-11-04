@@ -30,11 +30,14 @@ function findClaude() {
 }
 const CLAUDE = findClaude();
 
+// Bỏ các biến môi trường của phiên Claude Code đang chạy (nếu khởi động cầu nối từ trong đó), để claude dùng phiên đăng nhập của máy.
+const CHILD_ENV = Object.fromEntries(Object.entries(process.env).filter(([k]) => !/^(CLAUDE|ANTHROPIC|AI_AGENT|BAGGAGE)/i.test(k)));
+
 function askClaude(prompt) {
   return new Promise((resolve, reject) => {
     const args = ['-p', '--output-format', 'json', '--no-session-persistence', '--tools', CLAUDE.shell ? '""' : ''];
     if (MODEL) args.push('--model', MODEL);
-    const p = spawn(CLAUDE.cmd, args, { shell: CLAUDE.shell, stdio: ['pipe', 'pipe', 'pipe'] });
+    const p = spawn(CLAUDE.cmd, args, { shell: CLAUDE.shell, stdio: ['pipe', 'pipe', 'pipe'], env: CHILD_ENV });
     let out = '';
     let err = '';
     const timer = setTimeout(() => { p.kill(); reject(new Error('Quá thời gian chờ Claude Code')); }, TIMEOUT_MS);
