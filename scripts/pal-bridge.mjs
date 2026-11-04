@@ -7,7 +7,9 @@
 // Cần: đã đăng nhập Claude Code (chạy `claude` một lần). Chạy: node scripts/pal-bridge.mjs [--port 8787] [--lan]
 // Emulator Android gọi tới http://10.0.2.2:8787/pal. Máy thật: --lan rồi đặt EXPO_PUBLIC_PAL_BRIDGE_URL.
 import { spawn } from 'node:child_process';
+import fs from 'node:fs';
 import http from 'node:http';
+import path from 'node:path';
 
 const arg = (name, def) => {
   const i = process.argv.indexOf(name);
@@ -18,11 +20,21 @@ const HOST = process.argv.includes('--lan') ? '0.0.0.0' : '127.0.0.1';
 const MODEL = arg('--model', '');
 const TIMEOUT_MS = +arg('--timeout', 180000);
 
+// Tìm lệnh claude: --claude <đường dẫn>, biến CLAUDE_BIN, bản npm toàn cục (khi shim trong PATH hỏng), rồi lệnh claude trong PATH.
+function findClaude() {
+  const given = arg('--claude', process.env.CLAUDE_BIN || '');
+  if (given) return { cmd: given, shell: false };
+  const npmExe = process.env.APPDATA && path.join(process.env.APPDATA, 'npm', 'node_modules', '@anthropic-ai', 'claude-code', 'bin', 'claude.exe');
+  if (npmExe && fs.existsSync(npmExe)) return { cmd: npmExe, shell: false };
+  return { cmd: 'claude', shell: true };
+}
+const CLAUDE = findClaude();
+
 function askClaude(prompt) {
   return new Promise((resolve, reject) => {
     const args = ['-p', '--output-format', 'json', '--no-session-persistence', '--tools', ''];
     if (MODEL) args.push('--model', MODEL);
-    const p = spawn('claude', args, { shell: true, stdio: ['pipe', 'pipe', 'pipe'] });
+    const p = spawn(CLAUDE.cmd, args, { shell: CLAUDE.shell, stdio: ['pipe', 'pipe', 'pipe'] });
     let out = '';
     let err = '';
     const timer = setTimeout(() => { p.kill(); reject(new Error('Quá thời gian chờ Claude Code')); }, TIMEOUT_MS);
@@ -65,4 +77,5 @@ const server = http.createServer(async (req, res) => {
   });
 });
 
+console.log(`Dùng claude: ${CLAUDE.cmd}`);
 server.listen(PORT, HOST, () => console.log(`Cầu nối Pal chạy ở http://${HOST}:${PORT}/pal (dev, dùng phiên Claude Code của bạn)`));
