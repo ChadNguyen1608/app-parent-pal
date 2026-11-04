@@ -8,3 +8,11 @@
 # Tệp tạm
 *.tmp
 *~
+
+# Khóa và file bí mật (repo công khai)
+key/
+google-services.json
+*-adminsdk-*.json
+GoogleService-Info.plist
+.env
+.env.*
