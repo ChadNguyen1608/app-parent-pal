@@ -1,9 +1,12 @@
-# Mở app, thấy màn Phòng thử và 5 nút.
+# Mở app: đủ 4 tab, và màn Phòng thử có 5 nút.
 appId: vn.parentpal.app
 ---
 - launchApp:
     clearState: true
-- assertVisible: "Phòng thử"
+- assertVisible: "Lên kế hoạch"
+- assertVisible: "Lịch tuần"
+- assertVisible: "Của con"
+- tapOn: "Phòng thử"
 - assertVisible: "1. Nhắc giờ"
 - assertVisible: "2. Vùng GPS"
 - assertVisible: "3. Ghi âm"

@@ -2,6 +2,7 @@
 appId: vn.parentpal.app
 ---
 - launchApp
+- tapOn: "Phòng thử"
 - tapOn: "4. Chụp ảnh"
 - tapOn: "Chụp"
 - extendedWaitUntil:

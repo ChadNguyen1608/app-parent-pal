@@ -2,6 +2,7 @@
 appId: vn.parentpal.app
 ---
 - launchApp
+- tapOn: "Phòng thử"
 - tapOn: "3. Ghi âm"
 - extendedWaitUntil:
     visible: "Ghi âm xong.*"

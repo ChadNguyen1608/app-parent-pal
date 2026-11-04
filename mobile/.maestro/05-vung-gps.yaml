@@ -2,6 +2,7 @@
 appId: vn.parentpal.app
 ---
 - launchApp
+- tapOn: "Phòng thử"
 - tapOn: "2. Vùng GPS"
 - extendedWaitUntil:
     visible: "Đã đặt vùng bán kính 100 m.*"

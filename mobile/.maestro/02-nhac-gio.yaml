@@ -3,6 +3,7 @@
 appId: vn.parentpal.app
 ---
 - launchApp
+- tapOn: "Phòng thử"
 - tapOn: "1. Nhắc giờ"
 - assertVisible: "Đã hẹn nhắc sau 60 giây.*"
 - pressKey: home
@@ -11,5 +12,6 @@ appId: vn.parentpal.app
     timeout: 120000
     optional: true
 - launchApp
+- tapOn: "Phòng thử"
 - assertVisible: "Nhắc giờ đã tới"
 - assertVisible: '.*lệch [+].*'
