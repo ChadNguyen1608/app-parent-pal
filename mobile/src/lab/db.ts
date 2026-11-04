@@ -25,6 +25,24 @@ db.execSync(`
   );
 `);
 
+db.execSync(`
+  CREATE TABLE IF NOT EXISTS lab_sched (
+    id TEXT PRIMARY KEY,
+    kind TEXT NOT NULL,
+    scheduled_at INTEGER NOT NULL
+  );
+`);
+
+/** Nhớ thông báo đã hẹn theo mã, vì dữ liệu kèm theo không luôn đọc lại được từ khay thông báo. */
+export function saveSched(id: string, kind: string, scheduledAt: number) {
+  db.runSync('INSERT OR REPLACE INTO lab_sched (id, kind, scheduled_at) VALUES (?, ?, ?)', id, kind, scheduledAt);
+}
+
+export function getSched(id: string): { kind: string; scheduledAt: number } | null {
+  const r = db.getFirstSync<{ kind: string; scheduled_at: number }>('SELECT kind, scheduled_at FROM lab_sched WHERE id = ?', id);
+  return r ? { kind: r.kind, scheduledAt: r.scheduled_at } : null;
+}
+
 type Row = {
   id: number;
   kind: string;

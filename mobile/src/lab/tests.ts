@@ -3,6 +3,7 @@ import * as Device from 'expo-device';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 
+import { saveSched } from './db';
 import { GEOFENCE_RADIUS_M, GEOFENCE_TASK } from './geofence-task';
 import { logEvent } from './log';
 
@@ -40,7 +41,7 @@ export async function testReminder(): Promise<string> {
     return 'Chưa được cấp quyền thông báo.';
   }
   const scheduledAt = Date.now() + REMINDER_DELAY_S * 1000;
-  await Notifications.scheduleNotificationAsync({
+  const notifId = await Notifications.scheduleNotificationAsync({
     content: {
       title: 'Thử nhắc giờ',
       body: 'Bấm "Xong" để ghi nhận.',
@@ -53,6 +54,7 @@ export async function testReminder(): Promise<string> {
       channelId: 'lab',
     },
   });
+  saveSched(notifId, 'nhac', scheduledAt);
   await logEvent({ kind: 'nhac', label: `Đã hẹn nhắc lúc ${new Date(scheduledAt).toTimeString().slice(0, 8)} (sau ${REMINDER_DELAY_S} giây)` });
   return `Đã hẹn nhắc sau ${REMINDER_DELAY_S} giây. Khóa máy để thử.`;
 }

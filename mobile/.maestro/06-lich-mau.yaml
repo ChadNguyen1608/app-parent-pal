@@ -3,8 +3,11 @@ appId: vn.parentpal.app
 ---
 - launchApp:
     clearState: true
-- tapOn: "Ví dụ lớp 8 .*"
 - scrollUntilVisible:
+    element: "Ví dụ lớp 8.*"
+- tapOn: "Ví dụ lớp 8.*"
+- scrollUntilVisible:
+    direction: UP
     element: "Ở trường và đi lại"
 - assertVisible: "Ngủ"
 - tapOn: "Lịch tuần"
