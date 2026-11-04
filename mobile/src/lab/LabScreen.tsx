@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { clearEvents, listEvents, type LabEvent } from './db';
 import { logEvent } from './log';
 import { startNotificationLogging } from './notification-log';
+import { compressPhoto } from './photo';
 import { setupNotifications, testGeofence, testPush, testReminder } from './tests';
 
 const RECORD_SECONDS = 5;
@@ -96,13 +97,27 @@ export function LabScreen() {
 
   const snap = async () => {
     const started = Date.now();
-    const pic = await camRef.current?.takePictureAsync({ quality: 0.5 });
+    const pic = await camRef.current?.takePictureAsync({ quality: 0.8 });
     setCameraOn(false);
-    await logEvent({
-      kind: 'anh',
-      label: pic ? `Đã chụp ${pic.width}x${pic.height} (${Date.now() - started} ms)` : 'Chụp không được',
-    });
-    setMessage(pic ? 'Đã chụp ảnh.' : 'Chụp không được.');
+    if (!pic) {
+      await logEvent({ kind: 'anh', label: 'Chụp không được' });
+      setMessage('Chụp không được.');
+      refresh();
+      return;
+    }
+    try {
+      const small = await compressPhoto(pic.uri, pic.width, pic.height);
+      const kb = small.bytes === null ? '?' : Math.round(small.bytes / 1024);
+      await logEvent({
+        kind: 'anh',
+        label: `Chụp ${pic.width}x${pic.height}, thu còn ${small.width}x${small.height}, ${kb} KB (${Date.now() - started} ms)`,
+      });
+      setMessage(`Đã chụp, ảnh thu nhỏ ${kb} KB.`);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      await logEvent({ kind: 'anh', label: `Thu nhỏ ảnh lỗi: ${msg.slice(0, 100)}` });
+      setMessage('Thu nhỏ ảnh lỗi.');
+    }
     refresh();
   };
 
