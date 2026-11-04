@@ -32,7 +32,7 @@ const CLAUDE = findClaude();
 
 function askClaude(prompt) {
   return new Promise((resolve, reject) => {
-    const args = ['-p', '--output-format', 'json', '--no-session-persistence', '--tools', ''];
+    const args = ['-p', '--output-format', 'json', '--no-session-persistence', '--tools', CLAUDE.shell ? '""' : ''];
     if (MODEL) args.push('--model', MODEL);
     const p = spawn(CLAUDE.cmd, args, { shell: CLAUDE.shell, stdio: ['pipe', 'pipe', 'pipe'] });
     let out = '';
