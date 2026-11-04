@@ -9,7 +9,8 @@ export type PalReply = {
   tra_loi?: string;
   ho_so?: Record<string, string>;
   tong_quan?: { muc_tieu?: string[]; nguyen_tac?: string[]; gio_ngu?: string; ghi_chu?: string } | null;
-  ngay?: { ngay: string; pham_vi?: string; ly_do?: string; khoi?: Partial<Block>[] }[];
+  /** ngay có thể là một mảng để gộp các ngày có lịch giống hệt nhau (tiết kiệm token đầu ra). */
+  ngay?: { ngay: string | string[]; pham_vi?: string; ly_do?: string; khoi?: Partial<Block>[] }[];
   xoa_ngoai_le?: string[];
   hoat_dong?: (Partial<Activity> & { hanh_dong?: 'them' | 'sua' | 'xoa' })[];
   canh_bao?: string[];
@@ -120,6 +121,17 @@ function applyDay(s: ReplyTarget, d: Day, scope: string, reason: string, khoi: P
   return 'Đã lưu ' + DAY_NAME[d] + ': ' + nb.length + ' khối, ' + changedIdx.length + ' khối thay đổi' + (removed ? ', bỏ ' + removed + ' khối' : '') + '.';
 }
 
+/** Tách mục có nhiều ngày ("ngay": ["T2","T3"]) thành từng ngày, mỗi ngày một bản sao khối. */
+export function expandDays(list: PalReply['ngay']): { ngay: string; pham_vi?: string; ly_do?: string; khoi?: Partial<Block>[] }[] {
+  const out: { ngay: string; pham_vi?: string; ly_do?: string; khoi?: Partial<Block>[] }[] = [];
+  for (const e of Array.isArray(list) ? list : []) {
+    if (!e || typeof e !== 'object') continue;
+    const names = Array.isArray(e.ngay) ? e.ngay : [e.ngay];
+    for (const n of names) out.push({ ...e, ngay: String(n), khoi: Array.isArray(e.khoi) ? JSON.parse(JSON.stringify(e.khoi)) : e.khoi });
+  }
+  return out;
+}
+
 /** Áp phản hồi của Pal. Gọi một lần cho mỗi lượt trả lời. */
 export function applyReply(s: ReplyTarget, r: PalReply, today = todayStr(), idSeed = Date.now()): ApplyResult {
   s.changed = {};
@@ -134,7 +146,7 @@ export function applyReply(s: ReplyTarget, r: PalReply, today = todayStr(), idSe
     s.plan.tong_quan = { muc_tieu: r.tong_quan.muc_tieu || [], nguyen_tac: r.tong_quan.nguyen_tac || [], gio_ngu: r.tong_quan.gio_ngu || '', ghi_chu: r.tong_quan.ghi_chu || '' };
   }
   const waiting = s.plan.giai_doan?.trang_thai === 'cho_xac_nhan' && r.giai_doan?.hanh_dong === 'tao';
-  const days = !waiting && Array.isArray(r.ngay) ? r.ngay : [];
+  const days = !waiting ? expandDays(r.ngay) : [];
   const touched: Day[] = [];
   for (const d of days) {
     if (d && (DAYS as readonly string[]).includes(d.ngay)) {
