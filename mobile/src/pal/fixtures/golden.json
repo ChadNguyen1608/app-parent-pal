@@ -1,0 +1,3371 @@
+{
+ "mau-1-lop-3-can-bang": {
+  "days": {
+   "T2": {
+    "warn": [],
+    "checked": [],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 555,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 555,
+     "hoc_them": 0,
+     "hoc_nha": 30,
+     "choi_nghi": 151,
+     "man_hinh": 45,
+     "sinh_hoat": 150,
+     "ngu": 600
+    }
+   },
+   "T3": {
+    "warn": [],
+    "checked": [],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 555,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 555,
+     "hoc_them": 0,
+     "hoc_nha": 30,
+     "choi_nghi": 151,
+     "man_hinh": 45,
+     "sinh_hoat": 150,
+     "ngu": 600
+    }
+   },
+   "T4": {
+    "warn": [],
+    "checked": [],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 555,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 555,
+     "hoc_them": 0,
+     "hoc_nha": 30,
+     "choi_nghi": 151,
+     "man_hinh": 45,
+     "sinh_hoat": 150,
+     "ngu": 600
+    }
+   },
+   "T5": {
+    "warn": [],
+    "checked": [],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 555,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 555,
+     "hoc_them": 0,
+     "hoc_nha": 30,
+     "choi_nghi": 151,
+     "man_hinh": 45,
+     "sinh_hoat": 150,
+     "ngu": 600
+    }
+   },
+   "T6": {
+    "warn": [],
+    "checked": [],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 555,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 555,
+     "hoc_them": 0,
+     "hoc_nha": 30,
+     "choi_nghi": 151,
+     "man_hinh": 45,
+     "sinh_hoat": 150,
+     "ngu": 630
+    }
+   },
+   "T7": {
+    "warn": [],
+    "checked": [],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 0,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 0,
+     "hoc_them": 0,
+     "hoc_nha": 0,
+     "choi_nghi": 624,
+     "man_hinh": 0,
+     "sinh_hoat": 165,
+     "ngu": 630
+    }
+   },
+   "CN": {
+    "warn": [],
+    "checked": [],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 0,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 0,
+     "hoc_them": 0,
+     "hoc_nha": 0,
+     "choi_nghi": 624,
+     "man_hinh": 0,
+     "sinh_hoat": 165,
+     "ngu": 600
+    }
+   }
+  },
+  "budget": {
+   "wd": {
+    "hoc_nha": 30,
+    "sinh_hoat": 105,
+    "ngu": 570,
+    "man_hinh": 30
+   },
+   "we": {
+    "hoc_nha": 30,
+    "sinh_hoat": 120,
+    "ngu": 600,
+    "man_hinh": 60
+   },
+   "ok": {}
+  },
+  "defaultBudget": {
+   "wd": {
+    "hoc_nha": 30,
+    "sinh_hoat": 105,
+    "ngu": 570,
+    "man_hinh": 30
+   },
+   "we": {
+    "hoc_nha": 30,
+    "sinh_hoat": 120,
+    "ngu": 600,
+    "man_hinh": 60
+   },
+   "ok": {}
+  },
+  "rest": {
+   "wd": [
+    206,
+    206
+   ],
+   "we": [
+    720,
+    720
+   ]
+  },
+  "ranges": {
+   "wd": {
+    "truong": [
+     555,
+     555
+    ],
+    "hoc_them": [
+     0,
+     0
+    ]
+   },
+   "we": {
+    "truong": [
+     0,
+     0
+    ],
+    "hoc_them": [
+     0,
+     0
+    ]
+   }
+  },
+  "judged": {
+   "wd.ngu.-30": [
+    "do",
+    "Ngủ −30′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.0": [
+    "do",
+    "Ngủ 0′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.20": [
+    "do",
+    "Ngủ 20′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.45": [
+    "do",
+    "Ngủ 45′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.59": [
+    "do",
+    "Ngủ 59′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.60": [
+    "do",
+    "Ngủ 1h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.61": [
+    "do",
+    "Ngủ 1h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.90": [
+    "do",
+    "Ngủ 1h30, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.120": [
+    "do",
+    "Ngủ 2h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.121": [
+    "do",
+    "Ngủ 2h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.180": [
+    "do",
+    "Ngủ 3h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.181": [
+    "do",
+    "Ngủ 3h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.270": [
+    "do",
+    "Ngủ 4h30, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.271": [
+    "do",
+    "Ngủ 4h31, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.500": [
+    "do",
+    "Ngủ 8h20, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.540": [
+    "xanh",
+    ""
+   ],
+   "wd.ngu.570": [
+    "xanh",
+    ""
+   ],
+   "wd.ngu.600": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_nha.-30": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.0": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.20": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.45": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.59": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.60": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.61": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.90": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.120": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.121": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.180": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.181": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.270": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.271": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.500": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.540": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.570": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.600": [
+    "xam",
+    ""
+   ],
+   "wd.man_hinh.-30": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.0": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.20": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.45": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.59": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.60": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.61": [
+    "cam",
+    "Màn hình giải trí 1h01, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "wd.man_hinh.90": [
+    "cam",
+    "Màn hình giải trí 1h30, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "wd.man_hinh.120": [
+    "cam",
+    "Màn hình giải trí 2h, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "wd.man_hinh.121": [
+    "do",
+    "Màn hình giải trí 2h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.180": [
+    "do",
+    "Màn hình giải trí 3h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.181": [
+    "do",
+    "Màn hình giải trí 3h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.270": [
+    "do",
+    "Màn hình giải trí 4h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.271": [
+    "do",
+    "Màn hình giải trí 4h31, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.500": [
+    "do",
+    "Màn hình giải trí 8h20, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.540": [
+    "do",
+    "Màn hình giải trí 9h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.570": [
+    "do",
+    "Màn hình giải trí 9h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.600": [
+    "do",
+    "Màn hình giải trí 10h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.sinh_hoat.-30": [
+    "do",
+    "Ăn uống, vệ sinh còn −30′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.0": [
+    "do",
+    "Ăn uống, vệ sinh còn 0′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.20": [
+    "do",
+    "Ăn uống, vệ sinh còn 20′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.45": [
+    "do",
+    "Ăn uống, vệ sinh còn 45′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.59": [
+    "do",
+    "Ăn uống, vệ sinh còn 59′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.60": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.61": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h01. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.90": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.120": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.121": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.180": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.181": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.270": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.271": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.500": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.540": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.570": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.600": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.-30": [
+    "do",
+    "Các nhóm cộng lại vượt 24 giờ khoảng 30′. Cần giảm giờ học ở nhà, sinh hoạt hoặc ngủ cho đủ một ngày."
+   ],
+   "wd.choi_nghi.0": [
+    "do",
+    "Chơi và nghỉ chỉ còn 0′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.20": [
+    "do",
+    "Chơi và nghỉ chỉ còn 20′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.45": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 45′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.59": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 59′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.60": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.61": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.90": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.120": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.121": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.180": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.181": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.270": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.271": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.500": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.540": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.570": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.600": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.-30": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.0": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.20": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.45": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.59": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.60": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.61": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.90": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.120": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.121": [
+    "cam",
+    "Học thêm 2h01, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.180": [
+    "cam",
+    "Học thêm 3h, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.181": [
+    "do",
+    "Học thêm 3h01, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.270": [
+    "do",
+    "Học thêm 4h30, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.271": [
+    "do",
+    "Học thêm 4h31, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.500": [
+    "do",
+    "Học thêm 8h20, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.540": [
+    "do",
+    "Học thêm 9h, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.570": [
+    "do",
+    "Học thêm 9h30, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.600": [
+    "do",
+    "Học thêm 10h, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.ngu.-30": [
+    "do",
+    "Ngủ −30′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.0": [
+    "do",
+    "Ngủ 0′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.20": [
+    "do",
+    "Ngủ 20′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.45": [
+    "do",
+    "Ngủ 45′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.59": [
+    "do",
+    "Ngủ 59′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.60": [
+    "do",
+    "Ngủ 1h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.61": [
+    "do",
+    "Ngủ 1h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.90": [
+    "do",
+    "Ngủ 1h30, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.120": [
+    "do",
+    "Ngủ 2h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.121": [
+    "do",
+    "Ngủ 2h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.180": [
+    "do",
+    "Ngủ 3h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.181": [
+    "do",
+    "Ngủ 3h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.270": [
+    "do",
+    "Ngủ 4h30, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.271": [
+    "do",
+    "Ngủ 4h31, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.500": [
+    "do",
+    "Ngủ 8h20, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.540": [
+    "xanh",
+    ""
+   ],
+   "we.ngu.570": [
+    "xanh",
+    ""
+   ],
+   "we.ngu.600": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_nha.-30": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.0": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.20": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.45": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.59": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.60": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.61": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.90": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.120": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.121": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.180": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.181": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.270": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.271": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.500": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.540": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.570": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.600": [
+    "xam",
+    ""
+   ],
+   "we.man_hinh.-30": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.0": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.20": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.45": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.59": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.60": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.61": [
+    "cam",
+    "Màn hình giải trí 1h01, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "we.man_hinh.90": [
+    "cam",
+    "Màn hình giải trí 1h30, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "we.man_hinh.120": [
+    "cam",
+    "Màn hình giải trí 2h, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "we.man_hinh.121": [
+    "do",
+    "Màn hình giải trí 2h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.180": [
+    "do",
+    "Màn hình giải trí 3h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.181": [
+    "do",
+    "Màn hình giải trí 3h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.270": [
+    "do",
+    "Màn hình giải trí 4h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.271": [
+    "do",
+    "Màn hình giải trí 4h31, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.500": [
+    "do",
+    "Màn hình giải trí 8h20, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.540": [
+    "do",
+    "Màn hình giải trí 9h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.570": [
+    "do",
+    "Màn hình giải trí 9h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.600": [
+    "do",
+    "Màn hình giải trí 10h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.sinh_hoat.-30": [
+    "do",
+    "Ăn uống, vệ sinh còn −30′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.0": [
+    "do",
+    "Ăn uống, vệ sinh còn 0′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.20": [
+    "do",
+    "Ăn uống, vệ sinh còn 20′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.45": [
+    "do",
+    "Ăn uống, vệ sinh còn 45′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.59": [
+    "do",
+    "Ăn uống, vệ sinh còn 59′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.60": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.61": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h01. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.90": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.120": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.121": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.180": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.181": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.270": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.271": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.500": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.540": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.570": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.600": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.-30": [
+    "do",
+    "Các nhóm cộng lại vượt 24 giờ khoảng 30′. Cần giảm giờ học ở nhà, sinh hoạt hoặc ngủ cho đủ một ngày."
+   ],
+   "we.choi_nghi.0": [
+    "do",
+    "Chơi và nghỉ chỉ còn 0′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.20": [
+    "do",
+    "Chơi và nghỉ chỉ còn 20′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.45": [
+    "do",
+    "Chơi và nghỉ chỉ còn 45′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.59": [
+    "do",
+    "Chơi và nghỉ chỉ còn 59′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.60": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 1h. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.61": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 1h01. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.90": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 1h30. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.120": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.121": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.180": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.181": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.270": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.271": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.500": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.540": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.570": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.600": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.-30": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.0": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.20": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.45": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.59": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.60": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.61": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.90": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.120": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.121": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.180": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.181": [
+    "cam",
+    "Học thêm 3h01, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.270": [
+    "cam",
+    "Học thêm 4h30, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.271": [
+    "do",
+    "Học thêm 4h31, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.500": [
+    "do",
+    "Học thêm 8h20, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.540": [
+    "do",
+    "Học thêm 9h, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.570": [
+    "do",
+    "Học thêm 9h30, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.600": [
+    "do",
+    "Học thêm 10h, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ]
+  }
+ },
+ "mau-2-lop-8-nhieu-loi": {
+  "days": {
+   "T2": {
+    "warn": [
+     {
+      "t": "Có khối học \"Ôn bài Toán\" ngay trước giờ đi học; buổi sáng nên để con vệ sinh, vận động, ăn sáng.",
+      "k": "truoc_gio_hoc"
+     },
+     {
+      "t": "Sau giờ học ở trường chưa có khối phục hồi trước \"Làm bài tập tiếng Anh\".",
+      "k": "phuc_hoi"
+     },
+     {
+      "t": "\"Làm bài tập tiếng Anh\" và \"Học Toán\" là hai khối tải cao liền nhau, nên chèn nghỉ ngắn.",
+      "k": "cao_lien"
+     },
+     {
+      "t": "Tổng giờ học ở nhà khoảng 195 phút, vượt quỹ bố mẹ đã chọn 80 phút (cho phép lệch ±30 phút).",
+      "k": "tong_gio_hoc"
+     },
+     {
+      "t": "Từ tắt đèn 23:30 đến dậy 06:00 hôm sau chỉ khoảng 6 giờ 30 phút, dưới mức 8 giờ cho 13 tuổi.",
+      "k": "ngu"
+     },
+     {
+      "t": "\"Tập bóng rổ\" kết thúc chưa tới 1 giờ trước giờ tắt đèn.",
+      "k": "tap_muon"
+     }
+    ],
+    "checked": [
+     "Có khối học \"Ôn bài Toán\" ngay trước giờ đi học; buổi sáng nên để con vệ sinh, vận động, ăn sáng.",
+     "Sau giờ học ở trường chưa có khối phục hồi trước \"Làm bài tập tiếng Anh\".",
+     "\"Làm bài tập tiếng Anh\" và \"Học Toán\" là hai khối tải cao liền nhau, nên chèn nghỉ ngắn.",
+     "Tổng giờ học ở nhà khoảng 195 phút, vượt quỹ bố mẹ đã chọn 80 phút (cho phép lệch ±30 phút).",
+     "Từ tắt đèn 23:30 đến dậy 06:00 hôm sau chỉ khoảng 6 giờ 30 phút, dưới mức 8 giờ cho 13 tuổi.",
+     "\"Tập bóng rổ\" kết thúc chưa tới 1 giờ trước giờ tắt đèn."
+    ],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 270,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 270,
+     "hoc_them": 0,
+     "hoc_nha": 300,
+     "choi_nghi": 435,
+     "man_hinh": 0,
+     "sinh_hoat": 0,
+     "ngu": 390
+    }
+   },
+   "T3": {
+    "warn": [
+     {
+      "t": "Có khối học \"Ôn bài Toán\" ngay trước giờ đi học; buổi sáng nên để con vệ sinh, vận động, ăn sáng.",
+      "k": "truoc_gio_hoc"
+     },
+     {
+      "t": "Sau giờ học ở trường chưa có khối phục hồi trước \"Làm bài tập tiếng Anh\".",
+      "k": "phuc_hoi"
+     },
+     {
+      "t": "\"Làm bài tập tiếng Anh\" và \"Học Toán\" là hai khối tải cao liền nhau, nên chèn nghỉ ngắn.",
+      "k": "cao_lien"
+     },
+     {
+      "t": "Tổng giờ học ở nhà khoảng 195 phút, vượt quỹ bố mẹ đã chọn 80 phút (cho phép lệch ±30 phút).",
+      "k": "tong_gio_hoc"
+     },
+     {
+      "t": "Từ tắt đèn 23:30 đến dậy 06:00 hôm sau chỉ khoảng 6 giờ 30 phút, dưới mức 8 giờ cho 13 tuổi.",
+      "k": "ngu"
+     },
+     {
+      "t": "\"Tập bóng rổ\" kết thúc chưa tới 1 giờ trước giờ tắt đèn.",
+      "k": "tap_muon"
+     }
+    ],
+    "checked": [
+     "Có khối học \"Ôn bài Toán\" ngay trước giờ đi học; buổi sáng nên để con vệ sinh, vận động, ăn sáng.",
+     "Sau giờ học ở trường chưa có khối phục hồi trước \"Làm bài tập tiếng Anh\".",
+     "\"Làm bài tập tiếng Anh\" và \"Học Toán\" là hai khối tải cao liền nhau, nên chèn nghỉ ngắn.",
+     "Tổng giờ học ở nhà khoảng 195 phút, vượt quỹ bố mẹ đã chọn 80 phút (cho phép lệch ±30 phút).",
+     "Từ tắt đèn 23:30 đến dậy 06:00 hôm sau chỉ khoảng 6 giờ 30 phút, dưới mức 8 giờ cho 13 tuổi.",
+     "\"Tập bóng rổ\" kết thúc chưa tới 1 giờ trước giờ tắt đèn."
+    ],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 270,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 270,
+     "hoc_them": 0,
+     "hoc_nha": 300,
+     "choi_nghi": 435,
+     "man_hinh": 0,
+     "sinh_hoat": 0,
+     "ngu": 390
+    }
+   },
+   "T4": {
+    "warn": [
+     {
+      "t": "Có khối học \"Ôn bài Toán\" ngay trước giờ đi học; buổi sáng nên để con vệ sinh, vận động, ăn sáng.",
+      "k": "truoc_gio_hoc"
+     },
+     {
+      "t": "Sau giờ học ở trường chưa có khối phục hồi trước \"Làm bài tập tiếng Anh\".",
+      "k": "phuc_hoi"
+     },
+     {
+      "t": "\"Làm bài tập tiếng Anh\" và \"Học Toán\" là hai khối tải cao liền nhau, nên chèn nghỉ ngắn.",
+      "k": "cao_lien"
+     },
+     {
+      "t": "Tổng giờ học ở nhà khoảng 195 phút, vượt quỹ bố mẹ đã chọn 80 phút (cho phép lệch ±30 phút).",
+      "k": "tong_gio_hoc"
+     },
+     {
+      "t": "Từ tắt đèn 23:30 đến dậy 06:00 hôm sau chỉ khoảng 6 giờ 30 phút, dưới mức 8 giờ cho 13 tuổi.",
+      "k": "ngu"
+     },
+     {
+      "t": "\"Tập bóng rổ\" kết thúc chưa tới 1 giờ trước giờ tắt đèn.",
+      "k": "tap_muon"
+     }
+    ],
+    "checked": [
+     "Có khối học \"Ôn bài Toán\" ngay trước giờ đi học; buổi sáng nên để con vệ sinh, vận động, ăn sáng.",
+     "Sau giờ học ở trường chưa có khối phục hồi trước \"Làm bài tập tiếng Anh\".",
+     "\"Làm bài tập tiếng Anh\" và \"Học Toán\" là hai khối tải cao liền nhau, nên chèn nghỉ ngắn.",
+     "Tổng giờ học ở nhà khoảng 195 phút, vượt quỹ bố mẹ đã chọn 80 phút (cho phép lệch ±30 phút).",
+     "Từ tắt đèn 23:30 đến dậy 06:00 hôm sau chỉ khoảng 6 giờ 30 phút, dưới mức 8 giờ cho 13 tuổi.",
+     "\"Tập bóng rổ\" kết thúc chưa tới 1 giờ trước giờ tắt đèn."
+    ],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 270,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 270,
+     "hoc_them": 0,
+     "hoc_nha": 300,
+     "choi_nghi": 435,
+     "man_hinh": 0,
+     "sinh_hoat": 0,
+     "ngu": 390
+    }
+   },
+   "T5": {
+    "warn": [
+     {
+      "t": "Có khối học \"Ôn bài Toán\" ngay trước giờ đi học; buổi sáng nên để con vệ sinh, vận động, ăn sáng.",
+      "k": "truoc_gio_hoc"
+     },
+     {
+      "t": "Sau giờ học ở trường chưa có khối phục hồi trước \"Làm bài tập tiếng Anh\".",
+      "k": "phuc_hoi"
+     },
+     {
+      "t": "\"Làm bài tập tiếng Anh\" và \"Học Toán\" là hai khối tải cao liền nhau, nên chèn nghỉ ngắn.",
+      "k": "cao_lien"
+     },
+     {
+      "t": "Tổng giờ học ở nhà khoảng 195 phút, vượt quỹ bố mẹ đã chọn 80 phút (cho phép lệch ±30 phút).",
+      "k": "tong_gio_hoc"
+     },
+     {
+      "t": "Từ tắt đèn 23:30 đến dậy 06:00 hôm sau chỉ khoảng 6 giờ 30 phút, dưới mức 8 giờ cho 13 tuổi.",
+      "k": "ngu"
+     },
+     {
+      "t": "\"Tập bóng rổ\" kết thúc chưa tới 1 giờ trước giờ tắt đèn.",
+      "k": "tap_muon"
+     }
+    ],
+    "checked": [
+     "Có khối học \"Ôn bài Toán\" ngay trước giờ đi học; buổi sáng nên để con vệ sinh, vận động, ăn sáng.",
+     "Sau giờ học ở trường chưa có khối phục hồi trước \"Làm bài tập tiếng Anh\".",
+     "\"Làm bài tập tiếng Anh\" và \"Học Toán\" là hai khối tải cao liền nhau, nên chèn nghỉ ngắn.",
+     "Tổng giờ học ở nhà khoảng 195 phút, vượt quỹ bố mẹ đã chọn 80 phút (cho phép lệch ±30 phút).",
+     "Từ tắt đèn 23:30 đến dậy 06:00 hôm sau chỉ khoảng 6 giờ 30 phút, dưới mức 8 giờ cho 13 tuổi.",
+     "\"Tập bóng rổ\" kết thúc chưa tới 1 giờ trước giờ tắt đèn."
+    ],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 270,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 270,
+     "hoc_them": 0,
+     "hoc_nha": 300,
+     "choi_nghi": 435,
+     "man_hinh": 0,
+     "sinh_hoat": 0,
+     "ngu": 390
+    }
+   },
+   "T6": {
+    "warn": [
+     {
+      "t": "Có khối học \"Ôn bài Toán\" ngay trước giờ đi học; buổi sáng nên để con vệ sinh, vận động, ăn sáng.",
+      "k": "truoc_gio_hoc"
+     },
+     {
+      "t": "Sau giờ học ở trường chưa có khối phục hồi trước \"Làm bài tập tiếng Anh\".",
+      "k": "phuc_hoi"
+     },
+     {
+      "t": "\"Làm bài tập tiếng Anh\" và \"Học Toán\" là hai khối tải cao liền nhau, nên chèn nghỉ ngắn.",
+      "k": "cao_lien"
+     },
+     {
+      "t": "Tổng giờ học ở nhà khoảng 195 phút, vượt quỹ bố mẹ đã chọn 80 phút (cho phép lệch ±30 phút).",
+      "k": "tong_gio_hoc"
+     },
+     {
+      "t": "Từ tắt đèn 23:30 đến dậy 06:00 hôm sau chỉ khoảng 6 giờ 30 phút, dưới mức 8 giờ cho 13 tuổi.",
+      "k": "ngu"
+     },
+     {
+      "t": "\"Tập bóng rổ\" kết thúc chưa tới 1 giờ trước giờ tắt đèn.",
+      "k": "tap_muon"
+     }
+    ],
+    "checked": [
+     "Có khối học \"Ôn bài Toán\" ngay trước giờ đi học; buổi sáng nên để con vệ sinh, vận động, ăn sáng.",
+     "Sau giờ học ở trường chưa có khối phục hồi trước \"Làm bài tập tiếng Anh\".",
+     "\"Làm bài tập tiếng Anh\" và \"Học Toán\" là hai khối tải cao liền nhau, nên chèn nghỉ ngắn.",
+     "Tổng giờ học ở nhà khoảng 195 phút, vượt quỹ bố mẹ đã chọn 80 phút (cho phép lệch ±30 phút).",
+     "Từ tắt đèn 23:30 đến dậy 06:00 hôm sau chỉ khoảng 6 giờ 30 phút, dưới mức 8 giờ cho 13 tuổi.",
+     "\"Tập bóng rổ\" kết thúc chưa tới 1 giờ trước giờ tắt đèn."
+    ],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 270,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 270,
+     "hoc_them": 0,
+     "hoc_nha": 300,
+     "choi_nghi": 435,
+     "man_hinh": 0,
+     "sinh_hoat": 0,
+     "ngu": 390
+    }
+   },
+   "T7": {
+    "warn": [],
+    "checked": [],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 0,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 0,
+     "hoc_them": 0,
+     "hoc_nha": 0,
+     "choi_nghi": 0,
+     "man_hinh": 0,
+     "sinh_hoat": 30,
+     "ngu": 540
+    }
+   },
+   "CN": {
+    "warn": [],
+    "checked": [],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 0,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 0,
+     "hoc_them": 0,
+     "hoc_nha": 0,
+     "choi_nghi": 0,
+     "man_hinh": 0,
+     "sinh_hoat": 30,
+     "ngu": 540
+    }
+   }
+  },
+  "budget": {
+   "wd": {
+    "hoc_nha": 80,
+    "sinh_hoat": 105,
+    "ngu": 510,
+    "man_hinh": 60
+   },
+   "we": {
+    "hoc_nha": 80,
+    "sinh_hoat": 120,
+    "ngu": 540,
+    "man_hinh": 120
+   },
+   "ok": {}
+  },
+  "defaultBudget": {
+   "wd": {
+    "hoc_nha": 80,
+    "sinh_hoat": 105,
+    "ngu": 510,
+    "man_hinh": 60
+   },
+   "we": {
+    "hoc_nha": 80,
+    "sinh_hoat": 120,
+    "ngu": 540,
+    "man_hinh": 120
+   },
+   "ok": {}
+  },
+  "rest": {
+   "wd": [
+    501,
+    501
+   ],
+   "we": [
+    730,
+    730
+   ]
+  },
+  "ranges": {
+   "wd": {
+    "truong": [
+     270,
+     270
+    ],
+    "hoc_them": [
+     0,
+     0
+    ]
+   },
+   "we": {
+    "truong": [
+     0,
+     0
+    ],
+    "hoc_them": [
+     0,
+     0
+    ]
+   }
+  },
+  "judged": {
+   "wd.ngu.-30": [
+    "do",
+    "Ngủ −30′, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.0": [
+    "do",
+    "Ngủ 0′, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.20": [
+    "do",
+    "Ngủ 20′, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.45": [
+    "do",
+    "Ngủ 45′, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.59": [
+    "do",
+    "Ngủ 59′, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.60": [
+    "do",
+    "Ngủ 1h, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.61": [
+    "do",
+    "Ngủ 1h01, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.90": [
+    "do",
+    "Ngủ 1h30, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.120": [
+    "do",
+    "Ngủ 2h, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.121": [
+    "do",
+    "Ngủ 2h01, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.180": [
+    "do",
+    "Ngủ 3h, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.181": [
+    "do",
+    "Ngủ 3h01, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.270": [
+    "do",
+    "Ngủ 4h30, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.271": [
+    "do",
+    "Ngủ 4h31, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.500": [
+    "xanh",
+    ""
+   ],
+   "wd.ngu.540": [
+    "xanh",
+    ""
+   ],
+   "wd.ngu.570": [
+    "xanh",
+    ""
+   ],
+   "wd.ngu.600": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_nha.-30": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.0": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.20": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.45": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.59": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.60": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.61": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.90": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.120": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.121": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.180": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.181": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.270": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.271": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.500": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.540": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.570": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.600": [
+    "xam",
+    ""
+   ],
+   "wd.man_hinh.-30": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.0": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.20": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.45": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.59": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.60": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.61": [
+    "cam",
+    "Màn hình giải trí 1h01, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "wd.man_hinh.90": [
+    "cam",
+    "Màn hình giải trí 1h30, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "wd.man_hinh.120": [
+    "cam",
+    "Màn hình giải trí 2h, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "wd.man_hinh.121": [
+    "do",
+    "Màn hình giải trí 2h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.180": [
+    "do",
+    "Màn hình giải trí 3h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.181": [
+    "do",
+    "Màn hình giải trí 3h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.270": [
+    "do",
+    "Màn hình giải trí 4h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.271": [
+    "do",
+    "Màn hình giải trí 4h31, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.500": [
+    "do",
+    "Màn hình giải trí 8h20, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.540": [
+    "do",
+    "Màn hình giải trí 9h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.570": [
+    "do",
+    "Màn hình giải trí 9h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.600": [
+    "do",
+    "Màn hình giải trí 10h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.sinh_hoat.-30": [
+    "do",
+    "Ăn uống, vệ sinh còn −30′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.0": [
+    "do",
+    "Ăn uống, vệ sinh còn 0′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.20": [
+    "do",
+    "Ăn uống, vệ sinh còn 20′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.45": [
+    "do",
+    "Ăn uống, vệ sinh còn 45′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.59": [
+    "do",
+    "Ăn uống, vệ sinh còn 59′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.60": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.61": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h01. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.90": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.120": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.121": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.180": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.181": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.270": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.271": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.500": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.540": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.570": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.600": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.-30": [
+    "do",
+    "Các nhóm cộng lại vượt 24 giờ khoảng 30′. Cần giảm giờ học ở nhà, sinh hoạt hoặc ngủ cho đủ một ngày."
+   ],
+   "wd.choi_nghi.0": [
+    "do",
+    "Chơi và nghỉ chỉ còn 0′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.20": [
+    "do",
+    "Chơi và nghỉ chỉ còn 20′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.45": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 45′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.59": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 59′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.60": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.61": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.90": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.120": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.121": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.180": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.181": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.270": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.271": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.500": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.540": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.570": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.600": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.-30": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.0": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.20": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.45": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.59": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.60": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.61": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.90": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.120": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.121": [
+    "cam",
+    "Học thêm 2h01, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.180": [
+    "cam",
+    "Học thêm 3h, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.181": [
+    "do",
+    "Học thêm 3h01, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.270": [
+    "do",
+    "Học thêm 4h30, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.271": [
+    "do",
+    "Học thêm 4h31, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.500": [
+    "do",
+    "Học thêm 8h20, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.540": [
+    "do",
+    "Học thêm 9h, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.570": [
+    "do",
+    "Học thêm 9h30, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.600": [
+    "do",
+    "Học thêm 10h, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.ngu.-30": [
+    "do",
+    "Ngủ −30′, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.0": [
+    "do",
+    "Ngủ 0′, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.20": [
+    "do",
+    "Ngủ 20′, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.45": [
+    "do",
+    "Ngủ 45′, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.59": [
+    "do",
+    "Ngủ 59′, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.60": [
+    "do",
+    "Ngủ 1h, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.61": [
+    "do",
+    "Ngủ 1h01, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.90": [
+    "do",
+    "Ngủ 1h30, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.120": [
+    "do",
+    "Ngủ 2h, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.121": [
+    "do",
+    "Ngủ 2h01, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.180": [
+    "do",
+    "Ngủ 3h, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.181": [
+    "do",
+    "Ngủ 3h01, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.270": [
+    "do",
+    "Ngủ 4h30, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.271": [
+    "do",
+    "Ngủ 4h31, thấp hơn mức tối thiểu 8h. Mốc tham khảo: 8–10 giờ cho trẻ 13–18 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.500": [
+    "xanh",
+    ""
+   ],
+   "we.ngu.540": [
+    "xanh",
+    ""
+   ],
+   "we.ngu.570": [
+    "xanh",
+    ""
+   ],
+   "we.ngu.600": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_nha.-30": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.0": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.20": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.45": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.59": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.60": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.61": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.90": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.120": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.121": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.180": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.181": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.270": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.271": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.500": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.540": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.570": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.600": [
+    "xam",
+    ""
+   ],
+   "we.man_hinh.-30": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.0": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.20": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.45": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.59": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.60": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.61": [
+    "cam",
+    "Màn hình giải trí 1h01, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "we.man_hinh.90": [
+    "cam",
+    "Màn hình giải trí 1h30, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "we.man_hinh.120": [
+    "cam",
+    "Màn hình giải trí 2h, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "we.man_hinh.121": [
+    "do",
+    "Màn hình giải trí 2h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.180": [
+    "do",
+    "Màn hình giải trí 3h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.181": [
+    "do",
+    "Màn hình giải trí 3h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.270": [
+    "do",
+    "Màn hình giải trí 4h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.271": [
+    "do",
+    "Màn hình giải trí 4h31, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.500": [
+    "do",
+    "Màn hình giải trí 8h20, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.540": [
+    "do",
+    "Màn hình giải trí 9h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.570": [
+    "do",
+    "Màn hình giải trí 9h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.600": [
+    "do",
+    "Màn hình giải trí 10h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.sinh_hoat.-30": [
+    "do",
+    "Ăn uống, vệ sinh còn −30′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.0": [
+    "do",
+    "Ăn uống, vệ sinh còn 0′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.20": [
+    "do",
+    "Ăn uống, vệ sinh còn 20′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.45": [
+    "do",
+    "Ăn uống, vệ sinh còn 45′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.59": [
+    "do",
+    "Ăn uống, vệ sinh còn 59′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.60": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.61": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h01. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.90": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.120": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.121": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.180": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.181": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.270": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.271": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.500": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.540": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.570": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.600": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.-30": [
+    "do",
+    "Các nhóm cộng lại vượt 24 giờ khoảng 30′. Cần giảm giờ học ở nhà, sinh hoạt hoặc ngủ cho đủ một ngày."
+   ],
+   "we.choi_nghi.0": [
+    "do",
+    "Chơi và nghỉ chỉ còn 0′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.20": [
+    "do",
+    "Chơi và nghỉ chỉ còn 20′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.45": [
+    "do",
+    "Chơi và nghỉ chỉ còn 45′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.59": [
+    "do",
+    "Chơi và nghỉ chỉ còn 59′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.60": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 1h. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.61": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 1h01. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.90": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 1h30. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.120": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.121": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.180": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.181": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.270": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.271": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.500": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.540": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.570": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.600": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.-30": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.0": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.20": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.45": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.59": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.60": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.61": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.90": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.120": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.121": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.180": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.181": [
+    "cam",
+    "Học thêm 3h01, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.270": [
+    "cam",
+    "Học thêm 4h30, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.271": [
+    "do",
+    "Học thêm 4h31, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.500": [
+    "do",
+    "Học thêm 8h20, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.540": [
+    "do",
+    "Học thêm 9h, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.570": [
+    "do",
+    "Học thêm 9h30, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.600": [
+    "do",
+    "Học thêm 10h, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ]
+  }
+ },
+ "mau-3-lop-5-hoat-dong-giai-doan": {
+  "days": {
+   "T2": {
+    "warn": [
+     {
+      "t": "Từ bữa trưa ở trường (giả định 11h15) đến Ăn tối cách khoảng 6 giờ 45 phút không có gì ăn. Mốc tham khảo: trẻ cần ăn khoảng 3–4 giờ một lần, 7–12 tuổi có thể 4–5 giờ (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ). Nên thêm bữa phụ nhỏ ở giữa.",
+      "k": "an_xa"
+     }
+    ],
+    "checked": [
+     "Từ bữa trưa ở trường (giả định 11h15) đến Ăn tối cách khoảng 6 giờ 45 phút không có gì ăn. Mốc tham khảo: trẻ cần ăn khoảng 3–4 giờ một lần, 7–12 tuổi có thể 4–5 giờ (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ). Nên thêm bữa phụ nhỏ ở giữa."
+    ],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 510,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 510,
+     "hoc_them": 0,
+     "hoc_nha": 90,
+     "choi_nghi": 136,
+     "man_hinh": 30,
+     "sinh_hoat": 90,
+     "ngu": 615
+    }
+   },
+   "T3": {
+    "warn": [
+     {
+      "t": "Từ bữa trưa ở trường (giả định 11h15) đến Ăn tối cách khoảng 6 giờ 45 phút không có gì ăn. Mốc tham khảo: trẻ cần ăn khoảng 3–4 giờ một lần, 7–12 tuổi có thể 4–5 giờ (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ). Nên thêm bữa phụ nhỏ ở giữa.",
+      "k": "an_xa"
+     }
+    ],
+    "checked": [
+     "Từ bữa trưa ở trường (giả định 11h15) đến Ăn tối cách khoảng 6 giờ 45 phút không có gì ăn. Mốc tham khảo: trẻ cần ăn khoảng 3–4 giờ một lần, 7–12 tuổi có thể 4–5 giờ (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ). Nên thêm bữa phụ nhỏ ở giữa."
+    ],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 510,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 510,
+     "hoc_them": 0,
+     "hoc_nha": 90,
+     "choi_nghi": 136,
+     "man_hinh": 30,
+     "sinh_hoat": 90,
+     "ngu": 585
+    }
+   },
+   "T4": {
+    "warn": [
+     {
+      "t": "Từ Dậy, ăn sáng đến bữa trưa ở trường (giả định 11h15) cách khoảng 5 giờ 15 phút không có gì ăn. Mốc tham khảo: trẻ cần ăn khoảng 3–4 giờ một lần, 7–12 tuổi có thể 4–5 giờ (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ). Nên thêm bữa phụ nhỏ ở giữa.",
+      "k": "an_xa"
+     }
+    ],
+    "checked": [
+     "Từ Dậy, ăn sáng đến bữa trưa ở trường (giả định 11h15) cách khoảng 5 giờ 15 phút không có gì ăn. Mốc tham khảo: trẻ cần ăn khoảng 3–4 giờ một lần, 7–12 tuổi có thể 4–5 giờ (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ). Nên thêm bữa phụ nhỏ ở giữa."
+    ],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 540,
+     "hoc_them": 120
+    },
+    "actual": {
+     "truong": 540,
+     "hoc_them": 0,
+     "hoc_nha": 0,
+     "choi_nghi": 75,
+     "man_hinh": 0,
+     "sinh_hoat": 30,
+     "ngu": 600
+    }
+   },
+   "T5": {
+    "warn": [
+     {
+      "t": "Từ bữa trưa ở trường (giả định 11h15) đến Ăn tối cách khoảng 6 giờ 45 phút không có gì ăn. Mốc tham khảo: trẻ cần ăn khoảng 3–4 giờ một lần, 7–12 tuổi có thể 4–5 giờ (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ). Nên thêm bữa phụ nhỏ ở giữa.",
+      "k": "an_xa"
+     }
+    ],
+    "checked": [
+     "Từ bữa trưa ở trường (giả định 11h15) đến Ăn tối cách khoảng 6 giờ 45 phút không có gì ăn. Mốc tham khảo: trẻ cần ăn khoảng 3–4 giờ một lần, 7–12 tuổi có thể 4–5 giờ (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ). Nên thêm bữa phụ nhỏ ở giữa."
+    ],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 510,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 510,
+     "hoc_them": 0,
+     "hoc_nha": 90,
+     "choi_nghi": 136,
+     "man_hinh": 30,
+     "sinh_hoat": 90,
+     "ngu": 615
+    }
+   },
+   "T6": {
+    "warn": [
+     {
+      "t": "Từ bữa trưa ở trường (giả định 11h15) đến Ăn tối cách khoảng 6 giờ 45 phút không có gì ăn. Mốc tham khảo: trẻ cần ăn khoảng 3–4 giờ một lần, 7–12 tuổi có thể 4–5 giờ (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ). Nên thêm bữa phụ nhỏ ở giữa.",
+      "k": "an_xa"
+     }
+    ],
+    "checked": [
+     "Từ bữa trưa ở trường (giả định 11h15) đến Ăn tối cách khoảng 6 giờ 45 phút không có gì ăn. Mốc tham khảo: trẻ cần ăn khoảng 3–4 giờ một lần, 7–12 tuổi có thể 4–5 giờ (Viện Dinh dưỡng và Ăn kiêng Hoa Kỳ). Nên thêm bữa phụ nhỏ ở giữa."
+    ],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 510,
+     "hoc_them": 120
+    },
+    "actual": {
+     "truong": 510,
+     "hoc_them": 0,
+     "hoc_nha": 90,
+     "choi_nghi": 136,
+     "man_hinh": 30,
+     "sinh_hoat": 90,
+     "ngu": 645
+    }
+   },
+   "T7": {
+    "warn": [],
+    "checked": [],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 0,
+     "hoc_them": 140
+    },
+    "actual": {
+     "truong": 0,
+     "hoc_them": 0,
+     "hoc_nha": 90,
+     "choi_nghi": 105,
+     "man_hinh": 0,
+     "sinh_hoat": 30,
+     "ngu": 630
+    }
+   },
+   "CN": {
+    "warn": [],
+    "checked": [],
+    "relaxed": 0,
+    "fixed": {
+     "truong": 0,
+     "hoc_them": 0
+    },
+    "actual": {
+     "truong": 0,
+     "hoc_them": 0,
+     "hoc_nha": 90,
+     "choi_nghi": 105,
+     "man_hinh": 0,
+     "sinh_hoat": 30,
+     "ngu": 600
+    }
+   }
+  },
+  "budget": {
+   "wd": {
+    "hoc_nha": 90,
+    "sinh_hoat": 100,
+    "ngu": 560,
+    "man_hinh": 70
+   },
+   "we": {
+    "hoc_nha": 60,
+    "sinh_hoat": 120,
+    "ngu": 600,
+    "man_hinh": 130
+   },
+   "ok": {}
+  },
+  "defaultBudget": {
+   "wd": {
+    "hoc_nha": 50,
+    "sinh_hoat": 105,
+    "ngu": 570,
+    "man_hinh": 30
+   },
+   "we": {
+    "hoc_nha": 50,
+    "sinh_hoat": 120,
+    "ngu": 600,
+    "man_hinh": 60
+   },
+   "ok": {}
+  },
+  "rest": {
+   "wd": [
+    55,
+    205
+   ],
+   "we": [
+    550,
+    690
+   ]
+  },
+  "ranges": {
+   "wd": {
+    "truong": [
+     510,
+     540
+    ],
+    "hoc_them": [
+     0,
+     120
+    ]
+   },
+   "we": {
+    "truong": [
+     0,
+     0
+    ],
+    "hoc_them": [
+     0,
+     140
+    ]
+   }
+  },
+  "judged": {
+   "wd.ngu.-30": [
+    "do",
+    "Ngủ −30′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.0": [
+    "do",
+    "Ngủ 0′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.20": [
+    "do",
+    "Ngủ 20′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.45": [
+    "do",
+    "Ngủ 45′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.59": [
+    "do",
+    "Ngủ 59′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.60": [
+    "do",
+    "Ngủ 1h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.61": [
+    "do",
+    "Ngủ 1h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.90": [
+    "do",
+    "Ngủ 1h30, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.120": [
+    "do",
+    "Ngủ 2h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.121": [
+    "do",
+    "Ngủ 2h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.180": [
+    "do",
+    "Ngủ 3h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.181": [
+    "do",
+    "Ngủ 3h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.270": [
+    "do",
+    "Ngủ 4h30, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.271": [
+    "do",
+    "Ngủ 4h31, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.500": [
+    "do",
+    "Ngủ 8h20, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "wd.ngu.540": [
+    "xanh",
+    ""
+   ],
+   "wd.ngu.570": [
+    "xanh",
+    ""
+   ],
+   "wd.ngu.600": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_nha.-30": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.0": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.20": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.45": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.59": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.60": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.61": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.90": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.120": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.121": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.180": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.181": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.270": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.271": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.500": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.540": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.570": [
+    "xam",
+    ""
+   ],
+   "wd.hoc_nha.600": [
+    "xam",
+    ""
+   ],
+   "wd.man_hinh.-30": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.0": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.20": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.45": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.59": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.60": [
+    "xanh",
+    ""
+   ],
+   "wd.man_hinh.61": [
+    "cam",
+    "Màn hình giải trí 1h01, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "wd.man_hinh.90": [
+    "cam",
+    "Màn hình giải trí 1h30, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "wd.man_hinh.120": [
+    "cam",
+    "Màn hình giải trí 2h, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "wd.man_hinh.121": [
+    "do",
+    "Màn hình giải trí 2h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.180": [
+    "do",
+    "Màn hình giải trí 3h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.181": [
+    "do",
+    "Màn hình giải trí 3h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.270": [
+    "do",
+    "Màn hình giải trí 4h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.271": [
+    "do",
+    "Màn hình giải trí 4h31, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.500": [
+    "do",
+    "Màn hình giải trí 8h20, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.540": [
+    "do",
+    "Màn hình giải trí 9h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.570": [
+    "do",
+    "Màn hình giải trí 9h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.man_hinh.600": [
+    "do",
+    "Màn hình giải trí 10h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "wd.sinh_hoat.-30": [
+    "do",
+    "Ăn uống, vệ sinh còn −30′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.0": [
+    "do",
+    "Ăn uống, vệ sinh còn 0′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.20": [
+    "do",
+    "Ăn uống, vệ sinh còn 20′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.45": [
+    "do",
+    "Ăn uống, vệ sinh còn 45′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.59": [
+    "do",
+    "Ăn uống, vệ sinh còn 59′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.60": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.61": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h01. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.sinh_hoat.90": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.120": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.121": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.180": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.181": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.270": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.271": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.500": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.540": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.570": [
+    "xanh",
+    ""
+   ],
+   "wd.sinh_hoat.600": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.-30": [
+    "do",
+    "Các nhóm cộng lại vượt 24 giờ khoảng 30′. Cần giảm giờ học ở nhà, sinh hoạt hoặc ngủ cho đủ một ngày."
+   ],
+   "wd.choi_nghi.0": [
+    "do",
+    "Chơi và nghỉ chỉ còn 0′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.20": [
+    "do",
+    "Chơi và nghỉ chỉ còn 20′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.45": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 45′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.59": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 59′. Mốc tham khảo ngày đi học ít nhất 1 giờ: 20–30′ phục hồi sau giờ học và khoảng 30′ tự do buổi tối; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "wd.choi_nghi.60": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.61": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.90": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.120": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.121": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.180": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.181": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.270": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.271": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.500": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.540": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.570": [
+    "xanh",
+    ""
+   ],
+   "wd.choi_nghi.600": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.-30": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.0": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.20": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.45": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.59": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.60": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.61": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.90": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.120": [
+    "xanh",
+    ""
+   ],
+   "wd.hoc_them.121": [
+    "cam",
+    "Học thêm 2h01, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.180": [
+    "cam",
+    "Học thêm 3h, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.181": [
+    "do",
+    "Học thêm 3h01, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.270": [
+    "do",
+    "Học thêm 4h30, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.271": [
+    "do",
+    "Học thêm 4h31, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.500": [
+    "do",
+    "Học thêm 8h20, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.540": [
+    "do",
+    "Học thêm 9h, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.570": [
+    "do",
+    "Học thêm 9h30, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "wd.hoc_them.600": [
+    "do",
+    "Học thêm 10h, trên 2 giờ sau 6–7 giờ ở trường, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.ngu.-30": [
+    "do",
+    "Ngủ −30′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.0": [
+    "do",
+    "Ngủ 0′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.20": [
+    "do",
+    "Ngủ 20′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.45": [
+    "do",
+    "Ngủ 45′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.59": [
+    "do",
+    "Ngủ 59′, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.60": [
+    "do",
+    "Ngủ 1h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.61": [
+    "do",
+    "Ngủ 1h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.90": [
+    "do",
+    "Ngủ 1h30, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.120": [
+    "do",
+    "Ngủ 2h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.121": [
+    "do",
+    "Ngủ 2h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.180": [
+    "do",
+    "Ngủ 3h, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.181": [
+    "do",
+    "Ngủ 3h01, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.270": [
+    "do",
+    "Ngủ 4h30, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.271": [
+    "do",
+    "Ngủ 4h31, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.500": [
+    "do",
+    "Ngủ 8h20, thấp hơn mức tối thiểu 9h. Mốc tham khảo: 9–12 giờ cho trẻ 6–12 tuổi (Viện Hàn lâm Y học Giấc ngủ Hoa Kỳ, AASM). Thiếu ngủ kéo dài làm giảm tập trung và tâm trạng."
+   ],
+   "we.ngu.540": [
+    "xanh",
+    ""
+   ],
+   "we.ngu.570": [
+    "xanh",
+    ""
+   ],
+   "we.ngu.600": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_nha.-30": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.0": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.20": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.45": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.59": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.60": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.61": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.90": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.120": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.121": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.180": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.181": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.270": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.271": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.500": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.540": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.570": [
+    "xam",
+    ""
+   ],
+   "we.hoc_nha.600": [
+    "xam",
+    ""
+   ],
+   "we.man_hinh.-30": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.0": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.20": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.45": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.59": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.60": [
+    "xanh",
+    ""
+   ],
+   "we.man_hinh.61": [
+    "cam",
+    "Màn hình giải trí 1h01, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "we.man_hinh.90": [
+    "cam",
+    "Màn hình giải trí 1h30, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "we.man_hinh.120": [
+    "cam",
+    "Màn hình giải trí 2h, trên 1 giờ. Mốc 1 giờ là mặc định của Pal cho trẻ nhỏ, để còn chỗ cho vận động và tắt màn hình trước giờ ngủ 60 phút (chưa phải chuẩn y khoa)."
+   ],
+   "we.man_hinh.121": [
+    "do",
+    "Màn hình giải trí 2h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.180": [
+    "do",
+    "Màn hình giải trí 3h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.181": [
+    "do",
+    "Màn hình giải trí 3h01, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.270": [
+    "do",
+    "Màn hình giải trí 4h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.271": [
+    "do",
+    "Màn hình giải trí 4h31, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.500": [
+    "do",
+    "Màn hình giải trí 8h20, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.540": [
+    "do",
+    "Màn hình giải trí 9h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.570": [
+    "do",
+    "Màn hình giải trí 9h30, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.man_hinh.600": [
+    "do",
+    "Màn hình giải trí 10h, vượt mốc tối đa 2 giờ/ngày cho trẻ 5–17 tuổi (Hướng dẫn vận động 24 giờ của Canada)."
+   ],
+   "we.sinh_hoat.-30": [
+    "do",
+    "Ăn uống, vệ sinh còn −30′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.0": [
+    "do",
+    "Ăn uống, vệ sinh còn 0′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.20": [
+    "do",
+    "Ăn uống, vệ sinh còn 20′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.45": [
+    "do",
+    "Ăn uống, vệ sinh còn 45′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.59": [
+    "do",
+    "Ăn uống, vệ sinh còn 59′. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.60": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.61": [
+    "cam",
+    "Ăn uống, vệ sinh còn 1h01. Mốc tham khảo khoảng 1h30 ở nhà: sáng 30′ (vệ sinh, ăn sáng), tối 30′ (ăn tối), 30′ tắm và vệ sinh trước ngủ. Thiếu thì con dễ phải ăn vội, bị giục. (Ước tính của Pal, chưa phải chuẩn.)"
+   ],
+   "we.sinh_hoat.90": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.120": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.121": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.180": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.181": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.270": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.271": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.500": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.540": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.570": [
+    "xanh",
+    ""
+   ],
+   "we.sinh_hoat.600": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.-30": [
+    "do",
+    "Các nhóm cộng lại vượt 24 giờ khoảng 30′. Cần giảm giờ học ở nhà, sinh hoạt hoặc ngủ cho đủ một ngày."
+   ],
+   "we.choi_nghi.0": [
+    "do",
+    "Chơi và nghỉ chỉ còn 0′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.20": [
+    "do",
+    "Chơi và nghỉ chỉ còn 20′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.45": [
+    "do",
+    "Chơi và nghỉ chỉ còn 45′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.59": [
+    "do",
+    "Chơi và nghỉ chỉ còn 59′. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.60": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 1h. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.61": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 1h01. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.90": [
+    "cam",
+    "Chơi và nghỉ chỉ còn 1h30. Mốc tham khảo cuối tuần ít nhất 2 giờ chơi tự do; WHO khuyến nghị trẻ 5–17 tuổi vận động trung bình 60′/ngày, phần ngoài giờ trường nằm trong ô này."
+   ],
+   "we.choi_nghi.120": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.121": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.180": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.181": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.270": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.271": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.500": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.540": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.570": [
+    "xanh",
+    ""
+   ],
+   "we.choi_nghi.600": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.-30": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.0": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.20": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.45": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.59": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.60": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.61": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.90": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.120": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.121": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.180": [
+    "xanh",
+    ""
+   ],
+   "we.hoc_them.181": [
+    "cam",
+    "Học thêm 3h01, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.270": [
+    "cam",
+    "Học thêm 4h30, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.271": [
+    "do",
+    "Học thêm 4h31, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.500": [
+    "do",
+    "Học thêm 8h20, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.540": [
+    "do",
+    "Học thêm 9h, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.570": [
+    "do",
+    "Học thêm 9h30, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ],
+   "we.hoc_them.600": [
+    "do",
+    "Học thêm 10h, trên 3 giờ trong ngày nghỉ, làm hẹp thời gian phục hồi và chơi tự do. (Mốc mặc định của Pal, chưa phải chuẩn.)"
+   ]
+  }
+ }
+}

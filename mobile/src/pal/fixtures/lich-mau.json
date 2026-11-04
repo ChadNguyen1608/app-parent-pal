@@ -1,0 +1,1200 @@
+{
+ "mau-1-lop-3-can-bang": {
+  "profile": {
+   "tuoi_lop": "8 tuổi, lớp 3"
+  },
+  "plan": {
+   "tong_quan": null,
+   "ngay": {
+    "T2": [
+     {
+      "bat_dau": "06:30",
+      "ket_thuc": "07:15",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "07:30",
+      "ket_thuc": "16:15",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "16:15",
+      "ket_thuc": "16:45",
+      "khoi": "Về nhà, nghỉ phục hồi, ăn nhẹ",
+      "viec": [],
+      "tai": "phuc_hoi"
+     },
+     {
+      "bat_dau": "16:45",
+      "ket_thuc": "17:15",
+      "khoi": "Bài cô giao",
+      "viec": [
+       "Toán"
+      ],
+      "tai": "vua"
+     },
+     {
+      "bat_dau": "17:15",
+      "ket_thuc": "18:00",
+      "khoi": "Vận động, chơi tự do",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:45",
+      "ket_thuc": "19:30",
+      "khoi": "Chơi, xem tivi",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "19:30",
+      "ket_thuc": "20:00",
+      "khoi": "Tắm, vệ sinh",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:00",
+      "ket_thuc": "20:30",
+      "khoi": "Đọc truyện",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:30",
+      "ket_thuc": "21:00",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T3": [
+     {
+      "bat_dau": "06:30",
+      "ket_thuc": "07:15",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "07:30",
+      "ket_thuc": "16:15",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "16:15",
+      "ket_thuc": "16:45",
+      "khoi": "Về nhà, nghỉ phục hồi, ăn nhẹ",
+      "viec": [],
+      "tai": "phuc_hoi"
+     },
+     {
+      "bat_dau": "16:45",
+      "ket_thuc": "17:15",
+      "khoi": "Bài cô giao",
+      "viec": [
+       "Toán"
+      ],
+      "tai": "vua"
+     },
+     {
+      "bat_dau": "17:15",
+      "ket_thuc": "18:00",
+      "khoi": "Vận động, chơi tự do",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:45",
+      "ket_thuc": "19:30",
+      "khoi": "Chơi, xem tivi",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "19:30",
+      "ket_thuc": "20:00",
+      "khoi": "Tắm, vệ sinh",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:00",
+      "ket_thuc": "20:30",
+      "khoi": "Đọc truyện",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:30",
+      "ket_thuc": "21:00",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T4": [
+     {
+      "bat_dau": "06:30",
+      "ket_thuc": "07:15",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "07:30",
+      "ket_thuc": "16:15",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "16:15",
+      "ket_thuc": "16:45",
+      "khoi": "Về nhà, nghỉ phục hồi, ăn nhẹ",
+      "viec": [],
+      "tai": "phuc_hoi"
+     },
+     {
+      "bat_dau": "16:45",
+      "ket_thuc": "17:15",
+      "khoi": "Bài cô giao",
+      "viec": [
+       "Toán"
+      ],
+      "tai": "vua"
+     },
+     {
+      "bat_dau": "17:15",
+      "ket_thuc": "18:00",
+      "khoi": "Vận động, chơi tự do",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:45",
+      "ket_thuc": "19:30",
+      "khoi": "Chơi, xem tivi",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "19:30",
+      "ket_thuc": "20:00",
+      "khoi": "Tắm, vệ sinh",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:00",
+      "ket_thuc": "20:30",
+      "khoi": "Đọc truyện",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:30",
+      "ket_thuc": "21:00",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T5": [
+     {
+      "bat_dau": "06:30",
+      "ket_thuc": "07:15",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "07:30",
+      "ket_thuc": "16:15",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "16:15",
+      "ket_thuc": "16:45",
+      "khoi": "Về nhà, nghỉ phục hồi, ăn nhẹ",
+      "viec": [],
+      "tai": "phuc_hoi"
+     },
+     {
+      "bat_dau": "16:45",
+      "ket_thuc": "17:15",
+      "khoi": "Bài cô giao",
+      "viec": [
+       "Toán"
+      ],
+      "tai": "vua"
+     },
+     {
+      "bat_dau": "17:15",
+      "ket_thuc": "18:00",
+      "khoi": "Vận động, chơi tự do",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:45",
+      "ket_thuc": "19:30",
+      "khoi": "Chơi, xem tivi",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "19:30",
+      "ket_thuc": "20:00",
+      "khoi": "Tắm, vệ sinh",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:00",
+      "ket_thuc": "20:30",
+      "khoi": "Đọc truyện",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:30",
+      "ket_thuc": "21:00",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T6": [
+     {
+      "bat_dau": "06:30",
+      "ket_thuc": "07:15",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "07:30",
+      "ket_thuc": "16:15",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "16:15",
+      "ket_thuc": "16:45",
+      "khoi": "Về nhà, nghỉ phục hồi, ăn nhẹ",
+      "viec": [],
+      "tai": "phuc_hoi"
+     },
+     {
+      "bat_dau": "16:45",
+      "ket_thuc": "17:15",
+      "khoi": "Bài cô giao",
+      "viec": [
+       "Toán"
+      ],
+      "tai": "vua"
+     },
+     {
+      "bat_dau": "17:15",
+      "ket_thuc": "18:00",
+      "khoi": "Vận động, chơi tự do",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:45",
+      "ket_thuc": "19:30",
+      "khoi": "Chơi, xem tivi",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "19:30",
+      "ket_thuc": "20:00",
+      "khoi": "Tắm, vệ sinh",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:00",
+      "ket_thuc": "20:30",
+      "khoi": "Đọc truyện",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:30",
+      "ket_thuc": "21:00",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T7": [
+     {
+      "bat_dau": "07:00",
+      "ket_thuc": "07:45",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "08:30",
+      "ket_thuc": "10:00",
+      "khoi": "Chơi tự do",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "12:00",
+      "ket_thuc": "12:45",
+      "khoi": "Ăn trưa",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "15:00",
+      "ket_thuc": "15:30",
+      "khoi": "Ăn nhẹ",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:30",
+      "ket_thuc": "21:00",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "CN": [
+     {
+      "bat_dau": "07:00",
+      "ket_thuc": "07:45",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "08:30",
+      "ket_thuc": "10:00",
+      "khoi": "Chơi tự do",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "12:00",
+      "ket_thuc": "12:45",
+      "khoi": "Ăn trưa",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "15:00",
+      "ket_thuc": "15:30",
+      "khoi": "Ăn nhẹ",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "20:30",
+      "ket_thuc": "21:00",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ]
+   },
+   "ngoai_le": {}
+  },
+  "budget": null,
+  "activities": []
+ },
+ "mau-2-lop-8-nhieu-loi": {
+  "profile": {
+   "tuoi_lop": "13 tuổi, lớp 8"
+  },
+  "plan": {
+   "tong_quan": null,
+   "ngay": {
+    "T2": [
+     {
+      "bat_dau": "06:00",
+      "ket_thuc": "06:45",
+      "khoi": "Ôn bài Toán",
+      "viec": [
+       "Toán",
+       "Làm đề"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "07:00",
+      "ket_thuc": "11:30",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "14:00",
+      "ket_thuc": "15:30",
+      "khoi": "Làm bài tập tiếng Anh",
+      "viec": [
+       "Từ vựng"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "15:30",
+      "ket_thuc": "16:30",
+      "khoi": "Học Toán",
+      "viec": [
+       "Ôn bài"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "21:00",
+      "ket_thuc": "22:45",
+      "khoi": "Tập bóng rổ",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "23:30",
+      "ket_thuc": "23:59",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T3": [
+     {
+      "bat_dau": "06:00",
+      "ket_thuc": "06:45",
+      "khoi": "Ôn bài Toán",
+      "viec": [
+       "Toán",
+       "Làm đề"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "07:00",
+      "ket_thuc": "11:30",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "14:00",
+      "ket_thuc": "15:30",
+      "khoi": "Làm bài tập tiếng Anh",
+      "viec": [
+       "Từ vựng"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "15:30",
+      "ket_thuc": "16:30",
+      "khoi": "Học Toán",
+      "viec": [
+       "Ôn bài"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "21:00",
+      "ket_thuc": "22:45",
+      "khoi": "Tập bóng rổ",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "23:30",
+      "ket_thuc": "23:59",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T4": [
+     {
+      "bat_dau": "06:00",
+      "ket_thuc": "06:45",
+      "khoi": "Ôn bài Toán",
+      "viec": [
+       "Toán",
+       "Làm đề"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "07:00",
+      "ket_thuc": "11:30",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "14:00",
+      "ket_thuc": "15:30",
+      "khoi": "Làm bài tập tiếng Anh",
+      "viec": [
+       "Từ vựng"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "15:30",
+      "ket_thuc": "16:30",
+      "khoi": "Học Toán",
+      "viec": [
+       "Ôn bài"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "21:00",
+      "ket_thuc": "22:45",
+      "khoi": "Tập bóng rổ",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "23:30",
+      "ket_thuc": "23:59",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T5": [
+     {
+      "bat_dau": "06:00",
+      "ket_thuc": "06:45",
+      "khoi": "Ôn bài Toán",
+      "viec": [
+       "Toán",
+       "Làm đề"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "07:00",
+      "ket_thuc": "11:30",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "14:00",
+      "ket_thuc": "15:30",
+      "khoi": "Làm bài tập tiếng Anh",
+      "viec": [
+       "Từ vựng"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "15:30",
+      "ket_thuc": "16:30",
+      "khoi": "Học Toán",
+      "viec": [
+       "Ôn bài"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "21:00",
+      "ket_thuc": "22:45",
+      "khoi": "Tập bóng rổ",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "23:30",
+      "ket_thuc": "23:59",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T6": [
+     {
+      "bat_dau": "06:00",
+      "ket_thuc": "06:45",
+      "khoi": "Ôn bài Toán",
+      "viec": [
+       "Toán",
+       "Làm đề"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "07:00",
+      "ket_thuc": "11:30",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "14:00",
+      "ket_thuc": "15:30",
+      "khoi": "Làm bài tập tiếng Anh",
+      "viec": [
+       "Từ vựng"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "15:30",
+      "ket_thuc": "16:30",
+      "khoi": "Học Toán",
+      "viec": [
+       "Ôn bài"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "21:00",
+      "ket_thuc": "22:45",
+      "khoi": "Tập bóng rổ",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "23:30",
+      "ket_thuc": "23:59",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T7": [
+     {
+      "bat_dau": "06:00",
+      "ket_thuc": "06:30",
+      "khoi": "Dậy",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "21:00",
+      "ket_thuc": "21:30",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "CN": [
+     {
+      "bat_dau": "06:00",
+      "ket_thuc": "06:30",
+      "khoi": "Dậy",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "21:00",
+      "ket_thuc": "21:30",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ]
+   },
+   "ngoai_le": {}
+  },
+  "budget": null,
+  "activities": []
+ },
+ "mau-3-lop-5-hoat-dong-giai-doan": {
+  "profile": {
+   "tuoi_lop": "10 tuổi, lớp 5"
+  },
+  "plan": {
+   "tong_quan": null,
+   "ngay": {
+    "T2": [
+     {
+      "bat_dau": "06:30",
+      "ket_thuc": "07:15",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "07:30",
+      "ket_thuc": "16:00",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "16:00",
+      "ket_thuc": "16:30",
+      "khoi": "Nghỉ phục hồi",
+      "viec": [],
+      "tai": "phuc_hoi"
+     },
+     {
+      "bat_dau": "16:30",
+      "ket_thuc": "18:00",
+      "khoi": "Ôn bài, làm đề Toán, tiếng Việt",
+      "viec": [
+       "Làm đề"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "19:00",
+      "ket_thuc": "19:30",
+      "khoi": "Xem tivi",
+      "viec": [],
+      "tai": "thap",
+      "man_hinh": true
+     },
+     {
+      "bat_dau": "20:15",
+      "ket_thuc": "20:30",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T3": [
+     {
+      "bat_dau": "06:30",
+      "ket_thuc": "07:15",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "07:30",
+      "ket_thuc": "16:00",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "16:00",
+      "ket_thuc": "16:30",
+      "khoi": "Nghỉ phục hồi",
+      "viec": [],
+      "tai": "phuc_hoi"
+     },
+     {
+      "bat_dau": "16:30",
+      "ket_thuc": "18:00",
+      "khoi": "Ôn bài, làm đề Toán, tiếng Việt",
+      "viec": [
+       "Làm đề"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "19:00",
+      "ket_thuc": "19:30",
+      "khoi": "Xem tivi",
+      "viec": [],
+      "tai": "thap",
+      "man_hinh": true
+     },
+     {
+      "bat_dau": "20:15",
+      "ket_thuc": "20:30",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T4": [
+     {
+      "bat_dau": "06:30",
+      "ket_thuc": "07:15",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "07:30",
+      "ket_thuc": "16:00",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "16:00",
+      "ket_thuc": "16:30",
+      "khoi": "Nghỉ phục hồi",
+      "viec": [],
+      "tai": "phuc_hoi"
+     },
+     {
+      "bat_dau": "16:30",
+      "ket_thuc": "18:00",
+      "khoi": "Ôn bài, làm đề Toán, tiếng Việt",
+      "viec": [
+       "Làm đề"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "19:00",
+      "ket_thuc": "19:30",
+      "khoi": "Xem tivi",
+      "viec": [],
+      "tai": "thap",
+      "man_hinh": true
+     },
+     {
+      "bat_dau": "20:15",
+      "ket_thuc": "20:30",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T5": [
+     {
+      "bat_dau": "06:30",
+      "ket_thuc": "07:15",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "07:30",
+      "ket_thuc": "16:00",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "16:00",
+      "ket_thuc": "16:30",
+      "khoi": "Nghỉ phục hồi",
+      "viec": [],
+      "tai": "phuc_hoi"
+     },
+     {
+      "bat_dau": "16:30",
+      "ket_thuc": "18:00",
+      "khoi": "Ôn bài, làm đề Toán, tiếng Việt",
+      "viec": [
+       "Làm đề"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "19:00",
+      "ket_thuc": "19:30",
+      "khoi": "Xem tivi",
+      "viec": [],
+      "tai": "thap",
+      "man_hinh": true
+     },
+     {
+      "bat_dau": "20:15",
+      "ket_thuc": "20:30",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T6": [
+     {
+      "bat_dau": "06:30",
+      "ket_thuc": "07:15",
+      "khoi": "Dậy, vệ sinh, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "07:30",
+      "ket_thuc": "16:00",
+      "khoi": "Học ở trường",
+      "viec": [],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "16:00",
+      "ket_thuc": "16:30",
+      "khoi": "Nghỉ phục hồi",
+      "viec": [],
+      "tai": "phuc_hoi"
+     },
+     {
+      "bat_dau": "16:30",
+      "ket_thuc": "18:00",
+      "khoi": "Ôn bài, làm đề Toán, tiếng Việt",
+      "viec": [
+       "Làm đề"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "18:00",
+      "ket_thuc": "18:45",
+      "khoi": "Ăn tối",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "19:00",
+      "ket_thuc": "19:30",
+      "khoi": "Xem tivi",
+      "viec": [],
+      "tai": "thap",
+      "man_hinh": true
+     },
+     {
+      "bat_dau": "20:15",
+      "ket_thuc": "20:30",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "T7": [
+     {
+      "bat_dau": "07:00",
+      "ket_thuc": "07:30",
+      "khoi": "Dậy, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "09:00",
+      "ket_thuc": "10:30",
+      "khoi": "Học bơi",
+      "viec": [
+       "Bơi"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "20:30",
+      "ket_thuc": "21:00",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ],
+    "CN": [
+     {
+      "bat_dau": "07:00",
+      "ket_thuc": "07:30",
+      "khoi": "Dậy, ăn sáng",
+      "viec": [],
+      "tai": "thap"
+     },
+     {
+      "bat_dau": "09:00",
+      "ket_thuc": "10:30",
+      "khoi": "Học bơi",
+      "viec": [
+       "Bơi"
+      ],
+      "tai": "cao"
+     },
+     {
+      "bat_dau": "20:30",
+      "ket_thuc": "21:00",
+      "khoi": "Tắt đèn đi ngủ",
+      "viec": [],
+      "tai": "thap"
+     }
+    ]
+   },
+   "ngoai_le": {
+    "T4": {
+     "ly_do": "Đến sớm",
+     "khoi": [
+      {
+       "bat_dau": "06:00",
+       "ket_thuc": "06:30",
+       "khoi": "Dậy, ăn sáng",
+       "viec": [],
+       "tai": "thap"
+      },
+      {
+       "bat_dau": "07:00",
+       "ket_thuc": "16:00",
+       "khoi": "Học ở trường",
+       "viec": [],
+       "tai": "cao"
+      },
+      {
+       "bat_dau": "16:00",
+       "ket_thuc": "16:30",
+       "khoi": "Nghỉ phục hồi",
+       "viec": [],
+       "tai": "phuc_hoi"
+      },
+      {
+       "bat_dau": "16:30",
+       "ket_thuc": "17:00",
+       "khoi": "Học bài",
+       "viec": [
+        "Ôn bài"
+       ],
+       "tai": "cao",
+       "trang_thai": "huy"
+      },
+      {
+       "bat_dau": "20:30",
+       "ket_thuc": "20:45",
+       "khoi": "Tắt đèn đi ngủ",
+       "viec": [],
+       "tai": "thap"
+      }
+     ]
+    }
+   },
+   "giai_doan": {
+    "ten": "Ôn thi",
+    "ly_do": "Thi học kì",
+    "nguon": "bo_me",
+    "tu_ngay": "2026-11-01",
+    "den_ngay": "2026-12-01",
+    "quy_tac_tam": [],
+    "noi_long": [
+     "tong_gio_hoc"
+    ],
+    "trang_thai": "dang_ap_dung"
+   }
+  },
+  "budget": {
+   "wd": {
+    "hoc_nha": 90,
+    "sinh_hoat": 100,
+    "ngu": 560,
+    "man_hinh": 70
+   },
+   "we": {
+    "hoc_nha": 60,
+    "sinh_hoat": 120,
+    "ngu": 600,
+    "man_hinh": 130
+   },
+   "ok": {}
+  },
+  "activities": [
+   {
+    "id": "a1",
+    "ten": "Tiếng Anh",
+    "loai": "hoc_them",
+    "thu": [
+     "T4",
+     "T6"
+    ],
+    "bat_dau": "17:30",
+    "ket_thuc": "19:00",
+    "di_lai": 30
+   },
+   {
+    "id": "a2",
+    "ten": "Bóng đá",
+    "loai": "the_thao",
+    "thu": [
+     "T7"
+    ],
+    "bat_dau": "08:00",
+    "ket_thuc": "10:00",
+    "di_lai": 20
+   }
+  ]
+ }
+}

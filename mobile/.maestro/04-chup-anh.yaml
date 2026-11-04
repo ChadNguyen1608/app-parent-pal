@@ -1,0 +1,10 @@
+# Nút 4: chụp, ảnh phải được thu nhỏ.
+appId: vn.parentpal.app
+---
+- launchApp
+- tapOn: "Phòng thử"
+- tapOn: "4. Chụp ảnh"
+- tapOn: "Chụp"
+- extendedWaitUntil:
+    visible: ".*thu còn.*KB.*"
+    timeout: 20000

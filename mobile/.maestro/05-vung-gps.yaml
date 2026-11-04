@@ -1,0 +1,10 @@
+# Nút 2: đường xin quyền và đặt vùng. Emulator không cấp vị trí ổn định nên chấp nhận lỗi "lấy vị trí"
+# (quyền đã đủ nếu tới được bước đó). Đặt vùng thật và vào/ra vùng: xem mục "test sau" ở guide-test-tu-dong.md.
+appId: vn.parentpal.app
+---
+- launchApp
+- tapOn: "Phòng thử"
+- tapOn: "2. Vùng GPS"
+- extendedWaitUntil:
+    visible: "(Đã đặt vùng bán kính 100 m.*|Lỗi khi lấy vị trí.*)"
+    timeout: 30000

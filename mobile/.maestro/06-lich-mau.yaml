@@ -1,0 +1,19 @@
+# Nạp lịch mẫu lớp 8 (nhiều lỗi): quỹ giờ, Lịch tuần có cảnh báo cân bằng, tab Của con.
+appId: vn.parentpal.app
+---
+- launchApp:
+    clearState: true
+- scrollUntilVisible:
+    element: "Ví dụ lớp 8.*"
+- tapOn: "Ví dụ lớp 8.*"
+- scrollUntilVisible:
+    direction: UP
+    element: "Ở trường và đi lại"
+- assertVisible: "Ngủ"
+- tapOn: "Lịch tuần"
+- assertVisible: "Hồ sơ của con"
+- tapOn: "T2"
+- scrollUntilVisible:
+    element: ".*Lưu ý cân bằng.*"
+- tapOn: "Của con"
+- assertVisible: "Chào con.*"
