@@ -15,7 +15,7 @@ powershell -File scripts/test-loop.ps1 -Apk <đường dẫn file .apk>
 
 Kết quả ở `mobile/test-reports/<giờ>/` (không commit): `report.xml`, log Maestro, `logcat-warn.txt`, `logcat-app.txt`, `man-hinh-cuoi.png`.
 
-APK lấy từ EAS (hồ sơ `preview`) hoặc build trên máy. Luồng nằm ở `mobile/.maestro/`.
+APK lấy từ EAS (hồ sơ `preview`) hoặc build trên máy bằng `powershell -File scripts/build-local.ps1` (khoảng 8 phút sau lần đầu; không tốn lượt EAS). Bản build máy ký bằng khóa debug nên phải `adb uninstall vn.parentpal.app` trước khi cài. Script sao chép dự án sang `C:p` vì đường dẫn build C++ trong thư mục dự án vượt giới hạn 248 ký tự của Windows. Luồng nằm ở `mobile/.maestro/`.
 
 ## Emulator kiểm được
 
