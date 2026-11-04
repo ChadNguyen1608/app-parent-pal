@@ -1,4 +1,6 @@
 # Pal thật qua cầu nối máy dev (cần chạy scripts/pal-bridge.mjs và đã đăng nhập claude). Emulator gọi 10.0.2.2:8787.
+# Maestro chỉ thấy chữ đang trên màn hình, nên chờ Pal bằng cách ngủ: 50 giây cho lượt hỏi lại (Pal mất khoảng 15 giây), 300 giây cho lượt lập lịch (đo được 133 giây và hơn 180 giây).
+# Pal thật thường hỏi lại trước khi lập lịch, nên luồng trả lời thêm một lượt (gõ không dấu vì adb không gõ được dấu).
 appId: vn.parentpal.app
 ---
 - launchApp:
@@ -9,13 +11,18 @@ appId: vn.parentpal.app
 - scrollUntilVisible:
     element: "Dùng ví dụ học sinh lớp 3"
 - tapOn: "Dùng ví dụ học sinh lớp 3"
-- extendedWaitUntil:
-    visible: "Pal đang nghĩ.*"
-    timeout: 10000
-- extendedWaitUntil:
-    notVisible: "Pal đang nghĩ.*"
-    timeout: 300000
-- takeScreenshot: pal-that-tra-loi
+- evalScript: ${ (function () { var t = Date.now(); while (Date.now() - t < 50000) {} })() }
+- scrollUntilVisible:
+    element: "Gửi"
+- tapOn: "Nói hoặc gõ cho Pal.*"
+- inputText: "Con khong benh nen khong di ung. Ngu 21:30 day 6:30. Hay lap lich tuan luon nhe."
+# Bàn phím che nút Gửi: ẩn bàn phím rồi cuộn tới nút.
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Gửi"
+- tapOn: "Gửi"
+- evalScript: ${ (function () { var t = Date.now(); while (Date.now() - t < 300000) {} })() }
+- takeScreenshot: pal-that-tra-loi-2
 - tapOn: "Lịch tuần"
 - assertVisible: ".*lớp 3.*"
 - takeScreenshot: pal-that-lich-tuan

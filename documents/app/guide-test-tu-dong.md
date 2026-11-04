@@ -28,6 +28,7 @@ APK lấy từ EAS (hồ sơ `preview`) hoặc build trên máy. Luồng nằm �
 | Đường xin quyền vị trí; đặt vùng GPS (emulator không cấp vị trí ổn định, nên luồng chấp nhận cả lỗi "lấy vị trí") | `05-vung-gps` |
 | Nạp lịch mẫu: quỹ giờ, Lịch tuần có cảnh báo cân bằng, tab Của con | `06-lich-mau` |
 | Trò chuyện với Pal giả lập: tạo hồ sơ, hoạt động, lịch tuần; hủy ngày ốm chỉ tuần này | `07-tro-chuyen` |
+| Pal thật qua cầu nối máy dev: hỏi lại, rồi lập hồ sơ và lịch tuần (cần `node scripts/pal-bridge.mjs` chạy trong terminal đã đăng nhập claude) | `08-pal-that` |
 | Lỗi chạy, lỗi JS, quyền thiếu | logcat |
 
 Quyền được cấp bằng `adb shell pm grant`, nên hộp thoại xin quyền không được test ở đây.
@@ -37,6 +38,14 @@ Quyền được cấp bằng `adb shell pm grant`, nên hộp thoại xin quy�
 - `launchApp` mặc định ép dừng app, và Android xóa thông báo của app bị ép dừng. Muốn kiểm thông báo thì dùng `launchApp` với `stopApp: false`.
 - Maestro chỉ thấy chữ đang nằm trong màn hình và so khớp cả đoạn chữ của một ô (nên dùng `.*`). Phần dưới màn hình cần `scrollUntilVisible`.
 - Thỉnh thoảng Maestro báo `Connection timed out` khi mở app: chạy lại.
+
+## Pal thật qua cầu nối (đo ngày 2026-11-04)
+
+- Lượt hỏi đáp thường: 12 đến 21 giây. Lượt lập hồ sơ và lịch tuần: 133 đến 146 giây, có lần quá 180 giây; Pal trả khoảng 26.000 đến 30.000 ký tự JSON. Đây là độ trễ cần giảm trước khi cho người dùng thật dùng (rút gọn đầu ra, lập lịch theo từng ngày, hoặc truyền dần).
+- Pal thật hỏi lại (bệnh nền, giờ ngủ dậy) trước khi lập lịch, nên luồng trả lời thêm một lượt.
+- Cầu nối phải chạy trong terminal của chính bạn. Chạy từ trong một phiên Claude Code khác sẽ kế thừa biến môi trường của phiên đó và báo lỗi OAuth; cầu nối đã tự bỏ các biến CLAUDE*, ANTHROPIC*.
+- Bản APK cần cho phép HTTP thường (đã bật cho mọi hồ sơ trừ production) thì app mới gọi được http://10.0.2.2:8787.
+- Maestro: chờ Pal bằng ngủ cố định vì chữ "Pal đang nghĩ…" có thể nằm ngoài màn hình; bàn phím che nút Gửi nên phải `hideKeyboard` rồi cuộn tới nút.
 
 ## Chỉ test được trên máy thật (ghi lại để test sau)
 

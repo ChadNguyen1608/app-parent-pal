@@ -18,7 +18,7 @@ const arg = (name, def) => {
 const PORT = +arg('--port', 8787);
 const HOST = process.argv.includes('--lan') ? '0.0.0.0' : '127.0.0.1';
 const MODEL = arg('--model', '');
-const TIMEOUT_MS = +arg('--timeout', 180000);
+const TIMEOUT_MS = +arg('--timeout', 420000);
 
 // Tìm lệnh claude: --claude <đường dẫn>, biến CLAUDE_BIN, bản npm toàn cục (khi shim trong PATH hỏng), rồi lệnh claude trong PATH.
 function findClaude() {
