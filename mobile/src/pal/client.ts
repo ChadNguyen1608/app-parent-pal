@@ -3,7 +3,7 @@
 //  - bridge: máy dev chạy scripts/pal-bridge.mjs, gọi Claude Code (claude -p) bằng gói của người dev. Chỉ để dev thử.
 //  - (bước sau) pal-chat: Edge Function của Supabase, có ẩn danh, giới hạn lượt, lớp an toàn
 import type { AppState } from './appstate.ts';
-import { buildPrompt } from './prompt.ts';
+import { buildUserPrompt, SYSTEM_PROMPT } from './prompt.ts';
 import { mockReply } from './mock.ts';
 import type { PalReply } from './reply.ts';
 
@@ -46,7 +46,8 @@ export async function askPal(state: AppState, now = new Date()): Promise<PalRepl
     res = await fetch(BRIDGE_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: buildPrompt(state, now) }),
+      // system (luật cố định) tách riêng để cầu nối dùng bộ nhớ đệm của API; prompt là phần đổi mỗi lượt
+      body: JSON.stringify({ system: SYSTEM_PROMPT, prompt: buildUserPrompt(state, now) }),
     });
   } catch (e) {
     throw new PalError('loi_mang', 'Không nối được cầu nối Pal (' + BRIDGE_URL + '). Đã chạy scripts/pal-bridge.mjs chưa?');

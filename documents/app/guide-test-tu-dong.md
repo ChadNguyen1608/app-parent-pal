@@ -47,6 +47,17 @@ Quyền được cấp bằng `adb shell pm grant`, nên hộp thoại xin quy�
 - Bản APK cần cho phép HTTP thường (đã bật cho mọi hồ sơ trừ production) thì app mới gọi được http://10.0.2.2:8787.
 - Maestro: chờ Pal bằng ngủ cố định vì chữ "Pal đang nghĩ…" có thể nằm ngoài màn hình; bàn phím che nút Gửi nên phải `hideKeyboard` rồi cuộn tới nút.
 
+## Pal thật bằng API key (Haiku) và tiết kiệm token
+
+- Đặt key vào file `key/anthropic-api-key.txt` (thư mục `key/` không vào git) hoặc biến `ANTHROPIC_API_KEY`, rồi chạy `node scripts/pal-bridge.mjs`. Có key thì cầu nối gọi thẳng API với model `claude-haiku-5-5` (đổi bằng `--model`, mức nỗ lực bằng `--effort low|medium|high`, mặc định low); không có key thì dùng `claude -p`. **Key không bao giờ nằm trong app**: file APK giải nén được, lộ key là người khác dùng tiền của bạn.
+- Mỗi lượt cầu nối in số token vào, ghi cache, đọc cache, ra và chi phí ước tính. Haiku 5.5 giá 0,10 đô la / 1 triệu token vào, 0,50 đô la / 1 triệu token ra (dưới 100K token vào); không nhận `temperature` khác mặc định.
+- Đã giảm token: (1) luật cố định (khoảng 20.000 ký tự) tách thành `system` có `cache_control`, từ lượt hai tính khoảng 10% giá; (2) lịch gửi lên bỏ trường rỗng, nhỏ hơn khoảng 30%; (3) Pal được phép gộp các ngày giống hệt nhau trong một mục (`"ngay":["T2","T3"]`) và bỏ trường rỗng, vì đầu ra là phần tốn nhất; (4) hội thoại gửi 10 tin gần nhất thay vì 14.
+- Đã đo thật (2026-11-05, Haiku 5.5, mức nỗ lực low, app bản mới trên emulator):
+  - Lượt chat: 13.225 token vào, 515 ra, 3 giây, khoảng 0,0016 đô la.
+  - Lượt lập lịch lớp 3: 13.717 token vào, 2.749 ra, 10 giây, khoảng 0,0027 đô la (trước đây qua Claude Code: 133–146 giây, 26–30 nghìn ký tự ra). Cờ Lịch tuần có "lớp 3": luồng 08 qua.
+  - Haiku 5.5 bật suy nghĩ mặc định: lượt lập lịch từng dùng hết 8.000 token ra cho suy nghĩ, không ra chữ nào. Cầu nối nay tắt suy nghĩ mặc định (`--think on` để bật lại).
+  - Bộ nhớ đệm chưa chạy: log luôn báo ghi cache 0, đọc cache 0, có thể do phần system chưa đủ dài tối thiểu để API lưu đệm. Chi phí đã rất thấp nên chưa gấp; xem lại khi chuyển sang Edge Function.
+
 ## Chỉ test được trên máy thật (ghi lại để test sau)
 
 | Mục | Vì sao emulator không đo được | Cách test trên máy thật | Bước |
