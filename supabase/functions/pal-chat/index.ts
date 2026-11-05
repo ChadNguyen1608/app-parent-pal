@@ -5,8 +5,8 @@
 // kiểm sha256; sai hash thì từ chối chạy. Đổi luật: chạy scripts/gen-function-rules.mjs, commit, push,
 // rồi sửa hai hằng số dưới đây và triển khai lại hàm.
 const RULES_URL =
-  'https://raw.githubusercontent.com/ChadNguyen1608/app-parent-pal/b235d540433984eb507f0daf5faf18fe85f77e09/supabase/functions/pal-chat/rules.txt';
-const RULES_SHA256 = 'ac55ff1ced2eea4da8c855d88d565dea43052997a918e258afe0470d5e758fdb';
+  'https://raw.githubusercontent.com/ChadNguyen1608/app-parent-pal/08a2f9500f9a81bde2335b8e095c9da21dd50e18/supabase/functions/pal-chat/rules.txt';
+const RULES_SHA256 = '4dbf9ea3f3c58cb3586b411a7697073090f012bc823a2924891394374dc6f62b';
 
 const MODEL = 'claude-haiku-5-5';
 const MAX_TOKENS = 8000;
