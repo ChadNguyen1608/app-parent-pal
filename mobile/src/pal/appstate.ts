@@ -13,7 +13,7 @@ export type AppState = PalState & {
   wx: Record<string, string>;
   proposals: Proposal[];
   messages: ChatMsg[];
-  palMode: 'mock' | 'bridge';
+  palMode: 'mock' | 'bridge' | 'cloud';
   actNew: string[];
   actDirty: boolean;
   changed: Partial<Record<Day, number[]>>;

@@ -57,12 +57,15 @@ export function ChatCard() {
       <H2>💬 Trò chuyện với Pal</H2>
       <Row>
         <Btn small primary={state.palMode === 'mock'} label="Pal giả lập" onPress={() => update((d) => { d.palMode = 'mock'; })} />
+        <Btn small primary={state.palMode === 'cloud'} label="Pal thật (máy chủ)" onPress={() => update((d) => { d.palMode = 'cloud'; })} />
         <Btn small primary={state.palMode === 'bridge'} label="Cầu nối máy dev" onPress={() => update((d) => { d.palMode = 'bridge'; })} />
       </Row>
       <Muted style={{ marginTop: 6 }}>
         {state.palMode === 'mock'
           ? 'Pal giả lập: câu trả lời viết sẵn, chỉ để thử tính năng. Chưa phải Pal thật.'
-          : 'Cầu nối máy dev: cần chạy scripts/pal-bridge.mjs trên máy tính. Chỉ để dev thử.'}
+          : state.palMode === 'cloud'
+            ? 'Pal thật qua máy chủ: cần có mạng. Không cần cắm máy tính.'
+            : 'Cầu nối máy dev: cần chạy scripts/pal-bridge.mjs trên máy tính. Chỉ để dev thử.'}
       </Muted>
       <View style={{ marginTop: 10, gap: 8 }}>
         {state.messages.length === 0 && (

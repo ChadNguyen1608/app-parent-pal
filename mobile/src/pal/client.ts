@@ -1,10 +1,12 @@
 // Cách app hỏi Pal. Ba cách trả lời cùng một giao diện:
 //  - mock:   câu trả lời viết sẵn, để test tính năng không cần mạng, không tốn chi phí
 //  - bridge: máy dev chạy scripts/pal-bridge.mjs, gọi Claude Code (claude -p) bằng gói của người dev. Chỉ để dev thử.
-//  - (bước sau) pal-chat: Edge Function của Supabase, có ẩn danh, giới hạn lượt, lớp an toàn
+//  - cloud:  pal-chat, Edge Function của Supabase: giữ khóa Claude và luật, đăng nhập ẩn danh, giới hạn lượt. Không cần USB.
 import type { AppState } from './appstate.ts';
 import { buildUserPrompt, SYSTEM_PROMPT } from './prompt.ts';
 import { mockReply } from './mock.ts';
+import { clearSession, getAccessToken, PAL_CHAT_URL, SUPABASE_PUBLISHABLE_KEY } from './cloud.ts';
+import { PalError } from './palerror.ts';
 import type { PalReply } from './reply.ts';
 
 export type PalMode = AppState['palMode'];
@@ -15,13 +17,7 @@ export const BRIDGE_URL = (typeof process !== 'undefined' && process.env?.EXPO_P
 /** Quá thời gian này thì báo lỗi thay vì quay mãi. */
 export const PAL_TIMEOUT_MS = 120000;
 
-export class PalError extends Error {
-  code: 'loi_mang' | 'invalid_json' | 'bridge_loi';
-  constructor(code: 'loi_mang' | 'invalid_json' | 'bridge_loi', message: string) {
-    super(message);
-    this.code = code;
-  }
-}
+export { PalError };
 
 /** Lấy đối tượng JSON từ văn bản của mô hình (chịu được code fence và chữ thừa quanh JSON). */
 export function parseReply(text: string): PalReply {
@@ -44,6 +40,7 @@ export async function askPal(state: AppState, now = new Date()): Promise<PalRepl
     const last = [...state.messages].reverse().find((m) => m.role === 'user');
     return mockReply(last?.content ?? '', state);
   }
+  if (state.palMode === 'cloud') return parseReply(await askCloud(buildUserPrompt(state, now)));
   let res: Response;
   try {
     res = await fetch(BRIDGE_URL, {
@@ -61,4 +58,31 @@ export async function askPal(state: AppState, now = new Date()): Promise<PalRepl
   const body = (await res.json().catch(() => null)) as { text?: string; error?: string } | null;
   if (!res.ok || !body || body.error) throw new PalError('bridge_loi', body?.error || 'Cầu nối lỗi HTTP ' + res.status);
   return parseReply(body.text ?? '');
+}
+
+/** Gọi pal-chat. Máy chủ tự gắn luật nên chỉ gửi phần đổi mỗi lượt. Mã hết hạn thì đăng nhập lại và thử một lần nữa. */
+async function askCloud(prompt: string): Promise<string> {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const token = await getAccessToken(attempt > 0);
+    let res: Response;
+    try {
+      res = await fetch(PAL_CHAT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token, apikey: SUPABASE_PUBLISHABLE_KEY },
+        body: JSON.stringify({ prompt }),
+        signal: AbortSignal.timeout(PAL_TIMEOUT_MS),
+      });
+    } catch (e) {
+      const timedOut = e instanceof Error && (e.name === 'TimeoutError' || e.name === 'AbortError');
+      throw new PalError('loi_mang', timedOut ? 'Pal không trả lời sau ' + PAL_TIMEOUT_MS / 1000 + ' giây. Thử lại nhé.' : 'Không nối được máy chủ Pal. Kiểm tra mạng rồi thử lại.');
+    }
+    if (res.status === 401 && attempt === 0) {
+      await clearSession();
+      continue;
+    }
+    const body = (await res.json().catch(() => null)) as { text?: string; error?: string } | null;
+    if (!res.ok || !body || body.error) throw new PalError('bridge_loi', body?.error || 'Máy chủ Pal lỗi HTTP ' + res.status);
+    return body.text ?? '';
+  }
+  throw new PalError('bridge_loi', 'Đăng nhập máy chủ Pal không thành công');
 }
