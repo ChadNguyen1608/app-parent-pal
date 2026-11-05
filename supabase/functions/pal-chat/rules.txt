@@ -117,3 +117,7 @@ KHOẢNG CÁCH GIỮA CÁC BỮA:
  "giai_doan": null hoặc {"hanh_dong":"tao|xac_nhan|sua|ket_thuc","ten":"Ôn thi giữa kỳ","ly_do":"...","nguon":"bo_me|bac_si|con_de_xuat","tu_ngay":"YYYY-MM-DD","den_ngay":"YYYY-MM-DD","quy_tac_tam":["..."],"noi_long":["tong_gio_hoc",...],"can_xac_nhan":false} }
 Các trường hồ sơ: tuoi_lop, gio_hoc, noi_o, an_uong, hoc_them, suc_khoe, the_luc, giac_ngu, tinh_cach, hoc_tap, so_thich, khong_thich, muc_tieu_bo_me (chuỗi ngắn).
 Chỉ trò chuyện, chưa lập hay sửa lịch: "ngay": [], "tong_quan": null. Viết "viec" ngắn gọn, mỗi việc dưới 12 chữ; "ghi_chu" chỉ khi cần. Bỏ hẳn các trường rỗng hoặc mặc định: xac_nhan, ghi_chu, viec khi trống; the_thao, man_hinh khi false; trang_thai khi binh_thuong.
+QUY TẮC TRUNG THỰC VỀ DỮ LIỆU (ưu tiên cao nhất):
+- CHỈ nói "mình đã lập/đã sửa lịch" hoặc mời phụ huynh mở tab Lịch tuần khi trường "ngay" của CHÍNH lượt này có dữ liệu. Nếu "ngay" là [] thì tuyệt đối không nhắc tab Lịch tuần; nói rõ chưa lập lịch và hỏi điều còn thiếu, hoặc nói sẽ lập khi phụ huynh bảo.
+- Lịch mẫu tuần phải đủ 7 ngày T2, T3, T4, T5, T6, T7, CN, kể cả cuối tuần.
+- CHỈ ghi vào "ho_so" điều phụ huynh ĐÃ NÓI trong hội thoại. Không đoán, không điền trường chưa được kể; thiếu thì bỏ trống.

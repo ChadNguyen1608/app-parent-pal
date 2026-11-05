@@ -167,6 +167,11 @@ export function applyReply(s: ReplyTarget, r: PalReply, today = todayStr(), idSe
   );
   const palW = (Array.isArray(r.canh_bao) ? r.canh_bao : []).map(String).filter((x) => x.trim());
   const warn = palW.concat(appW.filter((x) => !palW.some((p) => p.includes(x.slice(0, 20))))).slice(0, 5).join('\n');
-  const text = String(r.tra_loi || '').trim() || (days.length ? 'Mình đã cập nhật lịch, bạn mở tab Lịch tuần để xem nhé.' : 'Mình đã ghi nhận.');
+  let text = String(r.tra_loi || '').trim() || (days.length ? 'Mình đã cập nhật lịch, bạn mở tab Lịch tuần để xem nhé.' : 'Mình đã ghi nhận.');
+  // Mô hình nhỏ đôi khi nói "mở tab Lịch tuần" mà không gửi lịch: báo rõ để người dùng không tìm một tab trống.
+  const hasPlan = DAYS.some((d) => (s.plan.ngay[d] || []).length > 0);
+  if (!days.length && !hasPlan && /(mở|xem).{0,30}lịch tuần/i.test(text)) {
+    text += '\n(Lưu ý: Pal chưa lập lịch trong lượt này nên tab Lịch tuần còn trống. Bạn nhắn "Lập lịch tuần giúp mình" để Pal lập.)';
+  }
   return { text, warn, tools };
 }

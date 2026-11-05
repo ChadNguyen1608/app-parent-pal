@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import { blank } from './appstate.ts';
 import { parseReply, PalError } from './client.ts';
 import { mockReply } from './mock.ts';
-import { APP_OUTPUT_FORMAT, buildPrompt, buildUserPrompt, compactBlock, stateForPrompt, SYSTEM_PROMPT } from './prompt.ts';
+import { APP_OUTPUT_FORMAT, APP_RULES, buildPrompt, buildUserPrompt, compactBlock, stateForPrompt, SYSTEM_PROMPT } from './prompt.ts';
 import { OUTPUT_FORMAT } from './prompt.generated.ts';
 import { applyReply, expandDays, normBlocks } from './reply.ts';
 import { DAYS } from './types.ts';
@@ -139,4 +139,19 @@ test('prompt tách phần cố định (system) khỏi phần đổi mỗi lư�
   assert.ok(!SYSTEM_PROMPT.includes('TRẠNG THÁI HIỆN TẠI'));
   assert.ok(a.includes('Phụ huynh: lớp 3'));
   assert.equal(buildPrompt(s, new Date(2026, 10, 4)), SYSTEM_PROMPT + '\n\n' + a);
+});
+
+test('Pal nói mở tab Lịch tuần mà không có lịch: app báo rõ; có lịch thì giữ nguyên lời Pal', () => {
+  const s = blank();
+  const claim = { tra_loi: 'Mình sẽ xếp lịch cho con. Bạn mở tab Lịch tuần để xem nhé.', ngay: [] };
+  const a = applyReply(s, claim, TODAY, 1);
+  assert.match(a.text, /chưa lập lịch/);
+  say(s, 'lớp 3');
+  const b = applyReply(s, claim, TODAY, 1);
+  assert.doesNotMatch(b.text, /chưa lập lịch/, 'đã có lịch thì không cảnh báo');
+});
+
+test('luật bổ sung của app nằm cuối system prompt', () => {
+  assert.ok(SYSTEM_PROMPT.endsWith(APP_RULES));
+  assert.match(APP_RULES, /"ngay" là \[\]/);
 });

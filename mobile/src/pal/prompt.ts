@@ -76,8 +76,16 @@ export function stateForPrompt(s: AppState, now = new Date()): string {
 export const historyText = (s: AppState) =>
   s.messages.slice(-10).map((m) => (m.role === 'user' ? 'Phụ huynh: ' : 'Pal: ') + m.content).join('\n');
 
+/** Luật bổ sung của app, đặt cuối để ưu tiên: chặn hai lỗi mô hình nhỏ hay mắc (đo thật 06/11/2026). */
+export const APP_RULES = [
+  'QUY TẮC TRUNG THỰC VỀ DỮ LIỆU (ưu tiên cao nhất):',
+  '- CHỈ nói "mình đã lập/đã sửa lịch" hoặc mời phụ huynh mở tab Lịch tuần khi trường "ngay" của CHÍNH lượt này có dữ liệu. Nếu "ngay" là [] thì tuyệt đối không nhắc tab Lịch tuần; nói rõ chưa lập lịch và hỏi điều còn thiếu, hoặc nói sẽ lập khi phụ huynh bảo.',
+  '- Lịch mẫu tuần phải đủ 7 ngày T2, T3, T4, T5, T6, T7, CN, kể cả cuối tuần.',
+  '- CHỈ ghi vào "ho_so" điều phụ huynh ĐÃ NÓI trong hội thoại. Không đoán, không điền trường chưa được kể; thiếu thì bỏ trống.',
+].join('\n');
+
 /** Phần cố định giữa các lượt (luật và định dạng): đặt làm system để API lưu bộ nhớ đệm, từ lượt thứ hai chỉ tính khoảng 10% giá. */
-export const SYSTEM_PROMPT = [RULES, ACT_RULES, LIFE_RULES, APP_OUTPUT_FORMAT].join('\n');
+export const SYSTEM_PROMPT = [RULES, ACT_RULES, LIFE_RULES, APP_OUTPUT_FORMAT, APP_RULES].join('\n');
 
 /** Phần thay đổi mỗi lượt: trạng thái và hội thoại gần đây. */
 export function buildUserPrompt(s: AppState, now = new Date()): string {
