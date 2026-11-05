@@ -3,7 +3,7 @@ import * as Device from 'expo-device';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 
-import { saveSched } from './db';
+import { clearEvents, clearSched, saveSched } from './db';
 import { GEOFENCE_RADIUS_M, GEOFENCE_TASK } from './geofence-task';
 import { logEvent } from './log';
 
@@ -192,4 +192,23 @@ async function checkReceipt(id: string) {
     }
   }
   await logEvent({ kind: 'day', label: 'Chưa có biên nhận sau 60 giây', ref: `receipt:${id}` });
+}
+
+/** Xóa sạch để test lại từ đầu: nhắc đã hẹn, thông báo trong khay, vùng GPS, nhật ký. Dữ liệu Pal do màn hình gọi xóa riêng. */
+export async function resetLabData(): Promise<string> {
+  const notes: string[] = [];
+  try {
+    await Notifications.cancelAllScheduledNotificationsAsync();
+    await Notifications.dismissAllNotificationsAsync();
+  } catch {
+    notes.push('không hủy được thông báo');
+  }
+  try {
+    if (await Location.hasStartedGeofencingAsync(GEOFENCE_TASK)) await Location.stopGeofencingAsync(GEOFENCE_TASK);
+  } catch {
+    // chưa có quyền nền thì cũng chưa có vùng nào đang chạy
+  }
+  clearEvents();
+  clearSched();
+  return notes.length ? 'Đã xóa, trừ: ' + notes.join(', ') : 'Đã xóa dữ liệu thử.';
 }
