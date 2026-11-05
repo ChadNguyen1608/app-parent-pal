@@ -1,4 +1,4 @@
-import { RecordingPresets, requestRecordingPermissionsAsync, setAudioModeAsync, useAudioRecorder } from 'expo-audio';
+import { RecordingPresets, requestRecordingPermissionsAsync, setAudioModeAsync, useAudioPlayer, useAudioRecorder } from 'expo-audio';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -39,6 +39,8 @@ export function LabScreen() {
   const [camPermission, requestCamPermission] = useCameraPermissions();
   const camRef = useRef<CameraView>(null);
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+  const player = useAudioPlayer(null);
+  const [recUri, setRecUri] = useState<string | null>(null);
 
   const refresh = useCallback(() => setEvents(listEvents()), []);
 
@@ -79,7 +81,18 @@ export function LabScreen() {
       kind: 'ghiam',
       label: `Ghi âm xong (${(took / 1000).toFixed(1)} giây)${recorder.uri ? '' : ', không có file'}`,
     });
-    return recorder.uri ? 'Ghi âm xong.' : 'Ghi âm xong nhưng không có file.';
+    setRecUri(recorder.uri);
+    return recorder.uri ? 'Ghi âm xong. Bấm "Nghe lại" để kiểm tra chất lượng.' : 'Ghi âm xong nhưng không có file.';
+  };
+
+  const playBack = async () => {
+    if (!recUri) return;
+    await setAudioModeAsync({ allowsRecording: false, playsInSilentMode: true });
+    player.replace({ uri: recUri });
+    await player.seekTo(0);
+    player.play();
+    await logEvent({ kind: 'ghiam', label: 'Nghe lại bản ghi âm' });
+    refresh();
   };
 
   const openCamera = async () => {
@@ -160,6 +173,12 @@ export function LabScreen() {
           </Pressable>
         ))}
 
+        {recUri !== null && (
+          <Pressable style={[styles.btn, styles.btnGreen]} onPress={() => void playBack()}>
+            <Text style={styles.btnTitle}>Nghe lại bản ghi âm</Text>
+          </Pressable>
+        )}
+
         {message !== '' && <Text style={styles.message}>{message}</Text>}
 
         <View style={styles.logHeader}>
@@ -201,6 +220,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   btn: { backgroundColor: '#208AEF', borderRadius: 12, padding: 14 },
   btnPressed: { opacity: 0.6 },
+  btnGreen: { backgroundColor: '#2E9E5B' },
   btnTitle: { color: '#fff', fontSize: 17, fontWeight: '600' },
   btnHint: { color: '#dbeeff', marginTop: 2 },
   btnGhost: { backgroundColor: '#eee', justifyContent: 'center' },
