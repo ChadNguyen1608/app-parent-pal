@@ -1,14 +1,16 @@
-import { RecordingPresets, requestRecordingPermissionsAsync, setAudioModeAsync, useAudioRecorder } from 'expo-audio';
+import { RecordingPresets, requestRecordingPermissionsAsync, setAudioModeAsync, useAudioPlayer, useAudioRecorder } from 'expo-audio';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { blank, usePal } from '@/pal/store';
+
 import { clearEvents, listEvents, type LabEvent } from './db';
 import { logEvent } from './log';
 import { startNotificationLogging } from './notification-log';
 import { compressPhoto } from './photo';
-import { setupNotifications, testGeofence, testPush, testReminder } from './tests';
+import { resetLabData, setupNotifications, testGeofence, testPush, testReminder } from './tests';
 
 const RECORD_SECONDS = 5;
 const KIND_NAMES: Record<string, string> = {
@@ -35,10 +37,14 @@ export function LabScreen() {
   const [events, setEvents] = useState<LabEvent[]>([]);
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
+  const { replace } = usePal();
   const [cameraOn, setCameraOn] = useState(false);
   const [camPermission, requestCamPermission] = useCameraPermissions();
   const camRef = useRef<CameraView>(null);
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+  const player = useAudioPlayer(null);
+  const [recUri, setRecUri] = useState<string | null>(null);
 
   const refresh = useCallback(() => setEvents(listEvents()), []);
 
@@ -79,7 +85,26 @@ export function LabScreen() {
       kind: 'ghiam',
       label: `Ghi âm xong (${(took / 1000).toFixed(1)} giây)${recorder.uri ? '' : ', không có file'}`,
     });
-    return recorder.uri ? 'Ghi âm xong.' : 'Ghi âm xong nhưng không có file.';
+    setRecUri(recorder.uri);
+    return recorder.uri ? 'Ghi âm xong. Bấm "Nghe lại" để kiểm tra chất lượng.' : 'Ghi âm xong nhưng không có file.';
+  };
+
+  const playBack = async () => {
+    if (!recUri) return;
+    await setAudioModeAsync({ allowsRecording: false, playsInSilentMode: true });
+    player.replace({ uri: recUri });
+    await player.seekTo(0);
+    player.play();
+    await logEvent({ kind: 'ghiam', label: 'Nghe lại bản ghi âm' });
+    refresh();
+  };
+
+  const resetAll = async () => {
+    setConfirmReset(false);
+    replace(blank());
+    setRecUri(null);
+    setMessage(await resetLabData());
+    refresh();
   };
 
   const openCamera = async () => {
@@ -160,7 +185,31 @@ export function LabScreen() {
           </Pressable>
         ))}
 
+        {recUri !== null && (
+          <Pressable style={[styles.btn, styles.btnGreen]} onPress={() => void playBack()}>
+            <Text style={styles.btnTitle}>Nghe lại bản ghi âm</Text>
+          </Pressable>
+        )}
+
         {message !== '' && <Text style={styles.message}>{message}</Text>}
+
+        <View style={styles.resetBox}>
+          {!confirmReset ? (
+            <Pressable style={[styles.btn, styles.btnDanger]} onPress={() => setConfirmReset(true)}>
+              <Text style={styles.btnTitle}>Xóa dữ liệu để test lại</Text>
+              <Text style={styles.btnHint}>Xóa lịch, hồ sơ, chat với Pal, nhật ký, nhắc đã hẹn và vùng GPS</Text>
+            </Pressable>
+          ) : (
+            <View style={styles.row}>
+              <Pressable style={[styles.btn, styles.btnDanger, styles.flex]} onPress={() => void resetAll()}>
+                <Text style={styles.btnTitle}>Xác nhận xóa hết</Text>
+              </Pressable>
+              <Pressable style={[styles.btn, styles.btnGhost]} onPress={() => setConfirmReset(false)}>
+                <Text style={styles.btnGhostText}>Hủy</Text>
+              </Pressable>
+            </View>
+          )}
+        </View>
 
         <View style={styles.logHeader}>
           <Text style={styles.logTitle}>Nhật ký sự kiện</Text>
@@ -201,6 +250,9 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   btn: { backgroundColor: '#208AEF', borderRadius: 12, padding: 14 },
   btnPressed: { opacity: 0.6 },
+  btnGreen: { backgroundColor: '#2E9E5B' },
+  btnDanger: { backgroundColor: '#C0392B' },
+  resetBox: { marginTop: 8 },
   btnTitle: { color: '#fff', fontSize: 17, fontWeight: '600' },
   btnHint: { color: '#dbeeff', marginTop: 2 },
   btnGhost: { backgroundColor: '#eee', justifyContent: 'center' },

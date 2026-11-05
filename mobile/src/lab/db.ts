@@ -95,3 +95,7 @@ export function listEvents(limit = 100): LabEvent[] {
 export function clearEvents() {
   db.runSync('DELETE FROM lab_events');
 }
+
+export function clearSched() {
+  db.runSync('DELETE FROM lab_sched');
+}

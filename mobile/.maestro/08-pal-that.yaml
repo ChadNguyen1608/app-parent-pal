@@ -11,7 +11,7 @@ appId: vn.parentpal.app
 - scrollUntilVisible:
     element: "Dùng ví dụ học sinh lớp 3"
 - tapOn: "Dùng ví dụ học sinh lớp 3"
-- evalScript: ${ (function () { var t = Date.now(); while (Date.now() - t < 50000) {} })() }
+- evalScript: ${ (function () { var t = Date.now(); while (Date.now() - t < 20000) {} })() }
 - scrollUntilVisible:
     element: "Gửi"
 - tapOn: "Nói hoặc gõ cho Pal.*"
@@ -21,7 +21,7 @@ appId: vn.parentpal.app
 - scrollUntilVisible:
     element: "Gửi"
 - tapOn: "Gửi"
-- evalScript: ${ (function () { var t = Date.now(); while (Date.now() - t < 300000) {} })() }
+- evalScript: ${ (function () { var t = Date.now(); while (Date.now() - t < 60000) {} })() }
 - takeScreenshot: pal-that-tra-loi-2
 - tapOn: "Lịch tuần"
 - assertVisible: ".*lớp 3.*"

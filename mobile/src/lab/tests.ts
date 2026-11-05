@@ -3,7 +3,7 @@ import * as Device from 'expo-device';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 
-import { saveSched } from './db';
+import { clearEvents, clearSched, saveSched } from './db';
 import { GEOFENCE_RADIUS_M, GEOFENCE_TASK } from './geofence-task';
 import { logEvent } from './log';
 
@@ -40,6 +40,15 @@ export async function testReminder(): Promise<string> {
     await logEvent({ kind: 'nhac', label: 'Chưa được cấp quyền thông báo' });
     return 'Chưa được cấp quyền thông báo.';
   }
+  // Không có quyền báo thức chính xác, Android hẹn gần đúng và có thể trễ cả chục giây (đo thật: +45 giây).
+  let exact = 'không rõ';
+  try {
+    let ex = await Notifications.getExactAlarmPermissionsAsync();
+    if (!ex.granted) ex = await Notifications.requestExactAlarmPermissionsAsync();
+    exact = ex.granted ? 'có' : 'không';
+  } catch (e) {
+    exact = 'lỗi: ' + (e instanceof Error ? e.message : String(e)).slice(0, 60);
+  }
   const scheduledAt = Date.now() + REMINDER_DELAY_S * 1000;
   const notifId = await Notifications.scheduleNotificationAsync({
     content: {
@@ -55,17 +64,14 @@ export async function testReminder(): Promise<string> {
     },
   });
   saveSched(notifId, 'nhac', scheduledAt);
-  await logEvent({ kind: 'nhac', label: `Đã hẹn nhắc lúc ${new Date(scheduledAt).toTimeString().slice(0, 8)} (sau ${REMINDER_DELAY_S} giây)` });
-  return `Đã hẹn nhắc sau ${REMINDER_DELAY_S} giây. Khóa máy để thử.`;
+  await logEvent({ kind: 'nhac', label: `Đã hẹn nhắc lúc ${new Date(scheduledAt).toTimeString().slice(0, 8)} (sau ${REMINDER_DELAY_S} giây), quyền báo thức chính xác: ${exact}` });
+  return exact === 'có'
+    ? `Đã hẹn nhắc sau ${REMINDER_DELAY_S} giây. Khóa máy để thử.`
+    : `Đã hẹn nhắc sau ${REMINDER_DELAY_S} giây nhưng chưa có quyền báo thức chính xác (${exact}), có thể trễ. Bật "Báo thức & lời nhắc" cho app trong cài đặt rồi thử lại.`;
 }
 
 /** Nút 2: bật hoặc tắt một vùng bán kính 100 m quanh vị trí hiện tại. Không lưu toạ độ. */
 export async function testGeofence(): Promise<string> {
-  if (await Location.hasStartedGeofencingAsync(GEOFENCE_TASK)) {
-    await Location.stopGeofencingAsync(GEOFENCE_TASK);
-    await logEvent({ kind: 'gps', label: 'Đã tắt vùng thử' });
-    return 'Đã tắt vùng thử.';
-  }
   const fg = await Location.requestForegroundPermissionsAsync();
   if (!fg.granted) {
     await logEvent({
@@ -82,6 +88,13 @@ export async function testGeofence(): Promise<string> {
     if (!bg.granted) {
       await logEvent({ kind: 'gps', label: `Chưa có "Luôn cho phép" vị trí (${bg.status})` });
       return 'Cần "Luôn cho phép" vị trí: mở cài đặt app, Quyền, Vị trí, chọn "Luôn cho phép" và bật "Dùng vị trí chính xác", rồi bấm lại nút này.';
+    }
+    // hasStartedGeofencingAsync báo lỗi nếu chưa có quyền nền, nên chỉ hỏi sau khi đã có quyền.
+    step = 'kiểm tra vùng';
+    if (await Location.hasStartedGeofencingAsync(GEOFENCE_TASK)) {
+      await Location.stopGeofencingAsync(GEOFENCE_TASK);
+      await logEvent({ kind: 'gps', label: 'Đã tắt vùng thử' });
+      return 'Đã tắt vùng thử.';
     }
     step = 'lấy vị trí';
     const pos =
@@ -139,9 +152,63 @@ export async function testPush(): Promise<string> {
       data: { kind: 'day', scheduledAt },
     }),
   });
-  await logEvent({
-    kind: 'day',
-    label: res.ok ? 'Đã gửi yêu cầu đẩy' : `Gửi đẩy lỗi HTTP ${res.status}`,
-  });
-  return res.ok ? 'Đã gửi. Chờ thông báo về.' : `Gửi đẩy lỗi HTTP ${res.status}.`;
+  if (!res.ok) {
+    await logEvent({ kind: 'day', label: `Gửi đẩy lỗi HTTP ${res.status}` });
+    return `Gửi đẩy lỗi HTTP ${res.status}.`;
+  }
+  type Ticket = { status?: string; id?: string; message?: string; details?: { error?: string } };
+  const ticket = ((await res.json().catch(() => null)) as { data?: Ticket } | null)?.data;
+  if (ticket?.status !== 'ok' || !ticket.id) {
+    const why = ticket?.details?.error || ticket?.message || 'không đọc được phản hồi';
+    await logEvent({ kind: 'day', label: `Expo từ chối yêu cầu đẩy: ${why.slice(0, 140)}` });
+    return `Expo từ chối: ${why.slice(0, 100)}`;
+  }
+  await logEvent({ kind: 'day', label: 'Expo đã nhận yêu cầu đẩy, đang chờ biên nhận từ FCM' });
+  void checkReceipt(ticket.id);
+  return 'Đã gửi. Chờ thông báo về (nhật ký sẽ ghi biên nhận sau khoảng 20 giây).';
+}
+
+/** Hỏi Expo xem FCM đã giao chưa. Thấy lỗi ở đây thường là chưa nạp khóa FCM V1 vào Expo. */
+async function checkReceipt(id: string) {
+  type Receipt = { status?: string; message?: string; details?: { error?: string } };
+  for (const wait of [20, 40]) {
+    await new Promise((r) => setTimeout(r, wait * 1000));
+    try {
+      const r = await fetch('https://exp.host/--/api/v2/push/getReceipts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids: [id] }),
+      });
+      const rec = ((await r.json()) as { data?: Record<string, Receipt> }).data?.[id];
+      if (!rec) continue;
+      const label =
+        rec.status === 'ok'
+          ? 'Biên nhận: FCM đã nhận thông báo đẩy'
+          : `Biên nhận lỗi: ${rec.details?.error ?? ''} ${rec.message ?? ''}`.slice(0, 160);
+      await logEvent({ kind: 'day', label, ref: `receipt:${id}` });
+      return;
+    } catch {
+      /* thử lại lần sau */
+    }
+  }
+  await logEvent({ kind: 'day', label: 'Chưa có biên nhận sau 60 giây', ref: `receipt:${id}` });
+}
+
+/** Xóa sạch để test lại từ đầu: nhắc đã hẹn, thông báo trong khay, vùng GPS, nhật ký. Dữ liệu Pal do màn hình gọi xóa riêng. */
+export async function resetLabData(): Promise<string> {
+  const notes: string[] = [];
+  try {
+    await Notifications.cancelAllScheduledNotificationsAsync();
+    await Notifications.dismissAllNotificationsAsync();
+  } catch {
+    notes.push('không hủy được thông báo');
+  }
+  try {
+    if (await Location.hasStartedGeofencingAsync(GEOFENCE_TASK)) await Location.stopGeofencingAsync(GEOFENCE_TASK);
+  } catch {
+    // chưa có quyền nền thì cũng chưa có vùng nào đang chạy
+  }
+  clearEvents();
+  clearSched();
+  return notes.length ? 'Đã xóa, trừ: ' + notes.join(', ') : 'Đã xóa dữ liệu thử.';
 }
