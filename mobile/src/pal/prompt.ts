@@ -53,6 +53,9 @@ const wxForPrompt = (s: AppState, today: string) => {
 const hungerForPrompt = (s: AppState, now: Date) =>
   Object.keys(s.log).filter((k) => k >= dateAdd(-14, now) && (s.log[k].doi || []).length).map((k) => k + ': ' + s.log[k].doi!.join(', '));
 
+const tiredForPrompt = (s: AppState, now: Date) =>
+  Object.keys(s.log).filter((k) => k >= dateAdd(-14, now) && s.log[k].met === 'Rất mệt');
+
 export function stateForPrompt(s: AppState, now = new Date()): string {
   const G = s.plan.giai_doan ? { ...s.plan.giai_doan } : null;
   if (G) delete G.lich_goc;
@@ -69,6 +72,7 @@ export function stateForPrompt(s: AppState, now = new Date()): string {
     hoat_dong_doi_chua_xep: !!s.actDirty,
     thoi_tiet_bao: wxForPrompt(s, today),
     con_bao_doi: hungerForPrompt(s, now),
+    con_bao_met: tiredForPrompt(s, now),
     canh_bao_app_dang_thay: allWarnings(s),
   });
 }

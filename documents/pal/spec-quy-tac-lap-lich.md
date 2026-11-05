@@ -1,6 +1,6 @@
 # Quy tắc lập lịch của Pal (nguồn chuẩn)
 
-Cập nhật: 03/11/2026 · Áp dụng cho bản thử "Pal – Lập lịch cho con" và skill `lap-lich-sinh-hoat-tre`.
+Cập nhật: 06/11/2026 · Áp dụng cho bản thử "Pal – Lập lịch cho con" và skill `lap-lich-sinh-hoat-tre`.
 
 **Cách dùng file này.** Đây là nơi duy nhất ghi quy tắc. Khi đổi một quy tắc, sửa ở đây trước, rồi mới sửa ở:
 - App bản thử (`index.html`, trong repo là `prototype/index.html`): prompt `RULES`, `ACT_RULES`, `LIFE_RULES`; bộ kiểm tra `checkDayK`; ngưỡng màu `judge`; quỹ mặc định `defaultBudget`.
@@ -200,6 +200,15 @@ Các kiểm tra này chạy trong app, không phụ thuộc Pal. Mã kiểm tra 
 | `truoc_gio_hoc` | Có khối học trước giờ đi học | Chỉ gửi cho Pal |
 | `tong_gio_hoc` | Tổng giờ học ở nhà vượt quỹ bố mẹ chọn quá 30′ | Chỉ gửi cho Pal |
 | `tap_muon` | Tập mạnh kết thúc chưa tới 1 giờ trước giờ tắt đèn | Chỉ gửi cho Pal |
+
+## Q. Ôn bài, sổ việc và mốc an toàn đi lại (từ skill lap-lich-sinh-hoat-tre)
+
+| ID | Quy tắc |
+|---|---|
+| Q1 | Khối ôn bài tách thành mục nhỏ, mỗi loại việc có xác nhận riêng: bài tập trong sách (mỗi bài một mục, ảnh trang sách và bài làm); viết đoạn văn (mục theo dàn ý, lớp 3 khoảng 5–7 câu nếu cô không dặn); học thuộc (ghi âm); chuẩn bị đồ (ảnh); học theo định hướng bố mẹ (mục theo bài hoặc chủ đề). Việc cô giao và việc có hạn sớm nhất làm trước. Thiếu thông tin thì hỏi 1 câu. Ghi thời gian ước tính; vượt quỹ học ở nhà thì báo và đề xuất chuyển việc hạn muộn sang ngày sau. [MĐ] |
+| Q2 | Sổ việc được giao phân ba loại: một lần (nhắc tối hôm trước lúc soạn cặp và sáng hôm đến hạn); nhiều ngày (chia nhỏ các tối trước hạn, tối cuối gom lại để cạnh cặp); cần bố mẹ (báo ngay tối hôm đó). Đo bằng số việc nộp đúng hạn trên tổng số việc được giao trong tuần. [MĐ] |
+| Q3 | Mốc an toàn đi lại: đặt vùng cho Nhà, Trường, nơi học thêm; không theo dõi vị trí liên tục; mỗi mốc có giờ chuẩn và ngưỡng lệch. Lệch về học tập hoặc thói quen thì nhắc con trước; lệch về an toàn thì báo bố mẹ ngay. [MĐ] |
+| Q4 | Xu hướng mệt: app gửi cho Pal các ngày con báo "Rất mệt" trong 14 ngày (`con_bao_met`). Một ngày không kết luận; lặp lại nhiều ngày thì báo bố mẹ một lần kèm điểm chung của các ngày đó. Ngưỡng cụ thể chốt sau khi có dữ liệu thật. |
 
 ## P. Việc còn mở
 
