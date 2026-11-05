@@ -47,6 +47,7 @@ function readKey() {
 const API_KEY = readKey();
 const API_MODEL = MODEL || DEFAULT_MODEL;
 const EFFORT = arg('--effort', 'low');
+const THINK = arg('--think', 'off') === 'on'; // mặc định tắt suy nghĩ: JSON lập lịch không cần, tiết kiệm token ra
 
 async function askApi(system, prompt) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -55,7 +56,8 @@ async function askApi(system, prompt) {
     body: JSON.stringify({
       model: API_MODEL,
       max_tokens: MAX_TOKENS,
-      output_config: { effort: EFFORT }, // Haiku 5.5 mặc định medium; JSON lập lịch thử ở low để bớt token suy nghĩ
+      output_config: { effort: EFFORT },
+      ...(THINK ? {} : { thinking: { type: 'disabled' } }), // Haiku 5.5 mặc định medium; JSON lập lịch thử ở low để bớt token suy nghĩ
       system: system ? [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }] : undefined,
       messages: [{ role: 'user', content: prompt }],
     }),
