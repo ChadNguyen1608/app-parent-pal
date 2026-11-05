@@ -12,6 +12,9 @@ export type PalMode = AppState['palMode'];
 /** Địa chỉ máy dev nhìn từ emulator Android. Máy thật dùng EXPO_PUBLIC_PAL_BRIDGE_URL (địa chỉ LAN). */
 export const BRIDGE_URL = (typeof process !== 'undefined' && process.env?.EXPO_PUBLIC_PAL_BRIDGE_URL) || 'http://10.0.2.2:8787/pal';
 
+/** Quá thời gian này thì báo lỗi thay vì quay mãi. */
+export const PAL_TIMEOUT_MS = 120000;
+
 export class PalError extends Error {
   code: 'loi_mang' | 'invalid_json' | 'bridge_loi';
   constructor(code: 'loi_mang' | 'invalid_json' | 'bridge_loi', message: string) {
@@ -48,9 +51,12 @@ export async function askPal(state: AppState, now = new Date()): Promise<PalRepl
       headers: { 'Content-Type': 'application/json' },
       // system (luật cố định) tách riêng để cầu nối dùng bộ nhớ đệm của API; prompt là phần đổi mỗi lượt
       body: JSON.stringify({ system: SYSTEM_PROMPT, prompt: buildUserPrompt(state, now) }),
+      // Không đợi mãi nếu cáp USB đứt hoặc cầu nối treo; Pal thật qua API thường xong trong dưới 30 giây.
+      signal: AbortSignal.timeout(PAL_TIMEOUT_MS),
     });
   } catch (e) {
-    throw new PalError('loi_mang', 'Không nối được cầu nối Pal (' + BRIDGE_URL + '). Đã chạy scripts/pal-bridge.mjs chưa?');
+    const timedOut = e instanceof Error && (e.name === 'TimeoutError' || e.name === 'AbortError');
+    throw new PalError('loi_mang', timedOut ? 'Pal không trả lời sau ' + PAL_TIMEOUT_MS / 1000 + ' giây. Kiểm tra cáp USB và cầu nối, rồi thử lại.' : 'Không nối được cầu nối Pal (' + BRIDGE_URL + '). Đã chạy scripts/pal-bridge.mjs chưa?');
   }
   const body = (await res.json().catch(() => null)) as { text?: string; error?: string } | null;
   if (!res.ok || !body || body.error) throw new PalError('bridge_loi', body?.error || 'Cầu nối lỗi HTTP ' + res.status);
