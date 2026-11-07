@@ -32,6 +32,7 @@ Mục lục và quy ước đặt tên: `documents/README.md`.
 | `documents/knowledge/by-age/` | Nội dung kiến thức theo giai đoạn tuổi (hiện có `age-00-06-early-childhood/`, `age-06-11-primary-school/`, `age-11-15-lower-secondary/`, `age-15-18-upper-secondary/`; nháp, người soạn AI) |
 | `documents/knowledge/foundations/` | Kiến thức nền: lăng kính 4 nhu cầu tâm lý (an toàn, gắn kết, năng lực, tự chủ), sự tự tin theo tuổi, cơ chế tâm lý trong nuôi dạy |
 | `documents/knowledge/seasonal/` | Nội dung theo mùa: bệnh hay tăng theo tháng và vùng, cách phòng, dấu hiệu cần đi khám |
+| `documents/knowledge/soft-skills/` | Kỹ năng mềm: 23 kỹ năng xếp vào nhóm có sẵn, 180 bài luyện tập (`HD-xxxx`) theo cấp học, giáo trình luyện tập theo năm |
 | `documents/knowledge/methods/` | Bài phương pháp giáo dục và chăm sóc (Montessori, STEM, EASY…), có lợi hại và hiểu lầm |
 | `documents/knowledge/ref-muc-quan-tam-tim-kiem.md` | Mức quan tâm tìm kiếm các phương pháp (Google Trends), thứ tự ưu tiên |
 | `documents/knowledge/procedures/` | Thủ tục hành chính, xếp theo lĩnh vực (không theo tuổi); gồm các chương trình, chính sách hỗ trợ của Nhà nước cho trẻ và gia đình (tiêm chủng mở rộng, bảo hiểm y tế, học phí, hỗ trợ học tập, trợ cấp, bảo vệ trẻ em) |

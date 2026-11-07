@@ -1,6 +1,6 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.20 — 1/11/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có nội dung nháp cho 0–6, 6–11, 11–15 và 15–18 tuổi (chờ chuyên gia duyệt).
+Bản v5.21 — 7/11/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có nội dung nháp cho 0–6, 6–11, 11–15 và 15–18 tuổi, và bộ kỹ năng mềm (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
@@ -14,6 +14,7 @@ Lịch sử thay đổi:
 - **v5.2 (27/10):** sắp lại thứ tự để phần đầu tập trung vào thiết kế dữ liệu kiến thức. Quy tắc phân loại chuyển xuống §9, đổi tên thành "Quy tắc xếp bài vào kho"; các mục từ trục tuổi đến kiểm soát chất lượng lùi lên một số (§4–§8).
 - **v5.3 (27/10):** bỏ bảng "nhóm trọng tâm" (không có nguồn, dễ gây bỏ sót); thay bằng **lưới độ phủ** độ tuổi × nhóm (§5.1). Tách danh sách bước chuyển thành §5.2; thai kỳ thành §5.3; G0, G3–G6 thành §5.4.
 - **v5.4 (27/10):** soạn đợt nội dung đầu cho 0–6 tuổi (`documents/knowledge/by-age/age-00-06-early-childhood/`, người soạn AI, trạng thái nháp) và kho nguồn có mã (`documents/knowledge/ref-kho-nguon.md`); cập nhật lưới độ phủ (§5.1).
+- **v5.21 (7/11):** **kỹ năng mềm** theo yêu cầu của người dùng (`documents/knowledge/soft-skills/`): rà danh sách 14 kỹ năng của chủ sản phẩm, thêm 9 kỹ năng theo WHO, CASEL, UNICEF, OECD; 3 agent haiku tìm nguồn và soạn 180 bài luyện tập theo cấp học (MN, TH, THCS, THPT). Mỗi kỹ năng là một mẩu `KT-6xxxx`, xếp vào nhóm có sẵn (không thêm nhóm 18); mỗi bài là một hoạt động `HD-0001` đến `HD-0180` (lần đầu dùng mã HD, §7.2). Thêm giáo trình luyện tập theo năm (`content-04-giao-trinh-luyen-tap-theo-cap-hoc.md`: 1 kỹ năng chính mỗi đợt 8 tuần, hai vòng xoắn ốc mỗi cấp). Nguồn NG-509 đến NG-596; hàng đợi CK-048. §9.2 thêm 1 dòng.
 - **v5.20 (1/11):** nội dung **15–18 tuổi** (THPT) theo yêu cầu của người dùng: 3 agent haiku tìm nguồn, 1 agent khác kiểm chứng 218 nhận định (183 khớp, 32 khớp một phần đã sửa theo ghi chú, 0 sai, 3 dòng "không tìm thấy"). Thêm `documents/knowledge/by-age/age-15-18-upper-secondary/` (KT-2601–2623, KT-2701–2705, KT-2801–2805), `procedures/procedure-quy-dinh-hoc-tap-thpt.md` (KT-0942–0950), `procedures/procedure-moc-phap-ly-14-18-tuoi.md` (KT-0951–0955), nguồn NG-430 đến NG-508, hàng đợi CK-044 đến CK-047. Cập nhật §4 (G5), §5.1 (hàng THPT), §9.2 (9 dòng mới).
 - **v5.19 (29/10):** nội dung **11–15 tuổi** (THCS) theo yêu cầu của người dùng: 3 agent haiku tìm nguồn, 1 agent khác kiểm chứng 165 nhận định (139 khớp, 25 khớp một phần đã sửa, 1 sai đã sửa theo văn bản). Thêm `documents/knowledge/by-age/age-11-15-lower-secondary/` (KT-2301–2321, KT-2401–2408, KT-2501–2505), `procedures/procedure-quy-dinh-hoc-tap-thcs.md` (KT-0935–0941), nguồn NG-373 đến NG-429, hàng đợi CK-035 đến CK-039. Cập nhật §4 (G3, G4), §5.1 (hàng THCS), §9.2 (9 dòng mới).
 - **v5.18 (29/10):** chính sách hỗ trợ của Nhà nước cho trẻ em và gia đình (3 agent haiku tìm nguồn, được cho phép): bảo hiểm y tế học sinh, khám miễn phí theo lộ trình, hỗ trợ chi phí học tập, sách giáo khoa miễn phí từ 2029–2030, ăn trưa 3–5 tuổi, nội trú, học bổng, vay vốn, hỗ trợ khi sinh con, trợ cấp xã hội hằng tháng (NĐ 335/2026), nghỉ chăm con ốm, bảo vệ trẻ em. File mới `procedure-ho-tro-hoc-tap.md`, `procedure-ho-tro-gia-dinh-va-tre-em.md`. Nguồn NG-341 đến NG-372, chưa kiểm chứng độc lập; hàng đợi CK-032 đến CK-034.
@@ -692,6 +693,7 @@ Mỗi mẩu có **1 nhóm chính**, tối đa **1 nhóm phụ**. Ca nào mơ h�
 | Khám trước khi chơi thể thao thi đấu, chấn động não | 1 | 12 | Sức khỏe (1/11) |
 | Mốc pháp lý theo tuổi (căn cước, nghĩa vụ quân sự, bầu cử, bằng lái) | 16 (nhãn `thủ_tục`) | 17 | Quyền, nghĩa vụ công dân (1/11) |
 | Làm thêm khi 15–18 tuổi, tài khoản ngân hàng, giao dịch dân sự | 14 (nhãn `thủ_tục`) | 16, 15 | Kỹ năng sống tự lập (1/11) |
+| Kỹ năng mềm (23 kỹ năng: tự điều hành, tương tác, tư duy, lãnh đạo, tham gia) | Theo từng kỹ năng: 2, 3, 4, 5, 6, 13, 14, 16 (bảng ở `soft-skills/content-00-tong-quan-ky-nang-mem.md`, mục 2) | Nền cho phần an toàn | Không thêm nhóm mới; mỗi kỹ năng vào nhóm gần nhất của bản đồ (7/11) |
 | Chọn môn lớp 10, thi tốt nghiệp THPT, tuyển sinh đại học | 17 (nhãn `thủ_tục`) | 8, 15 | Bước chuyển (1/11) |
 
 ## 10. Đối chiếu hệ làn v3 → khung hiện tại

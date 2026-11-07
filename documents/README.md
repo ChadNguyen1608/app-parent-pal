@@ -17,6 +17,7 @@ documents/
 │   ├── foundations/                   Kiến thức nền: cơ chế tâm lý, nhu cầu tâm lý của trẻ
 │   ├── seasonal/                      Nội dung theo mùa: bệnh hay tăng theo tháng, theo vùng
 │   ├── methods/                       Phương pháp giáo dục và chăm sóc
+│   ├── soft-skills/                   Kỹ năng mềm: 23 kỹ năng, bài luyện tập theo cấp học, giáo trình
 │   └── procedures/                    Thủ tục hành chính, theo lĩnh vực
 └── pal/                               Cách Pal làm việc
     ├── guide-cach-pal-tra-loi.md      Cách Pal trả lời
@@ -81,6 +82,16 @@ documents/
 | `content-00-tong-quan-15-18-tuoi.md` | Tổng quan và kiến thức dùng chung 15–18 tuổi (KT-2601–2623) |
 | `content-01-thpt-dau-15-17-tuoi.md` | 15–17 tuổi (lớp 10–11) (KT-2701–2705) |
 | `content-02-thpt-cuoi-17-18-tuoi.md` | 17–18 tuổi (lớp 12, tròn 18 tuổi) (KT-2801–2805) |
+
+## Kỹ năng mềm (`soft-skills/`)
+
+| File | Nội dung | Mã |
+|---|---|---|
+| `content-00-tong-quan-ky-nang-mem.md` | Danh sách 23 kỹ năng, xếp vào nhóm của bản đồ, đối chiếu WHO, CASEL, UNICEF, OECD, GDPT 2018; mức bằng chứng; cách Pal dùng | KT-60001–60004 |
+| `content-01-nhom-hieu-minh-va-tu-dieu-hanh.md` | 8 kỹ năng tự điều hành, 64 bài luyện tập | KT-60101–60108; HD-0001–0064 |
+| `content-02-nhom-tuong-tac-va-quan-he.md` | 8 kỹ năng tương tác, 64 bài | KT-60201–60208; HD-0065–0128 |
+| `content-03-nhom-tu-duy-lanh-dao-va-tham-gia.md` | 7 kỹ năng tư duy, lãnh đạo, tham gia, 52 bài | KT-60301–60307; HD-0129–0180 |
+| `content-04-giao-trinh-luyen-tap-theo-cap-hoc.md` | Giáo trình luyện tập theo năm cho từng cấp học | KT-60401 |
 
 ## Phương pháp giáo dục và chăm sóc (`methods/`)
 
