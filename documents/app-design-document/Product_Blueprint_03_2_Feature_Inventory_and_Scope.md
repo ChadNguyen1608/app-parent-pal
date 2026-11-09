@@ -3,17 +3,21 @@
 
 | Thuộc tính | Giá trị |
 |---|---|
-| **Trạng thái** | **APPROVED — 3.2 / Q1–Q6** (inventory baseline, không phải MVP) |
+| **Trạng thái** | **APPROVED_STRUCTURE_REVISION / L4_PENDING** — 3.2-R1 (bản sửa cấu trúc L3; không phải MVP) |
 | Ngày chốt | 2026-11-07 |
+| Revision 3.2-R1 | 2026-11-10 — áp dụng cấu trúc L3 từ Package A–E, CON-D01..04, L3R1-D01..06; giữ lịch sử baseline |
 | Phạm vi | 0–23 tuổi; **phân rã có độ chi tiết cấu trúc ngang nhau** cho mọi nhóm tuổi |
 | Phạm vi CORE đã chốt | Lớp 1–9 tại Việt Nam; **không bỏ các độ tuổi khác khỏi inventory** |
-| Feature Groups | 49 nhóm làm baseline, có thể thay đổi có kiểm soát |
+| Feature Groups | **51 nhóm / 106 L3 ứng viên** (49 nhóm, 98 L3 baseline + 2 nhóm, 8 L3 bổ sung); L4 chưa nghiệm thu |
 | Research tracking | Chỉ sử dụng **Product_Blueprint_Master_Research_Backlog.md**, tham chiếu `MR-###` |
 | Bước tiếp theo | **Chưa triển khai**; chỉ tiến hành khi người dùng yêu cầu |
 
 > **Phân biệt:** Quyết định cấu trúc, mã định danh và nguyên tắc điều hành đã chốt. Các module/individual feature phía dưới là **inventory baseline được đề xuất để bao phủ toàn bộ phạm vi**, chưa được nghiệm thu như yêu cầu chức năng cuối cùng. Việc nghiên cứu, pháp lý, khả năng sử dụng và triển khai từng feature vẫn cần kiểm chứng tương ứng.
 
 ## 1. Quyết định và phản biện Q1–Q6
+
+**Revision 3.2-R1:** Giữ nguyên quyết định Q1–Q6 của baseline ngày 2026-11-07. Q4 xác lập **49 Group lịch sử**; hai Group `F06-G07` và `F08-G06` được bổ sung có kiểm soát ở revision này. Phê duyệt cấu trúc không đồng nghĩa xác nhận đủ L4, UC, tính khả thi pháp lý, MVP hay chi phí.
+
 
 | Mã | Quyết định đã chốt | Phản biện / biện pháp tránh phình scope |
 |---|---|---|
@@ -35,7 +39,7 @@
 | L3 | Feature Module/Capability | `F04-G02-M01` | Năng lực tái sử dụng, dữ liệu, chính sách |
 | L4 | Individual Feature | `F04-G02-M01-001` | Kết quả/hoạt động cụ thể của người dùng hoặc vận hành |
 
-**Định danh:** ID không đổi sau khi đã phát hành danh mục; đổi tên không đổi ID. Khi chuyển chủ sở hữu module/feature, giữ `legacy_id` và ghi `moved_to`; không tái sử dụng ID đã nghỉ. Group hiện có hai module/feature tiêu biểu để thiết lập baseline đồng mức; những module/feature tiếp theo được đánh số tăng tuần tự. **Không coi một module = một AI agent, một service, một database hay một màn hình.**
+**Định danh:** ID không đổi sau khi đã phát hành danh mục; đổi tên không đổi ID. Khi chuyển chủ sở hữu module/feature, giữ `legacy_id` và ghi `moved_to`; không tái sử dụng ID đã nghỉ. 49 Group baseline có hai module/feature **minh họa** mỗi Group để thiết lập khung ban đầu; đây không phải quy tắc số lượng bắt buộc. Revision này bổ sung đúng 8 L3, trong đó `F06-G07` chỉ có một L3. Các L4 của module mới chưa phân rã; những module/feature tiếp theo được đánh số tăng tuần tự. **Không coi một module = một AI agent, một service, một database hay một màn hình.**
 
 **Yêu cầu bắt buộc ở L4:** `id`, `title`, `domain/group/module`, `target_users`, `user_value`, `age_variants`, `autonomy_permissions`, `inputs`, `outputs`, `data_classification`, `dependencies`, `execution_type`, `ai_cost_risk`, `research_refs`, `definition_status`; tùy chọn `event_metrics`, `security_controls`, `release_gate`, `operational_owner`. Chuẩn `definition_status`: `BASELINE_PROPOSED`, `REVIEWED`, `APPROVED`, `DEFERRED`, `RETIRED`.
 
@@ -54,7 +58,7 @@
 
 **Nguyên tắc thực thi:** cả sáu cohort được mô tả ở **mọi Group** trong bảng; module/feature có thể có capability chung nhưng có bản trình bày, ngôn ngữ, phương pháp nhập liệu, quyền và ngưỡng an toàn khác nhau. Những khác biệt quan trọng buộc tạo `age_variant` riêng. Đối với trẻ 0–5, Parent-led không chỉ là cách hiển thị nhỏ hơn: cần luồng thực thi do người chăm sóc; với người 18–23, không mặc nhiên cho phụ huynh truy cập. Tránh điều chỉnh dựa *duy nhất* vào ngày sinh.
 
-### 3.1. Ma trận áp dụng 49 Feature Groups × 6 giai đoạn
+### 3.1. Ma trận áp dụng 51 Feature Groups × 6 giai đoạn (3.2-R1)
 
 | Group | 0–2 | 3–5 | 6–10 | 11–14 | 15–17 | 18–23 |
 |---|---|---|---|---|---|---|
@@ -96,6 +100,7 @@
 | `F06-G04` | P | P | S | C | Y | U |
 | `F06-G05` | P | P | S | C | Y | U |
 | `F06-G06` | P | S | C | C | Y | U |
+| `F06-G07` | P* | P* | S | C | Y | U |
 | `F07-G01` | P | P | S | C | Y | U |
 | `F07-G02` | P | P | S | C | Y | U |
 | `F07-G03` | P | P | S | C | Y | U |
@@ -108,6 +113,10 @@
 | `F08-G03` | P | P | S | C | Y | U |
 | `F08-G04` | P | P | S | C | Y | U |
 | `F08-G05` | P | P | S | C | Y | U |
+| `F08-G06` | P | P | P/S* | S* | S/Y* | U |
+
+**Ghi chú 3.2-R1:** `*` chỉ sự tham gia khi phù hợp với mục đích, năng lực và vai trò được phép; `P/S/C/Y/U` là **mẫu tương tác UX, không phải quyền truy cập dữ liệu hoặc quyền thanh toán**. Đánh giá học tập ở 0–5 tuổi chỉ là quan sát phát triển/học tập phù hợp nếu có căn cứ, không mặc định chấm điểm trường học. Người dùng 18–23 tự kiểm soát dữ liệu theo quyền được xác thực. Quyền chi tiết của từng action sẽ xác định ở L4.
+
 
 ### 3.2. Khác biệt thiết kế bắt buộc của từng giai đoạn
 
@@ -122,9 +131,9 @@
 
 **Ràng buộc phạm vi:** Một feature thể hiện *đủ 6 cohort* trong `age_variants`, nhưng không nhất thiết có 6 UI hay 6 triển khai. Nếu không phù hợp, ghi lý do và luồng thay thế; không để trống. Điều này giữ tính ngang hàng của Blueprint mà không nhân chi phí triển khai một cách máy móc.
 
-## 4. Feature Inventory Baseline — 8 Domains / 49 Groups
+## 4. Feature Inventory — 8 Domains / 51 Groups (3.2-R1)
 
-Để baseline hữu ích nhưng gọn, **mỗi Group có đúng 2 Module/Capability đại diện, mỗi Module có 1 Individual Feature**. Đây là **98 Module + 98 Feature baseline** làm khung kiểm tra độ bao phủ, **không phải số lượng tính năng cuối hoặc backlog triển khai**. Đặt `BASELINE_PROPOSED` cho tất cả L3/L4 cho đến khi được review riêng.
+Baseline 2026-11-07 có **49 Group × 2 L3 minh họa = 98 L3** và 98 L4 minh họa. Revision 3.2-R1 bổ sung **2 Group và 8 L3**, nâng cấu trúc lên **51 Group / 106 L3**; không thêm L4 hoàn chỉnh, không coi số module là mức độ bao phủ đầy đủ. Các L3/L4 gốc vẫn là inventory cần review ở cấp capability; tám L3 mới có trạng thái `STRUCTURE_APPROVED / L4_PENDING`. Những dòng `L4: pending` bên dưới không phải feature đã nghiệm thu.
 
 Các trường `Execution`/`Cost` trong bảng là **ước lượng định tính của feature đại diện**; một module vẫn có thể gồm các tác vụ E0/E1/E2 khác nhau. `MR` liên kết đến **Master Research Backlog**, không sao chép mô tả nghiên cứu.
 
@@ -137,7 +146,8 @@ Các trường `Execution`/`Cost` trong bảng là **ước lượng định tí
 | **`F01-G03`** Child Identity & Basic Profile | `F01-G03-M01` Core Identity → `F01-G03-M01-001` Thiết lập hồ sơ cơ bản theo giai đoạn | `F01-G03-M02` Profile Integrity → `F01-G03-M02-001` Xác minh và sửa thông tin hồ sơ | E0 / Low | `MR-016` |
 | **`F01-G04`** Roles, Permissions & Consent | `F01-G04-M01` Access Policy → `F01-G04-M01-001` Phân quyền theo chủ thể và mục đích | `F01-G04-M02` Consent Ledger → `F01-G04-M02-001` Ghi nhận và thu hồi đồng ý | E1 / Low | `MR-016`, `MR-017` |
 | **`F01-G05`** Autonomy Mode Management | `F01-G05-M01` Mode State → `F01-G05-M01-001` Thiết lập Parent-led / Child-executed / Child-directed | `F01-G05-M02` Mode Transitions → `F01-G05-M02-001` Đề xuất và phê duyệt chuyển chế độ | E1 / Low | `MR-015`, `MR-017` |
-| **`F01-G06`** Account & Data Lifecycle | `F01-G06-M01` Lifecycle Controls → `F01-G06-M01-001` Xuất và yêu cầu xóa tài khoản/dữ liệu | `F01-G06-M02` Entitlements & Billing → `F01-G06-M02-001` Quản lý gói, hóa đơn, quyền lợi theo hộ gia đình | E0 / Low | `MR-003`, `MR-016`, `MR-018` |
+| **`F01-G06`** Account & Data Lifecycle | `F01-G06-M01` Lifecycle Controls → `F01-G06-M01-001` Xuất và yêu cầu xóa tài khoản/dữ liệu | `F01-G06-M02` Entitlements & Billing → `F01-G06-M02-001` Quản lý gói và quyền lợi theo hộ gia đình (minh họa; vòng đời hóa đơn/thanh toán thuộc M03) | E0 / Low | `MR-003`, `MR-016`, `MR-018` |
+| ↳ **`F01-G06`** — L3 bổ sung 3.2-R1 | `F01-G06-M03` Subscription Billing Lifecycle — vòng đời thanh toán subscription được xác thực, gia hạn/hoàn tiền/khôi phục; không cấp quyền Journal; **L4: pending** | — | Chưa chốt theo action | Chưa gán MR mới; đối chiếu Master Backlog |
 
 ### F02 — Child Understanding (6 Groups)
 
@@ -158,7 +168,9 @@ Các trường `Execution`/`Cost` trong bảng là **ước lượng định tí
 | **`F03-G02`** Development Areas & Dimensions | `F03-G02-M01` Dimension Taxonomy → `F03-G02-M01-001` Duy trì danh mục lĩnh vực theo tuổi | `F03-G02-M02` Domain Mapping → `F03-G02-M02-001` Ánh xạ mục tiêu vào lĩnh vực phát triển | E1 / Low | `MR-011`, `MR-012` |
 | **`F03-G03`** Age & Stage Guidance | `F03-G03-M01` Stage Catalog → `F03-G03-M01-001` Tra cứu khuyến nghị theo giai đoạn | `F03-G03-M02` Accessibility Adaptation → `F03-G03-M02-001` Điều chỉnh cách trình bày theo năng lực | E1 / Low | `MR-012` |
 | **`F03-G04`** Goal Discovery & Definition | `F03-G04-M01` Goal Discovery → `F03-G04-M01-001` Khám phá mục tiêu có sự tham gia của trẻ | `F03-G04-M02` Goal Constraints → `F03-G04-M02-001` Gắn thời hạn, giới hạn và quyền duyệt | E1 / Low | `MR-013`, `MR-015` |
+| ↳ **`F03-G04`** — L3 bổ sung 3.2-R1 | `F03-G04-M03` Development Roadmap & Milestones — mục tiêu→mốc phát triển có phiên bản và phê duyệt; F04 thực thi kế hoạch; **L4: pending** | — | Chưa chốt theo action | Chưa gán MR mới; đối chiếu Master Backlog |
 | **`F03-G05`** Personalized Guidance | `F03-G05-M01` Grounded Recommendation → `F03-G05-M01-001` Gợi ý có giải thích và dẫn nguồn | `F03-G05-M02` Recommendation Review → `F03-G05-M02-001` Phụ huynh/người có quyền duyệt gợi ý | E2 / Medium | `MR-011`, `MR-023`, `MR-025` |
+| ↳ **`F03-G05`** — L3 bổ sung 3.2-R1 | `F03-G05-M03` Career Exploration Guidance — khám phá nghề/ngành/kỹ năng có nguồn, không kết luận nghề phù hợp một cách tất định; **L4: pending** | — | Chưa chốt theo action | Chưa gán MR mới; đối chiếu Master Backlog |
 | **`F03-G06`** Goal Review & Adjustment | `F03-G06-M01` Goal Reassessment → `F03-G06-M01-001` Kiểm tra độ phù hợp của mục tiêu | `F03-G06-M02` Goal Change Proposal → `F03-G06-M02-001` Đề nghị sửa mục tiêu, không tự phê duyệt | E1 / Low | `MR-014`, `MR-035` |
 
 ### F04 — Planning & Execution (7 Groups)
@@ -167,6 +179,7 @@ Các trường `Execution`/`Cost` trong bảng là **ước lượng định tí
 |---|---|---|---|---|
 | **`F04-G01`** Plan Creation & Management | `F04-G01-M01` Plan Structure → `F04-G01-M01-001` Tạo và quản lý kế hoạch gắn mục tiêu | `F04-G01-M02` Plan Templates → `F04-G01-M02-001` Khởi tạo kế hoạch từ mẫu đã duyệt | E1 / Low | `MR-002`, `MR-025` |
 | **`F04-G02`** Activity Planning & Scheduling | `F04-G02-M01` Schedule Construction → `F04-G02-M01-001` Lập lịch theo điều kiện gia đình | `F04-G02-M02` Schedule Conflict → `F04-G02-M02-001` Phát hiện xung đột và đề nghị thay thế | E1 / Low | `MR-012`, `MR-025` |
+| ↳ **`F04-G02`** — L3 bổ sung 3.2-R1 | `F04-G02-M03` Balanced Planning Validation — Standard Bar gia đình, giới hạn hard/soft, thời gian chơi, tải hoạt động và kiểm tra theo bối cảnh; **L4: pending** | — | Chưa chốt theo action | Chưa gán MR mới; đối chiếu Master Backlog |
 | **`F04-G03`** Task Assignment & Delegation | `F04-G03-M01` Task Ownership → `F04-G03-M01-001` Giao nhiệm vụ theo vai trò | `F04-G03-M02` Approval Routing → `F04-G03-M02-001` Gửi yêu cầu chấp thuận cho đúng người | E1 / Low | `MR-017`, `MR-035` |
 | **`F04-G04`** Daily Execution | `F04-G04-M01` Daily Task View → `F04-G04-M01-001` Xem việc cần làm theo ngày | `F04-G04-M02` Execution Support → `F04-G04-M02-001` Hướng dẫn từng bước từ nội dung đã duyệt | E1 / Low | `MR-007`, `MR-012` |
 | **`F04-G05`** Progress Reporting | `F04-G05-M01` Lightweight Check-off → `F04-G05-M01-001` Đánh dấu kết quả với thao tác tối giản | `F04-G05-M02` Evidence Submission → `F04-G05-M02-001` Báo cáo khi thật sự cần theo dõi | E0 / Low | `MR-031` |
@@ -184,7 +197,7 @@ Các trường `Execution`/`Cost` trong bảng là **ước lượng định tí
 | **`F05-G05`** Private Insight Management | `F05-G05-M01` Structured Insight → `F05-G05-M01-001` Trích xuất insight có cấu trúc vào hồ sơ riêng | `F05-G05-M02` Insight Correction → `F05-G05-M02-001` Trẻ xem, sửa, phản đối, xóa insight | E2 / High | `MR-019`, `MR-018` |
 | **`F05-G06`** Journal Privacy, Sharing & Deletion | `F05-G06-M01` Selective Sharing → `F05-G06-M01-001` Trẻ chia sẻ nội dung theo quyền và ngoại lệ | `F05-G06-M02` Deletion Graph → `F05-G06-M02-001` Xóa mục nhật ký cùng dữ liệu dẫn xuất | E1 / High | `MR-016`, `MR-018`, `MR-022` |
 
-### F06 — Tracking & Insights (6 Groups)
+### F06 — Tracking & Insights (7 Groups)
 
 | L2 Feature Group | L3 Module 1 → L4 feature | L3 Module 2 → L4 feature | Exec / AI cost | Research refs |
 |---|---|---|---|---|
@@ -194,6 +207,7 @@ Các trường `Execution`/`Cost` trong bảng là **ước lượng định tí
 | **`F06-G04`** Trend & Pattern Analysis | `F06-G04-M01` Deterministic Trends → `F06-G04-M01-001` Phát hiện thay đổi từ dữ liệu đủ điều kiện | `F06-G04-M02` Cautious Insights → `F06-G04-M02-001` Nêu giả thuyết, không chẩn đoán/gán nhãn | E1 / Medium | `MR-013`, `MR-014` |
 | **`F06-G05`** Reports & Dashboards | `F06-G05-M01` Audience Views → `F06-G05-M01-001` Báo cáo theo quyền phụ huynh và trẻ | `F06-G05-M02` Summary Rendering → `F06-G05-M02-001` Tổng hợp dễ hiểu từ dữ liệu được phép | E1 / Low | `MR-014`, `MR-021` |
 | **`F06-G06`** Review & Feedback Loop | `F06-G06-M01` Review Sessions → `F06-G06-M01-001` Tổ chức buổi nhìn lại mục tiêu | `F06-G06-M02` Feedback Handoff → `F06-G06-M02-001` Chuyển phản hồi đã chốt sang F02–F04 | E1 / Low | `MR-001`, `MR-014` |
+| **`F06-G07`** Academic Learning Assessment **[NEW GROUP]** | `F06-G07-M01` Academic Assessment — rubric, đánh giá bài học, độ tin cậy, kiểm tra lại/chỉnh sửa, provenance; **L4: pending** | — | Chưa chốt theo action | Chưa gán MR mới; đối chiếu Master Backlog |
 
 ### F07 — Knowledge, Safety & Governance (7 Groups)
 
@@ -202,12 +216,13 @@ Các trường `Execution`/`Cost` trong bảng là **ước lượng định tí
 | **`F07-G01`** Knowledge Repository | `F07-G01-M01` Content CMS → `F07-G01-M01-001` Quản trị nguồn, phiên bản, ngôn ngữ | `F07-G01-M02` Structured Retrieval → `F07-G01-M02-001` Tra cứu nội dung có nguồn | E1 / Low | `MR-011`, `MR-025` |
 | **`F07-G02`** Knowledge Validation & Evidence | `F07-G02-M01` Editorial Workflow → `F07-G02-M01-001` Thẩm định và phê duyệt kiến thức | `F07-G02-M02` Evidence Provenance → `F07-G02-M02-001` Gắn cấp bằng chứng và ngày xem xét | E1 / Low | `MR-011`, `MR-023` |
 | **`F07-G03`** AI Interaction & Orchestration | `F07-G03-M01` Single Interface Router → `F07-G03-M01-001` Điều phối giao diện AI đến chức năng được phép | `F07-G03-M02` Execution Budget → `F07-G03-M02-001` Áp ngân sách và số model call tối đa | E1 / Medium | `MR-025`, `MR-028` |
+| ↳ **`F07-G03`** — L3 bổ sung 3.2-R1 | `F07-G03-M03` Multimodal Interaction Orchestration — STT/TTS/realtime/vision, fallback và dữ liệu tạm; không sở hữu quyền truy cập hoặc E0–E3 router; **L4: pending** | — | Chưa chốt theo action | Chưa gán MR mới; đối chiếu Master Backlog |
 | **`F07-G04`** AI Quality & Behavior Governance | `F07-G04-M01` Policy Evaluation → `F07-G04-M01-001` Kiểm tra phạm vi L1/L2/L3 và an toàn | `F07-G04-M02` Model Evaluation → `F07-G04-M02-001` Kiểm thử chất lượng tiếng Việt theo tác vụ | E1 / Medium | `MR-023`, `MR-026` |
 | **`F07-G05`** Child Safety & Escalation | `F07-G05-M01` Safety Triage → `F07-G05-M01-001` Phân loại tín hiệu cần đánh giá an toàn | `F07-G05-M02` Human Response Workflow → `F07-G05-M02-001` Chuyển sự việc cho quy trình hỗ trợ phù hợp | E1 / High | `MR-022`, `MR-024` |
 | **`F07-G06`** Privacy & Data Governance | `F07-G06-M01` Purpose-bound Access → `F07-G06-M01-001` Kiểm soát truy cập theo mục đích | `F07-G06-M02` Retention & Export → `F07-G06-M02-001` Thi hành retention, xuất dữ liệu, xóa theo quyền | E1 / High | `MR-016`, `MR-018`, `MR-021` |
 | **`F07-G07`** Audit & Operational Controls | `F07-G07-M01` Operational Console → `F07-G07-M01-001` Bảng điều khiển vận hành/an toàn theo vai trò | `F07-G07-M02` Billing & Cost Operations → `F07-G07-M02-001` Giám sát quota, thanh toán, AI cost, lỗi | E1 / Medium | `MR-003`, `MR-027`, `MR-029` |
 
-### F08 — Extended Ecosystem (5 Groups)
+### F08 — Extended Ecosystem (6 Groups)
 
 | L2 Feature Group | L3 Module 1 → L4 feature | L3 Module 2 → L4 feature | Exec / AI cost | Research refs |
 |---|---|---|---|---|
@@ -216,24 +231,46 @@ Các trường `Execution`/`Cost` trong bảng là **ước lượng định tí
 | **`F08-G03`** Learning Resources & Activities | `F08-G03-M01` Activity Directory → `F08-G03-M01-001` Danh mục hoạt động/địa điểm theo độ tuổi | `F08-G03-M02` Resource Matching → `F08-G03-M02-001` Lọc theo mục tiêu, địa phương và điều kiện | E1 / Low | `MR-012`, `MR-033` |
 | **`F08-G04`** Device & External Data Integration | `F08-G04-M01` Device Consents → `F08-G04-M01-001` Liên kết/thu hồi nguồn thiết bị bên ngoài | `F08-G04-M02` External Data Import → `F08-G04-M02-001` Nhập và gắn mức tin cậy dữ liệu | E1 / Medium | `MR-021`, `MR-033` |
 | **`F08-G05`** Commercial Ecosystem | `F08-G05-M01` Commerce Catalog → `F08-G05-M01-001` Danh mục dịch vụ có nhãn quảng cáo | `F08-G05-M02` Transaction & Conflict Controls → `F08-G05-M02-001` Kiểm soát giao dịch và lợi ích xung đột | E1 / Medium | `MR-003`, `MR-034` |
+| **`F08-G06`** Education Finance **[NEW GROUP]** | `F08-G06-M01` Education Budget Planning — ngân sách giáo dục theo trẻ/mục tiêu/kỳ, dự kiến/giới hạn; **L4: pending** | `F08-G06-M02` Expense & Approval Management — ghi nhận chi phí và duyệt chi, **không tự thanh toán**; **L4: pending** | Chưa chốt theo action | Chưa gán MR mới; đối chiếu Master Backlog |
 
 ## 5. Ranh giới quyền dữ liệu và ownership
 
 | Dữ liệu / nghiệp vụ | Domain sở hữu | Quyền đọc/ghi và ràng buộc |
 |---|---|---|
 | Identity, quan hệ gia đình, consent, autonomy | F01 | Không dùng F01 làm kho tất cả dữ liệu của trẻ; cưỡng chế quyền tại backend |
+| Subscription entitlement & verified billing lifecycle | F01 (`F01-G06-M02/M03`) | M02 sở hữu quyền lợi gói, M03 sở hữu trạng thái thanh toán/gia hạn/hoàn tiền; người trả tiền không tự có quyền Journal |
 | Hồ sơ hiểu trẻ có phiên bản | F02 | Không tự truy xuất Journal gốc; insight riêng chỉ khi mục đích/consent cho phép |
 | Framework, lĩnh vực, mục tiêu phát triển | F03 | Nội dung dựa nguồn F07; quyết định thay mục tiêu phải có người có thẩm quyền |
 | Kế hoạch, nhiệm vụ, trạng thái thực thi | F04 | Quyền phê duyệt theo F01; nhận đề xuất từ F03/F06, không tự suy ra quyền |
 | Companion session & Journal gốc | F05 | Dữ liệu Journal và dữ liệu Companion cần tách mục đích, retention, chia sẻ; no implicit parent access |
 | Insight riêng từ Journal | F05 (lưu tại phạm vi riêng của trẻ) | Quyết định đã chốt: có thể trích insight có cấu trúc; **không mặc định** đưa vào hồ sơ gia đình; không lưu bản tường thuật AI lâu dài; xóa liên đới nguồn (`MR-018`,`MR-019`) |
 | Activity events, indicators, reports | F06 | Phân biệt quan sát, self-report, AI inference; chỉ tổng hợp dữ liệu được phép |
+| Academic assessment, rubric và kết quả được rà soát | F06 (`F06-G07-M01`) | F04 sở hữu bài nộp; F06 sở hữu kết quả đánh giá; không suy diễn giáo viên đã xác nhận |
 | Knowledge, policies, audit, safety workflow | F07 | Chuyên trách chính sách; không sở hữu thay nghiệp vụ mọi domain |
+| AI task routing, modality và access controls | F07 (`F07-G03`, `F07-G06`) | E0–E3 routing và multimodal tách biệt; kiểm quyền trước retrieval/cache; cache không cấp quyền |
 | External integrations & commerce catalog | F08 | Dữ liệu bên thứ ba cần provenance, quyền thu hồi và tránh xung đột lợi ích |
+| Education budget & expense ledger | F08 (`F08-G06`) | Không phải subscription billing, marketplace settlement, payment gateway hoặc wallet |
 
 **Journal quyết định đã giữ nguyên:** không mặc định tự nhắc sự kiện từ Journal trong phiên tương lai; nội dung chỉ được dùng khi trẻ chủ động mở lại trừ quy trình an toàn được thẩm định; chính sách xóa 60 ngày đã chốt ở mức sản phẩm nhưng phải kiểm chứng tính hợp pháp và khả thi với bản sao lưu/insight. Quy trình an toàn không được biến thành cớ cho việc chia sẻ vô hạn.
 
 **Thỏa thuận tác nghiệp giữa domain:** sự kiện `plan_approved`, `task_completed`, `feedback_submitted`, `consent_revoked`, `journal_entry_delete_requested`, `safety_triage_required` được xem như *ví dụ event contract*, chưa phải API đã chốt. Bất kỳ thực thi nào có ảnh hưởng đến dữ liệu nhạy cảm đều cần authorization trước khi truy xuất, không chỉ trước khi trả lời UI.
+
+
+### 5.1. Revision 3.2-R1 — L3 Ownership Contracts (L3C-01..07)
+
+Các hợp đồng sau là **ranh giới ownership của sản phẩm**, chưa phải API, sơ đồ database hay agent đã chốt.
+
+| Contract | Owner chain | Ranh giới bất biến |
+|---|---|---|
+| `L3C-01` | F03 → F04 → F06 | Goal/roadmap → kế hoạch/thực thi → đánh giá/báo cáo; không tạo nhiều nguồn sự thật |
+| `L3C-02` | F04 → F06-G07 → F06-G05 | Bài nộp ≠ kết quả đánh giá ≠ kết quả được giáo viên xác nhận; report chỉ dùng nguồn được phép |
+| `L3C-03` | F05 ↔ F07 | Journal và insight riêng tư; purpose-bound access, safety workflow độc lập, không rò rỉ suy luận |
+| `L3C-04` | F01 ↔ F07 ↔ F08 | Entitlement/billing ≠ quota/AI cost ≠ education finance/commerce/wallet |
+| `L3C-05` | F07-G03 ↔ F07-G06/G01/G02 | Task routing/budget/modality khác quyền dữ liệu và thẩm định nguồn; kiểm quyền trước cache |
+| `L3C-06` | F03 ↔ F04 | F03 sở hữu mục tiêu/taxonomy; F04 sở hữu cân bằng lịch/ngoại lệ được duyệt, không tự thay mục tiêu |
+| `L3C-07` | F07 ↔ F03 ↔ F08 | F07 xác minh nguồn; F03 dùng để tư vấn; F08 cung cấp dữ liệu ngoài có provenance |
+
+**Trace hợp đồng đã chốt ở cấp đề xuất:** `L3T-01..08` (homework submit/assessment/report; budget/expense/report; subscription/quota; Journal/safety) nằm trong Decision Log Round 1 và Diff v2. Đây **không phải UC ID chính thức của 3.4**; 3.4 vẫn cần mở rộng.
 
 ## 6. Execution type và chính sách kiểm soát AI cost
 
@@ -248,6 +285,9 @@ Các trường `Execution`/`Cost` trong bảng là **ước lượng định tí
 
 **Định hướng ưu tiên thực thi:** Modular Monolith là **giả thuyết kỹ thuật**, chưa chốt stack; UI có thể gọi một AI interface nhưng backend thường dùng E0/E1; event-driven chỉ cho công việc có ích; sinh báo cáo AI theo yêu cầu hoặc batch có chọn lọc, không tự tổng hợp bằng LLM sau mọi hành động. Cache không được làm lộ dữ liệu riêng giữa gia đình hoặc độ tuổi. Rate limits và quota không được vô hiệu hóa các chức năng an toàn thiết yếu.
 
+
+**3.2-R1 — AI Routing & Cache (policy placement only):** `F07-G03-M01/M02` sở hữu task routing E0–E3 và execution budget; `F07-G03-M03` sở hữu modality STT/TTS/realtime/vision. Quyền dữ liệu thuộc F01/F07-G06; trạng thái nguồn thuộc F07-G01/G02. Bốn lớp cache chốt **về nguyên tắc**: `PUBLIC_APPROVED_KNOWLEDGE`, `SCOPED_NON_SENSITIVE`, `SENSITIVE_RESTRICTED`, `NO_CACHE`. Kiểm quyền theo actor/purpose/scope trước truy xuất và cache. `NO_CACHE` không đồng nghĩa xóa Journal lưu hợp lệ. TTL, cache key, invalidation, provider retention và ngưỡng routing **chưa chốt**. Xem `Feature_3_2_AI_Routing_Policy_SPEC_DRAFT.md` (draft, không phải tiêu chuẩn triển khai đã phê duyệt).
+
 ### 6.1. Cost risk
 
 - **Low:** không bắt buộc inference LLM, chi phí phần lớn từ storage/compute cơ bản; vẫn cần tối ưu.
@@ -260,12 +300,13 @@ Các trường `Execution`/`Cost` trong bảng là **ước lượng định tí
 
 | Vận hành | Vị trí | Ghi chú |
 |---|---|---|
-| Family subscription, invoices, entitlements | `F01-G06-M02` | Chủ sở hữu dịch vụ/gói; tránh đưa dữ liệu thanh toán nhạy cảm không cần thiết vào hồ sơ trẻ |
+| Family subscription, invoices, entitlements | `F01-G06-M02` (quyền lợi), `F01-G06-M03` (billing lifecycle) | Verified state, refund/restore và idempotency; không suy ra quyền đọc Journal từ payer |
 | Content CMS, evidence approval | `F07-G01-M01`, `F07-G02-M01` | Soạn-thẩm định-phát hành-tái kiểm định nguồn nội dung |
 | Safety Operations, incident processing | `F07-G05-M02`, `F07-G07-M01` | Phân quyền nhân sự, kiểm tra quy trình, hạn lưu sự cố |
 | Admin Console / audit / anomaly reviews | `F07-G07-M01` | Không có admin quyền vô hạn mặc định đối với Journal |
 | Quota and inference cost reporting | `F07-G07-M02` | Cost theo family/cohort/feature, p95 và heavy users |
 | Third-party marketplace integrity | `F08-G05-M02` | Minh bạch quảng cáo và xung đột lợi ích |
+| Education budget and expense ledger | `F08-G06-M01/M02` | Ghi kế hoạch/thực chi và phê duyệt; không tự khởi tạo payment hoặc wallet |
 
 ## 8. Schema mẫu cho Individual Feature
 
@@ -303,14 +344,20 @@ release_gates: [permission_review, usability_validation]
 
 ## 9. Acceptance & coverage checklist cho 3.2
 
-- [x] Có đủ 8 Domain / 49 Group ở mức baseline.
+- [x] Có đủ 8 Domain / 49 Group ở mức baseline lịch sử (2026-11-07).
+- [x] Revision 3.2-R1 bổ sung 2 Group (`F06-G07`, `F08-G06`) và 8 L3, tổng 8 Domain / 51 Group / 106 L3 ứng viên.
 - [x] Có cấu trúc 4 cấp và quy tắc ID ổn định.
-- [x] Có 2 module + 2 feature đại diện trên mỗi Group để kiểm soát độ bao phủ, không tự nhận là inventory exhaustive ở L4.
-- [x] Có ma trận 6 cohort cho toàn bộ 49 Group, cộng guideline đặc thù từng giai đoạn.
+- [x] Có 2 module + 2 feature **minh họa ở mỗi Group baseline**; Group mới không bị ép đủ hai L3, không tự nhận là inventory exhaustive ở L4.
+- [x] Có ma trận 6 cohort cho toàn bộ 51 Group ở mức pattern UX; quyền theo từng action còn chờ L4.
 - [x] Có quy tắc quyền/nguồn dữ liệu/Journal không trộn với hồ sơ cha mẹ.
 - [x] Có phân loại execution E0–E3 và rủi ro chi phí.
 - [x] Có vị trí Admin, Content, Safety Operations, Billing.
 - [x] Có schema metadata, mapping và Research refs.
+- [x] Ghi nhận 7 L3 ownership contracts (`L3C-01..07`) và 8 trace contracts (`L3T-01..08`) ở mức đề xuất.
+- [x] Ghi nhận disposition của `AUD-01..17` tại `Feature_3_2_L3_Resolution_Decision_Log_APPROVED.md`.
+- [ ] `AUD-02`: phân rã L4 và acceptance theo module — **không chặn chốt cấu trúc L3**.
+- [ ] Mở rộng 3.4 UC cho `F06-G07`, `F08-G06` và các hành trình nhạy cảm.
+- [ ] Safety/privacy/legal, academic benchmarks, nguồn tri thức, provider retention, giá/quota và đối chiếu `documents/pal/` với code: cần kiểm chứng trước triển khai.
 - [ ] Chưa xác thực mọi user story, feature variant, UI, acceptance criteria và pháp lý — **không thuộc kết quả đã được chốt của 3.2**.
 - [ ] Chưa chọn MVP, release scope, đội ngũ, mức ngân sách hoặc nhà cung cấp AI.
 
@@ -319,6 +366,9 @@ release_gates: [permission_review, usability_validation]
 File duy nhất: `Product_Blueprint_Master_Research_Backlog.md`. Các nhóm chủ yếu liên quan: `MR-001`–`MR-010` (giá trị/UX), `MR-011`–`MR-015` (phát triển theo tuổi), `MR-016`–`MR-024` (pháp lý, privacy, safety), `MR-025`–`MR-030` (AI/cost), `MR-031`–`MR-036` (reporting, ecosystem và research methods).
 
 **Đề xuất bổ sung vào Master (không tách backlog):**
+
+**3.2-R1:** Giữ `AUD-07/10/15/17` và các vấn đề nghiên cứu/triển khai chưa kiểm chứng trong Decision Log; đối chiếu Master Backlog trước khi cấp MR-ID mới. Không cập nhật file Research Backlog trong revision này.
+
 - `MR-037`: tiêu chí accessibility, khác biệt năng lực/ngôn ngữ/người khuyết tật khi thiết kế ngang độ sâu cho 0–23; so sánh nhiều cấp học và bối cảnh.
 - `MR-038`: tính khả thi và tổng chi phí bảo trì/kiểm thử age variants trên các Group; phương pháp reuse capabilites thay vì nhân bản tính năng.
 
@@ -329,3 +379,8 @@ Các mục này là câu hỏi phải kiểm chứng, **không phải kết qu�
 **3.2 đã được chốt về phương pháp và phạm vi theo Q1–Q6.** Inventory này là khung baseline rộng để tiếp tục phân tích, không phải yêu cầu phát triển đồng loạt 0–23 tuổi. Domain/Group/Module/Feature là cây phân loại năng lực; AI là phương tiện thực hiện được cân nhắc theo giá trị và ngân sách. Mọi thứ chưa kiểm chứng giữ nhãn đề xuất.
 
 **Dừng tại 3.2. Không tự động chuyển 3.3.**
+
+**Revision 3.2-R1 (2026-11-10):** Cấu trúc L3 được mở rộng theo quyết định Round 1 và Canonical Diff v2. Bản baseline 2026-11-07 vẫn được giữ trong lịch sử. Sau khi PR được chủ sản phẩm review và merge, bước kế tiếp là **L4 Capability Decomposition**; không tự động phê duyệt L4, chỉnh 3.3/3.4, lựa chọn MVP hoặc phát triển code.
+
+**Nguồn quyết định:** `Feature_3_2_L3_Coverage_Audit_REVIEW.md`, `Feature_3_2_L3_Issue_Resolution_Round_1_REVIEW.md`, `Feature_3_2_L3_Resolution_Decision_Log_APPROVED.md`, `Feature_3_2_Proposed_Canonical_Diff_v2_REVIEW.md`, Package A–E và `Feature_3_2_Consolidation_Decision_Log_APPROVED.md`.
+
