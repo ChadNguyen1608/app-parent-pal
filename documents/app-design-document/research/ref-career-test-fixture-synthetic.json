@@ -1,0 +1,176 @@
+{
+  "fixture_id": "SC-003-CAREER-FIXTURE-001",
+  "status": "SYNTHETIC_NOT_AUTHORITATIVE",
+  "purpose": "Kiểm thử logic cấu trúc/quan hệ/permission; không phải dữ liệu thị trường thật",
+  "industries": [
+    {
+      "id": "IND-MEDIA",
+      "name": "Nội dung số và truyền thông"
+    },
+    {
+      "id": "IND-GAME",
+      "name": "Game và esports"
+    },
+    {
+      "id": "IND-COMMERCE",
+      "name": "Thương mại số"
+    }
+  ],
+  "skills": [
+    {
+      "id": "SK-COMM",
+      "name": "Giao tiếp"
+    },
+    {
+      "id": "SK-EDIT",
+      "name": "Biên tập video"
+    },
+    {
+      "id": "SK-DIGSAFE",
+      "name": "An toàn số"
+    },
+    {
+      "id": "SK-PLAN",
+      "name": "Lập kế hoạch"
+    }
+  ],
+  "careers": [
+    {
+      "id": "CAREER-STREAMER",
+      "name": "Streamer",
+      "industry_ids": [
+        "IND-MEDIA",
+        "IND-GAME",
+        "IND-COMMERCE"
+      ],
+      "skill_ids": [
+        "SK-COMM",
+        "SK-EDIT",
+        "SK-DIGSAFE"
+      ]
+    },
+    {
+      "id": "CAREER-VIDEOEDITOR",
+      "name": "Video editor",
+      "industry_ids": [
+        "IND-MEDIA",
+        "IND-GAME"
+      ],
+      "skill_ids": [
+        "SK-EDIT",
+        "SK-PLAN"
+      ]
+    }
+  ],
+  "knowledge_items": [
+    {
+      "id": "KN-01",
+      "career_id": "CAREER-STREAMER",
+      "claim": "Ví dụ mô tả kỹ năng cơ bản của streamer, cần biên tập xác minh",
+      "source": {
+        "type": "EDITORIAL_DRAFT",
+        "publisher": "Demo nội bộ",
+        "observed_at": null,
+        "url": null
+      },
+      "cache_status": "CACHED",
+      "verification_status": "UNVERIFIED",
+      "approval_status": "NOT_APPROVED",
+      "may_present_as_verified": false
+    },
+    {
+      "id": "KN-02",
+      "career_id": "CAREER-STREAMER",
+      "claim": "[Số liệu giả] 40% streamer có thu nhập ổn định",
+      "source": {
+        "type": "SYNTHETIC",
+        "publisher": "Demo nội bộ",
+        "observed_at": "2025-01",
+        "url": null
+      },
+      "cache_status": "CACHED",
+      "verification_status": "UNVERIFIED",
+      "approval_status": "NOT_APPROVED",
+      "may_present_as_verified": false
+    }
+  ],
+  "profiles": [
+    {
+      "id": "CHILD-13",
+      "age": 13,
+      "autonomy_mode": "CHILD_EXECUTED",
+      "parent_approval_required_for_publication": true,
+      "evidence_limited_strengths": [
+        "Có hứng thú thử nói trước camera"
+      ],
+      "career_fit_verdict": null
+    },
+    {
+      "id": "ADULT-19",
+      "age": 19,
+      "autonomy_mode": "ADULT_OWNER",
+      "parent_approval_required_for_publication": false,
+      "evidence_limited_strengths": [],
+      "career_fit_verdict": null
+    }
+  ],
+  "exploration_projects": [
+    {
+      "id": "PROJ-001",
+      "owner_id": "CHILD-13",
+      "career_id": "CAREER-STREAMER",
+      "mode": "EXPLORATION_ORIENTED",
+      "goal": "Tìm hiểu xem trẻ có muốn tiếp tục hoạt động làm nội dung không",
+      "milestones": [
+        {
+          "id": "MS-01",
+          "title": "Quay video thử",
+          "completion_kind": "EXPERIENCE"
+        },
+        {
+          "id": "MS-02",
+          "title": "Tự phản tư",
+          "completion_kind": "REFLECTION"
+        }
+      ],
+      "artifact": {
+        "id": "ART-001",
+        "kind": "VIDEO",
+        "visibility": "PRIVATE",
+        "content_data": "<không chứa video thật>"
+      },
+      "publication_request": {
+        "requested_visibility": "PUBLIC",
+        "parent_approved": false,
+        "platform_conditions_verified": false,
+        "allowed": false
+      }
+    },
+    {
+      "id": "PROJ-002",
+      "owner_id": "ADULT-19",
+      "career_id": "CAREER-VIDEOEDITOR",
+      "mode": "GOAL_ORIENTED",
+      "goal": "Hoàn thiện video thực hành",
+      "milestones": [
+        {
+          "id": "MS-03",
+          "title": "Dựng bản cuối",
+          "completion_kind": "DELIVERABLE"
+        }
+      ],
+      "artifact": {
+        "id": "ART-002",
+        "kind": "VIDEO",
+        "visibility": "PRIVATE",
+        "content_data": "<không chứa video thật>"
+      },
+      "publication_request": {
+        "requested_visibility": "PRIVATE",
+        "parent_approved": null,
+        "platform_conditions_verified": null,
+        "allowed": true
+      }
+    }
+  ]
+}
