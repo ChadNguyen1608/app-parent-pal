@@ -1,8 +1,8 @@
 # Parent-Pal — P6: Kế hoạch kiểm chứng Multi-Agent L4 thật và điều kiện nghiệm thu
 
-**Ngày lập:** 2026-11-11 · **Trạng thái:** `P6_PLAN_READY / LIVE_VALIDATION_PENDING`  
-**Căn cứ:** P5 Owner Review `R1=A/R2=A/R3=A`, 64 test case hợp nhất, Draft PR #17 (đặc tả) và Draft PR #18 (hệ thống multi-agent).  
-**Nguyên tắc:** Sự kiện 11 test tự động đạt và ba L3 chạy mock là kết quả **người dùng báo cáo**, chưa được coi là AI thật đã được kiểm chứng. Không cần sửa hoặc merge PR #17/#18 để lên kế hoạch P6.
+**Ngày lập:** 2026-11-11 · **Cập nhật phụ thuộc:** 2026-11-11 · **Trạng thái:** `P6_DESIGN_READY / BLOCKED_NO_INDEPENDENT_AGENT_RUNTIME`  
+**Căn cứ:** P5 Owner Review `R1=A/R2=A/R3=A`, 64 test case hợp nhất và Draft PR #17 (đặc tả). **PR #18 đã đóng, chưa merge và không phải công cụ thực thi P6.**  
+**Nguyên tắc:** Kết quả 11 test tự động và ba L3 chạy mock trước đây là bằng chứng lịch sử của PR #18, **không** chứng minh agent thật hoặc công cụ thay thế đã chạy. Không cần merge PR #17 để chuẩn bị P6; không sử dụng hoặc khôi phục PR #18 mặc định.
 
 ## 1. Mục tiêu và ranh giới
 
@@ -15,8 +15,8 @@
 
 | Bước | Thực hiện | Bằng chứng bắt buộc | Chặn nếu |
 |---|---|---|---|
-| P6-01 — Kiểm tra trước chạy | Review PR #18 code, workflow, secrets, permission, cost cap, phạm vi đọc/ghi; ghi SHA/config | commit SHA, branch, CI run, cấu hình model, timeout, quyền | Có nguy cơ lộ key, thay đổi Blueprint chính thức hoặc quyền PR ghi quá rộng |
-| P6-02 — Một L3 thật | Chọn `F01-G04-M01`, gọi model thực sự với Architect/QA/Reviewer/Validator; lưu riêng đầu ra | `run_id`, model ID, prompt hash, input hash, token, cost, raw/review output và lỗi | Chỉ chạy mock hoặc không có trace tách vai |
+| P6-01 — Chọn và xác minh môi trường thực thi | Kiểm tra **agent độc lập thay thế** do Chủ sản phẩm lựa chọn (không phải PR #18): quyền đọc GitHub, nguồn/tài liệu phiên bản xác định, tách ngữ cảnh QA–Architect–Reviewer, đầu ra tiếng Việt, quyền ghi và chi phí | Tên nền tảng, phương pháp thực thi, ID các lượt gọi, model/prompt/version, commit SHA nguồn, quyền truy cập, log và mẫu báo cáo | **BLOCKED** nếu chưa có môi trường hoặc không chứng minh được lượt phản biện độc lập |
+| P6-02 — Một L3 thật | Sau khi P6-01 đạt, chọn `F01-G04-M01`, chạy Architect/QA/Reviewer thực tế với ngữ cảnh tách biệt; Validator kiểm tra các điều kiện xác định bằng code nếu có; lưu đầu ra riêng | `run_id`, model ID, prompt hash, input/source hash, usage/cost nếu có, raw/review output, đánh giá validator và lỗi | Chỉ chạy mock, tự phản biện trong một context, hoặc không có trace tách vai |
 | P6-03 — Phản biện và sửa | So QA-first với Architect; reviewer có nguồn gốc riêng, log phản ví dụ, retry tối đa theo cấu hình | disagreement log, issue severity, sửa và rerun assertions | Reviewer chỉ sao chép kết luận Architect hoặc tự chấm PASS |
 | P6-04 — Chạy ba L3 | Chạy `F01-G04-M01`, `F06-G07-M01`, `F04-G02-M03`; so 64 baseline cases | Ma trận coverage từng requirement/outcome/test, missing/false positives, human adjudication | Thiếu nguồn, output mơ hồ, regression quyền hoặc hard-cap |
 | P6-05 — Kiểm tra liên module | Kiểm owner F01/F04/F06/F07; validate R1–R3, approval/commit, rubric source, version | Cross-module issue register + negative case tests | Chồng trách nhiệm nghiêm trọng chưa được xử lý |
@@ -48,7 +48,7 @@ Các case này là **test bổ sung P6**, chưa tự động đổi con số **6
 
 ## 5. Phân vai và trách nhiệm
 
-- **Codex/Engineering:** kiểm tra code PR #18, thực hiện lần chạy model thật, thiết lập trace, kiểm thử code và giới hạn chi phí.
+- **Người vận hành agent thay thế / kỹ thuật:** thiết lập môi trường mà Chủ sản phẩm chọn, cấu hình quyền và chi phí, lưu log từng vai, xuất kết quả để đối chiếu. **Không dùng Codex Agent hoặc PR #18 làm phụ thuộc bắt buộc.**
 - **Independent Reviewer:** chạy reviewer với input rõ ràng, kiểm lại nguồn gốc và phản chứng; báo `INDEPENDENCE_LIMITED` nếu reviewer dùng cùng model/provider nhưng prompt context tách biệt.
 - **Product Owner:** chỉ duyệt vấn đề nghiệp vụ có ảnh hưởng, không cần kiểm từng dòng code hay tất cả test cases.
 - **Chuyên gia pháp lý/giáo dục/riêng tư:** duyệt các vấn đề theo thẩm quyền; kết quả agent không thay thế họ.
@@ -61,7 +61,7 @@ Các case này là **test bổ sung P6**, chưa tự động đổi con số **6
 | `CONDITIONAL_GO` | Chỉ cho batch giới hạn nếu vấn đề không nghiêm trọng có owner/mitigation và chưa dùng cho production |
 | `NO_GO` | Chưa có live runs, không tách được agent, quyền ghi quá rộng, rò rỉ dữ liệu, lỗi nghiêm trọng hoặc không kiểm soát chi phí |
 
-**Tình trạng hiện nay:** `P6_LIVE_VALIDATION_PENDING`. Mock CI và P5 owner sign-off không đủ để tự kết luận `GO`.
+**Tình trạng hiện nay:** `BLOCKED_NO_INDEPENDENT_AGENT_RUNTIME` — phương pháp và bộ test đã có, nhưng chưa có môi trường agent thay thế được xác minh, nên **chưa sẵn sàng chạy P6 đúng protocol**. Kết quả mock cũ và P5 sign-off không đủ để tự kết luận `GO`.
 
 ## 7. Câu hỏi chỉ khi phát sinh
 
@@ -74,5 +74,6 @@ Các case này là **test bổ sung P6**, chưa tự động đổi con số **6
 - `P6-PLAN-01`: ghi dependency P5→P6, mock≠live.
 - `P6-PLAN-02`: thêm năm test biên nhằm xác minh R2/R3 và regression liên module.
 - `P6-PLAN-03`: định nghĩa gate mở rộng 103 L3 còn lại; không mặc định bắt đầu ngay.
+- `P6-PLAN-04`: loại phụ thuộc PR #18 (đã Closed); thêm gate kiểm tra runtime thay thế và trạng thái `BLOCKED_NO_INDEPENDENT_AGENT_RUNTIME`.
 
-**Không sửa Blueprint canonical, không merge hay thay đổi Draft PR #18.**
+**Không sửa Blueprint canonical, không merge PR #17. PR #18 đã Closed và không được sử dụng làm hệ thống P6.**
