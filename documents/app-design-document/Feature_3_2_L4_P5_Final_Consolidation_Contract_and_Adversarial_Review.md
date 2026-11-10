@@ -1,6 +1,6 @@
 # PARENT-PAL — P5: Hợp đồng chức năng L4, phản biện độc lập về mục tiêu và điều kiện chuyển P6
 
-**Ngày:** 2026-11-10 · **Owner Review:** 2026-11-11 · **Trạng thái:** `P5_OWNER_APPROVED_AT_SPEC_LEVEL / P6_LIVE_VALIDATION_PENDING`; **phạm vi** chỉ ba L3 thử nghiệm.  
+**Ngày:** 2026-11-10 · **Owner Review:** 2026-11-11 · **Trạng thái:** `P5_OWNER_APPROVED_AT_SPEC_LEVEL / P6_BLOCKED_NO_INDEPENDENT_AGENT_RUNTIME`; **phạm vi** chỉ ba L3 thử nghiệm.  
 **Nền tảng:** Blueprint 3.2-R1/3.3/3.4, phương pháp rà soát nhiều lượt (Multi-Pass) thử nghiệm, phản hồi của Chủ sản phẩm về Phân quyền/Cân bằng kế hoạch và danh mục test hợp nhất P5.  
 **Thực tế triển khai:** Các vai thiết kế, kiểm thử, phản biện và tổng hợp được phân tích qua những lượt riêng, **chưa có sub-agent hoặc mô hình độc lập thực sự được khởi chạy**; chưa chạy kiểm thử phần mềm hay benchmark của nhà cung cấp AI. Ghi riêng `independent_review_status=NOT_AVAILABLE`.
 
@@ -76,7 +76,7 @@
 | Owner response recorded | **APPROVED_AT_SPEC_LEVEL** | R1=A, R2=A, R3=A, gồm 6 test mới trong baseline 64; xem P5 Owner Decision Log |
 | Trace test old/new | **DESIGN_CHECKED** | 43/43 old, 24/24 gap mapped, 6 added, 64 candidate suite |
 | Contract boundaries | **DESIGN_CHECKED_CONDITIONAL** | 6 L4 candidates + AR-01..10; case owner unknown giữ open |
-| Independent sub-agent reviewer | **NOT_AVAILABLE** | Khi có orchestrator: reviewer nhận primary source independently, lưu model/prompt/version/run IDs; không giả mạo |
+| Independent sub-agent reviewer | **BLOCKED / NOT_AVAILABLE** | PR #18 đã Closed, không còn được dùng; chỉ mở P6 khi có agent thay thế với lượt chạy thực, context riêng, model/prompt/version/run IDs và log đối chiếu |
 | Legal/privacy/safety/education validation | **UNKNOWN** | MR/legal-review/safety standards; không phải điều kiện chặn phê duyệt *phương pháp*, nhưng chặn production |
 | Runnable code tests/LLM benchmarking | **NOT_EXECUTED** | Sau design approval mới chuẩn bị dataset/prototype/QA |
 | Stable IDs, canonical updates | **NOT_APPROVED** | Không sửa 3.2/3.3/3.4, không merge PR #17 |
@@ -95,10 +95,10 @@
 - **R2=A, ĐÃ CHỐT:** `similar` = cùng `plan_scope`, cùng `constraint` được nới và cùng `purpose`, chống đổi nhãn; tối đa 60 ngày mỗi kỳ, cách 7 ngày trống hoàn chỉnh; không vượt protected hard-cap.
 - **R3=A, ĐÃ CHỐT:** Không có Primary Manager hợp lệ hoặc role xung đột thì fail-closed cho plan mutation; cung cấp luồng xác minh/bàn giao; Observer không tự nâng quyền.
 
-**Phạm vi:** P5 được phê duyệt ở **mức đặc tả**; P6 vẫn `LIVE_VALIDATION_PENDING`, không tự chuyển sang `P6_APPROVED`. Xem [Decision Log](Feature_3_2_L4_P5_Owner_Decision_Log_APPROVED.md) và [P6 Plan](Feature_3_2_L4_P6_Live_Validation_Plan_REVIEW.md).
+**Phạm vi:** P5 được phê duyệt ở **mức đặc tả**; P6 đang `BLOCKED_NO_INDEPENDENT_AGENT_RUNTIME`, không tự chuyển sang `P6_APPROVED`. Xem [Decision Log](Feature_3_2_L4_P5_Owner_Decision_Log_APPROVED.md) và [P6 Plan](Feature_3_2_L4_P6_Live_Validation_Plan_REVIEW.md).
 
 ## 8. Nhật ký thay đổi
 
 `P5-CONTRACT-01` consolidated 6 L4 core + 3 deferred/merged outcomes; `P5-AR-01` phản biện 10 counterexamples; `P5-XMOD-01` cross-module boundary audit; `P5-GATE-01` gate P6 và future sub-agent requirements.
 
-**Không sửa canonical, không cấp stable L4 ID, không merge PR #17.**
+**Cập nhật phụ thuộc (2026-11-11):** PR #18 đã Closed / chưa merge, không còn là lựa chọn chạy P6. Kế hoạch P6 và nhật ký quyết định P5 đã được chỉnh để yêu cầu xác minh hệ thống phản biện thay thế. **Không sửa canonical, không cấp stable L4 ID, không merge PR #17.**
