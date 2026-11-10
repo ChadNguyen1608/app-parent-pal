@@ -1,52 +1,55 @@
-# PARENT-PAL — L4 Capability Decomposition Standard
+# PARENT-PAL — Tiêu chuẩn phân rã năng lực thành L4
 
-**Version:** 1.0 · **Method status:** `OWNER_APPROVED` (M-Q1..06) · **Candidate L4 status:** `REVIEW_ONLY`  
-**Source:** `Product_Blueprint_03_2_Feature_Inventory_and_Scope.md`, 3.3, 3.4, L3C-01..07, L3T-01..08, `Feature_3_2_L4_Methodology_Decision_Log_APPROVED.md`.  
-**Scope:** 8 Domains / 51 Groups / 106 L3; A0–A5 (0–23), core Vietnam grades 1–9.
+**Phiên bản:** 1.0 · **Phương pháp:** `OWNER_APPROVED` (M-Q1..06) · **L4 ứng viên:** `REVIEW_ONLY`  
+**Nguồn:** `Product_Blueprint_03_2_Feature_Inventory_and_Scope.md`, 3.3, 3.4, L3C-01..07, L3T-01..08, `Feature_3_2_L4_Methodology_Decision_Log_APPROVED.md`.  
+**Phạm vi:** 8 domain / 51 group / 106 L3; A0–A5 (0–23 tuổi), trọng tâm lớp 1–9 tại Việt Nam.
 
-## 1. Contract
+## 1. Định nghĩa và nguyên tắc
 
-An L4 is an **independently observable and testable product behavior** within a single L3's responsibility. One L4 has one primary outcome and one canonical owner. It is **not** a button, screen, endpoint, class method, agent, workflow step, or database table. A workflow can orchestrate multiple L4 across L3 boundaries; a single L4 can serve multiple workflows.
+L4 là **hành vi sản phẩm có thể quan sát và kiểm chứng độc lập**, nằm trong phạm vi trách nhiệm của đúng một L3. Mỗi L4 có một kết quả chính và một owner chuẩn. L4 **không mặc nhiên** là nút bấm, màn hình, endpoint, method trong class, agent, bước workflow hay bảng database. Workflow có thể điều phối nhiều L4 thuộc nhiều L3; một L4 có thể phục vụ nhiều workflow.
 
-**Split when:** distinct primary outcomes, independently significant authorization/privacy/data owner, state transition, release gate, or evaluation economics.  
-**Merge when:** differences are only UI, cohort variant, API/model, or internal validation/notification with no independently managed outcome.  
-**Reuse or move when:** a proposed L4 duplicates another L3's canonical responsibility; never create a second data source of truth.
+- **Tách** khi khác kết quả chính, quyền truy cập/quyền riêng tư quan trọng, owner dữ liệu, chuyển trạng thái, điều kiện phát hành hoặc kinh tế kiểm thử/AI.
+- **Gộp** khi khác biệt chỉ nằm ở UI, biến thể nhóm tuổi, API/model hoặc bước kiểm tra/thông báo nội bộ không tạo ra kết quả nghiệp vụ độc lập.
+- **Tái sử dụng/chuyển owner** nếu L4 đề xuất trùng trách nhiệm của L3 khác; không tạo nguồn dữ liệu chuẩn thứ hai.
 
-## 2. Identity and status
+## 2. ID và trạng thái
 
-- L3 `Fxx-Gyy-Mzz`; official L4 `Fxx-Gyy-Mzz-NNN`. Preserve any existing illustrative IDs and label them `BASELINE_PROPOSED` until review. New pilot candidates use `CAND-<L3>-<slug>`, **not official L4 IDs**.
-- `definition_status`: BASELINE_PROPOSED / REVIEWED / APPROVED / DEFERRED / RETIRED.
-- Independent `assessment_status`: NOT_EVALUATED / PROVISIONAL / EVIDENCE_BACKED / NEEDS_REVIEW; `delivery_status`: NOT_PLANNED / PLANNED / IN_PROGRESS / RELEASED; `mvp_decision`: NOT_DECIDED.
-- L3 assessment inheritance requires override on model usage, sensitive data, permissions, safety, cohort, cost or dependency changes. No automatic approvals.
+- L3: `Fxx-Gyy-Mzz`; L4 chính thức: `Fxx-Gyy-Mzz-NNN`. Giữ nguyên ID minh họa đã có và đánh dấu `BASELINE_PROPOSED` cho đến khi review. L4 mới trong pilot dùng `CAND-<L3>-<slug>`, **không phải ID chính thức**.
+- `definition_status`: `BASELINE_PROPOSED` / `REVIEWED` / `APPROVED` / `DEFERRED` / `RETIRED`.
+- `assessment_status`: `NOT_EVALUATED` / `PROVISIONAL` / `EVIDENCE_BACKED` / `NEEDS_REVIEW`.
+- `delivery_status`: `NOT_PLANNED` / `PLANNED` / `IN_PROGRESS` / `RELEASED`.
+- `mvp_decision`: `NOT_DECIDED`. Không tự động suy ra trạng thái phê duyệt từ L3.
 
-## 3. Minimum L4 schema
+## 3. Schema L4 tối thiểu
 
-Each L4 record requires:
-`id, title, parent_module, domain, group, primary_outcome, target_users, user_value, trigger, preconditions, inputs, outputs, primary_data_owner, data_classification, authorization, autonomy_permissions, age_variants, cohort_applicability, main_flow, alternative_flows, failure_recovery, acceptance_criteria, dependencies, execution_type, ai_cost_risk, research_refs, source_trace, review_issues, definition_status, assessment_status, delivery_status, mvp_decision`.
+Mỗi L4 phải có: `id, title, parent_module, domain, group, primary_outcome, target_users, user_value, trigger, preconditions, inputs, outputs, primary_data_owner, data_classification, authorization, autonomy_permissions, age_variants, cohort_applicability, main_flow, alternative_flows, failure_recovery, acceptance_criteria, dependencies, execution_type, ai_cost_risk, research_refs, source_trace, review_issues, definition_status, assessment_status, delivery_status, mvp_decision`.
 
-Each **A0–A5** age record must cover `applicability` (APPLICABLE/CONDITIONAL/NOT_APPLICABLE/UNKNOWN), `interaction_pattern`, `authorized_actor`, `approval_actor`, `data_scope`, `alternative_path`, `evidence_confidence`. UX patterns do **not** grant legal permission. An unknown actor/right is `UNKNOWN`, not `allow`. Adult A5 controls own data.
+Đây là **tên khóa schema**, được giữ nguyên tiếng Anh để bảo đảm tương thích với tài liệu/automation.
 
-For each dependency edge record `source_module, target_module, type(F/D/P/S/O), criticality(HARD/SOFT), verification(CONFIRMED/CANDIDATE/REJECTED), required_for(BUILD/TEST/RELEASE/RUN), cohort_scope, reason, evidence_refs, workaround`. Pilot can use a compact dependency table but must mark unverified edges as CANDIDATE.
+Mỗi bản ghi A0–A5 cần: `applicability` (APPLICABLE/CONDITIONAL/NOT_APPLICABLE/UNKNOWN), `interaction_pattern` (kiểu tương tác), `authorized_actor` (chủ thể có quyền), `approval_actor` (người duyệt), `data_scope` (phạm vi dữ liệu), `alternative_path` (luồng thay thế), `evidence_confidence` (mức tin cậy của bằng chứng). **Mẫu UX không cấp quyền pháp lý.** Chưa rõ quyền thì `UNKNOWN`, không được hiểu là cho phép. A5 là người trưởng thành kiểm soát dữ liệu của mình.
 
-## 4. Security, AI, acceptance
+Mỗi phụ thuộc cần: `source_module, target_module, type(F/D/P/S/O), criticality(HARD/SOFT), verification(CONFIRMED/CANDIDATE/REJECTED), required_for(BUILD/TEST/RELEASE/RUN), cohort_scope, reason, evidence_refs, workaround`. Pilot có thể dùng bảng phụ thuộc rút gọn, nhưng phải đánh dấu cạnh chưa xác minh là `CANDIDATE`.
 
-- Deny by default; authorize **before reading, inference, cache lookup, or external call**. Payer/subscriber does not gain access to private child data.
-- Maintain separate canonical data ownership: F04 submission ≠ F06-G07 assessment ≠ F06-G05 reporting; F03 goals ≠ F04 planning; F01 policy ≠ F01 consent ledger; F04 balance ≠ F04 schedule-conflict detection.
-- Rules-first E0/E1; E2/E3 only if purpose, data authorization, benchmark, fallback and cost are verified. Never infer numeric clinical/educational thresholds from age alone.
-- Acceptance must test positive and negative paths, denied access, stale/revoked consent, data provenance, concurrent mutations, low-confidence/unreadable input, retry/idempotency, and failures appropriate to the feature.
-- G-Legal, G-Privacy, G-Safety, G-Feasibility ∈ PASS / CONDITIONAL / BLOCKED / UNKNOWN. `UNKNOWN` ≠ PASS. No real-child pilot or release based solely on these documents.
+## 4. Bảo mật, AI và nghiệm thu
 
-## 5. P0–P6
+- **Từ chối mặc định**; kiểm tra quyền **trước khi đọc dữ liệu, suy luận, tra cache hoặc gọi dịch vụ bên ngoài**. Người trả tiền không mặc nhiên được xem dữ liệu riêng tư của trẻ.
+- Tách owner dữ liệu: F04 nhận bài ≠ F06-G07 đánh giá ≠ F06-G05 báo cáo; F03 quản lý mục tiêu ≠ F04 lập kế hoạch; F01 policy ≠ F01 consent ledger; F04 kiểm tra cân bằng ≠ F04 phát hiện trùng khung giờ.
+- Ưu tiên E0/E1 theo quy tắc xác định; chỉ dùng E2/E3 khi mục đích, quyền dữ liệu, benchmark, fallback và chi phí đã được kiểm chứng. Không tự đặt ngưỡng y tế/giáo dục theo tuổi.
+- Test phải có luồng thành công và thất bại, từ chối quyền, đồng ý bị thu hồi/hết hiệu lực, nguồn dữ liệu, thay đổi đồng thời, dữ liệu không đọc được/độ tin cậy thấp, retry/idempotency và các lỗi phù hợp.
+- Các cổng `G-Legal`, `G-Privacy`, `G-Safety`, `G-Feasibility`: `PASS / CONDITIONAL / BLOCKED / UNKNOWN`. `UNKNOWN` **không** tương đương `PASS`. Không dùng tài liệu này làm cơ sở duy nhất để pilot trên trẻ thật hoặc phát hành.
 
-| Step | Deliverable | Gate |
+## 5. Quy trình P0–P6
+
+| Giai đoạn | Đầu ra | Điều kiện qua cổng |
 |---|---|---|
-| P0 Input freeze | Source trace, L3 ownership | Owner known |
-| P1 Outcome inventory | Candidate actions and failures | Primary outcome defined |
-| P2 Boundary review | KEEP/SPLIT/MERGE/REUSE/MOVE | No conflicting owner |
-| P3 Contract | Full L4 metadata, six cohorts, auth, AI | UNKNOWN explicitly tracked |
-| P4 Test/trace | UC/SC/MR mapping, synthetic test cases | Positive + negative tests |
-| P5 Independent review | Issue/decision register | Risk owners review |
-| P6 Owner approval | Stable IDs, canonical diff proposal | Explicit authorization before canonical changes |
+| P0 — Chốt đầu vào | Nguồn, owner và ranh giới L3 | Xác định được owner |
+| P1 — Kiểm kê kết quả | Danh sách hành vi và lỗi ứng viên | Mỗi L4 có kết quả chính |
+| P2 — Rà soát ranh giới | KEEP/SPLIT/MERGE/REUSE/MOVE | Không trùng owner |
+| P3 — Đặc tả | Metadata, 6 cohort, quyền, AI, dữ liệu | Ghi rõ mọi UNKNOWN |
+| P4 — Test/truy vết | Liên kết UC/SC/MR, test case giả lập | Có test dương tính và âm tính |
+| P5 — Rà soát độc lập | Danh sách vấn đề và quyết định | Các owner rủi ro đã review |
+| P6 — Phê duyệt | ID ổn định và bản đề xuất sửa canonical | Có ủy quyền rõ trước khi sửa |
 
-**Wave 0:** F01-G04-M01; F06-G07-M01; F04-G02-M03. The three-module pilot is a method validation, **not** representative coverage of all 106 L3 or a completed assessment.  
-**Out of scope:** update canonical 3.2/3.3/3.4, select MVP, change code, merge PR, approve policies or publish.
+**Wave 0:** F01-G04-M01; F06-G07-M01; F04-G02-M03. Đây là thử nghiệm phương pháp, **không** đại diện cho toàn bộ 106 L3 và chưa phải đánh giá hoàn tất.
+
+**Ngoài phạm vi:** sửa 3.2/3.3/3.4 chính thức, chọn MVP, thay đổi code, merge PR, phê duyệt chính sách hoặc phát hành.
