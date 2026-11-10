@@ -1,145 +1,145 @@
-# PARENT-PAL — L4 Pilot Decomposition: Three Representative L3
+# PARENT-PAL — Thử nghiệm phân rã L4 trên ba module đại diện
 
-**Version:** 0.1 · **Date:** 2026-11-10 · **Status:** `P0–P4_DRAFT / REVIEW_ONLY`  
-**Method gate:** M-Q1..M-Q6 = A, approved by Product Owner.  
-**Canonical input:** Blueprint 3.2-R1 on `main`, PR #16 merged; 3.3, 3.4, L3C-01..07, L3T-01..08, Master Research Backlog.  
-**Scope:** `F01-G04-M01`, `F06-G07-M01`, `F04-G02-M03`.  
-**Explicit exclusions:** no edits to 3.2/3.3/3.4, no official new L4 IDs, no approved child legal rights/AI grading/safety thresholds, no code, no real-child test, no MVP decision.
+**Phiên bản:** 0.1 · **Ngày:** 2026-11-10 · **Trạng thái:** `P0–P4_DRAFT / REVIEW_ONLY`  
+**Phương pháp:** Chủ sản phẩm đã chốt M-Q1..M-Q6 = A.  
+**Tài liệu nguồn:** Blueprint 3.2-R1 trên `main` (PR #16 đã merge), 3.3, 3.4, L3C-01..07, L3T-01..08, Master Research Backlog.  
+**Phạm vi:** `F01-G04-M01`, `F06-G07-M01`, `F04-G02-M03`.  
+**Không bao gồm:** sửa 3.2/3.3/3.4, cấp ID L4 mới chính thức, chốt quyền pháp lý của trẻ, ngưỡng an toàn/AI chấm bài, viết code, thử nghiệm với trẻ thật hoặc chọn MVP.
 
-## 1. P0 — Source, ownership, baseline
+## 1. P0 — Đối chiếu nguồn và ranh giới trách nhiệm
 
-| L3 | Canonical owner / business outcome | Existing L4 | Sources |
+| L3 | Owner chuẩn / kết quả nghiệp vụ | L4 hiện có | Nguồn |
 |---|---|---|---|
-| `F01-G04-M01` Access Policy | F01; authorization decision by actor, action, resource, purpose, scope; no consent ledger mutation | `F01-G04-M01-001` — Phân quyền theo chủ thể và mục đích (illustrative, preserve ID) | L3C-03, 3.2 §5, UC-004/007/013/015, MR-016/017/021/035 |
-| `F06-G07-M01` Academic Assessment | F06-G07; rubric-based assessment with provenance and correction; not homework submission or authorized reporting | None; L4 pending | L3C-02, L3T-02, SC-002, AUD-05, MR-023/025/030/031 |
-| `F04-G02-M03` Balanced Planning Validation | F04; evaluate proposed schedule against family Standard Bar, hard/soft limits, protected leisure and timeboxed exceptions; no goal mutation | None; L4 pending | L3C-06, SC-001, AUD-08, UC-007/010, MR-012/025/035 |
+| `F01-G04-M01` Access Policy | F01; quyết định quyền theo chủ thể, hành động, tài nguyên, mục đích và phạm vi; không tự sửa sổ đồng ý | `F01-G04-M01-001` — Phân quyền theo chủ thể và mục đích (minh họa; giữ ID) | L3C-03, 3.2 §5, UC-004/007/013/015, MR-016/017/021/035 |
+| `F06-G07-M01` Academic Assessment | F06-G07; đánh giá theo rubric có nguồn và khả năng sửa; không đồng nhất với nộp bài hay báo cáo | Chưa có; L4 đang chờ | L3C-02, L3T-02, SC-002, AUD-05, MR-023/025/030/031 |
+| `F04-G02-M03` Balanced Planning Validation | F04; đánh giá lịch theo Standard Bar gia đình, ràng buộc cứng/mềm, thời gian chơi và ngoại lệ có hạn; không sửa mục tiêu | Chưa có; L4 đang chờ | L3C-06, SC-001, AUD-08, UC-007/010, MR-012/025/035 |
 
-**Critical owner separations:** `F01-G04-M02` owns consent ledger; `F01-G05` owns autonomy mode state. `F04-G05-M02` owns homework evidence submission; `F06-G05` owns authorized reports. `F04-G02-M02` owns time-slot conflict detection/alternatives; `F04-G02-M01` owns schedule construction; `F04-G06` owns change request/approval; `F03` owns goal and roadmap.
+**Ranh giới cần giữ:** `F01-G04-M02` quản lý bản ghi đồng ý; `F01-G05` quản lý chế độ tự chủ. `F04-G05-M02` quản lý nộp bằng chứng bài tập; `F06-G05` quản lý báo cáo được cấp quyền. `F04-G02-M02` phát hiện trùng lịch và gợi ý khung giờ; `F04-G02-M01` tạo/lưu lịch; `F04-G06` quản lý yêu cầu sửa/duyệt; `F03` quản lý mục tiêu và lộ trình.
 
-## 2. P1–P2 — Candidate L4 and boundary decisions
+## 2. P1–P2 — L4 ứng viên và quyết định ranh giới
 
-| Candidate / official illustrative ID | Primary outcome | Boundary decision | Why |
+| ID ứng viên / ID minh họa hiện có | Kết quả chính | Đề xuất | Lý do |
 |---|---|---|---|
-| `F01-G04-M01-001` | `ALLOW/DENY/INDETERMINATE` authorization decision with policy reason and scope | **KEEP + refine**; do not rename/reassign ID | Core published illustrative L4; deny if indeterminate |
-| `CAND-F01-G04-M01-effective-access-preview` | Authorized actor receives safe preview of *effective* permissions without protected content | **SPLIT** from evaluation | Different user-facing outcome; needs anti-enumeration tests |
-| `CAND-F01-G04-M01-policy-conflict-review` | Operator receives policy-conflict case for human resolution without granting access | **SPLIT, REVIEW** | Distinct operations lifecycle; verify whether F07 governance should own case workflow |
-| `CAND-F06-G07-M01-rubric-eligibility` | Versioned rubric is applicable to a specific submission or returns reason not assessable | **SPLIT, REVIEW** | Rubric version/provenance may warrant independent release gate |
-| `CAND-F06-G07-M01-assess-submission` | Provisional assessment findings tied to evidence and rubric, or explicit unable-to-assess | **KEEP as core** | Assessment ≠ completion ≠ teacher verification |
-| `CAND-F06-G07-M01-review-uncertainty` | Ambiguous/low-confidence assessment is routed to authorized human review | **SPLIT, REVIEW** | Human queue and case lifecycle; may be merged if no independent operation |
-| `CAND-F06-G07-M01-correct-assessment` | Authorized reviewer produces attributed, versioned correction | **SPLIT** | Separate write permission and audit trail |
-| `CAND-F04-G02-M03-validate-balance` | Schedule receives hard/soft constraint findings without silently changing goals/plan | **KEEP as core** | Deterministic, independently testable outcome |
-| `CAND-F04-G02-M03-evaluate-exception` | Proposed timeboxed exception receives validation decision and approval requirement | **SPLIT** | Explicit exception lifecycle, not self-approval |
-| `CAND-F04-G02-M03-expiry-recheck` | Expired exception is flagged and a revalidation/restoration request is produced | **SPLIT, REVIEW** | Triggered by time/state, requires idempotent handoff; schedule mutation owned elsewhere |
+| `F01-G04-M01-001` | Trả quyết định `ALLOW/DENY/INDETERMINATE` kèm lý do, phạm vi và phiên bản policy | **GIỮ + làm rõ**; không đổi ID | L4 minh họa đã có; không rõ quyền thì từ chối |
+| `CAND-F01-G04-M01-effective-access-preview` | Chủ thể được phép xem bản tóm tắt quyền hiệu lực, không lộ nội dung được bảo vệ | **TÁCH** khỏi quyết định truy cập | Kết quả hướng người dùng khác; phải chống dò tìm tài nguyên |
+| `CAND-F01-G04-M01-policy-conflict-review` | Tạo hồ sơ xung đột policy để người có thẩm quyền xử lý; không tự cấp quyền | **TÁCH, CHỜ REVIEW** | Có vòng đời vận hành riêng; cần xác minh owner F01 hay F07 |
+| `CAND-F06-G07-M01-rubric-eligibility` | Xác định rubric có áp dụng cho bài nộp không, hoặc nêu lý do không thể đánh giá | **TÁCH, CHỜ REVIEW** | Phiên bản/nguồn rubric có thể cần cổng phát hành riêng |
+| `CAND-F06-G07-M01-assess-submission` | Kết quả đánh giá tạm thời có liên kết bằng chứng và rubric; hoặc không thể đánh giá | **GIỮ làm lõi** | Đánh giá ≠ hoàn thành bài ≠ giáo viên xác nhận |
+| `CAND-F06-G07-M01-review-uncertainty` | Chuyển kết quả thiếu chắc chắn cho người có quyền xem xét | **TÁCH, CHỜ REVIEW** | Có hàng đợi/hồ sơ xử lý riêng; có thể gộp nếu không có kết quả độc lập |
+| `CAND-F06-G07-M01-correct-assessment` | Người có quyền sửa đánh giá, tạo phiên bản mới và lưu dấu vết | **TÁCH** | Quyền ghi và audit khác với quyền chấm |
+| `CAND-F04-G02-M03-validate-balance` | Trả cảnh báo ràng buộc cứng/mềm, không tự sửa mục tiêu/lịch | **GIỮ làm lõi** | Kết quả độc lập, kiểm thử bằng quy tắc |
+| `CAND-F04-G02-M03-evaluate-exception` | Kiểm tra ngoại lệ có hạn và xác định có cần duyệt không | **TÁCH** | Ngoại lệ không tự phê duyệt |
+| `CAND-F04-G02-M03-expiry-recheck` | Phát hiện ngoại lệ hết hạn, yêu cầu đánh giá lại/khôi phục | **TÁCH, CHỜ REVIEW** | Kích hoạt theo thời gian, cần idempotency và bàn giao; không tự sửa lịch |
 
-**Pilot count:** 10 candidate outcomes across 3 L3 (1 existing illustrative L4 ID + 9 temporary IDs). **Not approved as the final count.** No numeric L4 quota. No new official L4 IDs assigned.
+**Tổng:** 10 kết quả L4 ứng viên trên ba L3 (**1 ID minh họa hiện có + 9 ID `CAND-`**). **Chưa chốt số lượng cuối cùng.** Không ấn định số L4 cho mỗi L3; chưa cấp ID L4 chính thức mới.
 
-## 3. P3 — Contract catalog
+## 3. P3 — Hợp đồng chức năng
 
-All ten entries inherit: `definition_status=BASELINE_PROPOSED`, `assessment_status=NOT_EVALUATED`, `delivery_status=NOT_PLANNED`, `mvp_decision=NOT_DECIDED`. All new IDs remain `CAND-`. `research_refs` are existing MR IDs only; no research item is considered resolved. Every operation must evaluate permission **before** protected reads, inference, cache, model calls or mutations.
+Mười mục đều có `definition_status=BASELINE_PROPOSED`, `assessment_status=NOT_EVALUATED`, `delivery_status=NOT_PLANNED`, `mvp_decision=NOT_DECIDED`. ID mới tiếp tục mang tiền tố `CAND-`. Mã MR là tham chiếu nghiên cứu đang mở, không có nghĩa nghiên cứu đã xong. Mọi hành động phải kiểm tra quyền **trước khi** đọc dữ liệu bảo vệ, suy luận, tra cache, gọi model hoặc ghi thay đổi.
 
 ### 3.1 Access Policy — F01-G04-M01
 
-**Shared context:** target users = authorized parent, child/youth, adult account owner, authorized operator/service; value = prevent unauthorized access while allowing legitimate actions; classification = `identity_and_policy_metadata` (working label, taxonomy UNKNOWN); primary data owner = F01-G04-M01 for policy evaluation/decisions, while source consent records remain F01-G04-M02. Default execution E0/E1 deterministic, AI not an authority. Cost risk Low for rules-only, external enforcement/ops cost UNKNOWN.
+**Bối cảnh chung:** Người dùng mục tiêu là phụ huynh, trẻ/thanh thiếu niên, chủ tài khoản trưởng thành và người vận hành/service được ủy quyền. Giá trị: chặn truy cập trái phép nhưng không cản hành động hợp lệ. Phân loại dữ liệu tạm: `identity_and_policy_metadata` (taxonomy chưa chốt). F01-G04-M01 sở hữu kết quả đánh giá quyền; bản ghi đồng ý nguồn vẫn thuộc F01-G04-M02. Mặc định E0/E1 bằng quy tắc xác định; AI không được quyết định quyền. Rủi ro chi phí AI thấp khi chỉ dùng rule; chi phí vận hành khác `UNKNOWN`.
 
-| L4 | Trigger / preconditions | Input → output | Main flow / alternatives | Acceptance and failure recovery |
+| L4 | Kích hoạt / điều kiện trước | Đầu vào → đầu ra | Luồng chính / nhánh thay thế | Nghiệm thu và xử lý lỗi |
 |---|---|---|---|---|
-| `F01-G04-M01-001` | `authorize(action)`; authenticated actor, resource identifier and purpose; missing policy data is allowed as *input state* | actor, subject, resource, action, purpose, family relationship, consent/autonomy policy versions → decision `ALLOW/DENY/INDETERMINATE`, reason code, allowed scope, policy version | Verify identity → resolve applicable authoritative policies → deny on conflict/unknown → return scoped decision; alt: revoked consent, stale policy, multi-guardian conflict, A5 transition | No protected data read before decision; `INDETERMINATE` never grants; stale decision cannot authorize later mutation; no LLM override |
-| `CAND-F01-G04-M01-effective-access-preview` | Authorized actor requests “who can access what?”; must have metadata-view authority | actor, target subject, policy references → minimal permissions summary + unknowns (no child content) | Authorize metadata-view → compute effective rights → redact unrelated identities; alt: enumeration, ambiguous guardianship, stale policy | No list of other family/child resources to unauthorized caller; preview never becomes executable grant |
-| `CAND-F01-G04-M01-policy-conflict-review` | Conflicting policy/guardian/consent state detected; operator authorized for case metadata | conflict reference, policy version hashes, actors → non-sensitive review case ID/status, no permission grant | Detect conflict → create/reuse review case → notify approved operator; alt: duplicate event, operator unapproved, unresolved dispute | Duplicate input does not create duplicate cases; no auto-allow; case data excludes raw Journal/assessment content |
+| `F01-G04-M01-001` | Yêu cầu `authorize(action)`; đã xác thực chủ thể, xác định tài nguyên/mục đích; policy có thể đang thiếu | Chủ thể, đối tượng, tài nguyên, hành động, mục đích, quan hệ gia đình, phiên bản consent/autonomy → `ALLOW/DENY/INDETERMINATE`, mã lý do, phạm vi và phiên bản policy | Xác thực → đọc policy có thẩm quyền → từ chối khi xung đột/không rõ → trả quyết định giới hạn; nhánh: thu hồi consent, policy cũ, nhiều người giám hộ tranh chấp, chuyển A5 | Không đọc nội dung bảo vệ trước quyết định; `INDETERMINATE` không cấp quyền; phải kiểm tra lại trước ghi; LLM không được ghi đè |
+| `CAND-F01-G04-M01-effective-access-preview` | Người có quyền yêu cầu xem “ai được truy cập gì”; cần quyền xem metadata riêng | Chủ thể, đối tượng, policy → tóm tắt quyền hiệu lực và điều chưa rõ, không kèm nội dung trẻ | Kiểm tra quyền xem metadata → tổng hợp quyền → ẩn danh tính không liên quan; nhánh: dò ID, giám hộ chưa rõ, policy cũ | Không tiết lộ tài nguyên của gia đình khác; bản xem trước không thể dùng làm giấy phép truy cập |
+| `CAND-F01-G04-M01-policy-conflict-review` | Phát hiện policy/consent/giám hộ xung đột; operator có quyền xem metadata hồ sơ | Mã xung đột, hash phiên bản policy, chủ thể → ID/trạng thái hồ sơ xử lý tối thiểu, không cấp quyền | Nhận diện → tạo hoặc tái dùng hồ sơ → chuyển operator được phép; nhánh: sự kiện lặp, operator thiếu quyền, tranh chấp chưa giải quyết | Một sự kiện không tạo nhiều hồ sơ; không tự `ALLOW`; không đưa nội dung Journal/bài đánh giá vào hồ sơ |
 
-**Boundary:** consent capture/revoke belongs F01-G04-M02; autonomy transitions F01-G05; purpose-bound access to private Journal additionally F07-G06. Policy preview is not consent or sharing. **Open:** conflict-review workflow owner (F01 vs F07) and legally valid guardian authority.
+**Ranh giới:** F01-G04-M02 ghi nhận/thu hồi đồng ý; F01-G05 chuyển chế độ tự chủ; F07-G06 kiểm soát quyền theo mục đích đối với Journal riêng tư. Xem trước quyền không đồng nghĩa đồng ý hoặc chia sẻ. **Chưa chốt:** owner xử lý xung đột F01/F07 và thẩm quyền pháp lý của người giám hộ.
 
 ### 3.2 Academic Assessment — F06-G07-M01
 
-**Shared context:** target users = learner, authorized parent, authorized reviewer; value = credible feedback with limitations, not fabricated scores; primary owner = F06-G07-M01 for assessment result and revision; input submission owner = F04-G05-M02; authorized reporting owner = F06-G05; classification = `child_education_contextual` (working label, taxonomy UNKNOWN). AI default E0/E1 when rubric/rules suffice; E2 multimodal only after validated benchmarks, authorization and budget; cost risk UNKNOWN.
+**Bối cảnh chung:** Người học, phụ huynh có quyền, người đánh giá được ủy quyền. Giá trị: phản hồi có căn cứ và giới hạn rõ, không bịa điểm. F06-G07-M01 sở hữu kết quả/phiên bản đánh giá; F04-G05-M02 sở hữu bài nộp; F06-G05 sở hữu báo cáo có kiểm soát. Phân loại dữ liệu tạm: `child_education_contextual` (taxon chưa chốt). Ưu tiên E0/E1 khi rubric đủ rõ; E2 đa phương thức chỉ sau benchmark, quyền và ngân sách được xác nhận; chi phí AI `UNKNOWN`.
 
-| L4 | Trigger / preconditions | Input → output | Main flow / alternatives | Acceptance and failure recovery |
+| L4 | Kích hoạt / điều kiện trước | Đầu vào → đầu ra | Luồng chính / nhánh thay thế | Nghiệm thu và xử lý lỗi |
 |---|---|---|---|---|
-| `CAND-F06-G07-M01-rubric-eligibility` | Assessment requested; submission metadata available and actor authorized | task type, cohort, curriculum, rubric ID/version, evidence source → `ELIGIBLE/INELIGIBLE/UNKNOWN`, reason, locked rubric reference | Validate provenance/version/applicability → lock rubric reference; alt: no rubric, outdated, wrong grade, source unverified | No grade from missing/inapplicable rubric; preserve explicit unknown, never silently substitute rubric |
-| `CAND-F06-G07-M01-assess-submission` | Eligible rubric and authorized evidence access | submission reference, permitted evidence, locked rubric → provisional findings, evidence links, uncertainty, `UNABLE_TO_ASSESS` | Authorize → load minimum evidence → assess via validated strategy → persist provisional result with provenance; alt: unreadable handwriting, partial answer, unsupported format, timeout | “Submitted” ≠ “correct”; unreadable is not 0; no teacher-verified flag without teacher source; provider failure leaves submission unchanged |
-| `CAND-F06-G07-M01-review-uncertainty` | Provisional result requires human review under policy | result ID, uncertainty/review reason, reviewer authorization → review case with pending status | Apply reviewed routing rules → enqueue idempotently → expose minimum needed evidence; alt: no authorized reviewer, queue timeout | No invented confidence threshold; pending does not publish as verified; no unapproved reviewer access |
-| `CAND-F06-G07-M01-correct-assessment` | Reviewer submits correction with authorization | assessment ID/version, correction reason, reviewer identity, evidence → new version, attribution, review status | Reauthorize → check version → record immutable correction link → make result available under reporting policy; alt: stale version, revoked reviewer, conflicting edits | Original assessment preserved in audit lineage; only authorized correction; F06-G05 independently controls audience of reports |
+| `CAND-F06-G07-M01-rubric-eligibility` | Yêu cầu đánh giá; có metadata bài nộp và quyền hợp lệ | Loại bài, cohort, chương trình, ID/phiên bản rubric, nguồn bằng chứng → `ELIGIBLE/INELIGIBLE/UNKNOWN`, lý do, rubric đã khóa phiên bản | Kiểm nguồn/phiên bản/phạm vi áp dụng → khóa tham chiếu; nhánh: thiếu rubric, lỗi thời, sai lớp, nguồn chưa xác minh | Không chấm khi thiếu rubric phù hợp; giữ trạng thái chưa rõ, không tự thay rubric |
+| `CAND-F06-G07-M01-assess-submission` | Rubric hợp lệ và có quyền đọc bằng chứng | Tham chiếu bài nộp, bằng chứng tối thiểu, rubric đã khóa → nhận xét tạm, liên kết bằng chứng, độ không chắc chắn hoặc `UNABLE_TO_ASSESS` | Kiểm quyền → đọc bằng chứng tối thiểu → đánh giá bằng phương pháp đã kiểm chứng → lưu kết quả tạm có nguồn; nhánh: chữ không đọc được, thiếu trang, định dạng không hỗ trợ, timeout | “Đã nộp” ≠ “đúng”; chữ không đọc được không bị chấm 0; không gắn nhãn giáo viên xác nhận nếu thiếu nguồn; lỗi provider không sửa bài gốc |
+| `CAND-F06-G07-M01-review-uncertainty` | Kết quả tạm cần người xem xét theo policy | ID kết quả, lý do thiếu chắc chắn, quyền reviewer → hồ sơ review trạng thái chờ | Áp quy tắc chuyển tuyến → tạo yêu cầu idempotent → chỉ mở bằng chứng cần thiết; nhánh: thiếu reviewer, hàng đợi quá hạn | Không tự đặt ngưỡng confidence; trạng thái chờ không thành “đã xác minh”; không mở cho reviewer chưa được duyệt |
+| `CAND-F06-G07-M01-correct-assessment` | Người có quyền gửi bản sửa và lý do | ID/phiên bản đánh giá, lý do, người sửa, bằng chứng → phiên bản mới, người chịu trách nhiệm, trạng thái | Kiểm quyền lại → kiểm phiên bản → ghi liên kết sửa không mất dấu vết → cung cấp kết quả cho báo cáo theo policy; nhánh: phiên bản cũ, quyền bị thu hồi, sửa đồng thời | Giữ lịch sử kết quả cũ; chỉ người được phép sửa; F06-G05 vẫn tự kiểm soát đối tượng nhận báo cáo |
 
-**Boundary:** grading a handwritten image is an execution strategy within assessment, not a new L4 just because vision model is used. Teacher verification requires independent source validation, not “reviewer clicked approve”. **Open:** rubric ownership/versioning, teacher verification policy, Vietnamese handwriting benchmarks, provider retention and pricing.
+**Ranh giới:** Chấm ảnh chữ viết tay là *phương án thực thi* của đánh giá, không tự động là L4 riêng vì dùng vision model. Giáo viên xác nhận phải có nguồn xác minh độc lập, không suy từ nút “duyệt”. **Chưa chốt:** owner rubric, quy tắc xác minh giáo viên, benchmark chữ viết tay tiếng Việt, lưu giữ dữ liệu bởi provider và giá.
 
 ### 3.3 Balanced Planning Validation — F04-G02-M03
 
-**Shared context:** target users = parent/child/youth/adult according to authorized autonomy; value = feasible plan with visible trade-offs, protected leisure and explicit exceptions; primary owner = F04-G02-M03 for validation findings; F03 owns goals and Standard Bar intent, F04-G02-M01 owns schedule state, F04-G06 owns approval state. Classification = `family_planning_and_wellbeing_contextual` (working label). Execution E0/E1 rules-first; E2 explanation optional only after privacy/cost review; AI cost Low for E0/E1, E2 cost UNKNOWN.
+**Bối cảnh chung:** Phụ huynh/trẻ/người trưởng thành tùy chế độ tự chủ được cấp quyền. Giá trị: kế hoạch khả thi, thấy rõ đánh đổi, bảo vệ thời gian chơi và ngoại lệ minh bạch. F04-G02-M03 sở hữu kết quả kiểm tra; F03 sở hữu mục tiêu và ý định Standard Bar; F04-G02-M01 sở hữu trạng thái lịch; F04-G06 sở hữu trạng thái duyệt. Phân loại dữ liệu tạm: `family_planning_and_wellbeing_contextual`. Ưu tiên E0/E1; E2 chỉ giải thích tùy chọn sau review dữ liệu/chi phí. Chi phí E0/E1 thấp; E2 `UNKNOWN`.
 
-| L4 | Trigger / preconditions | Input → output | Main flow / alternatives | Acceptance and failure recovery |
+| L4 | Kích hoạt / điều kiện trước | Đầu vào → đầu ra | Luồng chính / nhánh thay thế | Nghiệm thu và xử lý lỗi |
 |---|---|---|---|---|
-| `CAND-F04-G02-M03-validate-balance` | Create/change plan draft; authoritative family bar available or explicitly UNKNOWN | schedule, age context, family Standard Bar version, hard/soft constraints, protected leisure → findings by severity, affected slots, missing inputs | Authorize → normalize times/durations → evaluate hard then soft rules → explain evidence; alt: overlapping activities, missing school hours, ambiguous timezone | Same duration counted once in load totals; hard constraints cannot be silently waived; no universal clinical limits invented; no schedule mutation |
-| `CAND-F04-G02-M03-evaluate-exception` | Request temporary exam/other exception; authorized requester | constraint, reason, proposed start/end, affected leisure, requested approver → `VALID/NEEDS_APPROVAL/REJECTED/UNKNOWN`, proposed exception record | Validate allowed scope + finite dates → flag protected constraints → route proposal to F04-G06; alt: no end date, unauthorized requester, permanent exception | No automatic approval or silent Standard Bar change; timeboxed request retains reason and expiry; hard protected policy cannot be bypassed by ordinary request |
-| `CAND-F04-G02-M03-expiry-recheck` | Scheduled or event-triggered expiry of approved exception | approved exception ID/version, current plan, Standard Bar → `EXPIRED/ACTIVE/UNKNOWN`, revalidation findings, restore/change request | Check authoritative expiry → idempotently flag → send proposal to F04-G06 / F04-G02-M01; alt: changed plan, repeated job, clock skew | Never silently overwrite plan; repeated trigger creates one outstanding request; if source missing, flag for review not auto-restore |
+| `CAND-F04-G02-M03-validate-balance` | Tạo/sửa bản nháp kế hoạch; có Standard Bar có thẩm quyền hoặc ghi `UNKNOWN` | Lịch, bối cảnh tuổi, phiên bản Standard Bar, ràng buộc cứng/mềm, thời gian chơi → phát hiện theo mức độ, khung giờ bị ảnh hưởng, dữ liệu thiếu | Kiểm quyền → chuẩn hóa thời gian → kiểm hard rồi soft → giải thích bằng chứng; nhánh: hoạt động chồng nhau, thiếu giờ học, múi giờ mơ hồ | Thời lượng trùng chỉ tính một lần; không âm thầm bỏ hard constraint; không bịa ngưỡng lâm sàng; không tự sửa lịch |
+| `CAND-F04-G02-M03-evaluate-exception` | Đề xuất ngoại lệ ôn thi/tình huống khác có hạn; người đề xuất được phép | Ràng buộc, lý do, ngày bắt đầu/kết thúc, thời gian chơi bị ảnh hưởng, người duyệt → `VALID/NEEDS_APPROVAL/REJECTED/UNKNOWN`, bản ghi đề xuất | Kiểm phạm vi/ngày hữu hạn → đánh dấu ràng buộc được bảo vệ → chuyển F04-G06; nhánh: thiếu ngày hết hạn, không có quyền, ngoại lệ vĩnh viễn | Không tự duyệt hay đổi Standard Bar; có lý do/hạn; hard policy được bảo vệ không bị vượt bằng yêu cầu thông thường |
+| `CAND-F04-G02-M03-expiry-recheck` | Ngoại lệ đã duyệt hết hạn, do lịch chạy hoặc sự kiện | ID/phiên bản ngoại lệ, lịch hiện tại, Standard Bar → `EXPIRED/ACTIVE/UNKNOWN`, kết quả kiểm lại, yêu cầu khôi phục/sửa | Kiểm hạn chính thức → đánh dấu idempotent → gửi yêu cầu cho F04-G06/F04-G02-M01; nhánh: lịch đã đổi, job lặp, lệch đồng hồ | Không tự ghi đè lịch; chạy lặp chỉ tạo một yêu cầu; thiếu nguồn thì chờ review, không tự khôi phục |
 
-**Boundary:** detection of colliding time slots and suggesting alternative slots belong F04-G02-M02; direct editing/commit belongs F04-G02-M01 and F04-G06; goals/Standard Bar ownership belongs F03. No automatic changes to child development goals or medical interpretation.
+**Ranh giới:** F04-G02-M02 phát hiện lịch trùng và gợi ý khung giờ; F04-G02-M01/F04-G06 sửa, lưu và duyệt; F03 sở hữu mục tiêu/Standard Bar. Không tự thay mục tiêu phát triển hay đưa ra diễn giải y khoa.
 
-## 4. Six-cohort contract and authorization (applies to every candidate)
+## 4. Hợp đồng sáu nhóm tuổi và phân quyền
 
-For **each** L4 above, the six entries below are inherited by reference to its module matrix; the individual L4 must still record its own A0–A5 applicability and any override before P6. `evidence_confidence=UNKNOWN` for all cohorts at this pilot stage. Actor/approval labels are **proposals**, not verified legal permissions. `UNKNOWN` is deny-by-default for protected operations.
+Mỗi L4 ở trên tham chiếu ma trận nhóm tuổi của module; trước P6 phải có bản ghi A0–A5 và ngoại lệ riêng. **Tất cả `evidence_confidence=UNKNOWN`** tại pilot. Các nhãn actor/approver là **đề xuất**, chưa được pháp lý xác minh; quyền chưa rõ thì từ chối thao tác bảo vệ.
 
-| L3 / cohorts | A0 (0–2) | A1 (3–5) | A2 (6–10) | A3 (11–14) | A4 (15–17) | A5 (18–23) |
+| Module / nhóm tuổi | A0 (0–2) | A1 (3–5) | A2 (6–10) | A3 (11–14) | A4 (15–17) | A5 (18–23) |
 |---|---|---|---|---|---|---|
-| Access Policy (all 3 L4) | caregiver-facing, child data protected | caregiver-facing, child data protected | parent/child supervised; consent unknown | child active + authorized scope | youth privacy controls, guardianship unknown | independent adult owner; no default parent access |
-| Academic Assessment (all 4 L4) | school rubric NOT_APPLICABLE; caregiver observation via other module | school rubric NOT_APPLICABLE; developmental observation via other module | CONDITIONAL grade-appropriate, supported | CONDITIONAL active learner | CONDITIONAL youth with privacy | CONDITIONAL adult self-directed |
-| Balanced Planning (all 3 L4) | caregiver-planned routines | caregiver-planned play/routines | parent-led/child-supported | child may propose, approval by policy | youth-directed within authorized scope | adult-controlled, optional sharing |
+| Access Policy (3 L4) | Phụ huynh/người chăm sóc; dữ liệu trẻ được bảo vệ | Người chăm sóc; dữ liệu trẻ được bảo vệ | Trẻ tham gia có giám sát; quyền theo policy | Trẻ chủ động trong phạm vi được phép | Quyền riêng tư của thanh thiếu niên; giám hộ chưa chốt | Chủ tài khoản trưởng thành tự chủ; không mặc định phụ huynh xem |
+| Academic Assessment (4 L4) | Chấm theo rubric học đường **KHÔNG ÁP DỤNG**; quan sát thuộc module khác | Chấm học đường **KHÔNG ÁP DỤNG**; quan sát phát triển thuộc module khác | CÓ ĐIỀU KIỆN: bài học phù hợp | CÓ ĐIỀU KIỆN: người học chủ động | CÓ ĐIỀU KIỆN: quyền riêng tư thanh thiếu niên | CÓ ĐIỀU KIỆN: người trưởng thành tự quyết |
+| Balanced Planning (3 L4) | Người chăm sóc lập lịch sinh hoạt | Người chăm sóc lập lịch chơi/sinh hoạt | Phụ huynh dẫn dắt, trẻ tham gia | Trẻ có thể đề xuất; duyệt theo policy | Thanh thiếu niên tự chủ trong phạm vi được phép | Người trưởng thành tự quản, chia sẻ tùy chọn |
 
-**Common six-cohort field interpretation for each L4:** `interaction_pattern` = cell above; `authorized_actor` = only actor with current policy decision (A0/A1 caregiver when legally valid; A2–A4 actor determined by policy; A5 adult owner); `approval_actor` = F01/F04 authoritative policy or adult owner, never LLM; `data_scope` = minimum authorized child/family/assessment/schedule resource for that L4; `alternative_path` = denied/unknown → no protected read, safe explanation, authorized review or manual action; `evidence_confidence` = UNKNOWN. For academic A0/A1, `NOT_APPLICABLE` applies to school-grading outcome and must not be turned into an automatic low score. For Access Policy, authorization engine must still protect A0/A1 data; no child-facing UI is implied.
+**Ý nghĩa các trường tuổi cho từng L4:** `interaction_pattern` = cách tương tác trong bảng; `authorized_actor` = người có quyết định quyền hiện hành (A0/A1 là người chăm sóc *nếu hợp pháp*; A2–A4 theo policy; A5 là chủ tài khoản trưởng thành); `approval_actor` = người duyệt theo policy F01/F04 hoặc A5, không phải LLM; `data_scope` = tài nguyên tối thiểu được phép; `alternative_path` = từ chối/chưa rõ thì không đọc dữ liệu, giải thích an toàn, chuyển người có quyền; `evidence_confidence=UNKNOWN`. Với Academic A0/A1, `NOT_APPLICABLE` không được chuyển thành điểm thấp. Access Policy vẫn phải bảo vệ dữ liệu A0/A1, không mặc định có UI cho trẻ.
 
-**L4-specific overrides:**
-- `effective-access-preview`: authorized_actor needs metadata-view permission, not merely read permission for content.
-- `policy-conflict-review`: authorized_actor is an approved operator for minimal case metadata, not automatically any parent.
-- `review-uncertainty` and `correct-assessment`: reviewer must hold a specific review/correction permission; learner/parent status alone is insufficient.
-- `evaluate-exception`: requester may propose; only authoritative approver may commit an exception.
-- `expiry-recheck`: service trigger may flag status but may not silently mutate schedule.
+**Ngoại lệ theo L4:**
+- `effective-access-preview`: cần quyền xem metadata, không chỉ quyền đọc nội dung.
+- `policy-conflict-review`: chỉ operator được ủy quyền xem metadata hồ sơ tối thiểu, không tự cấp cho mọi phụ huynh.
+- `review-uncertainty` và `correct-assessment`: reviewer cần quyền review/sửa riêng; vai trò phụ huynh hoặc người học không tự cấp quyền.
+- `evaluate-exception`: người dùng có thể được phép *đề xuất*, người có thẩm quyền mới được duyệt.
+- `expiry-recheck`: service chỉ đánh dấu/đề xuất, không tự sửa lịch.
 
-## 5. Dependency candidates and trace
+## 5. Phụ thuộc ứng viên và truy vết
 
-All edges below are **CANDIDATE**, not confirmed technical dependencies. Criticality is a design hypothesis, not an implementation verdict. `cohort_scope=A0..A5` unless stated; `evidence_refs` are source traces, not proof of runtime architecture.
+Mọi liên kết dưới đây là **`CANDIDATE`**, chưa xác nhận kiến trúc kỹ thuật. Mức HARD/SOFT là giả thuyết thiết kế; `cohort_scope=A0..A5` trừ khi ghi khác. Mã nguồn truy vết không phải bằng chứng triển khai.
 
-| Source L3 → Target | Type / criticality / required_for | Reason / workaround |
+| L3 nguồn → đích | Loại / mức độ / giai đoạn cần | Lý do / phương án khi thiếu |
 |---|---|---|
-| F01-G04-M01 → F01-G04-M02 | D/P, HARD, RUN | Consent status when relevant; no consent → deny protected action; trace MR-017 |
-| F01-G04-M01 → F01-G05-M01 | P, HARD, RUN | Current autonomy state; unknown → deny mutation; trace MR-035 |
-| F01-G04-M01 → F07-G06-M01 | P/S, HARD, RELEASE | Purpose-bound private data; no authorized purpose → deny; trace L3C-03 |
-| F06-G07-M01 → F04-G05-M02 | F/D, HARD, RUN | Submission reference, not duplicate submission storage; mock for unit test only; L3C-02 |
-| F06-G07-M01 → F01-G04-M01 | P, HARD, RUN | Authorization before assessment evidence; no fallback to unauthorized access |
-| F06-G07-M01 → F07-G02-M02 | D, SOFT, RELEASE | Rubric/source provenance validation; if unavailable, no unsupported rubric grading |
-| F04-G02-M03 → F03-G04 | D, HARD, RUN | Approved family goals/Standard Bar intent; missing → explicit UNKNOWN |
-| F04-G02-M03 → F04-G02-M01 | F/D, HARD, RUN | Plan draft/version; missing → cannot validate |
-| F04-G02-M03 → F04-G06-M01 | F/P, HARD, RELEASE | Exception approval and restoration request; pending → no mutation |
-| F04-G02-M03 → F04-G02-M02 | F, SOFT, RUN | Schedule collisions/alternatives delegated to conflict owner; independent balance evaluation possible |
+| F01-G04-M01 → F01-G04-M02 | D/P, HARD, RUN | Kiểm tra trạng thái consent khi cần; không có consent hợp lệ thì từ chối hành động được bảo vệ; MR-017 |
+| F01-G04-M01 → F01-G05-M01 | P, HARD, RUN | Trạng thái tự chủ hiện hành; chưa rõ thì không cho sửa; MR-035 |
+| F01-G04-M01 → F07-G06-M01 | P/S, HARD, RELEASE | Quyền theo mục đích với dữ liệu riêng tư; thiếu mục đích được phép thì từ chối; L3C-03 |
+| F06-G07-M01 → F04-G05-M02 | F/D, HARD, RUN | Dùng tham chiếu bài nộp, không lưu bản sao chuẩn; chỉ mock khi unit test; L3C-02 |
+| F06-G07-M01 → F01-G04-M01 | P, HARD, RUN | Phải kiểm quyền trước khi đọc bằng chứng; không có phương án bỏ qua quyền |
+| F06-G07-M01 → F07-G02-M02 | D, SOFT, RELEASE | Xác minh nguồn/phiên bản rubric; thiếu thì không chấm theo rubric chưa được hỗ trợ |
+| F04-G02-M03 → F03-G04 | D, HARD, RUN | Mục tiêu/Standard Bar đã được duyệt; thiếu thì trả `UNKNOWN` |
+| F04-G02-M03 → F04-G02-M01 | F/D, HARD, RUN | Cần bản nháp/phiên bản lịch; thiếu thì không thể kiểm tra |
+| F04-G02-M03 → F04-G06-M01 | F/P, HARD, RELEASE | Duyệt ngoại lệ và yêu cầu khôi phục; chờ duyệt thì không sửa |
+| F04-G02-M03 → F04-G02-M02 | F, SOFT, RUN | Giao phát hiện trùng lịch cho owner tương ứng; vẫn có thể kiểm tra cân bằng độc lập |
 
-**Trace:** Access: UC-004/007/013/015, L3C-03, MR-016/017/021/035. Assessment: SC-002, L3T-02, L3C-02, AUD-05, UC gap `AUD-01` (new UC only as candidate, not UC-###). Balance: SC-001, UC-007/010, L3C-06, AUD-08, MR-012/025/035. No existing 3.4 UC is claimed to fully specify academic assessment.
+**Truy vết:** Access: UC-004/007/013/015, L3C-03, MR-016/017/021/035. Assessment: SC-002, L3T-02, L3C-02, AUD-05, lỗ hổng UC `AUD-01` (UC mới chỉ là ứng viên, không tự đặt mã UC-###). Balance: SC-001, UC-007/010, L3C-06, AUD-08, MR-012/025/035. Không tuyên bố UC hiện có trong 3.4 đã đặc tả đầy đủ đánh giá học tập.
 
-## 6. P4 — Test design, not test execution
+## 6. P4 — Thiết kế test, chưa chạy test
 
-Test fixture definitions, 43 synthetic cases, expected results and coverage map are in `Feature_3_2_L4_Pilot_Test_Cases_REVIEW.md`. Cases use deterministic synthetic users, family relationships, schoolwork, schedule and rubric; **no real child data**. They are specification tests (Given/When/Then), not executed unit/integration tests. Any `UNKNOWN` policy or benchmark means **expected denial, deferral or review**, not fabricated PASS.
+Dữ liệu giả lập, 43 test case, kết quả kỳ vọng và ma trận bao phủ nằm tại `Feature_3_2_L4_Pilot_Test_Cases_REVIEW.md`. Chỉ dùng tài khoản, quan hệ gia đình, bài tập, lịch và rubric **giả lập**; không có dữ liệu trẻ thật. Đây là test case ở cấp đặc tả Given/When/Then, **không phải** unit/integration test đã chạy. Quyền hoặc benchmark `UNKNOWN` dẫn đến từ chối, hoãn hoặc review, không tự coi là PASS.
 
-## 7. P5 — Issue and challenge register
+## 7. P5 — Danh sách vấn đề cần phản biện
 
-| Issue | Severity | What must be decided / validated | Proposed owner |
+| Vấn đề | Mức độ | Cần quyết định / kiểm chứng | Owner đề xuất |
 |---|---|---|---|
-| PILOT-01 | BLOCKER for release | Guardian/child/A5 permission and consent legal matrix; cross-family access, revocation | Legal + Privacy + Product |
-| PILOT-02 | HIGH | Whether policy conflict case lifecycle belongs F01 or F07 governance | Product + Security |
-| PILOT-03 | BLOCKER for AI grading | Approved curriculum rubrics, source versions, quality benchmark for handwriting/vision, human oversight | Education expert + AI QA |
-| PILOT-04 | HIGH | Separate assessment from teacher verification and report audience; role definitions | Product + Privacy |
-| PILOT-05 | HIGH | Balance Standard Bar hard/soft semantics, protected leisure and exam exception scope; no unsupported health thresholds | Product + Child-development expert |
-| PILOT-06 | HIGH | Timebox expiry handling, authority to restore, retry/idempotency and concurrency | Product + Engineering |
-| PILOT-07 | HIGH | L4 split/merge: rubric eligibility vs assessment; uncertainty queue vs correction; policy conflict owner | Product + Engineering |
-| PILOT-08 | HIGH | Six cohort evidence, accessibility and alternate interaction; permissions not inferred from age UX | UX Research + Legal |
-| PILOT-09 | HIGH | Research refs and 3.4 UC coverage gaps for academic assessment | Research + Product |
-| PILOT-10 | HIGH | Operational data taxonomy, retention, audit logs, provider cache/retention, AI budget | Security + Data + AI Ops |
+| PILOT-01 | BLOCKER trước phát hành | Ma trận quyền giám hộ/trẻ/A5, consent, truy cập khác gia đình, thu hồi | Pháp lý + Quyền riêng tư + Product |
+| PILOT-02 | HIGH | Owner vòng đời hồ sơ tranh chấp policy: F01 hay F07 | Product + Security |
+| PILOT-03 | BLOCKER cho AI chấm bài | Rubric chương trình, phiên bản nguồn, benchmark chữ viết tay/vision, giám sát người | Chuyên gia giáo dục + AI QA |
+| PILOT-04 | HIGH | Phân biệt đánh giá, giáo viên xác nhận và đối tượng được nhận báo cáo | Product + Privacy |
+| PILOT-05 | HIGH | Ý nghĩa hard/soft của Standard Bar, thời gian chơi được bảo vệ, phạm vi ngoại lệ ôn thi; không bịa ngưỡng sức khỏe | Product + Chuyên gia phát triển trẻ |
+| PILOT-06 | HIGH | Xử lý hết hạn ngoại lệ, ai được khôi phục, retry/idempotency và cập nhật đồng thời | Product + Engineering |
+| PILOT-07 | HIGH | Tách/gộp: kiểm rubric vs chấm; hàng đợi review vs sửa kết quả; owner tranh chấp policy | Product + Engineering |
+| PILOT-08 | HIGH | Bằng chứng sáu nhóm tuổi, accessibility, cách tương tác thay thế; UX không suy ra quyền | UX Research + Legal |
+| PILOT-09 | HIGH | MR và lỗ hổng UC 3.4 của đánh giá học tập | Research + Product |
+| PILOT-10 | HIGH | Taxonomy dữ liệu, lưu giữ, audit log, provider/cache, ngân sách AI | Security + Data + AI Ops |
 
-**Gate status:** G-Legal=UNKNOWN; G-Privacy=UNKNOWN; G-Safety=UNKNOWN; G-Feasibility=UNKNOWN (pilot level; reassess per L4/cohort/data purpose). This is not a release readiness judgment or a test result.
+**Cổng kiểm chứng:** `G-Legal=UNKNOWN; G-Privacy=UNKNOWN; G-Safety=UNKNOWN; G-Feasibility=UNKNOWN` ở mức pilot, cần đánh giá riêng từng L4/cohort/mục đích. Không đồng nghĩa sẵn sàng phát hành hoặc đã test thành công.
 
-## 8. P5/P6 — Owner questions and next action
+## 8. P5/P6 — Câu hỏi chủ sản phẩm cần chốt
 
-1. **P-Q1:** Accept **10 candidates** as review scope (not final IDs/count), or request split/merge changes? Recommended: accept for P5 challenge.
-2. **P-Q2:** Keep policy conflict review under F01 temporarily while investigating F07 owner? Recommended: keep as `BOUNDARY_UNKNOWN`, no official ID.
-3. **P-Q3:** Keep rubric eligibility and uncertainty review separate for P5 evidence, without assuming implementation services? Recommended: yes.
-4. **P-Q4:** Keep timeboxed exception validation and expiry recheck separate, with F04-G06 approving changes? Recommended: yes.
-5. **P-Q5:** Approve the synthetic test coverage as a **test-design baseline**, while acknowledging no tests executed and gates UNKNOWN? Recommended: yes.
-6. **P-Q6:** After P5 review, should we draft the L4 canonical diff and official IDs as a **separate gate**? Recommended: yes; do not edit canonical in this PR.
+1. **P-Q1:** Chấp nhận **10 L4 ứng viên** làm phạm vi review (chưa chốt ID/số lượng), hay yêu cầu tách/gộp? **Đề xuất:** chấp nhận để phản biện P5.
+2. **P-Q2:** Tạm đặt xử lý xung đột policy tại F01 trong khi xác minh F07? **Đề xuất:** giữ `BOUNDARY_UNKNOWN`, chưa cấp ID.
+3. **P-Q3:** Tạm giữ kiểm tra rubric và review kết quả thiếu chắc chắn là L4 riêng để kiểm chứng, không mặc định là service riêng? **Đề xuất:** có.
+4. **P-Q4:** Giữ kiểm tra ngoại lệ có hạn và kiểm tra hết hạn thành hai L4; F04-G06 duyệt thay đổi? **Đề xuất:** có.
+5. **P-Q5:** Chấp nhận 43 test case giả lập làm **baseline thiết kế kiểm thử**, hiểu rằng chưa chạy và các cổng còn UNKNOWN? **Đề xuất:** có.
+6. **P-Q6:** Sau P5 mới soạn bản diff canonical và ID L4 chính thức tại **cổng phê duyệt riêng**? **Đề xuất:** có; PR này không sửa canonical.
 
-**Current status:** P0–P4 draft complete; P5 independent review and P6 official-ID/canonical approval pending. Do not merge PR or treat candidate L4 as approved merely because methodology was approved.
+**Trạng thái:** Hoàn thành bản nháp P0–P4; P5 review độc lập và P6 phê duyệt ID/canonical còn chờ. Không merge hoặc coi L4 ứng viên đã được duyệt chỉ vì phương pháp được duyệt.
