@@ -11,7 +11,7 @@
 | L3 được thử | 3: `F01-G04-M01`, `F06-G07-M01`, `F04-G02-M03` |
 | Test case QA-first mới | **55** = 14 Access + 17 Assessment + **24 Balance** (sau 6 phản hồi Owner, bổ sung 7 ca biên), có Given/When và expected output |
 | Test case pilot cũ | **43** = 12 + 16 + 15; **không sửa, không xóa** |
-| Test bổ sung ở P5 Gap Register | **24 đề xuất**; chưa hợp nhất/dedupe với 48 test QA-first |
+| Test bổ sung ở P5 Gap Register | **24 đề xuất**; chưa hợp nhất/dedupe với 55 test QA-first |
 | Cohort matrix cũ | **60 dòng** = 10 L4 × 6 cohort, chưa xác minh quyền |
 | L4 trọng tâm khuyến nghị | **6** = 1 Access + 3 Assessment + 2 Balance; **chưa phê duyệt** |
 | Thực thi test trên app/model | **0**; tất cả `NOT_EXECUTED` |
@@ -19,7 +19,7 @@
 | Kiểm tra số học giả lập | 17:00–18:00 + 17:30–18:30: overlap **30**, occupied union **90**, sum durations **120** phút |
 | Cổng legal/privacy/safety/feasibility | **UNKNOWN**; không có kết quả PASS |
 
-**Lưu ý đếm:** 55 QA-first và 43 test cũ có nhiều tình huống tương tự, không thể cộng để khẳng định 91 yêu cầu riêng hoặc 91 test đã chạy. 24 test gap còn có thể trùng cả hai bộ. Cần dedupe theo requirement/outcome và variant trước khi tạo test suite cuối cùng.
+**Lưu ý đếm:** 55 QA-first và 43 test cũ có nhiều tình huống tương tự, không thể cộng để khẳng định 98 yêu cầu riêng hoặc 98 test đã chạy. 24 test gap còn có thể trùng cả hai bộ. Cần dedupe theo requirement/outcome và variant trước khi tạo test suite cuối cùng.
 
 ## 2. So sánh QA-first với kết luận P5 trước
 
