@@ -28,11 +28,11 @@
 | Hai ngoại lệ khác mục đích nhưng cùng tạo tải có thể cộng dồn rủi ro? | **Có** | Balanced Planning phải đánh giá tổng tải/hard-cap của toàn lịch; thêm acceptance test về các ngoại lệ khác loại cùng gây tác động |
 | Fail-closed có ngăn trẻ gửi đề xuất? | **Không nên** | Chặn `update/approve/commit`; cho phép ghi đề xuất có scope và không ghi plan baseline |
 | Observer có mặc định đọc Journal? | **Không** | Mọi read phải có purpose/scope; role observer không tự sinh quyền Journal |
-| Đã có reviewer sub-agent thực sự trong P5? | **Chưa** | PR #18 có mock thành công theo báo cáo người dùng, chưa có kiểm chứng live độc lập |
+| Đã có reviewer sub-agent thực sự trong P5? | **Chưa** | PR #18 đã **Closed / chưa merge / không còn là giải pháp P6**. Kết quả mock cũ chỉ là bằng chứng lịch sử, không chứng minh có hệ thống phản biện độc lập đang vận hành. |
 
 ## 3. Phụ thuộc và việc cần tiếp tục
 
-1. **P6-A:** Chạy agent thật với cấu hình API/chi phí được cho phép; lưu output độc lập của Architect/QA/Reviewer, trace và disagreement.
+1. **P6-A (BLOCKER):** Chọn và xác minh **môi trường agent thay thế**, không dùng PR #18. Yêu cầu thực thi tách ngữ cảnh ít nhất Architect/QA/Reviewer; có access được kiểm soát, nguồn đầu vào phiên bản cố định, nhật ký và đầu ra riêng. Khi đạt gate mới cho phép chạy agent thật với cấu hình/chi phí được duyệt, lưu trace và bất đồng.
 2. **P6-B:** Đối chiếu đầu ra agent thật với nguồn gốc và 64 baseline test; không coi 64 baseline là ground truth tuyệt đối.
 3. **P6-C:** Kiểm tra test bổ sung cho (a) ngoại lệ khác mục đích nhưng tổng tải vượt cap, (b) no-primary vẫn nhận proposal, (c) policy/handover version race; ghi regression.
 4. **P6-D:** Xử lý `UNKNOWN` về jurisdiction/guardian, reference standards, AI đánh giá học tập, feasibility và chi phí; các phần cần chứng cứ nghiên cứu chuyển backlog thay vì giả tạo PASS.
@@ -41,11 +41,17 @@
 ## 4. Cổng phê duyệt
 
 - **P5 Owner Review:** `APPROVED_AT_SPEC_LEVEL` cho R1/R2/R3.
-- **P6 Method Readiness:** `PENDING_LIVE_VALIDATION`. Không chấm `PASS` khi mới mock.
+- **P6 Method Readiness:** `BLOCKED_NO_INDEPENDENT_AGENT_RUNTIME`. Chưa chọn/xác minh môi trường thay thế; việc chuẩn bị tài liệu và test vẫn có thể tiếp tục, nhưng **chưa được báo cáo một lượt phản biện P6 là đã chạy**.
 - **L4 production/canonical:** `NOT_APPROVED`.
-- **GitHub:** PR #17 và #18 để nguyên Draft; không merge.
+- **GitHub:** PR #17 vẫn **Open / Draft / chưa merge**; PR #18 **Closed / chưa merge**, chỉ là lịch sử thử nghiệm, không còn phụ thuộc triển khai.
 
-## 5. Nhật ký thay đổi
+## 5. Cập nhật phụ thuộc P6 sau khi đóng PR #18
+
+**2026-11-11 — `P5-OD-07`:** Chủ sản phẩm không tiếp tục dùng Codex Agent/PR #18 cho P6, sẽ sử dụng agent phản biện khác. Trạng thái thực thi P6 chuyển thành `BLOCKED_NO_INDEPENDENT_AGENT_RUNTIME` cho đến khi lựa chọn, cấu hình và kiểm chứng môi trường thay thế. Quyết định R1–R3 **không thay đổi**. Không dùng việc PR #18 từng chạy mock làm bằng chứng live-agent review.
+
+**Điều kiện gỡ chặn:** xác minh agent nhận đúng Blueprint + Owner Decision Log P5, có ngữ cảnh QA/Architect tách biệt, reviewer thực sự chạy, lưu kết quả/trace và có validator kiểm bằng code hoặc ghi rõ giới hạn. Trước đó chỉ có thể chạy thử đánh giá phương pháp thủ công, không gọi là P6 hoàn thành.
+
+## 6. Nhật ký thay đổi
 
 - `P5-OD-01..03`: ghi ba quyết định R1–R3 vào Decision Log.
 - `P5-OD-04`: làm rõ quy tắc ngày trống và chuẩn hóa mục đích/constraint.
