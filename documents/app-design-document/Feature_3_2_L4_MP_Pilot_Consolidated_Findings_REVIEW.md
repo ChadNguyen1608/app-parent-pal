@@ -9,17 +9,17 @@
 | Đầu ra | Kết quả kiểm tra |
 |---|---|
 | L3 được thử | 3: `F01-G04-M01`, `F06-G07-M01`, `F04-G02-M03` |
-| Test case QA-first mới | **48** = 14 Access + 17 Assessment + 17 Balance, có Given/When và expected output |
+| Test case QA-first mới | **55** = 14 Access + 17 Assessment + **24 Balance** (sau 6 phản hồi Owner, bổ sung 7 ca biên), có Given/When và expected output |
 | Test case pilot cũ | **43** = 12 + 16 + 15; **không sửa, không xóa** |
 | Test bổ sung ở P5 Gap Register | **24 đề xuất**; chưa hợp nhất/dedupe với 48 test QA-first |
 | Cohort matrix cũ | **60 dòng** = 10 L4 × 6 cohort, chưa xác minh quyền |
 | L4 trọng tâm khuyến nghị | **6** = 1 Access + 3 Assessment + 2 Balance; **chưa phê duyệt** |
 | Thực thi test trên app/model | **0**; tất cả `NOT_EXECUTED` |
-| Kiểm tra cấu trúc tự động | ID QA-first 48/48 duy nhất; trace test → outcome hiện hữu 48/48; test cũ 43/43 ID duy nhất |
+| Kiểm tra cấu trúc tự động | ID QA-first 55/55 duy nhất; trace test → outcome hiện hữu 55/55; test cũ 43/43 ID duy nhất |
 | Kiểm tra số học giả lập | 17:00–18:00 + 17:30–18:30: overlap **30**, occupied union **90**, sum durations **120** phút |
 | Cổng legal/privacy/safety/feasibility | **UNKNOWN**; không có kết quả PASS |
 
-**Lưu ý đếm:** 48 QA-first và 43 test cũ có nhiều tình huống tương tự, không thể cộng để khẳng định 91 yêu cầu riêng hoặc 91 test đã chạy. 24 test gap còn có thể trùng cả hai bộ. Cần dedupe theo requirement/outcome và variant trước khi tạo test suite cuối cùng.
+**Lưu ý đếm:** 55 QA-first và 43 test cũ có nhiều tình huống tương tự, không thể cộng để khẳng định 91 yêu cầu riêng hoặc 91 test đã chạy. 24 test gap còn có thể trùng cả hai bộ. Cần dedupe theo requirement/outcome và variant trước khi tạo test suite cuối cùng.
 
 ## 2. So sánh QA-first với kết luận P5 trước
 
@@ -27,7 +27,7 @@
 |---|---|---|
 | **Access** | `ACCESS-DECIDE` là outcome độc lập; preview có thể là read-model; dispute case cần workflow khác | **Mới:** test policy theo jurisdiction, effective date, purpose mismatch, metadata enumeration và service scope. Không tự gán luật nước ngoài. |
 | **Assessment** | Rubric eligibility là precondition của đánh giá; reviewer queue và correction có lifecycle khác nhau | **Mới:** test lớp 1–9, provider double billing, conflict giữa kết quả AI và giáo viên, không đọc evidence khi chưa có quyền. |
-| **Balance** | Validation cân bằng khác conflict detection; expiry là trigger của exception lifecycle | **Mới:** test chuẩn tham chiếu có nguồn, family bar cao hơn chuẩn, plan version race, timezone/recurrence và quyền A5. |
+| **Balance** | Validation cân bằng khác conflict detection; expiry là trigger của exception lifecycle | **Mới:** test chuẩn tham chiếu có nguồn, family bar cao hơn chuẩn, plan version race, timezone/recurrence và quyền A5. **Owner Feedback 2026-11-10:** weekly feasible-search trước escalation, default bar fallback, trẻ luôn được đề xuất, P1 duyệt soft-cap trong quyền, hard-cap không vượt, exception max 60 ngày + cách 7 ngày, self-managed sharing tự nguyện. |
 
 **Kết luận phản biện:** Lượt QA-first không đưa ra bằng chứng buộc phải tăng số L4 so với 6 outcome đề xuất; tuy nhiên nó tìm thêm **điều kiện nghiệm thu, quyền và nghiên cứu** mà một lượt đọc danh sách L4 dễ bỏ qua. Đây không phải xác nhận độc lập rằng “6 là tối ưu toàn cục”. Cần owner review các expected output và có thể thay đổi số L4.
 
@@ -78,7 +78,22 @@ Không cần chốt ba câu ngay để đọc test/output. Chỉ khi sửa scope
 
 ## 7. Phạm vi và bước tiếp theo
 
-- **Hoàn thành:** Pilot multi-pass trên 3 L3, 48 QA-first test thiết kế, đối chiếu 43 test cũ, kiểm tra ID/trace, tính toán overlap, ghi ranh giới/issue.
+- **Hoàn thành:** Pilot multi-pass trên 3 L3, 55 QA-first test thiết kế sau phản hồi Owner vòng 1, đối chiếu 43 test cũ, kiểm tra ID/trace, tính toán overlap, ghi ranh giới/issue.
 - **Chưa hoàn thành:** Multi-agent thực sự với model độc lập, test executable, đánh giá AI, legal/education review, dedupe test suite cuối cùng, owner acceptance, P6.
 - **Khi nhận owner feedback:** Chỉnh test expected outputs → cập nhật outcome L4 → chạy lại kiểm tra trace → ghi diff/changelog → tạo bản `OWNER_REVIEWED` nếu được duyệt.
 - **PR:** #17 tiếp tục Draft, chưa merge, không sửa canonical 3.2/3.3/3.4, không cấp ID L4 ổn định.
+
+## 8. Cập nhật vòng phản hồi Product Owner — Balanced Planning (2026-11-10)
+
+**Nguồn:** sáu sửa đổi trên `MP-C02/C04/C08/C09/C10/C15`. Đã cập nhật trực tiếp [Review Package Balanced Planning](Feature_3_2_L4_MP_Review_Package_Balance_REVIEW.md) và Change Log `BAL-CR-01..06`.
+
+| Thay đổi | Tác động lên L4/workflow |
+|---|---|
+| Lịch tuần trước khi hỏi phụ huynh | F04-G02-M02 tìm/xếp hạng slot theo lịch tuần; F04-G02-M03 kiểm hard-cap/Standard Bar; nếu hết phương án mới escalation; F04-G06 phê duyệt đổi lịch |
+| Default Standard Bar | Fallback family override hợp lệ → default có nguồn/phiên bản; thiếu cả hai mới UNKNOWN |
+| Trẻ luôn được đề xuất | PROPOSE được tách khỏi APPROVE và COMMIT; parent quản lý duyệt trong phạm vi quyền |
+| P1 quản lý trực tiếp | Không yêu cầu P1 duyệt lại chính mình nếu policy cho phép; ngoại lệ chỉ có thể xử lý soft/normal cap, không vượt protected hard-cap |
+| Chính sách ngoại lệ 60/7 | Mỗi kỳ tối đa 60 ngày, tối thiểu 7 ngày giữa các kỳ tương tự và chống nối kỳ; 'tương tự', đếm ngày, timezone và exception class còn cần định nghĩa |
+| Người dùng tự quản | Chia sẻ với phụ huynh tự nguyện, không mặc định là approval gate |
+
+**Validation cập nhật:** QA-first mới **55 case** = 14 Access + 17 Assessment + 24 Balance. Cần phân biệt 17 case Balance ban đầu đã **được sửa sáu expected outputs** và 7 case biên mới `MP-C18..C24`; không thể gọi tất cả là test độc lập với nhau. 0 test chạy trên app. **L4 1+3+2 giữ là đề xuất**; các quy tắc 60/7 là quyết định sản phẩm, không phải giới hạn khoa học xác minh. Cần đọc các case liên quan và xác nhận phạm vi áp dụng trong P5 trước khi đề xuất P6.
