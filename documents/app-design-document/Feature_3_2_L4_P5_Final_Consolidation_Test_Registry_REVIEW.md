@@ -1,6 +1,6 @@
 # PARENT-PAL — P5: Danh mục kiểm thử hợp nhất và ma trận truy vết
 
-**Ngày:** 2026-11-10 · **Trạng thái:** `P5_CONSOLIDATED_CANDIDATE / OWNER_REVIEW / NOT_EXECUTED`  
+**Ngày:** 2026-11-10 · **Cập nhật Owner Review:** 2026-11-11 · **Trạng thái:** `P5_OWNER_APPROVED_AT_SPEC_LEVEL / NOT_EXECUTED`  
 **Phạm vi:** Ba L3 pilot: `F01-G04-M01`, `F06-G07-M01`, `F04-G02-M03`. **Không** áp dụng cho 103 L3 khác.  
 **Nguồn:** Ba gói kiểm tra đã được Chủ sản phẩm phản hồi (Phân quyền 17, Đánh giá học tập 17, Cân bằng kế hoạch 24), 43 test case cũ, 24 đề xuất bổ sung từ P5, Blueprint 3.2-R1/3.3/3.4 và nhật ký thay đổi của Chủ sản phẩm.
 **Tính độc lập của người phản biện:** Chỉ có nhiều lượt phân tích tách vai do cùng trợ lý thực hiện trong lượt này; **không** có runtime chạy sub-agent độc lập. Reviewer adversarial riêng là **role-pass**, không được báo cáo là một agent/model độc lập đã xác minh.
@@ -141,13 +141,13 @@
 
 **Không mở rộng tự động lên 103 L3 còn lại:** Trước khi mở batch tiếp theo cần Owner chốt phương pháp Review Package + cross-module regression; các mẫu policy chưa kiểm chứng giữ `UNKNOWN`.
 
-## 8. Chủ sản phẩm rà soát — chỉ các câu hỏi ảnh hưởng nghiệp vụ
+## 8. Quyết định Chủ sản phẩm đã chốt ngày 2026-11-11
 
-- **R1 — Review Package:** Có chấp nhận dùng **64 test ứng viên** (58 đã review + 6 bổ sung cần xem) làm bộ test thiết kế pilot và dùng phương pháp này làm baseline cho các batch tiếp? **Đề xuất A:** đồng ý ở mức spec, chưa phải technical test pass.
-- **R2 — Rule ngoại lệ 60/7:** Có áp dụng quy tắc 60/7 cho **mọi ngoại lệ soft-cap có cùng mục đích/tác động** trong một plan scope, theo lịch địa phương (7 ngày không có ngoại lệ tương tự), thay vì chỉ cho ôn thi? **Đề xuất A:** có, nhưng cho phép phân loại cấp độ và điều chỉnh sau nghiên cứu.
-- **R3 — Trường hợp primary manager không sẵn sàng:** Có để app `DENY` mutation + cung cấp kênh yêu cầu xác minh/bàn giao, không cho observer tự nâng quyền? **Đề xuất A:** có; cách xác minh người có thẩm quyền là `RESEARCH_REQUIRED`.
+- **R1 = A — ĐÃ CHỐT:** Dùng **64 test ứng viên** (58 đã review + 6 bổ sung) làm baseline pilot và tham chiếu cho batch tiếp; chỉ phê duyệt **mức đặc tả**, chưa phải test phần mềm/model đã pass.
+- **R2 = A — ĐÃ CHỐT:** Ngoại lệ tương tự khi cùng **phạm vi kế hoạch + giới hạn được nới + mục đích**. Giới hạn **60 ngày/kỳ**, cần **7 ngày lịch trống hoàn chỉnh** giữa các kỳ tương tự, chống lách bằng đổi nhãn; không được vượt protected hard-cap.
+- **R3 = A — ĐÃ CHỐT:** Khi không có **Primary Manager hợp lệ**, hoặc quyền xung đột, chặn thay đổi kế hoạch và yêu cầu xác minh/bàn giao; Observer không tự nâng quyền. Tạm vắng mặt không đồng nghĩa tự động mất quyền.
 
-Các câu hỏi có quyết định đã nêu rõ ở Owner Feedback (MP-A11, C02/C04/C08/C09/C10/C15) **không hỏi lại**. Không yêu cầu bạn duyệt 64 test bằng mắt trong một lượt; chỉ cần xem 6 test mới và ba điểm R1–R3 nếu muốn chốt phương pháp.
+Chi tiết quyết định và phạm vi hiệu lực: [P5 Owner Decision Log](Feature_3_2_L4_P5_Owner_Decision_Log_APPROVED.md). Bước tiếp theo: [P6 Live Validation Plan](Feature_3_2_L4_P6_Live_Validation_Plan_REVIEW.md). Không hỏi lại R1–R3.
 
 ## 9. Nhật ký thay đổi
 
@@ -156,4 +156,4 @@ Các câu hỏi có quyết định đã nêu rõ ở Owner Feedback (MP-A11, C0
 - `P5-FC-03`: cập nhật contract theo Owner feedback Access/Balance; 6 outcome trọng tâm, giữ `CAND-`/ID minh họa, chưa stable ID.
 - `P5-FC-04`: tách `DESIGN_CHECKED` khỏi `NOT_EXECUTED` và `RESEARCH_REQUIRED`; không sửa canonical, không merge PR.
 
-**Trạng thái:** `P5_FINAL_CONSOLIDATION_CANDIDATE_READY_FOR_OWNER_REVIEW`, chưa phải release/signoff.
+**Trạng thái:** `P5_OWNER_APPROVED_AT_SPEC_LEVEL / P6_LIVE_VALIDATION_PENDING`; chưa phải ứng dụng hoặc agent thật đã được kiểm thử, không sửa canonical.
