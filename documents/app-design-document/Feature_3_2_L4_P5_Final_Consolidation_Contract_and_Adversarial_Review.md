@@ -1,6 +1,6 @@
 # PARENT-PAL — P5: Hợp đồng chức năng L4, phản biện độc lập về mục tiêu và điều kiện chuyển P6
 
-**Ngày:** 2026-11-10 · **Trạng thái:** `P5_FINAL_DRAFT / OWNER_REVIEW`; **phạm vi** chỉ ba L3 thử nghiệm.  
+**Ngày:** 2026-11-10 · **Owner Review:** 2026-11-11 · **Trạng thái:** `P5_OWNER_APPROVED_AT_SPEC_LEVEL / P6_LIVE_VALIDATION_PENDING`; **phạm vi** chỉ ba L3 thử nghiệm.  
 **Nền tảng:** Blueprint 3.2-R1/3.3/3.4, phương pháp rà soát nhiều lượt (Multi-Pass) thử nghiệm, phản hồi của Chủ sản phẩm về Phân quyền/Cân bằng kế hoạch và danh mục test hợp nhất P5.  
 **Thực tế triển khai:** Các vai thiết kế, kiểm thử, phản biện và tổng hợp được phân tích qua những lượt riêng, **chưa có sub-agent hoặc mô hình độc lập thực sự được khởi chạy**; chưa chạy kiểm thử phần mềm hay benchmark của nhà cung cấp AI. Ghi riêng `independent_review_status=NOT_AVAILABLE`.
 
@@ -73,7 +73,7 @@
 
 | Điều kiện | Trạng thái | Bằng chứng cần có |
 |---|---|---|
-| Owner response recorded | **PARTIAL** | Balance/Access sửa đổi đã ghi; 6 test mới chờ review hoặc chấp nhận có điều kiện |
+| Owner response recorded | **APPROVED_AT_SPEC_LEVEL** | R1=A, R2=A, R3=A, gồm 6 test mới trong baseline 64; xem P5 Owner Decision Log |
 | Trace test old/new | **DESIGN_CHECKED** | 43/43 old, 24/24 gap mapped, 6 added, 64 candidate suite |
 | Contract boundaries | **DESIGN_CHECKED_CONDITIONAL** | 6 L4 candidates + AR-01..10; case owner unknown giữ open |
 | Independent sub-agent reviewer | **NOT_AVAILABLE** | Khi có orchestrator: reviewer nhận primary source independently, lưu model/prompt/version/run IDs; không giả mạo |
@@ -89,13 +89,13 @@
 - Nếu hạ tầng **không** hỗ trợ sub-agent độc lập, công bố `ROLE_SEPARATED_SINGLE_MODEL` và dùng phương án phản biện tách lượt, không gắn nhãn độc lập.
 - Không tự quyết khoa học/luật khi thiếu nghiên cứu; mở backlog with evidence requirement, owner scope và release gate.
 
-## 7. Những vấn đề tối thiểu cần Chủ sản phẩm rà soát
+## 7. Những quyết định Chủ sản phẩm đã chốt
 
-- **R1**: Đồng ý cách trình bày 64 test candidate, chỉ yêu cầu xem các test mới/gap và exception impacts thay vì từng L4? **Đề xuất:** Có.
-- **R2**: `similar` của ngoại lệ được định nghĩa mặc định theo **cùng plan scope + cùng constraint bị nới + cùng mục đích**, với chống đổi nhãn? **Đề xuất:** Có để test, nghiên cứu sau.
-- **R3**: Khi thiếu primary manager hoặc tranh chấp handover, fail-closed cho plan mutation và có kênh review, observer không tự nâng quyền? **Đề xuất:** Có.
+- **R1=A, ĐÃ CHỐT:** Dùng 64 test thiết kế làm baseline pilot, không phải chứng nhận 64 test đã chạy.
+- **R2=A, ĐÃ CHỐT:** `similar` = cùng `plan_scope`, cùng `constraint` được nới và cùng `purpose`, chống đổi nhãn; tối đa 60 ngày mỗi kỳ, cách 7 ngày trống hoàn chỉnh; không vượt protected hard-cap.
+- **R3=A, ĐÃ CHỐT:** Không có Primary Manager hợp lệ hoặc role xung đột thì fail-closed cho plan mutation; cung cấp luồng xác minh/bàn giao; Observer không tự nâng quyền.
 
-**Chưa có phê duyệt R1–R3:** Không tự chuyển từ `P5_FINAL_DRAFT` sang `P6_APPROVED`.
+**Phạm vi:** P5 được phê duyệt ở **mức đặc tả**; P6 vẫn `LIVE_VALIDATION_PENDING`, không tự chuyển sang `P6_APPROVED`. Xem [Decision Log](Feature_3_2_L4_P5_Owner_Decision_Log_APPROVED.md) và [P6 Plan](Feature_3_2_L4_P6_Live_Validation_Plan_REVIEW.md).
 
 ## 8. Nhật ký thay đổi
 
