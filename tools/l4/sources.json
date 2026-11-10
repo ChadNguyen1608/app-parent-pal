@@ -1,0 +1,83 @@
+{
+  "pilot_commit": "1ef64c4ed7ee6d58064eee64f8989c7e2dda1f6d",
+  "canonical": [
+    "documents/app-design-document/Feature_3_2_Consolidation_Decision_Log_APPROVED.md",
+    "documents/app-design-document/Feature_3_2_L3_Resolution_Decision_Log_APPROVED.md",
+    "documents/app-design-document/Package_A_Decision_Log_3_2_APPROVED_PROPOSAL.md",
+    "documents/app-design-document/Package_B_Decision_Log_3_2_APPROVED_PROPOSAL.md",
+    "documents/app-design-document/Package_C_Decision_Log_3_2_APPROVED_PROPOSAL.md",
+    "documents/app-design-document/Package_D_Decision_Log_3_2_APPROVED_PROPOSAL.md",
+    "documents/app-design-document/Package_E_Decision_Log_3_2_APPROVED_PROPOSAL.md",
+    "documents/app-design-document/Product_Blueprint_03_2_Feature_Inventory_and_Scope.md",
+    "documents/app-design-document/Product_Blueprint_03_3_Feature_Prioritization_and_Dependency_Mapping.md",
+    "documents/app-design-document/Product_Blueprint_03_4_Feature_Interaction_and_Use_Case_Mapping.md",
+    "documents/app-design-document/Product_Blueprint_Master_Research_Backlog_v1_2.md",
+    "documents/app-design-document/Scenario_Change_Log_SC-001.md",
+    "documents/app-design-document/Scenario_Change_Log_SC-002.md"
+  ],
+  "method": [
+    "documents/app-design-document/Feature_3_2_L4_Capability_Standard_APPROVED.md",
+    "documents/app-design-document/Feature_3_2_L4_Methodology_Decision_Log_APPROVED.md"
+  ],
+  "owner": [
+    {
+      "path": "documents/app-design-document/Feature_3_2_L4_MP_Review_Package_Access_REVIEW.md",
+      "ranges": [
+        [
+          77,
+          77
+        ]
+      ]
+    },
+    {
+      "path": "documents/app-design-document/Feature_3_2_L4_MP_Review_Package_Balance_REVIEW.md",
+      "ranges": [
+        [
+          86,
+          91
+        ]
+      ]
+    },
+    {
+      "path": "documents/app-design-document/Feature_3_2_L4_MP_Review_Package_Assessment_REVIEW.md",
+      "ranges": [
+        [
+          4,
+          4
+        ]
+      ]
+    }
+  ],
+  "legacy": "documents/app-design-document/Feature_3_2_L4_Pilot_Test_Cases_REVIEW.md",
+  "p5_registry": "documents/app-design-document/Feature_3_2_L4_P5_Final_Consolidation_Test_Registry_REVIEW.md",
+  "p5_contract": "documents/app-design-document/Feature_3_2_L4_P5_Final_Consolidation_Contract_and_Adversarial_Review.md",
+  "modules": {
+    "F01-G04-M01": {
+      "letter": "A",
+      "review": "documents/app-design-document/Feature_3_2_L4_MP_Review_Package_Access_REVIEW.md",
+      "counts": [
+        12,
+        17,
+        2
+      ]
+    },
+    "F06-G07-M01": {
+      "letter": "B",
+      "review": "documents/app-design-document/Feature_3_2_L4_MP_Review_Package_Assessment_REVIEW.md",
+      "counts": [
+        16,
+        17,
+        2
+      ]
+    },
+    "F04-G02-M03": {
+      "letter": "C",
+      "review": "documents/app-design-document/Feature_3_2_L4_MP_Review_Package_Balance_REVIEW.md",
+      "counts": [
+        15,
+        24,
+        2
+      ]
+    }
+  }
+}
