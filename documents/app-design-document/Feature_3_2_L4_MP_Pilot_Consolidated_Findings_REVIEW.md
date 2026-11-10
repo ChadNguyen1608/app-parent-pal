@@ -9,17 +9,17 @@
 | Đầu ra | Kết quả kiểm tra |
 |---|---|
 | L3 được thử | 3: `F01-G04-M01`, `F06-G07-M01`, `F04-G02-M03` |
-| Test case QA-first mới | **55** = 14 Access + 17 Assessment + **24 Balance** (sau 6 phản hồi Owner, bổ sung 7 ca biên), có Given/When và expected output |
+| Test case QA-first mới | **58** = **17 Access** + 17 Assessment + **24 Balance** (sau 6 phản hồi Owner, bổ sung 7 ca biên), có Given/When và expected output |
 | Test case pilot cũ | **43** = 12 + 16 + 15; **không sửa, không xóa** |
 | Test bổ sung ở P5 Gap Register | **24 đề xuất**; chưa hợp nhất/dedupe với 55 test QA-first |
 | Cohort matrix cũ | **60 dòng** = 10 L4 × 6 cohort, chưa xác minh quyền |
 | L4 trọng tâm khuyến nghị | **6** = 1 Access + 3 Assessment + 2 Balance; **chưa phê duyệt** |
 | Thực thi test trên app/model | **0**; tất cả `NOT_EXECUTED` |
-| Kiểm tra cấu trúc tự động | ID QA-first 55/55 duy nhất; trace test → outcome hiện hữu 55/55; test cũ 43/43 ID duy nhất |
+| Kiểm tra cấu trúc tự động | ID QA-first 58/58 duy nhất; trace test → outcome hiện hữu 58/58; test cũ 43/43 ID duy nhất |
 | Kiểm tra số học giả lập | 17:00–18:00 + 17:30–18:30: overlap **30**, occupied union **90**, sum durations **120** phút |
 | Cổng legal/privacy/safety/feasibility | **UNKNOWN**; không có kết quả PASS |
 
-**Lưu ý đếm:** 55 QA-first và 43 test cũ có nhiều tình huống tương tự, không thể cộng để khẳng định 98 yêu cầu riêng hoặc 98 test đã chạy. 24 test gap còn có thể trùng cả hai bộ. Cần dedupe theo requirement/outcome và variant trước khi tạo test suite cuối cùng.
+**Lưu ý đếm:** 58 QA-first và 43 test cũ có nhiều tình huống tương tự, không thể cộng để khẳng định 101 yêu cầu riêng hoặc 101 test đã chạy. 24 test gap còn có thể trùng cả hai bộ. Cần dedupe theo requirement/outcome và variant trước khi tạo test suite cuối cùng.
 
 ## 2. So sánh QA-first với kết luận P5 trước
 
@@ -78,7 +78,7 @@ Không cần chốt ba câu ngay để đọc test/output. Chỉ khi sửa scope
 
 ## 7. Phạm vi và bước tiếp theo
 
-- **Hoàn thành:** Pilot multi-pass trên 3 L3, 55 QA-first test thiết kế sau phản hồi Owner vòng 1, đối chiếu 43 test cũ, kiểm tra ID/trace, tính toán overlap, ghi ranh giới/issue.
+- **Hoàn thành:** Pilot multi-pass trên 3 L3, 58 QA-first test thiết kế sau phản hồi Owner vòng 1, đối chiếu 43 test cũ, kiểm tra ID/trace, tính toán overlap, ghi ranh giới/issue.
 - **Chưa hoàn thành:** Multi-agent thực sự với model độc lập, test executable, đánh giá AI, legal/education review, dedupe test suite cuối cùng, owner acceptance, P6.
 - **Khi nhận owner feedback:** Chỉnh test expected outputs → cập nhật outcome L4 → chạy lại kiểm tra trace → ghi diff/changelog → tạo bản `OWNER_REVIEWED` nếu được duyệt.
 - **PR:** #17 tiếp tục Draft, chưa merge, không sửa canonical 3.2/3.3/3.4, không cấp ID L4 ổn định.
@@ -96,4 +96,14 @@ Không cần chốt ba câu ngay để đọc test/output. Chỉ khi sửa scope
 | Chính sách ngoại lệ 60/7 | Mỗi kỳ tối đa 60 ngày, tối thiểu 7 ngày giữa các kỳ tương tự và chống nối kỳ; 'tương tự', đếm ngày, timezone và exception class còn cần định nghĩa |
 | Người dùng tự quản | Chia sẻ với phụ huynh tự nguyện, không mặc định là approval gate |
 
-**Validation cập nhật:** QA-first mới **55 case** = 14 Access + 17 Assessment + 24 Balance. Cần phân biệt 17 case Balance ban đầu đã **được sửa sáu expected outputs** và 7 case biên mới `MP-C18..C24`; không thể gọi tất cả là test độc lập với nhau. 0 test chạy trên app. **L4 1+3+2 giữ là đề xuất**; các quy tắc 60/7 là quyết định sản phẩm, không phải giới hạn khoa học xác minh. Cần đọc các case liên quan và xác nhận phạm vi áp dụng trong P5 trước khi đề xuất P6.
+**Validation cập nhật:** QA-first mới **58 case** = **17 Access** + 17 Assessment + 24 Balance. Cần phân biệt 17 case Balance ban đầu đã **được sửa sáu expected outputs** và 7 case biên mới `MP-C18..C24`; không thể gọi tất cả là test độc lập với nhau. 0 test chạy trên app. **L4 1+3+2 giữ là đề xuất**; các quy tắc 60/7 là quyết định sản phẩm, không phải giới hạn khoa học xác minh. Cần đọc các case liên quan và xác nhận phạm vi áp dụng trong P5 trước khi đề xuất P6.
+
+## 9. Owner Feedback — Access Policy, primary manager vs observer (2026-11-10)
+
+**Owner direction:** Khi gia đình có nhiều người cùng tham gia, **một người quản lý kế hoạch chính**, những người còn lại là observer/supporter có thể theo dõi/hỗ trợ nhưng **không thay đổi kế hoạch**. Các test/expected output Access khác được Owner xác nhận ở mức thiết kế.
+
+Đã cập nhật [Access Review Package](Feature_3_2_L4_MP_Review_Package_Access_REVIEW.md): sửa `MP-A11` từ tình huống hai người giám hộ xung đột mặc định thành kiểm observer không được sửa/duyệt/commit; bổ sung `MP-A15` (observer gửi đề xuất), `MP-A16` (bàn giao có kiểm quyền), `MP-A17` (hai primary/không có primary). Truy vết `ACCESS-CR-01/02`.
+
+**Phân biệt quan trọng:** Vai trò primary **trong ứng dụng** không tự quyết định tư cách giám hộ pháp lý; Observer không tự có quyền đọc Journal hoặc dữ liệu nhạy cảm. Chỉ một primary cho **cùng phạm vi kế hoạch**; việc mở rộng cho nhiều trẻ vẫn phải gắn scope. Handover khi primary không sẵn sàng và ai có quyền chuyển giao cần xác minh theo policy/quốc gia. Không mặc định tạo case tranh chấp khi gia đình có nhiều người lớn.
+
+**Bộ test QA-first sau hai vòng owner feedback:** **58 test thiết kế** = 17 Access + 17 Assessment + 24 Balance. 0 test thực thi; 43 test gốc và 24 gap test chưa được dedupe. Các thay đổi Owner **không tự cấp ID L4** hoặc sửa canonical.
