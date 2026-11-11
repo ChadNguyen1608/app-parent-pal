@@ -1,6 +1,6 @@
 # Parent-Pal — P6: Kế hoạch kiểm chứng Multi-Agent L4 thật và điều kiện nghiệm thu
 
-**Ngày lập:** 2026-11-11 · **Cập nhật phụ thuộc:** 2026-11-11 · **Trạng thái:** `P6_DESIGN_READY / BLOCKED_NO_INDEPENDENT_AGENT_RUNTIME`  
+**Ngày lập:** 2026-11-11 · **Cập nhật kết quả pilot:** 2026-11-12 · **Trạng thái:** `P6_PILOT_1_REVIEW_REPORTED / PILOTS_2_3_PENDING / METHOD_APPROVAL_PENDING`  
 **Căn cứ:** P5 Owner Review `R1=A/R2=A/R3=A`, 64 test case hợp nhất và Draft PR #17 (đặc tả). **PR #18 đã đóng, chưa merge và không phải công cụ thực thi P6.**  
 **Nguyên tắc:** Kết quả 11 test tự động và ba L3 chạy mock trước đây là bằng chứng lịch sử của PR #18, **không** chứng minh agent thật hoặc công cụ thay thế đã chạy. Không cần merge PR #17 để chuẩn bị P6; không sử dụng hoặc khôi phục PR #18 mặc định.
 
@@ -61,7 +61,7 @@ Các case này là **test bổ sung P6**, chưa tự động đổi con số **6
 | `CONDITIONAL_GO` | Chỉ cho batch giới hạn nếu vấn đề không nghiêm trọng có owner/mitigation và chưa dùng cho production |
 | `NO_GO` | Chưa có live runs, không tách được agent, quyền ghi quá rộng, rò rỉ dữ liệu, lỗi nghiêm trọng hoặc không kiểm soát chi phí |
 
-**Tình trạng hiện nay:** `BLOCKED_NO_INDEPENDENT_AGENT_RUNTIME` — phương pháp và bộ test đã có, nhưng chưa có môi trường agent thay thế được xác minh, nên **chưa sẵn sàng chạy P6 đúng protocol**. Kết quả mock cũ và P5 sign-off không đủ để tự kết luận `GO`.
+**Tình trạng cập nhật 2026-11-12:** Claude Code đã chạy thử Pilot 1 Access Policy theo hồ sơ ZIP do Owner cung cấp; đã có output QA/Architect/Reviewer/Validator và bằng chứng tự báo. Owner đã chốt OQ-1..5, ghi trong [Access Policy Owner Decision Log](Feature_3_2_L4_P6_Access_Policy_Owner_Decision_Log_APPROVED.md). **Pilot 1 còn pending kiểm tra hồi quy cuối**; Pilot 2 Academic Assessment và Pilot 3 Balanced Planning chưa chạy; `P6_METHOD_APPROVED` chưa được cấp. Không còn mô tả môi trường agent là hoàn toàn không tồn tại, nhưng **chưa có kiểm toán độc lập** đối với execution evidence.
 
 ## 7. Câu hỏi chỉ khi phát sinh
 
@@ -74,6 +74,8 @@ Các case này là **test bổ sung P6**, chưa tự động đổi con số **6
 - `P6-PLAN-01`: ghi dependency P5→P6, mock≠live.
 - `P6-PLAN-02`: thêm năm test biên nhằm xác minh R2/R3 và regression liên module.
 - `P6-PLAN-03`: định nghĩa gate mở rộng 103 L3 còn lại; không mặc định bắt đầu ngay.
-- `P6-PLAN-04`: loại phụ thuộc PR #18 (đã Closed); thêm gate kiểm tra runtime thay thế và trạng thái `BLOCKED_NO_INDEPENDENT_AGENT_RUNTIME`.
+- `P6-PLAN-04`: loại phụ thuộc PR #18 (đã Closed); thêm gate kiểm tra runtime thay thế; tại thời điểm 2026-11-11: `BLOCKED_NO_INDEPENDENT_AGENT_RUNTIME`.
+- `P6-PLAN-05` (2026-11-12): ghi nhận lần chạy Claude Code Pilot 1 Access Policy qua ZIP, 5 quyết định Owner đã xác nhận, hai pilot còn lại pending, Access regression chưa đóng.
+- `P6-PLAN-06` (2026-11-12): phân vai mới — Claude Code chỉ chạy pilot (tối đa 3 sub-agent, Sonnet 5.5 nếu có sẵn), ChatGPT quản lý tài liệu/Decision Log/Git sau Owner xác nhận. Claude không được commit/push/PR/sửa tài liệu nguồn.
 
 **Không sửa Blueprint canonical, không merge PR #17. PR #18 đã Closed và không được sử dụng làm hệ thống P6.**
