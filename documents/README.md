@@ -91,7 +91,11 @@ documents/
 | `content-01-nhom-hieu-minh-va-tu-dieu-hanh.md` | 8 kỹ năng tự điều hành, 64 bài luyện tập | KT-60101–60108; HD-0001–0064 |
 | `content-02-nhom-tuong-tac-va-quan-he.md` | 8 kỹ năng tương tác, 64 bài | KT-60201–60208; HD-0065–0128 |
 | `content-03-nhom-tu-duy-lanh-dao-va-tham-gia.md` | 7 kỹ năng tư duy, lãnh đạo, tham gia, 52 bài | KT-60301–60307; HD-0129–0180 |
-| `content-04-giao-trinh-luyen-tap-theo-cap-hoc.md` | Giáo trình luyện tập theo năm cho từng cấp học | KT-60401 |
+| `content-04-giao-trinh-luyen-tap-theo-cap-hoc.md` | Hướng dẫn cho bố mẹ (bắt đầu, theo dõi, khi gặp khó); cơ sở và bản đồ năm | KT-60401 |
+| `content-05-giao-trinh-mam-non.md` | Giáo trình chi tiết mầm non: 13 đợt, 98 bài | KT-60501–60513 |
+| `content-06-giao-trinh-tieu-hoc.md` | Giáo trình chi tiết tiểu học: 14 đợt, 98 bài | KT-60601–60614 |
+| `content-07-giao-trinh-thcs.md` | Giáo trình chi tiết THCS: 14 đợt, 106 bài | KT-60701–60714 |
+| `content-08-giao-trinh-thpt.md` | Giáo trình chi tiết THPT: 22 đợt (lớp 10, 11 con chọn, 12), 136 bài | KT-60801–60822 |
 
 ## Phương pháp giáo dục và chăm sóc (`methods/`)
 

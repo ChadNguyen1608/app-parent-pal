@@ -3,9 +3,123 @@
 - **Người soạn:** AI (Claude) · **Trạng thái:** nháp · **Ngày soạn:** 7/11/2026
 - **Nhãn chung:** cách sắp xếp trong file này là `suy từ lý thuyết` (dựa trên các nguyên tắc có nguồn ở mục 1) cộng `đề xuất nội bộ` (thứ tự kỹ năng cụ thể). **Chưa có nghiên cứu nào kiểm trực tiếp giáo trình này.** Pal nói rõ điều đó khi đưa ra.
 - **Người duyệt:** chưa có. Cần chuyên gia tâm lý phát triển và giáo viên các cấp xem thứ tự kỹ năng (mục 4–7).
-- Bài luyện tập (`HD-xxxx`) nằm ở `content-01`, `content-02`, `content-03` cùng thư mục. Danh sách 23 kỹ năng: `content-00-tong-quan-ky-nang-mem.md`.
+- **Cấu trúc:** Phần A là hướng dẫn cho bố mẹ (đọc trước). Phần B là cơ sở và bản đồ năm. **Bài học chi tiết từng tuần** ở 4 file theo cấp học: `content-05-giao-trinh-mam-non.md`, `content-06-giao-trinh-tieu-hoc.md`, `content-07-giao-trinh-thcs.md`, `content-08-giao-trinh-thpt.md`.
+- Bài luyện tập gốc (`HD-xxxx`) nằm ở `content-01`, `content-02`, `content-03` cùng thư mục. Danh sách 23 kỹ năng: `content-00-tong-quan-ky-nang-mem.md`.
 
 `KT-60401` · Nhóm chính: 7 · Nhóm phụ: 5, 4, 2 · Nhãn: `kiến_thức_nền`
+
+## Phần A. Hướng dẫn cho bố mẹ (đọc trước)
+
+### A1. Giáo trình này là gì, mất bao lâu
+- Đây là kế hoạch giúp con tập **kỹ năng mềm** ở nhà: hiểu cảm xúc của mình, kiềm chế, lắng nghe, hợp tác, giải quyết vấn đề… Mỗi năm học có **4 đợt**, mỗi đợt **8 tuần**, cộng **1 đợt hè**. Mỗi đợt tập **1 kỹ năng chính**.
+- **Mỗi tuần mất khoảng 30–60 phút**, chia nhỏ:
+  - **mỗi ngày 3–5 phút** làm một việc nhỏ lồng vào sinh hoạt (gọi là **hạt nhân**, ví dụ hỏi con một câu trong bữa cơm);
+  - **mỗi tuần một bài học** 10–20 phút (chơi, đọc truyện, đóng vai, nấu ăn…).
+- Bố mẹ **không cần chuẩn bị nhiều**. Mỗi bài đã có sẵn các bước, câu nói mẫu, ví dụ hội thoại, cách xử lý khi con không chịu, và việc cần làm trong tuần.
+- Lịch chi tiết từng đợt, từng bài nằm ở file của cấp học:
+
+| Cấp học | File | Mã đợt |
+|---|---|---|
+| Mầm non (3–6 tuổi) | `content-05-giao-trinh-mam-non.md` | MN-0, MN-A1 đến MN-A5, MN-B1 đến MN-B5, MN-C4, MN-C5 |
+| Tiểu học (6–11 tuổi) | `content-06-giao-trinh-tieu-hoc.md` | TH-0, TH-A1 đến TH-A5, TH-B1 đến TH-B5, TH-L5H, TH-N1, TH-N2 |
+| THCS (11–15 tuổi) | `content-07-giao-trinh-thcs.md` | THCS-0, THCS-A1 đến THCS-A5, THCS-B1 đến THCS-B5, THCS-L9-3, THCS-L9-4, THCS-L9-H |
+| THPT (15–18 tuổi) | `content-08-giao-trinh-thpt.md` | THPT-0, THPT-10.1 đến 10.5, THPT-11.01 đến 11.13, THPT-12.1, 12.M, 12.S |
+
+### A2. Bắt đầu trong 15 phút
+1. **Tìm đợt của con** (2 phút): xem tuổi hoặc lớp của con và tháng hiện tại trong bảng "Năm luyện tập" (Phần B, mục 2.1) và bảng của cấp học (Phần B, mục 4–7). Ví dụ: con 4 tuổi, tháng 11 → Mầm non, vòng B, đợt 2 (MN-B2).
+   - Mới bắt đầu giữa năm? Bắt đầu luôn ở đợt của tháng này. Không cần học bù đợt trước.
+   - Đầu năm học? Làm **2 tuần mở đầu về an toàn** trước (MN-0, TH-0, THCS-0, THPT-0).
+2. **Đọc "Tóm tắt đợt"** của đợt đó (1 phút): biết mỗi ngày làm gì, mỗi tuần làm gì, câu khẩu hiệu.
+3. **Đọc mục "Vì sao học"** (2 phút) để tự mình tin vào việc này. Con cảm được khi bố mẹ làm cho có.
+4. **Chọn giờ cố định cho hạt nhân** (2 phút): gắn vào việc đã có sẵn, ví dụ "sau bữa cơm tối", "lúc đưa con đi học", "trước khi đọc truyện ngủ". Gắn vào việc có sẵn dễ nhớ hơn đặt giờ mới. `đề xuất nội bộ`, dựa trên kế hoạch "nếu… thì…" [NG-596].
+5. **Kẻ bảng theo dõi** (3 phút, mẫu ở mục A6), dán ở tủ lạnh hoặc lưu trong điện thoại.
+6. **Báo cho người lớn khác trong nhà** (3 phút): ông bà, người giúp việc, bố hoặc mẹ còn lại. Cả nhà nói cùng một câu khẩu hiệu thì con học nhanh hơn. `đề xuất nội bộ`.
+7. **Đọc Bài 1** (2 phút) và làm trong tuần này.
+
+### A3. Một tuần trông như thế nào (ví dụ)
+**Gia đình có con 4 tuổi, đợt "Quản lý cảm xúc"** (khẩu hiệu "Dừng – thở – nói"):
+
+| Ngày | Việc | Thời gian |
+|---|---|---|
+| Thứ 2–6 | Sau bữa tối, chơi "dừng lại và thở" 1 lượt: cả nhà giả làm quả bóng xì hơi | 3 phút |
+| Thứ 2–6 | Khi con giận thật: bố mẹ nói khẩu hiệu, thở cùng con, gọi tên cảm xúc | khi có chuyện |
+| Thứ 7 | Bài học của tuần: đọc một truyện có nhân vật giận, dừng lại hỏi con, rồi tập thở | 15 phút |
+| Chủ nhật | Bố mẹ ghi 2–3 dòng vào bảng theo dõi | 5 phút |
+| **Tổng** | | **khoảng 35–40 phút** |
+
+**Gia đình có con lớp 7, đợt "Giải quyết xung đột"**:
+
+| Ngày | Việc | Thời gian |
+|---|---|---|
+| 3 tối trong tuần | Khi có bất đồng nhỏ, dùng cách "quay lại sau 24 giờ": hẹn nói lại khi đã bình tĩnh | 5–10 phút |
+| Chủ nhật | Họp gia đình 15 phút: mỗi người nói một việc chưa vui trong tuần, cùng tìm cách | 15 phút |
+| Chủ nhật | Con tự ghi nhật ký (nếu con muốn); bố mẹ ghi bảng của bố mẹ | 5 phút |
+| **Tổng** | | **khoảng 40–50 phút** |
+
+`đề xuất nội bộ`, theo mức 30–60 phút/tuần [NG-591].
+
+### A4. Từ ngữ dùng trong giáo trình
+| Từ | Nghĩa |
+|---|---|
+| **Đợt** | 8 tuần tập một kỹ năng chính (THPT lớp 11: 6 tuần) |
+| **Kỹ năng đi kèm** | Kỹ năng thứ hai được tập luôn trong các bài của đợt, không thêm bài riêng |
+| **Bài học** | Hoạt động 10–20 phút mỗi tuần, có các bước và câu nói mẫu |
+| **Hạt nhân** | Việc rất ngắn (1–5 phút) làm hằng ngày, gắn vào sinh hoạt có sẵn. Từ "kernel" của nhóm nghiên cứu Harvard [NG-593] |
+| **Việc trong tuần** | Bài tập về nhà của cả bố mẹ và con trong tuần đó |
+| **Câu khẩu hiệu** | Một câu ngắn cả nhà cùng nói để nhắc kỹ năng ("Dừng – thở – nói") |
+| **Nhìn lại** | Buổi tuần 8: bố mẹ và con nói về điều con đã làm được, chọn một hạt nhân giữ lại |
+| **Vòng A, vòng B** | Hai bộ kỹ năng luân phiên theo năm; năm thứ ba quay lại vòng A ở mức khó hơn |
+| **Mã HD** | Mã bài luyện tập gốc trong `content-01` đến `content-03`, ghi nguồn và mức bằng chứng |
+
+### A5. Năm cách bố mẹ dùng trong mọi bài
+1. **Làm mẫu và nói to suy nghĩ.** Trẻ học qua quan sát [KT-40204]. Khi chính bố mẹ bực, hãy nói ra: "Mẹ đang bực vì kẹt xe. Mẹ thở ba hơi đã." Làm vậy con thấy kỹ năng diễn ra thế nào.
+2. **Khen cụ thể, chân thành, đúng việc con làm.** Ví dụ "Con đã đợi em nói xong mới nói", không nói "con giỏi quá". Không khen phóng đại, không khen bằng cách so với bạn [KT-40201].
+3. **Cho con chọn trong khuôn khổ.** Ví dụ "Hôm nay mình chơi thẻ cảm xúc hay đọc truyện?". Con có quyền chọn thì hợp tác hơn [KT-40202]. Không dùng quà làm trung tâm; ghi nhận bằng lời và thời gian bên nhau.
+4. **Tăng độ khó dần, bố mẹ lùi dần.** Tuần đầu bố mẹ làm cùng, nhắc nhiều. Các tuần sau bố mẹ nhắc ít đi, để con tự làm. Bài đã quá dễ thì dùng dòng "Khó hơn" [NG-517] [NG-523].
+5. **Kế hoạch "nếu… thì…".** Biến kỹ năng thành câu cụ thể: "Nếu em giật đồ chơi, thì con nói 'Em trả anh' rồi gọi mẹ". Kiểu kế hoạch này giúp đạt mục tiêu rõ rệt ở người lớn [NG-596]. Dùng cho trẻ là `suy từ lý thuyết`.
+
+**Không dùng trong giáo trình:** phạt, đòn roi, dọa, chê, so với anh chị em hay bạn bè, bắt con "xin lỗi cho xong".
+
+### A6. Theo dõi: ghi gì, ghi thế nào
+**Mục đích:** để bố mẹ thấy con thay đổi so với chính con, và biết khi nào tăng hay giảm độ khó. **Không phải để chấm điểm.**
+
+**Bảng tuần (mẫu, kẻ vào giấy hoặc ghi chú điện thoại):**
+
+| Ngày | Hạt nhân đã làm? | Một điều con làm hoặc nói (ghi đúng lời) | Ghi chú của bố mẹ |
+|---|---|---|---|
+| T2 | có | Con nói "con giận vì em lấy xe" rồi ra ngồi ghế | Lần đầu con tự nói tên cảm xúc |
+| T3 | chưa | — | Về muộn, bỏ qua |
+| … | | | |
+
+**Ghi thế nào cho đúng:**
+
+| Đừng ghi | Nên ghi |
+|---|---|
+| "Hôm nay con ngoan" | "Con đợi mẹ nói xong mới nói, 2 lần trong bữa tối" |
+| "Con vẫn hư" | "Con giật đồ của em; khi mẹ nhắc 'dừng – thở', con dừng được sau khoảng 1 phút" |
+| "Con kém hơn anh" | (không so với anh chị em) |
+| "8/10" | (không cho điểm) |
+
+**Sổ đợt:** cuối mỗi đợt, ghi 3 dòng. Con đã làm được gì so với đầu đợt; hạt nhân nào giữ lại; điều muốn thử ở lần học lại. Năm sau học lại vòng này, mở sổ ra xem.
+
+**Bao nhiêu là đủ:** ghi 3–4 ngày một tuần là đủ. Bỏ vài ngày không sao.
+
+**Riêng tư:** nhật ký con tự viết là của con. Bố mẹ chỉ đọc khi con cho phép. Ở THCS, THPT, con tự giữ bảng của con.
+
+### A7. Khi gặp khó (chung cho mọi đợt)
+| Tình huống | Làm gì |
+|---|---|
+| Bố mẹ quá bận | Bỏ bài học tuần, chỉ giữ hạt nhân 3 phút. Tuần sau làm tiếp bài đang dở, không bù |
+| Con ốm, Tết, đi chơi xa, mùa thi | Tạm dừng. Đếm tuần tiếp từ chỗ đã dừng |
+| Con nói "chán", "không chơi" | Đổi sang hoạt động khác của cùng kỹ năng (mục C trong file kỹ năng), hoặc cho con chọn, hoặc làm dễ hơn. Không ép |
+| Con làm sai, làm ngược | Bình thường. Không sửa ngay trước mặt người khác. Lần sau làm mẫu lại |
+| Ông bà, người giúp việc làm khác | Đưa họ câu khẩu hiệu và 1 việc cụ thể. Không cần họ làm hết |
+| Anh chị em tranh nhau | Cho mỗi con một vai, hoặc làm lần lượt. Chọn một kỹ năng chung cho cả nhà, mỗi con một bài theo tuổi |
+| Bố mẹ nổi nóng giữa chừng | Dừng lại, nói thật: "Mẹ vừa to tiếng. Mẹ xin lỗi. Mẹ thở đã." Đây cũng là một bài làm mẫu |
+| Con đang có chuyện lớn (bị bắt nạt, gia đình có biến cố, chuyển nhà) | Tạm gác đợt đang làm. Chuyển sang kỹ năng hợp với chuyện đó (Phần B, mục 2.6). Có dấu hiệu nguy hiểm: 111, 113, 115 |
+| Sau 2–3 đợt mà một kỹ năng con vẫn rất khó, hoặc có dấu hiệu ở mục "Khi nào hỏi chuyên gia" | Hỏi giáo viên, bác sĩ hoặc chuyên gia tâm lý. Giáo trình không thay thế việc khám |
+
+## Phần B. Cơ sở và bản đồ năm
 
 ## 1. Chuyên gia khuyên sắp xếp luyện tập thế nào
 
@@ -95,6 +209,8 @@ Hai tuần đầu mỗi năm học, cả nhà ôn lại quy tắc an toàn theo 
 
 ## 4. Mầm non (3–6 tuổi)
 
+Chi tiết từng đợt, từng bài: `content-05-giao-trinh-mam-non.md` (mã MN-A1… là vòng A đợt 1).
+
 **Đặc điểm:** học qua chơi, kể chuyện, việc nhà nhỏ. Bài là trò chơi, không gọi là "học". Hoạt động có luật, đổi luật, giả vờ có vai, nấu ăn hợp với tuổi 3–5 [NG-517].
 
 **Vòng A** (3–4 tuổi; lặp lại ở mức khó hơn khi 5–6 tuổi)
@@ -118,6 +234,8 @@ Hai tuần đầu mỗi năm học, cả nhà ôn lại quy tắc an toàn theo 
 **Năm 5–6 tuổi (chuẩn bị vào lớp 1):** học lại vòng A ở mức khó hơn, nhưng **đợt 4 thay bằng**: Quản lý thời gian (HD-0042 Lịch hình bằng tranh buổi sáng) + Tự học (HD-0049 Hỏi lại truyện đã đọc; HD-0050 Thẻ hình ôn ngắn mỗi ngày). Hè trước lớp 1: Tư duy phản biện (HD-0137 Nhìn – Nghĩ – Thắc mắc; HD-0138 Ai làm ra? Vì sao làm ra?). Chuẩn bị vào lớp 1 khác (nhóm 17): kho 0–6 tuổi.
 
 ## 5. Tiểu học (6–11 tuổi)
+
+Chi tiết từng đợt, từng bài: `content-06-giao-trinh-tieu-hoc.md`.
 
 **Đặc điểm:** chơi bài, cờ, thể thao có luật; câu đố; việc nhà có vai trò [NG-517]. Bắt đầu tự ghi chép đơn giản. Đổi luật linh hoạt từ khoảng 7–9 tuổi [NG-523].
 
@@ -144,6 +262,8 @@ Hai tuần đầu mỗi năm học, cả nhà ôn lại quy tắc an toàn theo 
 **Dùng khi có nhu cầu (chưa vào vòng):** Đàm phán (HD-0099 Thương lượng giờ chơi điện tử; HD-0100 Chợ đồ chơi); Lãnh đạo (HD-0163 Làm bạn đồng hành cho em nhỏ hơn; HD-0164 Dự án nhóm nhỏ).
 
 ## 6. Trung học cơ sở (11–15 tuổi)
+
+Chi tiết từng đợt, từng bài: `content-07-giao-trinh-thcs.md`.
 
 **Đặc điểm:** con cần được tự quyết nhiều hơn; bạn bè và mạng quan trọng dần. Cha mẹ chuyển từ "dạy" sang "cùng bàn". Ở cấp này, **lắng nghe là việc cha mẹ luyện là chính** (HD-0077 Tóm tắt lại trước khi trả lời; HD-0078 Bữa cơm không điện thoại), làm suốt các đợt.
 
@@ -172,6 +292,8 @@ Hai tuần đầu mỗi năm học, cả nhà ôn lại quy tắc an toàn theo 
 - Hè sau lớp 9: Thích ứng mức khó (HD-0063 Nhật ký về một thay đổi lớn) để chuẩn bị lên lớp 10.
 
 ## 7. Trung học phổ thông (15–18 tuổi)
+
+Chi tiết từng đợt, từng bài: `content-08-giao-trinh-thpt.md` (lớp 11 rút còn 6 tuần mỗi đợt).
 
 **Đặc điểm:** **con chọn mục tiêu**, cha mẹ hỏi và hỗ trợ (nguyên tắc 16). Cha mẹ đưa thực đơn, con chọn kỹ năng và hoạt động. Hoạt động hợp tuổi: tự đặt mục tiêu, tự theo dõi, nhật ký, kỹ năng học, thể thao, âm nhạc, sân khấu, trò chơi chiến thuật [NG-517].
 
