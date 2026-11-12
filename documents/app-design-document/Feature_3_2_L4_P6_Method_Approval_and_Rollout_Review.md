@@ -1,7 +1,7 @@
 # Parent-Pal — P6: Tổng hợp ba pilot và phương án mở rộng L4
 
 **Ngày lập:** 2026-11-12  
-**Trạng thái:** `P6_THREE_PILOTS_EXECUTED / CONDITIONAL_METHOD_ROLLOUT_RECOMMENDED / OWNER_METHOD_SIGNOFF_PENDING`  
+**Trạng thái:** `P6_THREE_PILOTS_EXECUTED / CONDITIONAL_METHOD_ROLLOUT_OWNER_ACCEPTED / FOLLOWUP_GATES_PENDING`  
 **Phạm vi:** Thẩm định **phương pháp phân rã + phản biện L4**, không chứng nhận chất lượng sản phẩm, app integration, quy chuẩn giáo dục/y tế, hay phê duyệt chi tiết mọi L4 ứng viên.
 
 ## 1. Kết quả ba pilot (theo hồ sơ Claude Code do Product Owner cung cấp)
@@ -42,6 +42,8 @@ Không hỏi lại 12 quyết định; chỉ xin Owner lựa chọn có mở bat
 | `G-05` — Evidence/UNKNOWN | Các chuẩn giáo dục, an toàn, consent, chi phí chưa nghiên cứu giữ UNKNOWN | **Chưa chốt**, không cản phê duyệt *phương pháp có điều kiện* nhưng chặn production |
 | `G-06` — Source version | Mỗi batch ghim version Blueprint/Owner Decisions và mapping | Khả thi bằng đọc PR #17; phải lưu commit SHA cho mỗi lần chạy |
 
+**Owner đã đồng ý tiếp tục chuẩn bị các lần pilot còn lại sau khi được tư vấn hướng CONDITIONAL_GO. Diễn giải hẹp: cho phép xây dựng kế hoạch và thực hiện batch nhỏ có kiểm soát, KHÔNG phải nghiệm thu/đóng toàn bộ findings.**
+
 **Không đóng findings chỉ vì Owner trả lời OQ.** Cần trace owner decision → finding → test/contract → re-review. Không dùng 181 test mới để thay baseline P5 khi chưa duyệt.
 
 ## 4. Đề xuất rollout sau P6
@@ -61,7 +63,7 @@ Không hỏi lại 12 quyết định; chỉ xin Owner lựa chọn có mở bat
 |---|---|---|
 | `P6-METHOD-01` | Cho phép áp dụng phương pháp Claude Code QA-first → Architect → Reviewer → Validator → Owner Review để **thiết kế theo batch có điều kiện** cho 103 L3 còn lại? | **CONDITIONAL_GO**: bắt đầu 3–5 L3, kiểm tra gate mỗi batch, không tự chốt canonical/production |
 
-**Trạng thái:** User đã đồng ý để ChatGPT ghi dữ liệu và chuẩn bị các lần pilot còn lại, **chưa diễn giải điều này thành một quyết định `P6_METHOD_APPROVED` vô điều kiện**. Sau khi Owner phê duyệt cấp phương pháp, trạng thái chuyển `P6_METHOD_APPROVED_CONDITIONAL` và bắt đầu batch thiết kế đầu tiên.
+**Trạng thái (2026-11-12):** Owner trả lời **“Được đồng ý”** và yêu cầu ghi dữ liệu, chuẩn bị các pilot còn lại sau đề xuất CONDITIONAL_GO. Ghi nhận **`P6_METHOD_APPROVED_CONDITIONAL` cho công tác chuẩn bị và batch nhỏ 3–5 L3**, với G-01..G-06 bắt buộc trước khi chấp nhận output. Không chấp thuận mở rộng toàn bộ 103 L3 trong một lượt, không chấp thuận canonical hay production. Nếu một blocker chưa xử lý gây nguy cơ sai hệ thống, dừng batch liên quan.
 
 ## 6. Các phần chưa làm
 
@@ -75,3 +77,4 @@ Không hỏi lại 12 quyết định; chỉ xin Owner lựa chọn có mở bat
 - `P6-SUM-01`: tổng hợp 3 pilot và 12 Owner Decisions.
 - `P6-SUM-02`: nêu 55/64 full, 9/64 partial, unresolved technical and evidence gates.
 - `P6-SUM-03`: đề xuất pilot/batch nhỏ với Claude chỉ thực thi, ChatGPT quản lý tài liệu.
+- `P6-SUM-04`: ghi Owner đồng ý CONDITIONAL_GO có giới hạn cho giai đoạn batch nhỏ, không coi là full signoff.
