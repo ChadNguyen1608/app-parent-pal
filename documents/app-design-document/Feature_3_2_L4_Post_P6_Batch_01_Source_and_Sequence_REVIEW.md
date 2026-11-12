@@ -1,7 +1,7 @@
 # Parent-Pal — Batch 01 sau P6: Thứ tự L3, nguồn và cổng phản biện
 
 **Ngày chuẩn bị:** 2026-11-12  
-**Trạng thái (2026-11-12):** `B01_MODULES_01_02_EXECUTED / OWNER_DECISIONS_RECORDED / REGRESSION_PENDING / MODULE_03_NOT_STARTED`  
+**Trạng thái (2026-11-12):** `B01_MODULES_01_02_03_EXECUTED / OWNER_DECISIONS_RECORDED / REGRESSION_PENDING / MODULE_04_NOT_STARTED`  
 **Chỉ định:** Claude Code chỉ chạy review và xuất ZIP; ChatGPT quản lý decision/Git; Owner chốt vấn đề nghiệp vụ.  
 **Không thay đổi:** P5/P6 baseline, Blueprint canonical, stable L4 IDs; PR #17 vẫn Draft; PR #18 không dùng.
 
@@ -20,6 +20,8 @@ Nhằm mở rộng từ ba pilot P6 (Access, Academic, Balance) sang các ranh g
 **Lưu ý:** Các mối liên hệ trong 3.3 được ghi `CANDIDATE/UNKNOWN`; Claude phải đối chiếu chứ không được tự nâng thành `HARD` hoặc `APPROVED`. Nếu thứ tự phụ thuộc thiếu L3 nền tảng (ví dụ `F01-G05-M02`), mở issue và review contract theo source; không tự thay scope batch.
 
 **Cập nhật sau Module 01:** Consent Ledger (`F01-G04-M02`) đã có ZIP review và bốn câu hỏi Owner được chốt. Đọc thêm [B01 Consent Ledger Owner Decision Log](Feature_3_2_L4_B01_Consent_Ledger_Owner_Decision_Log_APPROVED.md). Không đánh dấu Module 01 là accepted/final cho đến khi xử lý trace warning, privacy/authority caveats và kiểm chứng liên module. Module 02 (`F01-G05-M01`) cũng đã chạy, Owner đã chốt OQ-B01M2-1..4; xem [B01 Mode State Owner Decision Log](Feature_3_2_L4_B01_Mode_State_Owner_Decision_Log_APPROVED.md). Lượt tiếp theo là Module 03 (`F07-G06-M01`) và cần giữ policy per-child mode, caregiver overwrite/lock theo scope và sự riêng tư Journal.
+
+**Cập nhật Module 03:** Purpose-bound Access (`F07-G06-M01`) đã chạy và Owner chốt OQ-B01M3-1..4, xem [B01 Purpose-bound Access Owner Decision Log](Feature_3_2_L4_B01_Purpose_Bound_Access_Owner_Decision_Log_APPROVED.md). Giữ gate pháp lý trước khi dùng dữ liệu cá nhân thật của trẻ; Access Policy là điểm quyết định ALLOW/DENY cuối cùng, Purpose-bound Access trả purpose sub-decision. Cần hồi quy và theo dõi các nghiên cứu chưa xong. Module 04 (`F04-G01-M01` Plan Structure) chưa chạy.
 
 ## 2. Source Manifest — quy tắc đọc
 
@@ -84,4 +86,5 @@ Sau khi nhận từng ZIP, **ChatGPT** kiểm tra nội dung, cập nhật Decis
 - `B01-PLAN-02`: Đặt giới hạn Sonnet 5.5 / tối đa 3 sub-agent / Claude read-only Git.
 - `B01-PLAN-03`: Gate từng ZIP → ChatGPT Owner Review → batch consolidation.
 - `B01-PLAN-04` (2026-11-12): cập nhật Module 01 đã chạy và OQ-B01-1..4 được ghi; còn regression & research, chưa cho auto-promote.
-- `B01-PLAN-05` (2026-11-12): Module 02 Mode State đã chạy, bốn OQ được chốt; từng trẻ có mode riêng, ba mức quyền lịch trình, Access Policy sở hữu delegation, UNSET mặc định parent-controlled; Module 03 chưa chạy.
+- `B01-PLAN-05` (2026-11-12): Module 02 Mode State đã chạy, bốn OQ được chốt; từng trẻ có mode riêng, ba mức quyền lịch trình, Access Policy sở hữu delegation, UNSET mặc định parent-controlled.
+- `B01-PLAN-06` (2026-11-12): Module 03 Purpose-bound Access đã chạy, OQ-B01M3-1..4 được chốt; gate pháp lý và revision/regression còn mở; Module 04 là lượt kế tiếp.
