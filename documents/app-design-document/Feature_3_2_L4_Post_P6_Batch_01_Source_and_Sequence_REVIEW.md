@@ -1,7 +1,7 @@
 # Parent-Pal — Batch 01 sau P6: Thứ tự L3, nguồn và cổng phản biện
 
 **Ngày chuẩn bị:** 2026-11-12  
-**Trạng thái:** `BATCH_01_PREPARED / NOT_EXECUTED`  
+**Trạng thái (2026-11-12):** `B01_MODULE_01_EXECUTED / OWNER_DECISIONS_RECORDED / REGRESSION_PENDING / MODULE_02_NOT_STARTED`  
 **Chỉ định:** Claude Code chỉ chạy review và xuất ZIP; ChatGPT quản lý decision/Git; Owner chốt vấn đề nghiệp vụ.  
 **Không thay đổi:** P5/P6 baseline, Blueprint canonical, stable L4 IDs; PR #17 vẫn Draft; PR #18 không dùng.
 
@@ -18,6 +18,8 @@ Nhằm mở rộng từ ba pilot P6 (Access, Academic, Balance) sang các ranh g
 | 5 | `F04-G06-M01` — **Change Requests** | Proposal → review/approve/reject → commit request, idempotency, race/authorization, plan revision/rollback | 3.2-R1 `F04-G06-M01`, MR-035, UC-008/010/012; P6 Balanced F-021 | Child/observer propose; primary approve; F04-G01 commits plan baseline; exception approval 60/7; 18+ autonomy |
 
 **Lưu ý:** Các mối liên hệ trong 3.3 được ghi `CANDIDATE/UNKNOWN`; Claude phải đối chiếu chứ không được tự nâng thành `HARD` hoặc `APPROVED`. Nếu thứ tự phụ thuộc thiếu L3 nền tảng (ví dụ `F01-G05-M02`), mở issue và review contract theo source; không tự thay scope batch.
+
+**Cập nhật sau Module 01:** Consent Ledger (`F01-G04-M02`) đã có ZIP review và bốn câu hỏi Owner được chốt. Đọc thêm [B01 Consent Ledger Owner Decision Log](Feature_3_2_L4_B01_Consent_Ledger_Owner_Decision_Log_APPROVED.md). Không đánh dấu Module 01 là accepted/final cho đến khi xử lý trace warning, privacy/authority caveats và kiểm chứng liên module. Module 02 (`F01-G05-M01`) là lượt kế tiếp, chưa chạy.
 
 ## 2. Source Manifest — quy tắc đọc
 
@@ -81,3 +83,4 @@ Sau khi nhận từng ZIP, **ChatGPT** kiểm tra nội dung, cập nhật Decis
 - `B01-PLAN-01`: Chọn 5 L3 có trong Feature Inventory 3.2-R1 theo thứ tự.
 - `B01-PLAN-02`: Đặt giới hạn Sonnet 5.5 / tối đa 3 sub-agent / Claude read-only Git.
 - `B01-PLAN-03`: Gate từng ZIP → ChatGPT Owner Review → batch consolidation.
+- `B01-PLAN-04` (2026-11-12): cập nhật Module 01 đã chạy và OQ-B01-1..4 được ghi; còn regression & research, chưa cho auto-promote.
