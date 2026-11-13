@@ -1,7 +1,7 @@
 # Parent-Pal — Batch 01 Consolidation & Cross-Module Review Plan
 
 **Ngày lập:** 2026-11-13  
-**Status:** `READY_FOR_CONSOLIDATION_REVIEW / NOT_EXECUTED`  
+**Status:** `CONSOLIDATION_EXECUTED / OWNER_8_OQ_CONFIRMED / TARGETED_REMEDIATION_PENDING`  
 **Scope:** 5 L3 của Batch 01, 3 P6 pilot là regression dependencies.  
 **Source branch:** `docs/l4-pilot-three-modules-20261110`, Draft PR #17.  
 **Không phải:** phê duyệt L4 cuối cùng, sửa canonical, merge PR, lập trình app, bắt đầu Batch 02.
@@ -114,12 +114,19 @@ For a reproducible consolidation, the **5 ZIPs need to be made available togethe
 - [ ] Cross-module conflict fixes and full re-review complete.
 - [ ] Owner Review of consolidated result and explicit next gate decision.
 
-## 5. Status
+## 5. Consolidation results and remediation handoff
+
+- Claude delivered `B01_Consolidation.zip` (reported 73 archive entries). Reported 28 → 25 L4 entries, 395 → 392 deduplicated design tests, 46 spec findings requiring remediation, 9 HIGH gaps, 17 proposed new tests; 34 prior Owner decisions traced but incomplete propagation. Design-level results only.
+- Product Owner confirmed 8 decisions at [Consolidation Owner Decision Log](Feature_3_2_L4_B01_Consolidation_Owner_Decision_Log_APPROVED.md). **OQ-B01C-1 deviates from prior recommendation: Preserve child delegated schedule-edit permissions on caregiver handover, no auto-suspend.** Fresh authorization still required; prior approved-unapplied Change Request still requires reapproval under B01-CR-OD-02.
+- Next: Targeted Remediation of contradictory acceptance criteria, high-risk cross-module regressions, missing five P5 test IDs, and 17 proposed tests. Re-run deterministic validator and independent QA/reviewer, then Owner reviews actual gate. No Batch 02 yet.
+
+## 6. Status
 
 `B01_FIVE_MODULES_REVIEWED`  
 `B01_OWNER_DECISIONS_RECORDED`  
-`B01_CONSOLIDATION_PLAN_CREATED`  
-`B01_CONSOLIDATION_NOT_EXECUTED`  
+`B01_CONSOLIDATION_COMPLETED_AS_DESIGN_REVIEW`  
+`B01_CONSOLIDATION_8_OWNER_DECISIONS_RECORDED`  
+`B01_TARGETED_REMEDIATION_NOT_EXECUTED`  
 `B01_FINAL_L4_ACCEPTANCE_NOT_GRANTED`
 
-**Next:** prepare Coordinator prompt using this plan and assemble five source ZIPs. No Batch 02 until consolidation gate is reviewed.
+**Next:** run Targeted Remediation using consolidation evidence and the 8 new Owner Decisions. No Batch 02 until remediation and Owner gate are reviewed.
