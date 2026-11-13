@@ -122,6 +122,8 @@ For a reproducible consolidation, the **5 ZIPs need to be made available togethe
 
 **ChatGPT-led Remediation update (2026-11-13):** [Specification Remediation Proposed v1](Feature_3_2_L4_B01_Specification_Remediation_Proposed_v1_REVIEW.md) and [RG Triage/Independent Verification](Feature_3_2_L4_B01_Remediation_Triage_and_Independent_Verification_Plan_REVIEW.md) were committed to PR17. Eight areas of normative AC/contract proposals prepared; 32 regression gaps triaged. **Claude verification not yet run**, 46 findings not auto-closed, P5 evidence still incomplete, real child data legal gate still closed. Workflow: ChatGPT creates corrections -> Claude checks independently -> ChatGPT integrates validated edits -> Owner gate.
 
+**Independent Verification result (2026-11-13):** Claude checked v1, reported `INDEPENDENT_VERIFICATION_PARTIAL` (1 ACCEPT SR, 7 PARTIAL, 0 REJECT; 8 HIGH, 10 MEDIUM, 4 LOW findings). One Sonnet 5.5 subagent used. No runtime, legal assessment, or closures. ChatGPT issued [Proposed v2](Feature_3_2_L4_B01_Specification_Remediation_Proposed_v2_REVIEW.md) correcting legal cache stale reads/classification, authorization TOCTOU, handover grant semantics, lock & adult autonomy, expiry at atomic commit, idempotent replay and Journal derivatives; also test oracle amendments. **Next only a targeted review on 8 HIGH + boundary clauses, not a full Consolidation rerun**.
+
 ## 6. Status
 
 `B01_FIVE_MODULES_REVIEWED`  
@@ -129,7 +131,8 @@ For a reproducible consolidation, the **5 ZIPs need to be made available togethe
 `B01_CONSOLIDATION_COMPLETED_AS_DESIGN_REVIEW`  
 `B01_CONSOLIDATION_8_OWNER_DECISIONS_RECORDED`  
 `B01_TARGETED_SPEC_REMEDIATION_PROPOSED_V1`  
-`B01_INDEPENDENT_VERIFICATION_NOT_EXECUTED`  
+`B01_INDEPENDENT_VERIFICATION_V1_PARTIAL`  
+`B01_SPEC_REMEDIATION_V2_PROPOSED_UNVERIFIED`  
 `B01_FINAL_L4_ACCEPTANCE_NOT_GRANTED`
 
 **Next:** run Targeted Remediation using consolidation evidence and the 8 new Owner Decisions. No Batch 02 until remediation and Owner gate are reviewed.
