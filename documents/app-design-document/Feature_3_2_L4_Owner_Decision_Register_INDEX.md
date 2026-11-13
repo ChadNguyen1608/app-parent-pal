@@ -17,9 +17,9 @@
 | B01 Module 02 | `F01-G05-M01` Mode State | OQ-B01M2-1..4 (4) | [Mode State Owner Log](Feature_3_2_L4_B01_Mode_State_Owner_Decision_Log_APPROVED.md) | Owner confirmed, regression pending |
 | B01 Module 03 | `F07-G06-M01` Purpose-bound Access | OQ-B01M3-1..4 (4) | [Purpose Owner Log](Feature_3_2_L4_B01_Purpose_Bound_Access_Owner_Decision_Log_APPROVED.md) | Owner confirmed, legal/review gates pending |
 | B01 Module 04 | `F04-G01-M01` Plan Structure | OQ-B01M4-1..5 (5) | [Plan Structure Owner Log](Feature_3_2_L4_B01_Plan_Structure_Owner_Decision_Log_APPROVED.md) | Owner confirmed, regression pending |
-| B01 Module 05 | `F04-G06-M01` Change Requests | Chưa chạy | [Batch 01 Source & Sequence](Feature_3_2_L4_Post_P6_Batch_01_Source_and_Sequence_REVIEW.md) | Next |
+| B01 Module 05 | `F04-G06-M01` Change Requests | OQ-B01M5-1..5 (5) | [Change Requests Owner Log](Feature_3_2_L4_B01_Change_Requests_Owner_Decision_Log_APPROVED.md) | Owner confirmed, consolidation pending |
 
-**Tổng:** 7 L3 đã chạy review/pilot, **29 Owner decisions** đã ghi (P6 = 12, Batch 01 = 17). Ba L3 P6 + bốn L3 Batch 01. Trạng thái confirmed ở đây chỉ là **business decision**, không phải full L4 acceptance hoặc app-test PASS.
+**Tổng:** 8 L3 đã chạy review/pilot, **34 Owner decisions** đã ghi (P6 = 12, Batch 01 = 22). Ba L3 P6 + năm L3 Batch 01. Batch 01 có 28 L4 ứng viên, 395 design tests, 114 findings (số thô chưa hợp nhất/dedupe). Trạng thái confirmed ở đây chỉ là **business decision**, không phải full L4 acceptance hoặc app-test PASS.
 
 ## 2. Bất biến xuyên module quan trọng (đọc log gốc để có đủ điều kiện)
 
@@ -34,6 +34,7 @@
 9. Balanced: App Default Standard Bar theo tuổi/bối cảnh có kiểm chứng, family overrides có giới hạn; protected hard-cap không bypass; soft exception chống nối purpose để lách 60 ngày, giữ quy tắc 7 ngày P5.
 10. Người 18+ đã được xác minh tự quản, family caregiver không tự có quyền override.
 11. Plan Structure: approved Change Request qua F04-G06, baseline commit/version qua F04-G01; luôn cho lưu draft dù không đạt Standard Bar, app default bar fallback khi family chưa có custom. Caregiver lock = khóa chỉnh sửa thời khóa biểu hiện tại, parent unlock/authorized override có audit; không vượt protected hard-cap.
+12. Change Requests: Child-directed within delegated scope được direct mutation có full gates, không cần CR; pending request hết hạn sau 7 ngày; approved != applied; plan-version, caregiver, mode, lock, archive thay đổi có invalidation/reassessment; parent/Primary Manager đúng scope không tự xin approval thứ hai; đề xuất vi phạm hard-cap vẫn được gửi để thảo luận nhưng tuyệt đối không approve/apply.
 
 ## 3. Quy trình cập nhật bắt buộc cho mỗi module tiếp theo
 
@@ -48,11 +49,16 @@
 ## 4. Các việc chưa đóng
 
 - P6: Access final regression/warning, Academic F-023, Balanced F-021, 9 partial-equivalent P5 baseline tests, nghiên cứu Standard Bar và AI costs.
-- Batch 01: Consent Ledger F-021 retired AC / validator warnings, Mode State 2 partial regressions/trace gap, Purpose-bound Access legal basis/revocation/audit ownership; Plan Structure F-023/F-027 + 1 validator warning + 3 partial regressions và evidence timestamp cần rà soát.
+- Batch 01: Consent Ledger F-021 retired AC / validator warnings, Mode State 2 partial regressions/trace gap, Purpose-bound Access legal basis/revocation/audit ownership; Plan Structure F-023/F-027 + 1 validator warning + 3 partial regressions và evidence timestamp cần rà soát; Change Requests F-022/F-025, 4 partial + 1 cross-module conflict. [Consolidation Plan](Feature_3_2_L4_B01_Consolidation_and_Cross_Module_Review_Plan_REVIEW.md) quản lý toàn bộ cổng C0–C5.
 - Quyết định chưa thay thế bằng test runtime: tất cả pilot và batch hiện là **design-level evidence**, chưa phải production or app tests.
 - [P6 Method & Rollout Review](Feature_3_2_L4_P6_Method_Approval_and_Rollout_Review.md) và [Batch 01 Source & Sequence](Feature_3_2_L4_Post_P6_Batch_01_Source_and_Sequence_REVIEW.md) quản lý workplan.
 
-## 5. Chính sách thay đổi và merge
+## 5. Batch 01 consolidation
+
+- [Batch 01 Consolidation & Cross-Module Review Plan](Feature_3_2_L4_B01_Consolidation_and_Cross_Module_Review_Plan_REVIEW.md) — trạng thái `PLAN_CREATED / NOT_EXECUTED`; gồm source freeze, ownership/contract, decisions propagation, test consolidation, economics và Owner gate.
+- Không coi `B01 five modules reviewed` là `L4 final accepted`; không chạy Batch 02 trước Owner Review kết quả consolidation.
+
+## 6. Chính sách thay đổi và merge
 
 - Nếu một quyết định mới **xung đột** quyết định cũ, tạo `CONFLICT/CHANGE_PROPOSAL` có source, scope, impact; chỉ cập nhật cả hai khi Owner đã chốt.
 - Không ghi đè lịch sử; thay đổi quyết định phải có changelog và supersedes/clarifies reference.
