@@ -86,3 +86,13 @@
 - Claude verified v3 focused scope: `FOCUSED_VERIFICATION_ACCEPTED`; two prior HIGH `RV2-B01-001/002` CLOSED_AT_SPEC_LEVEL; 0 new HIGH/CRITICAL, 4 MEDIUM + 3 LOW. **No app tests; 0 subagents**.
 - ChatGPT issued [v3.1 proposed addendum](Feature_3_2_L4_B01_Specification_Remediation_v3_1_Addendum_REVIEW.md) for FV3-B01-001..007; **not independently reverified**.
 - [Batch 01 Design Gate recommendation](Feature_3_2_L4_B01_Design_Gate_Review_RECOMMENDATION.md): `CONDITIONAL_GO_FOR_NEXT_BATCH_DESIGN` **recommended only**, **Owner decision pending**, no Batch 02 authorized, no canonical merge, no child real-data use authorization.
+
+
+## 2026-11-13 — Batch 01 normalized reference baseline
+
+Product Owner authorized **normalizing Batch 01 before Batch 02**; this is **not** an approval of the conditional design gate, stable L4 candidates or canonical Blueprint.
+
+- [Normalized Cross-Module Baseline](Feature_3_2_L4_B01_Normalized_Cross_Module_Baseline_REVIEW.md): 8 L3 (3 P6 reference interfaces + 5 B01 candidate-bearing modules); precedence of Owner decisions and remediation corrections.
+- [Normalized B01 L4 Candidate Registry](Feature_3_2_L4_B01_Normalized_Candidate_Registry_REVIEW.md): 25 temporary IDs `B01C-L4-01..25`, 19 KEEP / 3 MERGE / 1 SPLIT / 2 DEFER; effective parts 24, **not accepted**.
+- [Baseline Open Issues & Handoff](Feature_3_2_L4_B01_Baseline_Open_Issues_and_Handoff_REVIEW.md): BI-01..BI-12, including individual 46-finding closure, P5/P6 source gaps, legal/privacy production blockers and evidence archival pending.
+- No full P6 candidate renumbering, no merge, no Batch 02 execution. Need explicit Owner decision on `CONDITIONAL_GO_FOR_NEXT_BATCH_DESIGN`.
