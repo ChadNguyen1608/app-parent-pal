@@ -62,6 +62,8 @@
 - Consolidation C0–C5 đã được báo cáo; [Owner OQ-B01C-1..8 confirmed](Feature_3_2_L4_B01_Consolidation_Owner_Decision_Log_APPROVED.md). Theo báo cáo: 28→25 L4 entries, 395→392 design tests, 46 spec fixes, 9 HIGH regression gaps, 17 tests proposed. **Targeted Remediation chưa chạy**; không auto-promote.
 - Không coi `B01 five modules reviewed` là `L4 final accepted`; không chạy Batch 02 trước review kết quả targeted remediation.
 
+**ChatGPT Specification Remediation (2026-11-13):** [Proposed v1](Feature_3_2_L4_B01_Specification_Remediation_Proposed_v1_REVIEW.md) contains SR-01..SR-08 AC/contract corrections and NT-018..021 proposals. [Triage & Independent Verification Plan](Feature_3_2_L4_B01_Remediation_Triage_and_Independent_Verification_Plan_REVIEW.md) maps RG-01..32 to proposed fixes, external research, evidence gaps, and Claude's independent review scope. These are **proposed artifacts, not approved canonical changes or validated test passes**.
+
 ## 6. Chính sách thay đổi và merge
 
 - Nếu một quyết định mới **xung đột** quyết định cũ, tạo `CONFLICT/CHANGE_PROPOSAL` có source, scope, impact; chỉ cập nhật cả hai khi Owner đã chốt.
