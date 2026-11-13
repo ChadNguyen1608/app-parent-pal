@@ -16,10 +16,10 @@
 | B01 Module 01 | `F01-G04-M02` Consent Ledger | OQ-B01-1..4 (4) | [Consent Owner Log](Feature_3_2_L4_B01_Consent_Ledger_Owner_Decision_Log_APPROVED.md) | Owner confirmed, design regression/research pending |
 | B01 Module 02 | `F01-G05-M01` Mode State | OQ-B01M2-1..4 (4) | [Mode State Owner Log](Feature_3_2_L4_B01_Mode_State_Owner_Decision_Log_APPROVED.md) | Owner confirmed, regression pending |
 | B01 Module 03 | `F07-G06-M01` Purpose-bound Access | OQ-B01M3-1..4 (4) | [Purpose Owner Log](Feature_3_2_L4_B01_Purpose_Bound_Access_Owner_Decision_Log_APPROVED.md) | Owner confirmed, legal/review gates pending |
-| B01 Module 04 | `F04-G01-M01` Plan Structure | Chưa chạy | [Batch 01 Source & Sequence](Feature_3_2_L4_Post_P6_Batch_01_Source_and_Sequence_REVIEW.md) | Next |
-| B01 Module 05 | `F04-G06-M01` Change Requests | Chưa chạy | [Batch 01 Source & Sequence](Feature_3_2_L4_Post_P6_Batch_01_Source_and_Sequence_REVIEW.md) | Pending |
+| B01 Module 04 | `F04-G01-M01` Plan Structure | OQ-B01M4-1..5 (5) | [Plan Structure Owner Log](Feature_3_2_L4_B01_Plan_Structure_Owner_Decision_Log_APPROVED.md) | Owner confirmed, regression pending |
+| B01 Module 05 | `F04-G06-M01` Change Requests | Chưa chạy | [Batch 01 Source & Sequence](Feature_3_2_L4_Post_P6_Batch_01_Source_and_Sequence_REVIEW.md) | Next |
 
-**Tổng:** 6 L3 đã chạy review/pilot, **24 Owner decisions** đã ghi (P6 = 12, Batch 01 = 12). Ba L3 P6 + ba L3 Batch 01. Trạng thái confirmed ở đây chỉ là **business decision**, không phải full L4 acceptance hoặc app-test PASS.
+**Tổng:** 7 L3 đã chạy review/pilot, **29 Owner decisions** đã ghi (P6 = 12, Batch 01 = 17). Ba L3 P6 + bốn L3 Batch 01. Trạng thái confirmed ở đây chỉ là **business decision**, không phải full L4 acceptance hoặc app-test PASS.
 
 ## 2. Bất biến xuyên module quan trọng (đọc log gốc để có đủ điều kiện)
 
@@ -33,6 +33,7 @@
 8. Academic: phụ huynh xác nhận chấm bài tại nhà; AI đánh dấu câu sai, đưa câu hỏi gợi mở, không trực tiếp phát đáp án trong hint flow; AI recheck rồi parent review nếu còn tranh cãi; cost quota chưa chốt.
 9. Balanced: App Default Standard Bar theo tuổi/bối cảnh có kiểm chứng, family overrides có giới hạn; protected hard-cap không bypass; soft exception chống nối purpose để lách 60 ngày, giữ quy tắc 7 ngày P5.
 10. Người 18+ đã được xác minh tự quản, family caregiver không tự có quyền override.
+11. Plan Structure: approved Change Request qua F04-G06, baseline commit/version qua F04-G01; luôn cho lưu draft dù không đạt Standard Bar, app default bar fallback khi family chưa có custom. Caregiver lock = khóa chỉnh sửa thời khóa biểu hiện tại, parent unlock/authorized override có audit; không vượt protected hard-cap.
 
 ## 3. Quy trình cập nhật bắt buộc cho mỗi module tiếp theo
 
@@ -47,7 +48,7 @@
 ## 4. Các việc chưa đóng
 
 - P6: Access final regression/warning, Academic F-023, Balanced F-021, 9 partial-equivalent P5 baseline tests, nghiên cứu Standard Bar và AI costs.
-- Batch 01: Consent Ledger F-021 retired AC / validator warnings, Mode State 2 partial regressions/trace gap, Purpose-bound Access legal basis/revocation/audit ownership.
+- Batch 01: Consent Ledger F-021 retired AC / validator warnings, Mode State 2 partial regressions/trace gap, Purpose-bound Access legal basis/revocation/audit ownership; Plan Structure F-023/F-027 + 1 validator warning + 3 partial regressions và evidence timestamp cần rà soát.
 - Quyết định chưa thay thế bằng test runtime: tất cả pilot và batch hiện là **design-level evidence**, chưa phải production or app tests.
 - [P6 Method & Rollout Review](Feature_3_2_L4_P6_Method_Approval_and_Rollout_Review.md) và [Batch 01 Source & Sequence](Feature_3_2_L4_Post_P6_Batch_01_Source_and_Sequence_REVIEW.md) quản lý workplan.
 
