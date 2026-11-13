@@ -64,6 +64,8 @@
 
 **ChatGPT Specification Remediation (2026-11-13):** [Proposed v1](Feature_3_2_L4_B01_Specification_Remediation_Proposed_v1_REVIEW.md) contains SR-01..SR-08 AC/contract corrections and NT-018..021 proposals. [Triage & Independent Verification Plan](Feature_3_2_L4_B01_Remediation_Triage_and_Independent_Verification_Plan_REVIEW.md) maps RG-01..32 to proposed fixes, external research, evidence gaps, and Claude's independent review scope. These are **proposed artifacts, not approved canonical changes or validated test passes**.
 
+**Claude Independent Verification (2026-11-13):** Input `B01_Independent_Verification.zip` (5 reports, 22 findings: 8 HIGH, 10 MEDIUM, 4 LOW), status `PARTIAL`; no runtime tests. [ChatGPT Spec Remediation Proposed v2](Feature_3_2_L4_B01_Specification_Remediation_Proposed_v2_REVIEW.md) proposes corrective clauses/test oracles for all findings; **v2 is not yet independently verified**. The IV ZIP is not yet backed up as an immutable evidence GitHub artifact.
+
 ## 6. Chính sách thay đổi và merge
 
 - Nếu một quyết định mới **xung đột** quyết định cũ, tạo `CONFLICT/CHANGE_PROPOSAL` có source, scope, impact; chỉ cập nhật cả hai khi Owner đã chốt.
