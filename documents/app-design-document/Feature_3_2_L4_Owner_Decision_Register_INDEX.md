@@ -79,3 +79,10 @@
 - Claude re-verification v2: `REVERIFICATION_PARTIAL`; 7/8 original HIGH closed at spec level, 2 new HIGH (`RV2-B01-001` lock-admin vs child delegation; `RV2-B01-002` missing CR state transitions).
 - ChatGPT authored [Specification Remediation Proposed v3](Feature_3_2_L4_B01_Specification_Remediation_Proposed_v3_REVIEW.md), commit `e88b315d9a5a7bb22da791c09be721b3dfcdc48d`. **Not independently verified; no new Owner decisions; no canonical promotion.**
 - Next gate: focused independent critique of 2 HIGH fixes, then ChatGPT-led Batch 01 Design Gate Review; no Batch 02 yet.
+
+
+## 2026-11-13 — Focused Verification v3 and Design Gate recommendation
+
+- Claude verified v3 focused scope: `FOCUSED_VERIFICATION_ACCEPTED`; two prior HIGH `RV2-B01-001/002` CLOSED_AT_SPEC_LEVEL; 0 new HIGH/CRITICAL, 4 MEDIUM + 3 LOW. **No app tests; 0 subagents**.
+- ChatGPT issued [v3.1 proposed addendum](Feature_3_2_L4_B01_Specification_Remediation_v3_1_Addendum_REVIEW.md) for FV3-B01-001..007; **not independently reverified**.
+- [Batch 01 Design Gate recommendation](Feature_3_2_L4_B01_Design_Gate_Review_RECOMMENDATION.md): `CONDITIONAL_GO_FOR_NEXT_BATCH_DESIGN` **recommended only**, **Owner decision pending**, no Batch 02 authorized, no canonical merge, no child real-data use authorization.
