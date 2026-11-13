@@ -47,3 +47,8 @@
 ## 5. Approval required separately
 
 **Question for Product Owner:** Approve `CONDITIONAL_GO_FOR_NEXT_BATCH_DESIGN` using the normalized baseline in two source docs, while preserving BI-01..12 as explicit open issues? This does **not** approve actual L4 stable IDs, canonical 3.2, or deployment.
+
+
+## Owner Gate Update — 2026-11-14
+
+Product Owner approved the previously proposed **conditional design baseline** and authorized commencing the **agreed execution plan through System Design readiness**. Authoritative gate record: [B01 Conditional Design Baseline Owner Gate](Feature_3_2_L4_B01_Conditional_Design_Baseline_Owner_Gate_APPROVED.md). New [B02 dependency/scope proposal](Feature_3_2_L4_B02_Dependency_and_Scope_Proposal_REVIEW.md) is **not yet a confirmed four-module scope**. [Execution tracker](Feature_3_2_to_Phase_3_Execution_Tracker_REVIEW.md) is active. Any earlier `OWNER_GATE_PENDING` / `BATCH_02_NOT_AUTHORIZED` statement in this historical document reflects its original 2026-11-13 state and is **superseded for baseline and planning** by this 2026-11-14 update. Stable/final L4 and Batch 02 module selection remain unapproved; PR #17 draft and no real-child data processing.
