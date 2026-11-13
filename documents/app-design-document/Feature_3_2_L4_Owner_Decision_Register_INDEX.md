@@ -19,7 +19,9 @@
 | B01 Module 04 | `F04-G01-M01` Plan Structure | OQ-B01M4-1..5 (5) | [Plan Structure Owner Log](Feature_3_2_L4_B01_Plan_Structure_Owner_Decision_Log_APPROVED.md) | Owner confirmed, regression pending |
 | B01 Module 05 | `F04-G06-M01` Change Requests | OQ-B01M5-1..5 (5) | [Change Requests Owner Log](Feature_3_2_L4_B01_Change_Requests_Owner_Decision_Log_APPROVED.md) | Owner confirmed, consolidation pending |
 
-**Tổng:** 8 L3 đã chạy review/pilot, **34 Owner decisions** đã ghi (P6 = 12, Batch 01 = 22). Ba L3 P6 + năm L3 Batch 01. Batch 01 có 28 L4 ứng viên, 395 design tests, 114 findings (số thô chưa hợp nhất/dedupe). Trạng thái confirmed ở đây chỉ là **business decision**, không phải full L4 acceptance hoặc app-test PASS.
+**Tổng:** 8 L3 đã chạy review/pilot, **42 Owner decisions** đã ghi (P6 = 12, Batch 01 module OQ = 22, Consolidation OQ = 8). Ba L3 P6 + năm L3 Batch 01. Batch 01 có 28 L4 ứng viên, 395 design tests, 114 findings (số thô chưa hợp nhất/dedupe). Trạng thái confirmed ở đây chỉ là **business decision**, không phải full L4 acceptance hoặc app-test PASS.
+
+**Batch 01 Consolidation:** OQ-B01C-1..8 (8) — [Consolidation Owner Decision Log](Feature_3_2_L4_B01_Consolidation_Owner_Decision_Log_APPROVED.md), Owner confirmed; targeted remediation pending. Lưu ý caregiver handover **giữ quyền ủy quyền chỉnh lịch đang hợp lệ**, không auto-suspend.
 
 ## 2. Bất biến xuyên module quan trọng (đọc log gốc để có đủ điều kiện)
 
@@ -35,6 +37,7 @@
 10. Người 18+ đã được xác minh tự quản, family caregiver không tự có quyền override.
 11. Plan Structure: approved Change Request qua F04-G06, baseline commit/version qua F04-G01; luôn cho lưu draft dù không đạt Standard Bar, app default bar fallback khi family chưa có custom. Caregiver lock = khóa chỉnh sửa thời khóa biểu hiện tại, parent unlock/authorized override có audit; không vượt protected hard-cap.
 12. Change Requests: Child-directed within delegated scope được direct mutation có full gates, không cần CR; pending request hết hạn sau 7 ngày; approved != applied; plan-version, caregiver, mode, lock, archive thay đổi có invalidation/reassessment; parent/Primary Manager đúng scope không tự xin approval thứ hai; đề xuất vi phạm hard-cap vẫn được gửi để thảo luận nhưng tuyệt đối không approve/apply.
+13. Consolidation: caregiver handover **không tự suspend child delegated schedule rights**; prior approved-but-unapplied CR vẫn phải reapprove theo CR OQ2. Journal revoke notice child opt-in, default no notification. Approved CR tối đa 7 ngày từ approve (khác pending 7 ngày từ submit). Balanced Planning sở hữu soft-cap exception expiry/reminder. Lock không auto-unlock, vẫn có offline/draft nhưng không commit. F07 audit governance/hạ tầng lưu chung. Parent-led bày tỏ nguyện vọng qua F05, không tạo official CR.
 
 ## 3. Quy trình cập nhật bắt buộc cho mỗi module tiếp theo
 
@@ -56,7 +59,8 @@
 ## 5. Batch 01 consolidation
 
 - [Batch 01 Consolidation & Cross-Module Review Plan](Feature_3_2_L4_B01_Consolidation_and_Cross_Module_Review_Plan_REVIEW.md) — trạng thái `PLAN_CREATED / NOT_EXECUTED`; gồm source freeze, ownership/contract, decisions propagation, test consolidation, economics và Owner gate.
-- Không coi `B01 five modules reviewed` là `L4 final accepted`; không chạy Batch 02 trước Owner Review kết quả consolidation.
+- Consolidation C0–C5 đã được báo cáo; [Owner OQ-B01C-1..8 confirmed](Feature_3_2_L4_B01_Consolidation_Owner_Decision_Log_APPROVED.md). Theo báo cáo: 28→25 L4 entries, 395→392 design tests, 46 spec fixes, 9 HIGH regression gaps, 17 tests proposed. **Targeted Remediation chưa chạy**; không auto-promote.
+- Không coi `B01 five modules reviewed` là `L4 final accepted`; không chạy Batch 02 trước review kết quả targeted remediation.
 
 ## 6. Chính sách thay đổi và merge
 
