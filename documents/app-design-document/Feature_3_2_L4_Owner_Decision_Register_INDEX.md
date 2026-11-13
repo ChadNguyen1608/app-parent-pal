@@ -72,3 +72,10 @@
 - Không ghi đè lịch sử; thay đổi quyết định phải có changelog và supersedes/clarifies reference.
 - PR #17 là Draft; **ghi file/commit trên branch không có nghĩa merge vào main**. Không merge khi chưa được Owner cho phép.
 - PR #18 đóng, không sử dụng.
+
+
+## 2026-11-13 — Focused v3 remediation update
+
+- Claude re-verification v2: `REVERIFICATION_PARTIAL`; 7/8 original HIGH closed at spec level, 2 new HIGH (`RV2-B01-001` lock-admin vs child delegation; `RV2-B01-002` missing CR state transitions).
+- ChatGPT authored [Specification Remediation Proposed v3](Feature_3_2_L4_B01_Specification_Remediation_Proposed_v3_REVIEW.md), commit `e88b315d9a5a7bb22da791c09be721b3dfcdc48d`. **Not independently verified; no new Owner decisions; no canonical promotion.**
+- Next gate: focused independent critique of 2 HIGH fixes, then ChatGPT-led Batch 01 Design Gate Review; no Batch 02 yet.
