@@ -1,7 +1,7 @@
 # Parent-Pal — Batch 01 sau P6: Thứ tự L3, nguồn và cổng phản biện
 
 **Ngày chuẩn bị:** 2026-11-12  
-**Trạng thái (2026-11-13):** `B01_MODULES_01_02_03_04_EXECUTED / OWNER_DECISIONS_RECORDED / REGRESSION_PENDING / MODULE_05_NOT_STARTED`  
+**Trạng thái (2026-11-13):** `B01_ALL_FIVE_MODULES_REVIEWED / ALL_22_B01_OQ_CONFIRMED / CONSOLIDATION_PLAN_CREATED / CONSOLIDATION_NOT_EXECUTED`  
 **Chỉ định:** Claude Code chỉ chạy review và xuất ZIP; ChatGPT quản lý decision/Git; Owner chốt vấn đề nghiệp vụ.  
 **Không thay đổi:** P5/P6 baseline, Blueprint canonical, stable L4 IDs; PR #17 vẫn Draft; PR #18 không dùng.
 
@@ -24,6 +24,8 @@ Nhằm mở rộng từ ba pilot P6 (Access, Academic, Balance) sang các ranh g
 **Cập nhật Module 03:** Purpose-bound Access (`F07-G06-M01`) đã chạy và Owner chốt OQ-B01M3-1..4, xem [B01 Purpose-bound Access Owner Decision Log](Feature_3_2_L4_B01_Purpose_Bound_Access_Owner_Decision_Log_APPROVED.md). Giữ gate pháp lý trước khi dùng dữ liệu cá nhân thật của trẻ; Access Policy là điểm quyết định ALLOW/DENY cuối cùng, Purpose-bound Access trả purpose sub-decision. Cần hồi quy và theo dõi các nghiên cứu chưa xong. Module 04 (`F04-G01-M01` Plan Structure) chưa chạy.
 
 **Cập nhật Module 04:** Plan Structure (`F04-G01-M01`) đã chạy và Owner đã chốt OQ-B01M4-1..5. Đọc [Plan Structure Owner Decision Log](Feature_3_2_L4_B01_Plan_Structure_Owner_Decision_Log_APPROVED.md) trước khi chạy Change Requests. Đặc biệt: fallback App Default Standard Bar, draft lưu được dù không đạt bar; Parent lock chặn sửa thời khóa biểu hiện tại, chỉ unlock/authorized override có version/audit; F04-G06 quản change proposal/approval còn F04-G01 commit plan baseline. Module 05 chưa chạy; regression F-023/F-027 còn mở.
+
+**Cập nhật Module 05:** Change Requests (`F04-G06-M01`) đã chạy và 5 OQ được Owner xác nhận; [Decision Log](Feature_3_2_L4_B01_Change_Requests_Owner_Decision_Log_APPROVED.md). Khuyến nghị Child-directed direct mutation trong delegated scope có đủ gates; CR pending tự hết hạn 7 ngày; proposal vi phạm protected hard-cap có thể submit để thảo luận nhưng không APPROVE/APPLY; stale approved invalidation/revalidation theo context. **Batch 01 đã có đủ 5 pilot**. Thực hiện [Consolidation C0–C5](Feature_3_2_L4_B01_Consolidation_and_Cross_Module_Review_Plan_REVIEW.md) trước khi xem xét Batch 02.
 
 ## 2. Source Manifest — quy tắc đọc
 
@@ -92,3 +94,5 @@ Sau khi nhận từng ZIP, **ChatGPT** kiểm tra nội dung, cập nhật Decis
 - `B01-PLAN-06` (2026-11-12): Module 03 Purpose-bound Access đã chạy, OQ-B01M3-1..4 được chốt; gate pháp lý và revision/regression còn mở; Module 04 là lượt kế tiếp.
 
 - `B01-PLAN-07` (2026-11-13): Module 04 Plan Structure đã chạy, năm OQ được chốt; module 05 Change Requests là lượt kế tiếp, chưa chạy; technical regression còn mở.
+
+- `B01-PLAN-08` (2026-11-13): Module 05 Change Requests Owner OQ-B01M5-1..5 đã ghi. 5/5 module hoàn thành pilot review; consolidation C0–C5 được lập kế hoạch nhưng chưa chạy, không tự mở Batch 02.
