@@ -120,13 +120,16 @@ For a reproducible consolidation, the **5 ZIPs need to be made available togethe
 - Product Owner confirmed 8 decisions at [Consolidation Owner Decision Log](Feature_3_2_L4_B01_Consolidation_Owner_Decision_Log_APPROVED.md). **OQ-B01C-1 deviates from prior recommendation: Preserve child delegated schedule-edit permissions on caregiver handover, no auto-suspend.** Fresh authorization still required; prior approved-unapplied Change Request still requires reapproval under B01-CR-OD-02.
 - Next: Targeted Remediation of contradictory acceptance criteria, high-risk cross-module regressions, missing five P5 test IDs, and 17 proposed tests. Re-run deterministic validator and independent QA/reviewer, then Owner reviews actual gate. No Batch 02 yet.
 
+**ChatGPT-led Remediation update (2026-11-13):** [Specification Remediation Proposed v1](Feature_3_2_L4_B01_Specification_Remediation_Proposed_v1_REVIEW.md) and [RG Triage/Independent Verification](Feature_3_2_L4_B01_Remediation_Triage_and_Independent_Verification_Plan_REVIEW.md) were committed to PR17. Eight areas of normative AC/contract proposals prepared; 32 regression gaps triaged. **Claude verification not yet run**, 46 findings not auto-closed, P5 evidence still incomplete, real child data legal gate still closed. Workflow: ChatGPT creates corrections -> Claude checks independently -> ChatGPT integrates validated edits -> Owner gate.
+
 ## 6. Status
 
 `B01_FIVE_MODULES_REVIEWED`  
 `B01_OWNER_DECISIONS_RECORDED`  
 `B01_CONSOLIDATION_COMPLETED_AS_DESIGN_REVIEW`  
 `B01_CONSOLIDATION_8_OWNER_DECISIONS_RECORDED`  
-`B01_TARGETED_REMEDIATION_NOT_EXECUTED`  
+`B01_TARGETED_SPEC_REMEDIATION_PROPOSED_V1`  
+`B01_INDEPENDENT_VERIFICATION_NOT_EXECUTED`  
 `B01_FINAL_L4_ACCEPTANCE_NOT_GRANTED`
 
 **Next:** run Targeted Remediation using consolidation evidence and the 8 new Owner Decisions. No Batch 02 until remediation and Owner gate are reviewed.
