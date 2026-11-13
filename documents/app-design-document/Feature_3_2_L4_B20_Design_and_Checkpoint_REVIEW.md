@@ -30,3 +30,16 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F06-G05-M01 → pinned inventory → candidate above → B20-T04. Provider guarantees and exact resource classification remain to verify before release.
 - B20-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 4 unique canonical parents, 4 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 19 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F06-G03-M02-qualify | B20-T01 | B20-X01. Nguồn mất hiệu lực trước release: không tính vào chất lượng chỉ báo. |
+| CAND-F06-G04-M01-trend | B20-T02 | B20-X02. Hai cửa sổ không cùng định nghĩa metric: đánh dấu không so sánh được. |
+| CAND-F06-G04-M02-interpret | B20-T03 | B20-X03. Phạm vi câu trả lời UNKNOWN dù trend hợp lệ: không phát diễn giải AI. |
+| CAND-F06-G05-M01-project | B20-T04 | B20-X04. Quyền giảm giữa hai trang report: không lộ trường bị thu hồi qua cursor. |
+
+Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.

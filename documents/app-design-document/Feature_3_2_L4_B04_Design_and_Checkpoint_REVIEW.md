@@ -66,3 +66,5 @@ Ten candidate/AC-oracle pairs, zero runtime executions. Independent review pendi
 | 25 | F01-G06-M02 Entitlements & Billing · F01-G06-M03 Subscription Billing Lifecycle · F07-G07-M01 Operational Console · F07-G07-M02 Billing & Cost Operations |
 
 Structural validation executed: 106 unique source L3, 22 distinct L3 with prior review or a design slice, 84 untouched L3 mapped once in groups of 3–5, ten unique B04 candidates and ten unique proposed test IDs. Cross-group dependencies remain conditional until their provider design is verified. B02 Family Structure and F07 export partial slices remain open in addition to the queue.
+
+Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.

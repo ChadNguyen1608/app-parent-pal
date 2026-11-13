@@ -27,3 +27,13 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F04-G07-M02 → pinned inventory → candidate above → B18-T03. Provider guarantees and exact resource classification remain to verify before release.
 - B18-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 3 unique canonical parents, 3 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 28 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F04-G05-M02-submit | B18-T01 | B18-X01. Hai học sinh gửi cùng client key: định danh operation theo scope; không lẫn bài. |
+| CAND-F04-G07-M01-deliver | B18-T02 | B18-X02. Nhắc cho trẻ A bị enqueue nhầm tới B: không phát hành. |
+| CAND-F04-G07-M02-configure | B18-T03 | B18-X03. Thay đổi channel và opt-out đua nhau: opt-out đã commit được worker tôn trọng. |

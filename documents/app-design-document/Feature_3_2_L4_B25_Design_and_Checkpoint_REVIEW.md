@@ -30,3 +30,14 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F07-G07-M02 → pinned inventory → candidate above → B25-T04. Provider guarantees and exact resource classification remain to verify before release.
 - B25-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 4 unique canonical parents, 4 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 0 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F01-G06-M02-resolve | B25-T01 | B25-X01. Quyền truy cập subscription hết hiệu lực trước release: không hiển thị quyền lợi cũ. |
+| CAND-F01-G06-M03-reconcile | B25-T02 | B25-X02. Webhook hợp lệ lặp lại và refund cũ đến trễ: xử lý idempotent theo version. |
+| CAND-F07-G07-M01-operate | B25-T03 | B25-X03. Operator mất assignment trước khi mở case: không lộ case hoặc audit. |
+| CAND-F07-G07-M02-account | B25-T04 | B25-X04. Invoice chưa có đối soát: báo unverified, retry không ghi trùng. |

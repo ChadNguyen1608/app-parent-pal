@@ -98,3 +98,5 @@ These candidate profiles specify interaction only. Minor legal authority, approv
 - After B02 and B03, 89 distinct inventory L3 remain outside P6/B01/B02/B03, plus partial-slice follow-up on B02. Next candidates: F01-G03-M01, F01-G03-M02, F01-G06-M01 and relevant Journal source-owner modules. Reconfirm canonical scope and source heads before writing. Full consolidation and Owner package remain open.
 
 Structural check executed: five canonical parents, ten unique candidates and 17 unique proposed test IDs.
+
+Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.

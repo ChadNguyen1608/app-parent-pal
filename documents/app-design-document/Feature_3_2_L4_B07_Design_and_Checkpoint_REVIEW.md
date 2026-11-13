@@ -27,3 +27,5 @@ A0 caregiver-led interface in verified scope; A1 supervised interaction; A2 guid
 - F07-G05-M01 → B01-PA-OD-01/02/04 and B02 Journal safety boundary → B07-T03/04. B07-I02 HIGH: review escalation policy, evidence minimization and safe fallback. Candidate thresholds stay unset.
 - F07-G05-M02 → F07 audit governance, B01-PA-OD-03/04, B02 disclosure fencing → B07-T05/06. B07-I03 HIGH: verify human staffing, response responsibility and purpose-scoped evidence. Bring unresolved authority/notification policy to consolidated Owner review after research.
 - BI-05/10 remain blocking for real data. Independent review deferred to consolidation. Six proposed test oracles, zero runtime executions. 73 untouched L3 remain plus B02 partial-slice follow-up. Next B08.
+
+Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.

@@ -27,3 +27,13 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F02-G06-M02 → pinned inventory → candidate above → B12-T03. Provider guarantees and exact resource classification remain to verify before release.
 - B12-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 3 unique canonical parents, 3 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 53 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F02-G05-M02-respond | B12-T01 | B12-X01. Retry phản hồi cùng key nhưng khác payload: báo conflict, không đổi phản hồi gốc. |
+| CAND-F02-G06-M01-attribute | B12-T02 | B12-X02. Nguồn đã rút khỏi scope: không lộ source ref qua provenance projection. |
+| CAND-F02-G06-M02-resolve | B12-T03 | B12-X03. Bằng chứng xung đột sau khi review bắt đầu: bắt buộc đánh giá lại ở version mới. |

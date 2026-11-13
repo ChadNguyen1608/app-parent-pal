@@ -33,3 +33,15 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F02-G03-M01 → pinned inventory → candidate above → B10-T05. Provider guarantees and exact resource classification remain to verify before release.
 - B10-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 5 unique canonical parents, 5 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 60 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F02-G01-M01-intake | B10-T01 | B10-X01. Người khai mất quyền trong lúc sync: không commit dữ kiện. |
+| CAND-F02-G01-M02-ask | B10-T02 | B10-X02. Retry sau khi người dùng skip: không mở lại prompt cùng operation. |
+| CAND-F02-G02-M01-register | B10-T03 | B10-X03. Sở thích của hai trẻ trùng nhãn: truy vấn chỉ trả đúng profile scope. |
+| CAND-F02-G02-M02-revise | B10-T04 | B10-X04. Bác bỏ và sửa đồng thời: stale version cần đối chiếu, không hồi sinh suy luận. |
+| CAND-F02-G03-M01-observe | B10-T05 | B10-X05. Quan sát bị rút trước khi phát report: projection không có dữ kiện hay metadata nhạy cảm. |

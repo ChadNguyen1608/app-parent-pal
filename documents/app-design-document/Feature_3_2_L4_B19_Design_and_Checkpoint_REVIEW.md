@@ -33,3 +33,15 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F06-G03-M01 → pinned inventory → candidate above → B19-T05. Provider guarantees and exact resource classification remain to verify before release.
 - B19-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 5 unique canonical parents, 5 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 23 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F06-G01-M01-record | B19-T01 | B19-X01. Provider gửi event ngoài scope đã đăng ký: từ chối trước ghi. |
+| CAND-F06-G01-M02-attribute | B19-T02 | B19-X02. Chữ ký/receipt không khớp source: không cấp nhãn verified. |
+| CAND-F06-G02-M01-calculate | B19-T03 | B19-X03. Đổi rule version giữa các trang: không trộn số liệu hai version. |
+| CAND-F06-G02-M02-except | B19-T04 | B19-X04. Hai exception xung đột: không âm thầm cộng dồn; đưa về review. |
+| CAND-F06-G03-M01-register | B19-T05 | B19-X05. Publish indicator thiếu yêu cầu bằng chứng: giữ draft. |

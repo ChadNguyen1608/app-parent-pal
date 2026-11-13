@@ -33,3 +33,15 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F03-G03-M01 → pinned inventory → candidate above → B13-T05. Provider guarantees and exact resource classification remain to verify before release.
 - B13-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 5 unique canonical parents, 5 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 48 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F03-G01-M01-activate | B13-T01 | B13-X01. Hai lệnh activate tranh cùng version: một active pointer. |
+| CAND-F03-G01-M02-align | B13-T02 | B13-X02. Evidence rút đồng thời với publish: claim không xuất hiện như đã xác nhận. |
+| CAND-F03-G02-M01-classify | B13-T03 | B13-X03. Alias trùng khi đổi taxonomy: giữ bản cũ, trả conflict. |
+| CAND-F03-G02-M02-map | B13-T04 | B13-X04. Crosswalk không có mapping được duyệt cho version mới: UNKNOWN. |
+| CAND-F03-G03-M01-select | B13-T05 | B13-X05. Người dùng thuộc nhóm tuổi chưa xác minh: chỉ nội dung chung được phép. |

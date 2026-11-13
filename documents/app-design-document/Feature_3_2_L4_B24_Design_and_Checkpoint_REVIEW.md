@@ -27,3 +27,13 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F08-G06-M02 → pinned inventory → candidate above → B24-T03. Provider guarantees and exact resource classification remain to verify before release.
 - B24-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 3 unique canonical parents, 3 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 4 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F08-G05-M02-control | B24-T01 | B24-X01. Receipt chưa xác nhận sau timeout: không thu lại hoặc báo thành công. |
+| CAND-F08-G06-M01-plan | B24-T02 | B24-X02. Actor mất quyền khi đang lưu scenario: version hiện hành giữ nguyên. |
+| CAND-F08-G06-M02-approve | B24-T03 | B24-X03. Approval và refund đến đảo thứ tự: trạng thái paid cần receipt đúng; không suy ra từ approval. |

@@ -30,3 +30,14 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F02-G05-M01 → pinned inventory → candidate above → B11-T04. Provider guarantees and exact resource classification remain to verify before release.
 - B11-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 4 unique canonical parents, 4 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 56 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F02-G03-M02-review | B11-T01 | B11-X01. Reviewer bị thu hồi quyền trước khi chốt: disposition giữ nguyên. |
+| CAND-F02-G04-M01-record | B11-T02 | B11-X02. Thông tin trường học hết hiệu lực: không dùng để dựng lịch mới. |
+| CAND-F02-G04-M02-restrict | B11-T03 | B11-X03. Quyền xem chuyển purpose giữa các lần đọc cache: lần sau DENY. |
+| CAND-F02-G05-M01-assemble | B11-T04 | B11-X04. Projection đang dựng từ dữ kiện của hai nguồn; một nguồn mất quyền: loại phần bị ảnh hưởng hoặc giữ toàn bộ output. |

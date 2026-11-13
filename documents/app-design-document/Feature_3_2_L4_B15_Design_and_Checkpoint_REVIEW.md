@@ -30,3 +30,16 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F03-G06-M02 → pinned inventory → candidate above → B15-T04. Provider guarantees and exact resource classification remain to verify before release.
 - B15-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 4 unique canonical parents, 4 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 39 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F03-G05-M02-review | B15-T01 | B15-X01. Cùng operation ID gửi hai quyết định khác nhau: giữ decision đầu hợp lệ. |
+| CAND-F03-G05-M03-explore | B15-T02 | B15-X02. Yêu cầu ngoài tập kỹ năng đã duyệt: không xuất gợi ý AI, kể cả retry. |
+| CAND-F03-G06-M01-reassess | B15-T03 | B15-X03. Một tín hiệu bị rút giữa build và release: kết luận cần dựng lại hoặc abstain. |
+| CAND-F03-G06-M02-propose | B15-T04 | B15-X04. Mất quyền lập proposal: không tạo proposal hoặc đổi goal. |
+
+Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.

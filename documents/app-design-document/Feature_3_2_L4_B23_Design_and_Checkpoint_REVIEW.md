@@ -30,3 +30,14 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F08-G05-M01 → pinned inventory → candidate above → B23-T04. Provider guarantees and exact resource classification remain to verify before release.
 - B23-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 4 unique canonical parents, 4 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 7 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F08-G03-M02-match | B23-T01 | B23-X01. Mất quyền dùng preference: dựng lại hoặc giữ kết quả, không lộ suy luận. |
+| CAND-F08-G04-M01-consent | B23-T02 | B23-X02. Kết nối được cấp quyền lại: worker cũ không dùng grant mới cho job cũ. |
+| CAND-F08-G04-M02-import | B23-T03 | B23-X03. Nhập đúp sau timeout với payload khác: giữ phiên bản đầu, báo conflict. |
+| CAND-F08-G05-M01-catalog | B23-T04 | B23-X04. Offer đổi giá trước lúc tiếp tục checkout: phải xác nhận version hiện hành. |

@@ -33,3 +33,15 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F04-G03-M02 → pinned inventory → candidate above → B16-T05. Provider guarantees and exact resource classification remain to verify before release.
 - B16-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 5 unique canonical parents, 5 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 34 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F04-G01-M02-instantiate | B16-T01 | B16-X01. Template đổi sau khi tạo draft: nguồn cũ vẫn truy vết; apply phải qua gate hiện hành. |
+| CAND-F04-G02-M01-construct | B16-T02 | B16-X02. Plan bị khóa trong lúc dựng lịch: có thể giữ draft được phép, không đổi lịch hiệu lực. |
+| CAND-F04-G02-M02-detect | B16-T03 | B16-X03. Kiểm thử DST với giờ địa phương trùng: chỉ tính overlap khi offset được xác định. |
+| CAND-F04-G03-M01-assign | B16-T04 | B16-X04. Assignee chuyển scope trước commit: deny; không đổi quyền hiện tại. |
+| CAND-F04-G03-M02-route | B16-T05 | B16-X05. Routing retry sau handover: không chuyển lại cho approver cũ. |

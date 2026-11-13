@@ -38,3 +38,5 @@ Deterministic structural validation: 5 canonical L3 in this group, 10 unique can
 - B05-I01 HIGH: validate propagation of evidence and content withdrawal across CMS/index/cache. Authority owners: CMS, Editorial Workflow, Evidence Provenance.\n- B05-I02 HIGH: confirm approved route eligibility and emergency/provider failure semantics with execution budget and policy evaluation.
 
 Carry BI-05/10 and prior issues. Independent review pending consolidation. Next checkpoint B06. 79 untouched L3 remain, plus B02 partial-slice follow-up.
+
+Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.

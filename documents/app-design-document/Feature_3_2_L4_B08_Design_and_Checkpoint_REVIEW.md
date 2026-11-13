@@ -18,8 +18,8 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 
 | Temporary L4 | Actor and observable outcome | Ownership, flow and data contract | Acceptance criterion and synthetic test |
 |---|---|---|---|
-| CAND-F05-G01-M01-assist | Trẻ khởi tạo lượt hội thoại học tập trong purpose đã duyệt | Lưu request ID, scope và provenance tối thiểu. E2 conditional qua router; fallback hướng dẫn đã duyệt. Journal context chỉ khi trẻ chủ động mở và quyền còn hiệu lực. | B08-T01. Lượt hỏi mới không chọn Journal và provider unavailable. Không có Journal context; fallback không tuyên bố đã gọi model. |
-| CAND-F05-G01-M02-guard | Hệ thống áp kiểm soát trước khi gửi hoặc hiển thị câu trả lời | Guardrails sở hữu policy evidence theo version, dùng lớp xác định E1 và chỉ dùng model nếu được phê duyệt. Output không vượt policy dù model trả nội dung lệch. | B08-T02. Fixture output khuyến khích phụ thuộc hoặc tự nhận có thẩm quyền. Không phát hành output; fallback giữ thông tin tối thiểu. |
+| CAND-F05-G01-M01-assist | Trẻ khởi tạo lượt hội thoại học tập trong purpose đã duyệt | Lưu request ID, scope và provenance tối thiểu. E2 conditional qua router; chỉ phát câu trả lời trong phạm vi đã xác minh theo ODP-03. Journal context chỉ khi trẻ chủ động mở và quyền còn hiệu lực. | B08-T01. Lượt hỏi mới không chọn Journal và provider unavailable. Không có Journal context; fallback không tuyên bố đã gọi model. |
+| CAND-F05-G01-M02-guard | Hệ thống áp kiểm soát trước khi gửi hoặc hiển thị câu trả lời | Guardrails sở hữu policy evidence theo version, dùng lớp xác định E1 và chỉ dùng model nếu được phê duyệt. Output không vượt policy dù model trả nội dung lệch. | B08-T02. Fixture output khuyến khích phụ thuộc hoặc tự nhận có thẩm quyền. Không phát hành output; không phát câu trả lời AI thay thế ngoài phạm vi đã xác minh. |
 | CAND-F05-G02-M01-offer | Trẻ nhận lời mời check-in tùy chọn | Check-in giữ invitation ref, policy và trạng thái responded/skipped. Không suy diễn cảm xúc từ việc bỏ qua. E1. | B08-T03. Bỏ qua rồi retry cùng event. Một lần skip, không tạo dữ liệu cảm xúc hay phát lại lời mời. |
 | CAND-F05-G02-M02-control | Người có quyền điều chỉnh thời điểm và tần suất lời mời | Controls giữ preference/version và điều kiện được phép. Worker recheck khi gửi. Default cụ thể chưa chốt. E1. | B08-T04. Tắt nhắc sau khi enqueue nhưng trước release. Không có nhắc được gửi sau khi tắt có hiệu lực. |
 | CAND-F05-G03-M01-prompt | Trẻ chủ động nhận gợi ý phản tư phù hợp | Reflection Prompts sở hữu template ref và version theo mục đích, cohort và nguồn đã duyệt. E1, không dùng Journal cũ làm đầu vào mặc định. | B08-T05. Mở prompt khi không có template phù hợp. Không tự tạo chủ đề từ Journal; hiện lựa chọn bỏ qua. |
@@ -33,3 +33,17 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F05-G03-M01 → pinned inventory → candidate above → B08-T05. Provider guarantees and exact resource classification remain to verify before release.
 - B08-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 5 unique canonical parents, 5 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 68 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F05-G01-M01-assist | B08-T01 | B08-X01. Model version đổi sau khi lập tuyến: scope evidence cũ không dùng được. |
+| CAND-F05-G01-M02-guard | B08-T02 | B08-X02. Thu hồi quyền Journal khi model đang tạo câu trả lời: hủy output chưa phát. |
+| CAND-F05-G02-M01-offer | B08-T03 | B08-X03. Skip và timeout cùng đến: một trạng thái skip, không ghi cảm xúc. |
+| CAND-F05-G02-M02-control | B08-T04 | B08-X04. Hai cập nhật tần suất cùng version: một commit; worker dùng version mới. |
+| CAND-F05-G03-M01-prompt | B08-T05 | B08-X05. Template hết hiệu lực giữa chọn và hiển thị: không dùng prompt cũ. |
+
+Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.

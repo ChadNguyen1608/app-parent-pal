@@ -33,3 +33,15 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F08-G03-M01 → pinned inventory → candidate above → B22-T05. Provider guarantees and exact resource classification remain to verify before release.
 - B22-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 5 unique canonical parents, 5 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 11 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F08-G01-M01-connect | B22-T01 | B22-X01. Revoke sau fetch trước lưu staging: không commit hay hiển thị bản import. |
+| CAND-F08-G01-M02-review | B22-T02 | B22-X02. Phê duyệt đối chiếu từ phiên bản stale: không ghi đè dữ kiện chuẩn. |
+| CAND-F08-G02-M01-discover | B22-T03 | B22-X03. Verification hết hạn khi đang chuẩn bị trang: không trình bày chuyên gia như đã xác minh. |
+| CAND-F08-G02-M02-refer | B22-T04 | B22-X04. Consent đổi giữa lúc chuẩn bị và gửi referral: không chuyển dữ liệu. |
+| CAND-F08-G03-M01-list | B22-T05 | B22-X05. Nhà cung cấp rút listing: cache cũ không phát hành listing nữa. |

@@ -22,7 +22,7 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 | CAND-F03-G04-M01-discover | Subject records or selects a candidate goal | Discovery owns candidate and source of intent; roadmap owns accepted milestones. E1. | B14-T02. Skip discovery question; no inferred goal or commitment. |
 | CAND-F03-G04-M02-evaluate | Planner sees goal feasibility constraints | Constraints records versioned evidence and reason. Mandatory UNKNOWN blocks readiness; draft remains. E1. | B14-T03. Missing capacity data leaves draft available, outcome unverified. |
 | CAND-F03-G04-M03-stage | Authorized actor approves versioned development milestones | Roadmap owns goal-to-milestone versions and approval refs. F04 owns schedule. E1. | B14-T04. Replay approval after timeout; exactly one milestone version and no schedule mutation. |
-| CAND-F03-G05-M01-recommend | Eligible subject receives sourced optional guidance | Use approved source versions and constraints. E1 rules first; E2 conditional with no unsupported conclusions. | B14-T05. Withdraw grounding during generation. Output is discarded or replaced with approved generic fallback. |
+| CAND-F03-G05-M01-recommend | Eligible subject receives sourced optional guidance | Use approved source versions and constraints. E1 rules first; E2 conditional with no unsupported conclusions. | B14-T05. Withdraw grounding during generation. Discard output. Any replacement AI answer must independently satisfy ODP-03. |
 
 ## Trace and triage
 
@@ -33,3 +33,17 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F03-G05-M01 → pinned inventory → candidate above → B14-T05. Provider guarantees and exact resource classification remain to verify before release.
 - B14-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 5 unique canonical parents, 5 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 43 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F03-G03-M02-adapt | B14-T01 | B14-X01. Adapter nhận snapshot có field hạn chế: phiên bản accessible cũng loại field đó. |
+| CAND-F03-G04-M01-discover | B14-T02 | B14-X02. Mất quyền tạo goal giữa draft và save: không có candidate mới. |
+| CAND-F03-G04-M02-evaluate | B14-T03 | B14-X03. Nguồn capacity đổi trước chốt: kết quả trước đó hết hiệu lực. |
+| CAND-F03-G04-M03-stage | B14-T04 | B14-X04. Approval mất hiệu lực trước commit milestone: roadmap không đổi. |
+| CAND-F03-G05-M01-recommend | B14-T05 | B14-X05. Source hoặc model scope bị rút sau preflight: không phát câu trả lời AI. |
+
+Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.

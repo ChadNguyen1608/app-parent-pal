@@ -27,3 +27,15 @@ B01-PA-OD-01..04 apply to every candidate. Access Policy issues the final decisi
 - F05-G05-M02 → pinned inventory → candidate above → B09-T03. Provider guarantees and exact resource classification remain to verify before release.
 - B09-I01 HIGH. Verify authorization and version fencing for the module-specific denial and retry cases above; inherit BI-05/10 and related provider issues. Research and implementation validation remain open.
 - Structural check: 3 unique canonical parents, 3 unique candidate and test IDs. Zero runtime executions. Independent review pending consolidation. 65 untouched L3 remain, plus B02 partial slices.
+
+## Additional acceptance criteria · authorization, concurrency and recovery
+
+For each synthetic fixture, inspect the authorized response and relevant durable state, including downstream release, worker receipts and versions where applicable. Use A0–A1 caregiver/supervised, A2 guided, A3–A4 subject-led where eligible, and A5 verified self-managed adult as applicable. For private child data, compare an authorized actor, an unrelated household and an actor with revoked scope. An age group supplies no permission. A denied response must omit protected contents, identifiers and counts. All tests are proposed.
+
+| Candidate | Prior oracle | Additional oracle |
+|---|---|---|
+| CAND-F05-G03-M02-review | B09-T01 | B09-X01. Bỏ nháp offline rồi thiết bị cũ gửi save: tombstone nháp chặn lưu. |
+| CAND-F05-G05-M01-derive | B09-T02 | B09-X02. Hai root cùng tạo insight, một grant hết hiệu lực trước release: không phát, kể cả qua cache. |
+| CAND-F05-G05-M02-correct | B09-T03 | B09-X03. Correction đến sau yêu cầu xóa: không làm sống lại insight; giữ receipt tối thiểu. |
+
+Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.

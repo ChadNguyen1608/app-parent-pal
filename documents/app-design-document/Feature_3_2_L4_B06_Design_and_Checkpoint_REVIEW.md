@@ -32,3 +32,5 @@ Deterministic structural validation: 3 canonical L3 in this group, 6 unique cand
 - B06-I01 HIGH: prove cost reservation and usage reconciliation against duplicate charges. Commercial quota and pricing await evidence.\n- B06-I02 HIGH: verify transient modality cleanup and provider retention with B04-I03.\n- B06-I03 HIGH: policy fixture coverage requires actual engine versions and denial regression evidence.
 
 Carry BI-05/10 and prior issues. Independent review pending consolidation. Next checkpoint B07. 76 untouched L3 remain, plus B02 partial-slice follow-up.
+
+Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.

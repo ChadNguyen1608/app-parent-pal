@@ -17,7 +17,7 @@ Synthetic only. For A0–A1, authorized caregiver setup or rights workflow is co
 
 | Surface | Constraint and source | Review disposition |
 |---|---|---|
-| Family membership / account / authorization | B02/B03/B04, P6-AP-OD-01/03/04, B01-CL-OD-01. Authentication supplies identity, household supplies scope, membership supplies affiliation, link supplies binding, Access Policy issues permission. | Candidate ownership aligns. Cross-household/disputed authority remains open. |
+| Family membership / account / authorization | B02/B03/B04, P6-AP-OD-01/03/04, B01-CL-OD-01. Authentication supplies identity, household supplies scope, membership supplies affiliation, link supplies binding, Access Policy issues permission. | Candidate ownership aligns. ODP-01 prohibits cross-household transfer, including via support or recovery. Dispute verification remains open without transfer authority. |
 | Plan version / CR / history | B01-PS-OD-01, B01-CR-OD-01..05 and B01-C-OD-01/03/05/06. F04 proposal and routing cannot commit. Plan Structure commits with durable history evidence. | Candidate owner split aligns across B02/B03/B16–B18. Linearization and replay remain verification gates. |
 | Journal / insights / sharing / deletion | B01-CL-OD-04, B01-PA-OD-03/04, B01-C-OD-02. All derivatives need source lineage and current release authority. Revoke is immediate and distinct from deletion. | B02/B03/B04/B08/B09/B20/B21/B26 share the same ownership contract. Graph completeness, voice processing and backup behavior remain open. |
 | Routing / policies / budget / billing | B05–B07/B25, P6-AA-OD-04. Product approval covers evaluation/routing design; tariff, quota, price and deployment eligibility remain open. | Inference stays conditional; usage reservation, subscription and invoice reconciliation have separate owners. Runtime negative evidence pending. |
@@ -25,3 +25,5 @@ Synthetic only. For A0–A1, authorized caregiver setup or rights workflow is co
 | Integrations / referrals / commerce | B22–B25 and B01-PA-OD-01..04. External release requires purpose, current scoped authorization and a reviewed recipient. | Provider readiness and business policies remain unresolved; fail closed on uncertain authority or outcome. |
 
 Structural check: three canonical modules, three additional unique candidate IDs, four new synthetic oracles. B26-I01 HIGH: prove expiry, epoch fencing and cleanup across export stores and delivery. Existing BI-01..10 and BI-12 remain subject to their recorded dispositions. Independent Claude review pending.
+
+Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.
