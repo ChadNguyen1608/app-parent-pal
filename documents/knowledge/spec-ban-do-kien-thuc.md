@@ -1,8 +1,9 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.20 — 1/11/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có nội dung nháp cho 0–6, 6–11, 11–15 và 15–18 tuổi (chờ chuyên gia duyệt).
+Bản v5.21 — 15/11/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có nội dung nháp cho 0–6, 6–11, 11–15 và 15–18 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
+- **v5.21 (15/11):** theo quyết định của chủ sản phẩm (OD-05, D-05 trong `app-design-document/progress/Owner_Decision_Log_20261115.md`): thu hẹp quy tắc "khi kho chưa có thông tin" (§1.1). Chỉ câu hỏi giáo dục, đào tạo (kể cả trường, trung tâm học) được tra mạng; thủ tục, cơ sở dịch vụ, giá chờ chính sách riêng.
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
 - **v3:** mở rộng trục tuổi: năm đầu đời vào giai đoạn 0–6 tuổi; thêm giai đoạn 18–24 tuổi.
 - **v4:** thay 9 làn bằng khung 4 tầng: 3 cấp + lớp nền → 16 nhóm → chủ đề con → mẩu kiến thức.
@@ -51,11 +52,11 @@ Pal trả lời từ hai loại nguồn:
 **Kho chuẩn gồm (người dùng chốt 27/10):**
 1. **Thông tin định hướng:** toàn bộ khung cấp độ và các nhóm ở §3. Đây là các mẩu kiến thức, hoạt động và dòng phát triển xây theo bản đồ này.
 2. **Thủ tục hành chính liên quan đến con:** nhập học, tuyển sinh, chuyển trường, quy chế thi…
-   - Nếu kho chuẩn **chưa có** thông tin thủ tục được hỏi: Pal **báo cho phụ huynh** rằng tài liệu của Parent-Pal chưa có, **rồi mới** trả thông tin tra trên mạng, kèm nguồn.
+   - Nếu kho chuẩn **chưa có** thông tin thủ tục được hỏi: Pal **báo cho phụ huynh** rằng tài liệu của Parent-Pal chưa có, **rồi mới** trả thông tin tra trên mạng, kèm nguồn. *(Tạm dừng từ 15/11/2026 theo OD-05: thủ tục chờ chính sách riêng; trong lúc chờ, Pal chỉ nơi tra chính thức.)*
 3. **Phương pháp giáo dục và chăm sóc** (Montessori, STEM, EASY, ăn dặm tự chỉ huy…): bài có nhãn `phương_pháp`, lưu ở `documents/knowledge/methods/`, theo mẫu §7.9.
 4. Các loại khác: **bổ sung sau**.
 
-**Khi kho chưa có thông tin** (người dùng chốt 28/10, áp cho **mọi loại** câu hỏi: định hướng, thủ tục, phương pháp, trường lớp, cơ sở dịch vụ, giá):
+**Khi kho chưa có thông tin** (người dùng chốt 28/10; **thu hẹp ngày 15/11/2026 theo OD-05**: chỉ áp cho câu hỏi **giáo dục, đào tạo**, gồm định hướng học tập, phương pháp, trường lớp, trung tâm học. Thủ tục, cơ sở dịch vụ, giá: **chờ chính sách riêng**; trong lúc chờ, Pal báo kho chưa có và chỉ nơi tra chính thức, không tra mạng thay):
 1. Pal **báo trước** rằng tài liệu của Parent-Pal chưa có thông tin này.
 2. Pal tra trên mạng và trả lời, **kèm nguồn**, mỗi ý lấy từ mạng gắn nhãn **"chưa kiểm chứng"**.
 3. Mỗi lần tra, ghi một dòng vào **hàng đợi kiểm chứng** (`documents/knowledge/ref-hang-doi-kiem-chung.md`; khi có app là một bảng dữ liệu): câu hỏi đã ẩn danh, thông tin đã đưa, nguồn, việc cần làm (tìm nguồn chính thức, liên hệ cơ sở, chuyên gia duyệt). Đội ngũ dùng hàng đợi này để **tìm bổ sung và duyệt** trước khi đưa vào kho.
