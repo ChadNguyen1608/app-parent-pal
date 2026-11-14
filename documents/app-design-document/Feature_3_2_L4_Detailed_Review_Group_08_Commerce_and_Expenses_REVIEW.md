@@ -58,3 +58,16 @@ Open evidence: merchant/processor event ordering and reconciliation guarantees, 
 ## 2026-11-14 Owner gate overlay — OD-02
 
 [Owner-approved OD-02](Feature_3_2_L4_OD02_OD05_Owner_Decision_Log_APPROVED.md) excludes sponsored listings, offers, rankings and purchase entry-points from **all minor-facing A0–A4 (under 18) views in initial release**. Prior provisional wording allowing minor-facing sponsored content with only disclosure is superseded. Parent/verified-adult surfaces still require current access, suitable disclosures and commercial/legal authorization. Enforce recipient and content sponsorship filters at release, cache, paging and AI response boundaries. Cases OD02-T01..03 proposed and not independently verified.
+
+
+## L4 remediation — FR-05 · No paid suggestion during parent distress
+
+This is a product rule already recorded in repository guidance, not a new Owner decision. During a parent-facing conversation where the parent communicates active sadness, emotional distress or exhaustion, Pal and downstream discovery/resource matching **must suppress proactive paid offers, sponsored promotions, premium upsell, paid referral and purchase nudges** in the response and related surfaces. Helpfulness or recommendation relevance does not waive the suppression; recommend suitable noncommercial/free options or listening and support within approved policy. The parent may separately navigate to a neutral account/billing area on their own initiative without implicit purchase authorization; do not create a hidden global ban on all commerce operations.
+
+**Detection boundary:** use explicitly available, purpose-authorized conversation context or user-selected support mode; no inference from private Child Journal or unlabeled emotional profiling. For ambiguous context or stale/unknown distress state, default to no proactive paid placement. Do not claim clinical assessment. Once parent explicitly changes topic or independently opts into commerce, new offers still require regular OD-02, sponsorship/eligibility, authorization and non-exploitation gates. No automatic inferred "distress cleared" timer.
+
+**Ownership:** F05-G01-M01 signals a narrowly scoped noncommercial response context without exporting raw distress text; F08-G03-M02 filters Resource Matching; F08-G05-M01 enforces catalog placement eligibility; F08-G05-M02 transaction controls remain independent and cannot create a charge based on a suggestion. Use E0/E1 for explicit routing/suppression when possible.
+
+**FR05-T01:** Parent says "Tôi kiệt sức và buồn" then asks for activities: show eligible free/neutral suggestions only, zero paid offer or sponsored call-to-action, even on cache/retry. **FR05-T02:** Resource matching worker ran before parent distress; release time now active distress: rebuild/suppress paid placements, no sponsored bytes. **FR05-T03:** Distress unknown or content access revoked: zero proactive paid recommendation; no raw distress information sent to vendor. **FR05-T04:** Parent explicitly requests account invoice/help: allow authorized neutral billing information, no automatic upsell or checkout.
+
+This is author-level specification remediation, not independent review or application test.
