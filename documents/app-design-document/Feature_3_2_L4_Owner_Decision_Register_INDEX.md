@@ -106,3 +106,8 @@ Product Owner approved the previously proposed **conditional design baseline** a
 ## Update 2026-11-14 — Batch 02 scope confirmed
 
 Owner explicitly approved **all four** Batch 02 L3 modules in proposed workstream order; see [B02 Scope Owner Decision](Feature_3_2_L4_B02_Scope_Owner_Decision_APPROVED.md). This approval supersedes any older `B02_SCOPE_PROPOSAL / NOT_OWNER_APPROVED` or `BLOCKED_BY_SCOPE_GATE` status in this historical document. **B02 design is authorized**, but no L4 deliverable has yet been accepted. Product Blueprint 3.2-R1 contains **106 L3**; 3 P6 + 5 B01 already reviewed, 4 B02 selected, **94 remain beyond B02**. ChatGPT starts F01-G02-M01, then F04-G06-M02; Journal and Retention follow dependency gates. No canonical changes or production child data use.
+
+
+## 2026-11-14 — Approved FR-01 option A
+
+Owner confirmed Parent PIN protects Child App Unlink, eligible Parent App receives unlink notification, re-pair same household uses standard flow, re-pair into different household requires separate child-specific caregiver authority verification. Source: [FR-01 Owner Decision](Feature_3_2_L4_FR01_Parent_PIN_Unlink_and_Repairing_Owner_Decision_APPROVED.md). Supersedes older, insufficiently constrained candidate unlink / new-household pairing text; does not approve a verification vendor or mechanism. FR-01 HIGH design finding remains OPEN pending independent re-review and runtime evidence. No final L4 approval.
