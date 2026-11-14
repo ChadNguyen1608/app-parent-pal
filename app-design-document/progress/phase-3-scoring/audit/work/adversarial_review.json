@@ -1,0 +1,416 @@
+{
+ "reviewer_model": "Sonnet 5.5",
+ "finding_verdicts": [
+  {
+   "module_id": "F01-G04-M01",
+   "audit_status": "BLOCKED",
+   "verdict": "SUPPORTED",
+   "source": "documents/app-design-document/Feature_3_2_L4_Claude_Final_Report_Author_Remediation_Register_20261114_REVIEW.md:50 \"Four L3 not reviewed in Claude report\"",
+   "reason": "Fact holds for all four unreviewed foundations. Weakness: phase_c legal_blocked_in_v2 lists only F01-G06-M01 and F07-G06-M02, so these four BLOCKED modules that sit in alite_v2 are not surfaced as v2 blockers."
+  },
+  {
+   "module_id": "F01-G04-M02",
+   "audit_status": "BLOCKED",
+   "verdict": "SUPPORTED",
+   "source": "same register line 50; baseline G-Legal reason cites MR-016",
+   "reason": "Same as above."
+  },
+  {
+   "module_id": "F01-G05-M01",
+   "audit_status": "BLOCKED",
+   "verdict": "SUPPORTED",
+   "source": "same register line 50",
+   "reason": "Same. Note Owner logs exist (B01-MS-OD-01..04) so \"never reviewed\" means independent verification only, not that no Owner decision exists."
+  },
+  {
+   "module_id": "F07-G06-M01",
+   "audit_status": "BLOCKED",
+   "verdict": "SUPPORTED",
+   "source": "same register line 50",
+   "reason": "Same."
+  },
+  {
+   "module_id": "F08-G04-M01",
+   "audit_status": "BLOCKED",
+   "verdict": "PARTLY_SUPPORTED",
+   "source": "Group_07_Third_Party_Data_REVIEW.md \"Record device/provider, subject, eligible data categories and purpose\"; baseline note \"Plan A uses phone OS permissions only\"",
+   "reason": "No inventory item names location, true. But \"no L3 covers location\" is overstated: F08-G04-M01/M02 (device consent plus staged import with source event id), F01-G04-M02 Consent Ledger, F06-G01 (events) and F04-G07 (parent alert) together are a plausible mapping. The baseline did consider Plan A, so \"baseline ignored it\" is also wrong. BLOCKED is a different category from the other four rows (missing Feature ID vs unreviewed spec). Correct label: OWNER_DECISION on mapping, status PARTIAL not FEATURE_GAP. Plan A is Owner-confirmed, so essential should be YES for the Plan A gate, not CONDITIONAL."
+  },
+  {
+   "module_id": "F02-G05-M02",
+   "audit_status": "REVIEW",
+   "verdict": "PARTLY_SUPPORTED",
+   "source": "SC-001 line 34 \"phản hồi tự nguyện về cảm xúc, độ mệt, độ khó\"; Group_17 \"agree, add context, contest\" ; prototype/index.html:1036-1038",
+   "reason": "Need is sourced (SC-001-D02, spec-quy-thoi-gian §4, spec-quy-tac L2/G3). Two errors. (1) F02-G05-M02 owns child agree/contest on profile assertions (Inventory: \"Trẻ xem và đề nghị sửa hiểu biết về mình\"), not a fatigue signal; a fatigue/hunger check belongs elsewhere (F04-G04/F04-G05 or F06-G01 self-report) or needs an ownership issue. (2) Claim that prototype has \"deterministic adjustment\" is false: Rất mệt only stores L.met and shows one message; no schedule change. The adjustment (+15 min, drop parent-directed study) is an LLM prompt rule (index.html:517) so this is a new build. F05-G02 (opt-in check-in) says open/skip produces no emotional observation, so reusing it also needs a decision."
+  },
+  {
+   "module_id": "F03-G05-M03",
+   "audit_status": "REVIEW",
+   "verdict": "SUPPORTED",
+   "source": "SC-003 line 7 \"Trẻ lớp 8 (~13 tuổi)\"; Inventory line 8 \"Lớp 1–9\"",
+   "reason": "Rationale \"outside CORE grades 1-9\" is contradicted. Minor: registry row already shows A3 applicable, so the proposed \"A3 APPLICABLE\" change is moot and the baseline contradiction is partly internal. SC-003 log is a retrospective reconstruction (line 2), so call it traced, not newly approved."
+  },
+  {
+   "module_id": "F04-G02-M01",
+   "audit_status": "REVIEW",
+   "verdict": "PARTLY_SUPPORTED",
+   "source": "Inventory line 181 \"E1 / Low\"; 3.4 line 117 \"E1; E2 optional\"; SC-001 line 83 \"ưu tiên E0/E1 cho lịch\"",
+   "reason": "Restoring E1 default is sourced, and fan-in 0 is confirmed (only F04-G02-M02 -> M01 SOFT). Not supported: the implied feasibility. prototype checkDayK (index.html:592) only validates; no builder exists, ordering is done by the LLM prompt, and baseline exec_note says Pal drafts from free text/timetable. Plan A step 2 requires \"trò chuyện tạo được lịch tuần\". So E1-only A-lite does not reproduce the standard behaviour (CLAUDE.md), and \"feasible\" is unevidenced. Treat E1 builder as new build with feasibility UNKNOWN."
+  },
+  {
+   "module_id": "F04-G02-M03",
+   "audit_status": "REVIEW",
+   "verdict": "SUPPORTED",
+   "source": "spec-quy-thoi-gian §1.4 \"ô vẫn màu đỏ… bố mẹ đã xác nhận\"; Inventory L3C-06 \"F04 sở hữu cân bằng lịch/ngoại lệ được duyệt\"",
+   "reason": "Direct parent UI and exception ownership are sourced. Gaps in the finding: ignores P6-BP-OD-01 (relaxation max 60 continuous days, >=7 empty days between similar exceptions) and P6-BP-OD-02 (protected_hard vs family_hard); and equates presets with Standard Bar although SC-001 line 44 says Standard Bar (long-term) differs from Temporary Exception."
+  },
+  {
+   "module_id": "F04-G06-M01",
+   "audit_status": "REVIEW",
+   "verdict": "PARTLY_SUPPORTED",
+   "source": "B01_Change_Requests_Owner_Decision_Log line 23 \"Parent-led… không tạo Change Request lịch chính thức\"; Mode_State_Log B01-MS-OD-02",
+   "reason": "Need for child proposals is in spec §4 and prototype. But the finding frames it as a \"parent-led pilot\", which contradicts approved Owner decisions: in PARENT_LED a child cannot submit an official CR; proposals need CHILD_EXECUTED per child (B01-MS-OD-01). \"Minimal single-approver\" also drops approved 7-day expiry (B01-CR-OD-04) and the hard-cap NOT_APPROVABLE rule (OD-05). Prototype proposals are free text pushed verbatim to the parent (index.html:1055), which conflicts with spec §1.5 and SC-002-D06."
+  },
+  {
+   "module_id": "F07-G07-M02",
+   "audit_status": "REVIEW",
+   "verdict": "PARTLY_SUPPORTED",
+   "source": "3.4 line 252 \"AI calls per successful outcome\"; spec-phuong-an-a §4 \"giới hạn số lượt mỗi máy mỗi ngày\"",
+   "reason": "Metric is real but is a validation measure, not an A-lite requirement; the same audit sets ai_modules_in_v2=[] so the finding has no effect on v2. If Pal chat is kept (Plan A), the per-device daily cap maps to F07-G03-M02 Execution Budget, a better home than Billing and Cost Operations."
+  },
+  {
+   "module_id": "F05-G01-M01",
+   "audit_status": "CLARIFY",
+   "verdict": "PARTLY_SUPPORTED",
+   "source": "baseline_v1/04_Cost_Gaps_and_Sensitivity_REVIEW.md:83 GAP-16",
+   "reason": "Ambiguity is real but basis SELF_OMISSION is wrong: GAP-16 was already recorded in baseline. Also missing: Group_02 says general conversation outside the clarified category \"remains undecided\", which bears directly on Plan A pal-chat."
+  },
+  {
+   "module_id": "F06-G04-M02",
+   "audit_status": "CLARIFY",
+   "verdict": "PARTLY_SUPPORTED",
+   "source": "spec-quy-tac L2 \"xu hướng trong 2 tuần, không kết luận từ một ngày\"; SC-001 D02 \"không chỉ đếm số lần mệt\"",
+   "reason": "Observation that deferral removes the insight path is fair. The proposed E1 alternative cites a \"prototype pattern\" that does not exist (grep: no trend code, L.met only at 1036/1038). A count-based flag risks the exact thing SC-001-D02 rules out unless it only triggers a context question to the parent. Omits the sourced 2-week window."
+  },
+  {
+   "module_id": "F04-G03-M02",
+   "audit_status": "CLARIFY",
+   "verdict": "SUPPORTED",
+   "source": "3.4 line 227 FI-3.4-001 REVIEW_REQUIRED; dependencies E033 F04-G06-M01 -> F04-G03-M02 HARD",
+   "reason": "Verified. Note baseline workaround is \"restrict edits to primary caregiver\", which fits single-approver A-lite."
+  },
+  {
+   "module_id": "F01-G05-M02",
+   "audit_status": "CLARIFY",
+   "verdict": "PARTLY_SUPPORTED",
+   "source": "3.4 line 112 UC-002 is \"Thay đổi role/consent\"; line 157 mode branches",
+   "reason": "UC-002 is role/consent, with F01-G05 only an interacting group; the stronger source is 3.4 line 157 and B01-MS-OD-02. More important: if A-lite offers child proposals, a parent-set switch to CHILD_EXECUTED is needed, so deferral is only safe if F01-G05-M01 supports that switch."
+  },
+  {
+   "module_id": "F07-G03-M03",
+   "audit_status": "CLARIFY",
+   "verdict": "PARTLY_SUPPORTED",
+   "source": "prototype/index.html:1076 images:[img.blob]; 1193 speechSynthesis; Plan A tests recording and photo",
+   "reason": "Photo use is real, but TTS is browser-local speechSynthesis, not an orchestrated backend. Deferral is not \"OK for A-lite\" when photo and recording are two of the five Owner-confirmed Plan A features, one already logged \"Đạt\" (ref-nhat-ky-test 2026-11-05)."
+  },
+  {
+   "module_id": "F03-G04-M03",
+   "audit_status": "CLARIFY",
+   "verdict": "SUPPORTED",
+   "source": "SC-001 G02 \"Long-term Roadmap & Milestones\"; SC-003 line 15 SC3-D04",
+   "reason": "Both cited. G02 is CAPABILITY_GAP_TO_VALIDATE, not approved scope; recording rationale is right, keep DEFERRED."
+  }
+ ],
+ "coverage_verdicts": [
+  {
+   "capability": "Parent/child sets development goal",
+   "audit_status": "MISSING",
+   "audit_essential": "CONDITIONAL",
+   "verdict_status": "PARTIAL",
+   "verdict_essential": "CONDITIONAL",
+   "source": "prototype TOOLS cap_nhat_tong_quan muc_tieu; spec-quy-tac B3 muc_tieu_bo_me",
+   "reason": "Parent goals are already captured in plan overview and profile; only the approved-goal precondition of UC-007 (line 117) is absent. Not wholly missing.",
+   "l3_covered_by_existing_id": "F03-G04-M01 exists; goal list also fits F02-G01-M01"
+  },
+  {
+   "capability": "Identify tasks/activities (activity cards)",
+   "audit_status": "PARTIAL",
+   "audit_essential": "YES",
+   "verdict_status": "PARTIAL",
+   "verdict_essential": "YES",
+   "source": "spec-quy-thoi-gian §2.3; Inventory F02-G04-M01 \"lịch học\"",
+   "reason": "Status fine. Better L3 home is F02-G04-M01 Environment Context (DEFERRED tier), so an essential capability sits in a deferred module; audit hides this in a CLARIFY note.",
+   "l3_covered_by_existing_id": "F02-G04-M01"
+  },
+  {
+   "capability": "Task duration estimates",
+   "audit_status": "PARTIAL",
+   "audit_essential": "YES",
+   "verdict_status": "PARTIAL",
+   "verdict_essential": "YES",
+   "source": "spec D defaults [MĐ]; P6-BP-OD-03",
+   "reason": "Fine as parent-entered. Statement \"do not introduce norms\" sits oddly with shipped defaults (10 min x grade, F4 session lengths, all [MĐ]); defaults must be labelled UNVERIFIABLE per OD-03.",
+   "l3_covered_by_existing_id": null
+  },
+  {
+   "capability": "6-group budget + screen max",
+   "audit_status": "PARTIAL",
+   "audit_essential": "YES",
+   "verdict_status": "PARTIAL",
+   "verdict_essential": "YES",
+   "source": "spec §2; P6-BP-OD-03",
+   "reason": "Status right. Note \"hard-coded defaults acceptable\" conflicts with OD-03 (default bar must be researched/vetted else UNKNOWN, not labelled VALID/BALANCED).",
+   "l3_covered_by_existing_id": null
+  },
+  {
+   "capability": "Budget presets",
+   "audit_status": "MISSING",
+   "audit_essential": "YES",
+   "verdict_status": "PARTIAL",
+   "verdict_essential": "YES",
+   "source": "phase_c alite_v1 contains F04-G02-M03 and F04-G01-M02",
+   "reason": "By the audit own legend MISSING means no module in A-lite; both modules are in alite_v1. Sibling row with the same module is PARTIAL. Also \"presets = Standard Bar\" is interpretive (SC-001 line 44 separates Standard Bar from time-bound exceptions; Thi cử and Nghỉ hè are time-bound).",
+   "l3_covered_by_existing_id": "F04-G02-M03 and F04-G01-M02 (present)"
+  },
+  {
+   "capability": "Construct proposed schedule",
+   "audit_status": "MISSING",
+   "audit_essential": "YES",
+   "verdict_status": "MISSING",
+   "verdict_essential": "YES",
+   "source": "alite_v1 lacks F04-G02-M01",
+   "reason": "Status right. Essential YES holds only if A-lite excludes Pal chat; if Plan A step 2 applies, construction is by Pal. Feasibility of a deterministic builder is unevidenced (checkDayK is a checker).",
+   "l3_covered_by_existing_id": "F04-G02-M01 exists"
+  },
+  {
+   "capability": "One-time tasks",
+   "audit_status": "PARTIAL",
+   "audit_essential": "NO",
+   "verdict_status": "PARTIAL",
+   "verdict_essential": "YES (as week-only exception)",
+   "source": "spec-quy-tac E3, K3, K4; TOOLS pham_vi chi_tuan_nay, xoa_ngoai_le",
+   "reason": "Note says \"not described in spec/prototype\". Wrong: one-off changes (nghỉ một buổi, học bù, ốm hủy ngày) are in E3/K3/K4 and in two of the four Plan A tools. Essential flag should be YES for week-only exceptions.",
+   "l3_covered_by_existing_id": "F04-G01-M01 / F04-G06-M01"
+  },
+  {
+   "capability": "Soft cap \"Giữ mức này\", warn once",
+   "audit_status": "PARTIAL",
+   "audit_essential": "YES",
+   "verdict_status": "PARTIAL",
+   "verdict_essential": "YES",
+   "source": "spec §1.4; spec-quy-tac A2, D6",
+   "reason": "Correct.",
+   "l3_covered_by_existing_id": null
+  },
+  {
+   "capability": "Child proposal queue",
+   "audit_status": "MISSING",
+   "audit_essential": "YES",
+   "verdict_status": "MISSING",
+   "verdict_essential": "YES, but needs CHILD_EXECUTED",
+   "source": "B01-MS-OD-02; B01-CR-OD line 23",
+   "reason": "L3 exists (not FEATURE_GAP). Row ignores mode rule, 7-day expiry, hard-cap NOT_APPROVABLE, and free-text verbatim leak.",
+   "l3_covered_by_existing_id": "F04-G06-M01, F04-G03-M02"
+  },
+  {
+   "capability": "Weather pack reminder",
+   "audit_status": "FEATURE_GAP",
+   "audit_essential": "NO",
+   "verdict_status": "PARTIAL (L4-level, not L3 gap)",
+   "verdict_essential": "YES for Plan A port",
+   "source": "spec-phuong-an-a §5 \"báo đói, thời tiết\"; spec-quy-tac I4",
+   "reason": "A missing L4 feature is not an L3 FEATURE_GAP (Inventory L3 = capability unit). It is a 4-choice input plus rule-based packing list and next-morning reminder, fitting F04-G04-M01 and F04-G07-M01. Plan A lists it among behaviours to port, so NO is wrong for Plan A.",
+   "l3_covered_by_existing_id": "F04-G04-M01 / F04-G07-M01"
+  },
+  {
+   "capability": "Photo capture + AI feedback",
+   "audit_status": "DEFERRED_OK",
+   "audit_essential": "NO",
+   "verdict_status": "SPLIT",
+   "verdict_essential": "capture YES for Plan A; AI grading NO",
+   "source": "ref-nhat-ky-test 2026-11-05 \"Chụp ảnh… Đạt\"; Plan A §1 item 4",
+   "reason": "Row lumps capture (E0, Plan A feature 4, already tested) with AI grading (SC-002-D05 pilot). Only grading is deferrable.",
+   "l3_covered_by_existing_id": "F04-G05-M02"
+  },
+  {
+   "capability": "Voice Kể cho Pal",
+   "audit_status": "DEFERRED_OK",
+   "audit_essential": "NO",
+   "verdict_status": "DEFERRED_OK for A-lite, YES for Plan A",
+   "verdict_essential": "NO",
+   "source": "Plan A §1 item 3; prototype index.html:1028",
+   "reason": "Prototype button only pre-fills chat input; recording is Plan A feature 3.",
+   "l3_covered_by_existing_id": "F07-G03-M03"
+  },
+  {
+   "capability": "After-school Ổn/Hơi mệt/Rất mệt + relief",
+   "audit_status": "MISSING",
+   "audit_essential": "YES",
+   "verdict_status": "MISSING (new build, owner unclear)",
+   "verdict_essential": "YES",
+   "source": "spec-quy-tac G3, L2; prototype 1036-1038",
+   "reason": "Need sourced. Prototype has no deterministic relief and no trend. Module F02-G05-M02 is the wrong owner (profile corrections). Trend uses 2-week window per L2.",
+   "l3_covered_by_existing_id": "No clean L3 owner; F04-G04/F04-G05 candidate"
+  },
+  {
+   "capability": "Hunger signal",
+   "audit_status": "MISSING",
+   "audit_essential": "NO",
+   "verdict_status": "MISSING",
+   "verdict_essential": "YES for Plan A port",
+   "source": "spec-quy-tac H5; spec-phuong-an-a §5, §6 step 5",
+   "reason": "Plan A step 5 explicitly pushes \"báo đói\" to the parent device. Not deferrable if Plan A is the reference. Same wrong-owner issue as fatigue.",
+   "l3_covered_by_existing_id": null
+  },
+  {
+   "capability": "Trend to parent, not verbatim",
+   "audit_status": "PARTIAL",
+   "audit_essential": "YES",
+   "verdict_status": "MISSING",
+   "verdict_essential": "YES",
+   "source": "phase_c alite_v2 omits F06-G04-M01",
+   "reason": "Owning module F06-G04-M01 is not in alite_v2 (nor v1), only F06-G05-M01 is, so an essential capability has no module. In the spec the trend is Pal-computed (L2), i.e. E2, so \"deterministic\" is an audit assumption.",
+   "l3_covered_by_existing_id": "F06-G04-M01"
+  },
+  {
+   "capability": "Temporary phase",
+   "audit_status": "MISSING",
+   "audit_essential": "YES",
+   "verdict_status": "PARTIAL",
+   "verdict_essential": "YES",
+   "source": "alite_v1 contains F04-G02-M03 and F04-G01-M01",
+   "reason": "Same legend inconsistency as presets. Also omits P6-BP-OD-01 60-day cap and 7-day gap, and prototype creates the phase via LLM prompt (index.html:497), applyPeriod only applies state; exec E0 needs a structured form (owner decision).",
+   "l3_covered_by_existing_id": "F04-G02-M03, F04-G01-M01 (present)"
+  },
+  {
+   "capability": "Schedule revisions / version history",
+   "audit_status": "PARTIAL",
+   "audit_essential": "YES",
+   "verdict_status": "PARTIAL",
+   "verdict_essential": "YES",
+   "source": "prototype snapshotPlan; B01 Plan Structure",
+   "reason": "Fine.",
+   "l3_covered_by_existing_id": null
+  },
+  {
+   "capability": "Progress exceptions (sick day)",
+   "audit_status": "MISSING",
+   "audit_essential": "NO",
+   "verdict_status": "MISSING",
+   "verdict_essential": "NO (acceptable)",
+   "source": "spec-quy-tac K4",
+   "reason": "OK, but K4 sick-day cancel is a schedule capability (see week-only exception), and Rất mệt counted as failure is a real risk; keep as recommended.",
+   "l3_covered_by_existing_id": null
+  },
+  {
+   "capability": "Free-text safety layer",
+   "audit_status": "PARTIAL",
+   "audit_essential": "CONDITIONAL",
+   "verdict_status": "PARTIAL",
+   "verdict_essential": "YES",
+   "source": "CLAUDE.md \"Lớp an toàn chạy trước AI\"; Plan A §4, §6 step 2; spec-quy-tac N1-N2",
+   "reason": "Prototype standard behaviour is free-text Pal chat, free-text proposals and free-text profile. HARD_SAFETY should not be conditional on the audit choosing structured input; at minimum static 111/113/115 content plus pre-AI rules are essential.",
+   "l3_covered_by_existing_id": "F07-G05-M01, F07-G01-M01"
+  },
+  {
+   "capability": "Plan A geofence",
+   "audit_status": "FEATURE_GAP",
+   "audit_essential": "CONDITIONAL",
+   "verdict_status": "PARTIAL",
+   "verdict_essential": "YES for Plan A gate",
+   "source": "Plan A §1 item 2, §4 \"chỉ lưu sự kiện vào/ra vùng\"; Group_07 F08-G04-M01/M02",
+   "reason": "Mappable to existing IDs (see F08-G04-M01 verdict), so not a clean FEATURE_GAP. CONDITIONAL understates an Owner-confirmed feature that is already in device testing (log 2026-11-05).",
+   "l3_covered_by_existing_id": "F08-G04-M01/M02, F01-G04-M02, F06-G01, F04-G07"
+  }
+ ],
+ "missed": [
+  {
+   "id": "M1",
+   "title": "A-lite v2 is zero-AI and free-text-free, but the standard behaviour is Pal chat",
+   "severity": "HIGH",
+   "source": "CLAUDE.md \"prototype/index.html là hành vi chuẩn\"; spec-phuong-an-a §6 step 2; prototype 456, 1127",
+   "detail": "ai_modules_in_v2=[] and e2_genuinely_needed called \"optional convenience\". Plan A requires pal-chat with anonymisation, per-device daily cap and pre-AI safety. Missing capabilities: anonymisation of child name/school, rate cap (F07-G03-M02), safety layer essential."
+  },
+  {
+   "id": "M2",
+   "title": "Child proposals in parent-led mode contradict approved decisions",
+   "severity": "HIGH",
+   "source": "B01_Change_Requests_Owner_Decision_Log line 23; B01_Mode_State log OD-01, OD-02, OD-04",
+   "detail": "Needs CHILD_EXECUTED per child, UNSET fails closed, 7-day expiry, hard-cap not approvable. Audit says \"parent-led pilot, single approver\"."
+  },
+  {
+   "id": "M3",
+   "title": "Temporary-exception caps and default-bar rules not applied",
+   "severity": "HIGH",
+   "source": "Feature_3_2_L4_P6_Balanced_Planning_Owner_Decision_Log OD-01, OD-02, OD-03",
+   "detail": "60-day continuous relaxation cap, >=7 empty days between similar exceptions, protected_hard vs family_hard, app default bar must be vetted else UNKNOWN. Audit accepts \"hard-coded defaults\" and treats spec sàn as universal HARD_SAFETY."
+  },
+  {
+   "id": "M4",
+   "title": "Plan A five features treated inconsistently",
+   "severity": "MEDIUM",
+   "source": "spec-phuong-an-a §1, §5, §6; ref-nhat-ky-test.md 2026-11-05",
+   "detail": "Geofence CONDITIONAL, photo/voice NO, hunger/weather NO, yet all are Owner-confirmed and in device test. Missing rows: morning alarm (setAlarmClock), notification \"Xong\" button, rescheduling all reminders after Pal edits, parent-to-child push."
+  },
+  {
+   "id": "M5",
+   "title": "Week-only exceptions, profile with health data and goals not in matrix",
+   "severity": "MEDIUM",
+   "source": "prototype TOOLS luu_ho_so, cap_nhat_tong_quan, cap_nhat_ngay pham_vi, xoa_ngoai_le; spec-quy-tac B2-B3, E3, K3-K4",
+   "detail": "Profile holds suc_khoe (allergy, medication), a sensitive child-data category; no coverage row or data-class check. \"One-time tasks not specified\" is false."
+  },
+  {
+   "id": "M6",
+   "title": "Fatigue adjustment and trend are not in the prototype",
+   "severity": "MEDIUM",
+   "source": "prototype index.html:1036-1038 (only L.met and a message); spec-quy-tac L2, G3; SC-001-D02",
+   "detail": "Audit cites \"prototype pattern\" and \"deterministic adjustment\" that do not exist; omits 2-week window and the D02 caution against counting fatigue alone."
+  },
+  {
+   "id": "M7",
+   "title": "Internal inconsistencies in phase_c",
+   "severity": "MEDIUM",
+   "source": "phase_c.json capabilities vs alite_v1/alite_v2",
+   "detail": "Presets and temporary phase marked MISSING though their modules are in alite_v1 (essential_missing_in_baseline overstated, 5 should be 3). F06-G04-M01 absent from v2 yet owns an essential row. legal_blocked_in_v2 lists 2 modules while 4 BLOCKED-by-review modules (F01-G04-M01/M02, F01-G05-M01, F07-G06-M01) are in v2."
+  },
+  {
+   "id": "M8",
+   "title": "Device pairing, Parent PIN and identity assumptions",
+   "severity": "LOW",
+   "source": "FR01 Owner decision APPROVED; spec-phuong-an-a §1 \"Không làm… tài khoản riêng\"; spec-quy-thoi-gian §4 limits",
+   "detail": "Parent/child on two phones needs pairing and PIN-gated child Settings (FR-01), absent from matrix; v2 includes full account bundle (F01-G01-M01/M02, F01-G02-M01) while Plan A explicitly defers per-person accounts and uses a family code."
+  }
+ ],
+ "unsourced_limits": [
+  {
+   "item": "\"deterministic fatigue/overload trend flags\" (phase_a F06-G04-M02, phase_c Trend row)",
+   "issue": "No window or threshold source; \"overload\" has no source at all. Only sourced window is 2 weeks (spec-quy-tac L2). Any count threshold would be an unsourced health threshold (SC-001-D01).",
+   "severity": "HIGH"
+  },
+  {
+   "item": "Sleep row labelled HARD_SAFETY, \"Floor never relaxed, even in exceptions\"; \"essential living needs\"",
+   "issue": "Sleep floor is [NC] AASM, but \"essential living needs\" maps to C7 [MĐ]; P6 BP log §3 says protected hard-cap per domain is UNKNOWN. Presenting [MĐ] floors as protected universal limits is unsourced.",
+   "severity": "MEDIUM"
+  },
+  {
+   "item": "\"hard-coded defaults acceptable\" for F03-G03-M01 age defaults",
+   "issue": "Allows unvetted numeric defaults (10 min x grade, 30-min screen) to act as bar; P6-BP-OD-03 requires vetted default or UNKNOWN.",
+   "severity": "MEDIUM"
+  },
+  {
+   "item": "\"day ordering rules, ±30 min\" listed as a deterministic construction rule",
+   "issue": "Spec D4 gives no evidence label; it is a product rule, should carry [MĐ].",
+   "severity": "LOW"
+  },
+  {
+   "item": "\"2-week review if >6 weeks\"",
+   "issue": "Sourced (spec-quy-tac J2, spec §3) so allowed, but audit omits the Owner 60-day cap (P6-BP-OD-01).",
+   "severity": "INFO"
+  },
+  {
+   "item": "No new universal time limit found",
+   "issue": "Scanned phase_a.json and phase_c.json for numeric limits: only 24h, 1 min, 45 s, 30 min, 6 weeks, all traceable to spec or Plan A.",
+   "severity": "INFO"
+  }
+ ]
+}

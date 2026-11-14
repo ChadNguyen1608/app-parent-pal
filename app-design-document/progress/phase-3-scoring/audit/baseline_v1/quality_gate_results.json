@@ -1,0 +1,127 @@
+[
+ {
+  "check": "106 unique L3",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "no invented/omitted IDs vs inventory",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "all 8 domains present",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "no gate PASS anywhere",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "mvp_decision NOT_DECIDED everywhere",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "six cohort records per module",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "every NOT_APPLICABLE cohort has reason",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "FULL records have value+delivery reasons",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "FULL cohort reasons present",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "no composite score field",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "blocked modules not marked released",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "estimates labelled (delivery label ESTIMATE)",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "registry counts match data",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "registry has 106+66+66+40 rows",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "package sizes in 05 match data",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "package tier splits in 05 match",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "cost table values in 04 match data",
+  "result": "PASS",
+  "detail": "['3.370', '183', '975', '19.500', '131']"
+ },
+ {
+  "check": "package cost values in 04 match data",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "tier3 count consistent",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "no build-time cycles",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "every HARD edge has reason",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "all edges CANDIDATE (none falsely CONFIRMED)",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "no secrets/emails in outputs",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "no claim of legal compliance",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "no claim of independent L4 regression",
+  "result": "PASS",
+  "detail": ""
+ }
+]

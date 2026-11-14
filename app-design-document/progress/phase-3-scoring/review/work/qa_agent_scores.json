@@ -1,0 +1,322 @@
+{
+ "F04-G07-M01": {
+  "core_loop_contribution": 4,
+  "adoption_potential": 4,
+  "differentiation": 2,
+  "dependency_enablement": 2,
+  "A2": {
+   "parent_value": 4,
+   "child_value": 3
+  },
+  "A3": {
+   "parent_value": 4,
+   "child_value": 4
+  },
+  "implementation_effort": 3,
+  "maintenance_effort": 2,
+  "operating_cost": "M",
+  "ai_cost_risk": "L",
+  "latency_and_reliability": "H",
+  "implementation_complexity": 3,
+  "scalability": "M",
+  "reasons": {
+   "core_loop": "Reminder is the nudge step that makes the schedule actionable.",
+   "adoption": "Reminders are used at natural daily frequency with low friction once set.",
+   "differentiation": "Reminders are standard in any task app; only the stale-job recheck and generic wording are distinctive.",
+   "enablement": "Unlocks little beyond itself (notification preferences feed it, not vice versa).",
+   "parent_value_A2": "Removes the repeated chore of reminding a 6-10 child.",
+   "parent_value_A3": "Same relief, smaller since 11-14 children self-manage more.",
+   "child_value_A2": "Helps with a concrete task but the A2 child is reminded more than self-driven.",
+   "child_value_A3": "Supports self-directed task execution and autonomy.",
+   "implementation_effort": "Stateful job queue with recheck at dispatch, push integration.",
+   "maintenance_effort": "Mostly stable; OS push policy changes.",
+   "operating_cost": "Push and background jobs.",
+   "ai_cost_risk": "No model call.",
+   "latency": "Late or stale reminder breaks the outcome.",
+   "complexity": "Cross-module rechecks (plan, assignment, preference epoch) and external push provider.",
+   "scalability": "Scales linearly with occurrences; peaks at common times."
+  },
+  "confidence": "HYPOTHESIS"
+ },
+ "F04-G02-M03": {
+  "core_loop_contribution": 3,
+  "adoption_potential": "N/A",
+  "differentiation": 4,
+  "dependency_enablement": 3,
+  "A2": {
+   "parent_value": 3,
+   "child_value": "INDIRECT"
+  },
+  "A3": {
+   "parent_value": 3,
+   "child_value": "INDIRECT"
+  },
+  "implementation_effort": 3,
+  "maintenance_effort": 3,
+  "operating_cost": "L",
+  "ai_cost_risk": "L",
+  "latency_and_reliability": "L",
+  "implementation_complexity": 3,
+  "scalability": "L",
+  "reasons": {
+   "core_loop": "Supports the planning step by checking load/recovery balance.",
+   "adoption": "Runs inside schedule construction; not a user-facing action, so N/A.",
+   "differentiation": "Load-and-recovery validation grounded in project's own rules is a distinct value proposition.",
+   "enablement": "Gates ready status of schedules; unlocks one core module.",
+   "parent_value_A2": "Better plan quality on a weekly decision, felt indirectly.",
+   "parent_value_A3": "Same, higher workload at 11-14 makes balance matter more.",
+   "child_value_A2": "Not a direct child-facing feature.",
+   "child_value_A3": "Not a direct child-facing feature.",
+   "implementation_effort": "Rule evaluation with versioned Standard Bar and UNKNOWN handling.",
+   "maintenance_effort": "Rules/thresholds need periodic evidence-based updates.",
+   "operating_cost": "Deterministic compute.",
+   "ai_cost_risk": "No model call.",
+   "latency": "Sync validation, tolerable delay.",
+   "complexity": "Depends on constraints, conflict, and bar versions.",
+   "scalability": "Per-plan, near flat."
+  },
+  "confidence": "HYPOTHESIS"
+ },
+ "F06-G02-M01": {
+  "core_loop_contribution": 3,
+  "adoption_potential": "N/A",
+  "differentiation": 3,
+  "dependency_enablement": 3,
+  "A2": {
+   "parent_value": "INDIRECT",
+   "child_value": "INDIRECT"
+  },
+  "A3": {
+   "parent_value": "INDIRECT",
+   "child_value": "INDIRECT"
+  },
+  "implementation_effort": 3,
+  "maintenance_effort": 3,
+  "operating_cost": "L",
+  "ai_cost_risk": "L",
+  "latency_and_reliability": "L",
+  "implementation_complexity": 3,
+  "scalability": "L",
+  "reasons": {
+   "core_loop": "Defines what counts as progress, supporting the report step.",
+   "adoption": "Rule engine, no direct user action.",
+   "differentiation": "Combination with exceptions and non-labeling is a modest differentiator.",
+   "enablement": "Feeds trends, insights and views; unlocks a core group.",
+   "parent_value_A2": "Infrastructure; value arrives via views.",
+   "parent_value_A3": "Same.",
+   "child_value_A2": "Infrastructure.",
+   "child_value_A3": "Infrastructure.",
+   "implementation_effort": "Versioned rule definitions and evaluation.",
+   "maintenance_effort": "Rule changes over time.",
+   "operating_cost": "DB and compute only.",
+   "ai_cost_risk": "No model call.",
+   "latency": "Batch tolerant.",
+   "complexity": "Depends on event log, tasks, exceptions.",
+   "scalability": "Linear in events."
+  },
+  "confidence": "HYPOTHESIS"
+ },
+ "F02-G01-M01": {
+  "core_loop_contribution": 4,
+  "adoption_potential": 3,
+  "differentiation": 2,
+  "dependency_enablement": 5,
+  "A2": {
+   "parent_value": 3,
+   "child_value": "INDIRECT"
+  },
+  "A3": {
+   "parent_value": 3,
+   "child_value": "INDIRECT"
+  },
+  "implementation_effort": 3,
+  "maintenance_effort": 2,
+  "operating_cost": "L",
+  "ai_cost_risk": "L",
+  "latency_and_reliability": "L",
+  "implementation_complexity": 4,
+  "scalability": "L",
+  "reasons": {
+   "core_loop": "Profile context is needed by planning and recommendations.",
+   "adoption": "One-time setup plus updates; completion moderate friction.",
+   "differentiation": "Intake forms are common.",
+   "enablement": "Profile feeds most downstream modules.",
+   "parent_value_A2": "Clear help for setup, but not weekly.",
+   "parent_value_A3": "Same.",
+   "child_value_A2": "Parent-entered data, child is not direct beneficiary.",
+   "child_value_A3": "Same; self-update may come later.",
+   "implementation_effort": "Versioned guarded updates.",
+   "maintenance_effort": "Field allowlist changes occasionally.",
+   "operating_cost": "DB only.",
+   "ai_cost_risk": "No model call.",
+   "latency": "Tolerates delay.",
+   "complexity": "Sensitive child data, scope checks, many dependents.",
+   "scalability": "Flat."
+  },
+  "confidence": "HYPOTHESIS"
+ },
+ "F05-G02-M01": {
+  "core_loop_contribution": 3,
+  "adoption_potential": 3,
+  "differentiation": 4,
+  "dependency_enablement": 2,
+  "A2": {
+   "parent_value": "INDIRECT",
+   "child_value": 3
+  },
+  "A3": {
+   "parent_value": "INDIRECT",
+   "child_value": 4
+  },
+  "implementation_effort": 3,
+  "maintenance_effort": 3,
+  "operating_cost": "M",
+  "ai_cost_risk": "M",
+  "latency_and_reliability": "M",
+  "implementation_complexity": 4,
+  "scalability": "M",
+  "reasons": {
+   "core_loop": "Supports the child-support step but loop closes without it.",
+   "adoption": "Opt-in by design; moderate use with friction.",
+   "differentiation": "Voluntary, non-profiling check-in with no emotional observation is distinctive.",
+   "enablement": "Opens the reflection chain only.",
+   "parent_value_A2": "Parent excluded by design from responses.",
+   "parent_value_A3": "Same, stronger privacy expectation.",
+   "child_value_A2": "Helpful but A2 may need more prompting.",
+   "child_value_A3": "Respects autonomy and gives acknowledgment.",
+   "implementation_effort": "Invitation state and eligibility.",
+   "maintenance_effort": "Prompt content and age variants.",
+   "operating_cost": "Notifications.",
+   "ai_cost_risk": "Digest rates Medium; invitation itself is not AI but downstream responses may be.",
+   "latency": "Delay reduces experience.",
+   "complexity": "Privacy-sensitive, links to Journal and safety.",
+   "scalability": "Linear."
+  },
+  "confidence": "HYPOTHESIS"
+ },
+ "F03-G05-M01": {
+  "core_loop_contribution": 3,
+  "adoption_potential": 3,
+  "differentiation": 4,
+  "dependency_enablement": 3,
+  "A2": {
+   "parent_value": 4,
+   "child_value": 2
+  },
+  "A3": {
+   "parent_value": 4,
+   "child_value": 3
+  },
+  "implementation_effort": 4,
+  "maintenance_effort": 5,
+  "operating_cost": "M",
+  "ai_cost_risk": "M",
+  "latency_and_reliability": "M",
+  "implementation_complexity": 5,
+  "scalability": "M",
+  "reasons": {
+   "core_loop": "Advisory input to goals, not required to close the loop.",
+   "adoption": "Used when needed, moderate friction from review.",
+   "differentiation": "Evidence-grounded, scope-gated recommendation is a distinct value.",
+   "enablement": "Unlocks review and career guidance.",
+   "parent_value_A2": "Improves important decisions.",
+   "parent_value_A3": "Same.",
+   "child_value_A2": "Mostly parent-facing at 6-10.",
+   "child_value_A3": "Some support for exploring options.",
+   "implementation_effort": "Retrieval, manifest, routing, provider gates.",
+   "maintenance_effort": "Evidence and framework content upkeep and Vietnamese AI safety evals.",
+   "operating_cost": "Retrieval and logging.",
+   "ai_cost_risk": "Web/model fallback bounded per request.",
+   "latency": "Slower answers degrade experience.",
+   "complexity": "Approved scope, anonymization, external providers.",
+   "scalability": "Linear with queries."
+  },
+  "confidence": "HYPOTHESIS"
+ },
+ "F01-G04-M02": {
+  "core_loop_contribution": 2,
+  "adoption_potential": "N/A",
+  "differentiation": 2,
+  "dependency_enablement": 4,
+  "A2": {
+   "parent_value": "INDIRECT",
+   "child_value": "INDIRECT"
+  },
+  "A3": {
+   "parent_value": "INDIRECT",
+   "child_value": "INDIRECT"
+  },
+  "implementation_effort": 4,
+  "maintenance_effort": 3,
+  "operating_cost": "L",
+  "ai_cost_risk": "L",
+  "latency_and_reliability": "L",
+  "implementation_complexity": 5,
+  "scalability": "L",
+  "reasons": {
+   "core_loop": "Compliance foundation, not a loop step.",
+   "adoption": "Mostly runs behind flows.",
+   "differentiation": "Consent ledgers are standard compliance.",
+   "enablement": "Needed by access and purpose checks across modules.",
+   "parent_value_A2": "Infrastructure.",
+   "parent_value_A3": "Infrastructure.",
+   "child_value_A2": "Infrastructure.",
+   "child_value_A3": "Infrastructure.",
+   "implementation_effort": "Versioned, auditable records.",
+   "maintenance_effort": "Legal changes.",
+   "operating_cost": "DB.",
+   "ai_cost_risk": "None.",
+   "latency": "Moderate impact.",
+   "complexity": "Legal, many dependents.",
+   "scalability": "Flat."
+  },
+  "confidence": "HYPOTHESIS"
+ },
+ "F06-G05-M01": {
+  "core_loop_contribution": 4,
+  "adoption_potential": 3,
+  "differentiation": 3,
+  "dependency_enablement": 3,
+  "A2": {
+   "parent_value": 4,
+   "child_value": 2
+  },
+  "A3": {
+   "parent_value": 4,
+   "child_value": 3
+  },
+  "implementation_effort": 3,
+  "maintenance_effort": 3,
+  "operating_cost": "L",
+  "ai_cost_risk": "L",
+  "latency_and_reliability": "M",
+  "implementation_complexity": 4,
+  "scalability": "L",
+  "reasons": {
+   "core_loop": "Role views carry the report step.",
+   "adoption": "Weekly review has some friction.",
+   "differentiation": "Child/parent audience separation is a combination advantage.",
+   "enablement": "Enables rendering and reviews.",
+   "parent_value_A2": "Gives clear weekly visibility.",
+   "parent_value_A3": "Same, filtered for child privacy.",
+   "child_value_A2": "Minor.",
+   "child_value_A3": "Some recognition.",
+   "implementation_effort": "Projection per audience.",
+   "maintenance_effort": "Per-audience rules change.",
+   "operating_cost": "DB.",
+   "ai_cost_risk": "None.",
+   "latency": "Slow views hurt.",
+   "complexity": "Authorization and privacy.",
+   "scalability": "Flat."
+  },
+  "confidence": "HYPOTHESIS"
+ },
+ "rubric_ambiguities": [
+  "adoption_potential N/A vs 1 for engine modules is a judgment call",
+  "INDIRECT vs 1 when parent is partly indirect (parent-entered intake)",
+  "dependency_enablement score before CP-03 graph is a guess",
+  "ai_cost_risk for modules whose digest says Medium but spec has no model call",
+  "latency anchor: H for reminders vs M for sync validation is subjective",
+  "A2 child_value when feature is parent-driven"
+ ]
+}

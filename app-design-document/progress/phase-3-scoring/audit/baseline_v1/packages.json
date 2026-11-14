@@ -1,0 +1,193 @@
+{
+ "A": {
+  "name": "Lịch tuần cân bằng cùng con",
+  "workflow": "W1",
+  "required": 32,
+  "optional": 11,
+  "by_tier": {
+   "MIN_FOUNDATION": 17,
+   "CORE_VALUE": 15
+  },
+  "effort_levels": {
+   "1": 2,
+   "2": 17,
+   "3": 11,
+   "4": 2
+  },
+  "complexity_ge4": [
+   "F01-G02-M01",
+   "F01-G04-M01",
+   "F01-G04-M02",
+   "F01-G06-M01",
+   "F07-G03-M01",
+   "F07-G04-M01",
+   "F07-G06-M01",
+   "F07-G06-M02"
+  ],
+  "safety_overhead_H": 10,
+  "e2": [
+   "F04-G02-M01"
+  ],
+  "legal_blocked_modules": [
+   "F01-G06-M01",
+   "F07-G05-M01",
+   "F07-G06-M02"
+  ],
+  "low_capped": [
+   "F01-G04-M01",
+   "F01-G04-M02",
+   "F01-G05-M01",
+   "F07-G06-M01"
+  ],
+  "ai_cost_vnd_per_hh_month": {
+   "Low": {
+    "vnd_per_hh_month": 1685,
+    "usd_total_month": 1.94
+   },
+   "Base": {
+    "vnd_per_hh_month": 3370,
+    "usd_total_month": 38.88
+   },
+   "High": {
+    "vnd_per_hh_month": 6739,
+    "usd_total_month": 777.6
+   }
+  },
+  "coarse_in_required": [],
+  "lite_required": 24,
+  "lite_legal_blocked": [
+   "F01-G06-M01",
+   "F07-G06-M02"
+  ]
+ },
+ "B": {
+  "name": "Pal đồng hành phụ huynh",
+  "workflow": "W2",
+  "required": 26,
+  "optional": 7,
+  "by_tier": {
+   "MIN_FOUNDATION": 21,
+   "CORE_VALUE": 5
+  },
+  "effort_levels": {
+   "2": 11,
+   "3": 12,
+   "4": 3
+  },
+  "complexity_ge4": [
+   "F01-G02-M01",
+   "F01-G04-M01",
+   "F01-G04-M02",
+   "F01-G06-M01",
+   "F03-G05-M01",
+   "F05-G01-M01",
+   "F05-G01-M02",
+   "F07-G03-M01",
+   "F07-G04-M01",
+   "F07-G06-M01",
+   "F07-G06-M02"
+  ],
+  "safety_overhead_H": 13,
+  "e2": [
+   "F03-G05-M01",
+   "F05-G01-M01"
+  ],
+  "legal_blocked_modules": [
+   "F01-G06-M01",
+   "F05-G01-M01",
+   "F05-G01-M02",
+   "F07-G05-M01",
+   "F07-G06-M02"
+  ],
+  "low_capped": [
+   "F01-G04-M01",
+   "F01-G04-M02",
+   "F01-G05-M01",
+   "F07-G06-M01"
+  ],
+  "ai_cost_vnd_per_hh_month": {
+   "Low": {
+    "vnd_per_hh_month": 369,
+    "usd_total_month": 0.43
+   },
+   "Base": {
+    "vnd_per_hh_month": 1106,
+    "usd_total_month": 12.76
+   },
+   "High": {
+    "vnd_per_hh_month": 3578,
+    "usd_total_month": 412.8
+   }
+  },
+  "coarse_in_required": []
+ },
+ "C": {
+  "name": "Vòng đầy đủ có tiếng nói của trẻ (điều kiện)",
+  "workflow": "W3",
+  "required": 49,
+  "optional": 0,
+  "by_tier": {
+   "MIN_FOUNDATION": 23,
+   "CORE_VALUE": 26
+  },
+  "effort_levels": {
+   "1": 4,
+   "2": 25,
+   "3": 14,
+   "4": 6
+  },
+  "complexity_ge4": [
+   "F01-G02-M01",
+   "F01-G04-M01",
+   "F01-G04-M02",
+   "F01-G06-M01",
+   "F04-G06-M01",
+   "F05-G01-M01",
+   "F05-G01-M02",
+   "F05-G04-M01",
+   "F05-G06-M01",
+   "F05-G06-M02",
+   "F07-G03-M01",
+   "F07-G04-M01",
+   "F07-G06-M01",
+   "F07-G06-M02"
+  ],
+  "safety_overhead_H": 16,
+  "e2": [
+   "F04-G02-M01",
+   "F05-G01-M01"
+  ],
+  "legal_blocked_modules": [
+   "F01-G06-M01",
+   "F05-G01-M01",
+   "F05-G01-M02",
+   "F05-G04-M01",
+   "F05-G04-M02",
+   "F05-G06-M01",
+   "F05-G06-M02",
+   "F07-G05-M01",
+   "F07-G06-M02"
+  ],
+  "low_capped": [
+   "F01-G04-M01",
+   "F01-G04-M02",
+   "F01-G05-M01",
+   "F07-G06-M01"
+  ],
+  "ai_cost_vnd_per_hh_month": {
+   "Low": {
+    "vnd_per_hh_month": 2010,
+    "usd_total_month": 2.32
+   },
+   "Base": {
+    "vnd_per_hh_month": 4345,
+    "usd_total_month": 50.13
+   },
+   "High": {
+    "vnd_per_hh_month": 9989,
+    "usd_total_month": 1152.6
+   }
+  },
+  "coarse_in_required": []
+ }
+}
