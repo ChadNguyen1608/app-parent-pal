@@ -111,3 +111,8 @@ Owner explicitly approved **all four** Batch 02 L3 modules in proposed workstrea
 ## 2026-11-14 — Approved FR-01 option A
 
 Owner confirmed Parent PIN protects Child App Unlink, eligible Parent App receives unlink notification, re-pair same household uses standard flow, re-pair into different household requires separate child-specific caregiver authority verification. Source: [FR-01 Owner Decision](Feature_3_2_L4_FR01_Parent_PIN_Unlink_and_Repairing_Owner_Decision_APPROVED.md). Supersedes older, insufficiently constrained candidate unlink / new-household pairing text; does not approve a verification vendor or mechanism. FR-01 HIGH design finding remains OPEN pending independent re-review and runtime evidence. No final L4 approval.
+
+
+## 2026-11-14 — OD-02..OD-05 approved following Claude final L4 verification
+
+Owner selected recommended variants for OD-02 (no sponsor content to children under 18 / A0–A4 in first release), OD-03 (child static trusted-adult advice optionally 111; eligible parent emergency static 111/113/115; no AI emergency advice or contact), OD-04 (include v3.1 B01 addendum in **supplemental** immutable review manifest, not independent acceptance) and OD-05 (all user-facing generated AI requires approved scope/output checks; category-specific source routing remains separately constrained). Authoritative record: [OD02-05 Owner Decision Log](Feature_3_2_L4_OD02_OD05_Owner_Decision_Log_APPROVED.md). Review pin: [Supplemental Manifest](Feature_3_2_L4_20261114_Owner_Finding_Remediation_Supplemental_Manifest_REVIEW.md). FR-01 earlier approved separately. FR-06, FR-09, FR-08 and H2 remain **RECHECK_PENDING** after spec amendment; FR-03/H4 legal blockers not solved. No Final L4 approval or canonical update.
