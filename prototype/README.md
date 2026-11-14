@@ -42,4 +42,4 @@ Theo quyết định D-14 (`app-design-document/progress/Owner_Decision_Log_2026
 | Nghỉ giữa hai khối học 3′ trong `checkDayK` | Ít nhất 5′ | C3, D-23 |
 | Báo xu hướng mệt cho bố mẹ theo từng lúc | Chỉ tổng hợp trong báo cáo cuối tuần | L2, D-03, D-21 |
 | Số khẩn 111/113/115 dùng chung | Trẻ: "nói với người lớn con tin", có thể kèm 111 | N2, D-06 |
-| Không có nút "Con cần giúp đỡ" | Có nút cố định, không ghi lại, không tự báo gia đình | N3, D-26 |
+| Không có nút "Con cần giúp đỡ" | Có nút cố định, không ghi lại, không tự báo gia đình; gợi ý con báo bố mẹ | N3, D-26, D-30 |

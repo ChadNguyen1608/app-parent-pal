@@ -77,6 +77,7 @@ Trả lời của chủ sản phẩm cho các câu hỏi gộp từ User Flow đ
 | D-26 | Nút "Con cần giúp đỡ" trên app của con | **Phương án (b):** mặc định không ghi lại, không tự báo gia đình (người gây hại có thể ở trong nhà; khớp REM-HRW). Con được tự chọn gửi "Con cần nói chuyện" tới người lớn con chọn. Chuyên gia duyệt câu chữ |
 | D-27 | Phụ huynh không dùng app | Người quản lý chính không dùng app **một tháng** thì đóng băng tài khoản, gửi thông báo, chờ phụ huynh xác nhận mở lại; tài khoản của con liên kết cũng đóng băng theo. **Không đóng băng** nếu người lớn khác trong gia đình vẫn dùng (chỉ nhắc người quản lý chính). Khi đóng băng, **giữ nguyên dữ liệu**; thời hạn giữ chờ luật sư |
 | D-28 | Phụ huynh rút đồng ý | **Rút phần nào thì chỉ tắt tính năng đó** (ví dụ rút đồng ý ghi mệt thì tắt nút báo mệt, lịch vẫn chạy). Rút toàn bộ thì ngừng thu và tiến tới xóa. Thời hạn xóa chờ luật sư |
+| D-30 | Con nói về tự hại hoặc bấm nút "Con cần giúp đỡ" thì có báo bố mẹ không? | **Không tự ý báo.** App **gợi ý con báo bố mẹ**, có nút gửi sẵn; con không muốn báo bố mẹ thì có thể chọn người lớn khác con tin. Chỉ gửi khi con bấm. Bổ sung cho D-26 |
 | D-29 | Câu hỏi pháp lý mới | Thêm vào `progress/Legal_Question_Pack.md`: rút đồng ý từng phần, thời hạn xóa, đóng băng tài khoản và giữ dữ liệu |
 
 Còn mở: có đưa phần kỹ năng mềm (v5.21, v5.22 của bản đồ kiến thức, hiện chỉ có trong project trên claude.ai) vào repo không.

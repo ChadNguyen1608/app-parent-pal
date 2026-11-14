@@ -190,7 +190,7 @@ Quỹ mặc định theo tuổi [MĐ]:
 |---|---|
 | N1 | Không chẩn đoán, không nêu liều thuốc. Ốm thì gợi ý theo dõi và hỏi bác sĩ. |
 | N2 | **Với người lớn:** dấu hiệu khẩn cấp (khó thở, co giật, bất tỉnh) thì gọi 115; nguy hiểm về an ninh gọi 113; bạo hành hoặc xâm hại trẻ thì gọi 111. **Với trẻ:** lời chính là "nói với người lớn con tin", có thể kèm 111; không đưa 113, 115 làm lời chính cho trẻ (D-06, OD-03). |
-| N3 | App của con có nút cố định **"Con cần giúp đỡ"** cho lúc con thấy không an toàn (bị đánh, xâm hại, bắt nạt, dụ dỗ trên mạng, có ý nghĩ làm hại bản thân): hiện lời "nói với người lớn con tin" và số 111. App **không ghi lại và không tự báo gia đình**, vì người gây hại có thể ở trong nhà. Con được tự chọn gửi "Con cần nói chuyện" tới người lớn con chọn (D-26). Câu chữ cần chuyên gia duyệt. |
+| N3 | App của con có nút cố định **"Con cần giúp đỡ"** cho lúc con thấy không an toàn (bị đánh, xâm hại, bắt nạt, dụ dỗ trên mạng, có ý nghĩ làm hại bản thân): hiện lời "nói với người lớn con tin" và số 111. App **không ghi lại và không tự báo gia đình**, vì người gây hại có thể ở trong nhà. App **gợi ý con báo bố mẹ** (hoặc người lớn khác con tin, nếu con không muốn báo bố mẹ), có nút gửi sẵn "Con cần nói chuyện"; chỉ gửi khi con bấm (D-26, D-30). Câu chữ cần chuyên gia duyệt. |
 
 ## O. Kiểm tra tự động trong app
 
