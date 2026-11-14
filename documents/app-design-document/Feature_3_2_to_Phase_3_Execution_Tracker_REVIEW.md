@@ -53,3 +53,17 @@ Owner explicitly approved **all four** Batch 02 L3 modules in proposed workstrea
 
 - [Consolidation and Owner Decision Package](Feature_3_2_L4_Consolidation_and_Owner_Decision_Package_REVIEW.md) at `90de65088ec0866894531c23da54e8c2908c9d8d`. B02–B26 cover 98 L3 in candidate design, with eight prior P6/B01 review dispositions. Total 106/106 accounted for. 129 new candidate IDs and 148 new proposed test IDs; zero runtime runs.
 - B26 addresses the B02 household and export partial slices. Owner review has three questions. Independent Claude handoff is prepared. Final L4 approval, stable IDs and canonical edits remain separately gated.
+
+## Detailed review checkpoints
+
+Detailed review expands the prior inventory coverage. Track candidate depth separately from independent verification, Owner acceptance and runtime evidence.
+
+| Group | Scope | Status |
+|---|---|---|
+| [01](Feature_3_2_L4_Detailed_Review_Group_01_Linking_and_Membership_REVIEW.md) | Child App pairing, membership, sessions | Detailed draft |
+| [02](Feature_3_2_L4_Detailed_Review_Group_02_Pal_Response_REVIEW.md) | Education answers, companion guardrails, routing, safety | Detailed draft |
+| [03](Feature_3_2_L4_Detailed_Review_Group_03_Journal_Lifecycle_REVIEW.md) | Journal sharing, lineage, lifecycle, purge/export | Detailed draft; legal and backup gates open |
+| [04](Feature_3_2_L4_Detailed_Review_Group_04_Plan_Changes_REVIEW.md) | Plan baseline, approval, routing, balance, history | Detailed draft; commit/clock evidence pending |
+| [05](Feature_3_2_L4_Detailed_Review_Group_05_Learning_Evidence_REVIEW.md) | Submission, assessment provenance and audience-safe reports | Detailed draft; P6 evidence pending |
+
+Next, partition the remaining inventory in groups of 3–5 L3, starting with activity evidence, progress and indicators. Then prioritize third-party sharing/commerce and operational controls before the other capability families. Exit a group when authority/data owners, entry states, exceptional transitions, cohort applicability, positive/negative/retry oracles, upstream trace and pending evidence are recorded. A whole-catalog depth claim requires an explicit per-L3 crosswalk. Consolidated independent re-review and runtime evidence remain pending.
