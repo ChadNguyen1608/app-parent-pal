@@ -154,3 +154,8 @@ The 94-module depth scope is the 106 L3 in 3.2-R1 less the 12 originally reviewe
 | F08-G05-M02 | [08](Feature_3_2_L4_Detailed_Review_Group_08_Commerce_and_Expenses_REVIEW.md) | Detailed candidate |
 | F08-G06-M01 | [08](Feature_3_2_L4_Detailed_Review_Group_08_Commerce_and_Expenses_REVIEW.md) | Detailed candidate |
 | F08-G06-M02 | [08](Feature_3_2_L4_Detailed_Review_Group_08_Commerce_and_Expenses_REVIEW.md) | Detailed candidate |
+
+
+## 2026-11-14 Owner gate overlay — OD-02 and OD-05
+
+[Owner-approved OD-02/05](Feature_3_2_L4_OD02_OD05_Owner_Decision_Log_APPROVED.md) applies to Activity Directory and Resource Matching: no sponsored listing/offer/rank promotion for users under 18 (A0–A4) in first release, including cached or paginated output or sponsored recommendation disguised as organic. Parent/eligible-adult commercial presentation stays separately gated. All AI-generated user-facing explanations of matches, including non-education requests, require current approved answer-scope evidence and output validation; no automatic web/LLM sourcing grant. Synthetic tests OD02-T01..03 and OD05-T01..03 pending independent re-review.
