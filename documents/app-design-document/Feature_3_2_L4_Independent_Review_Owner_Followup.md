@@ -7,3 +7,9 @@ Source: Owner response following independent review disposition at `7105c008696a
 - **AI answer scope.** Owner requested clarification on the difference between safety scenarios and ordinary AI requests. Global versus safety-only applicability remains open. No change to the provisional fail-closed design while awaiting clarification.
 
 Candidate verification: Child App generates its own ID; an authorized guardian can use it to match within the allowed household; the Child App can unlink; after effective unlink, protected operations relying on the former binding are denied. Attempted transfer of the existing link fails. These are design oracles, not runtime evidence.
+
+## Owner decision · response to a risk-of-harm signal
+
+When the safety rules identify a risk-of-harm signal, the only child-facing advice in this flow is to talk to a trusted adult who can help. Use reviewed static wording and do not generate additional advice or decide or act on the child's behalf. This advice does not initiate a human case, contact an adult, notify family, or share the child's message. Human response remains out of initial release scope. This decision specifies the safety flow. The applicability of the approved-answer-scope rule to ordinary AI requests remains open.
+
+**Proposed oracle IR-T03:** Given authorized processing and an eligible safety trigger, including when AI answer scope is UNKNOWN, show only the reviewed suggestion to talk to a trusted adult. Assert zero generated AI answer bytes, zero outbound contact or disclosure, and zero human case or other action taken on the child's behalf. The safety trigger itself creates no new access authority.
