@@ -107,3 +107,8 @@ Next, use checkpoint 24's per-L3 crosswalk for consolidated independent re-revie
 ## 2026-11-14 — Owner FR-01A/B gate
 
 [Approved FR-01 Option A](Feature_3_2_L4_FR01_Parent_PIN_Unlink_and_Repairing_Owner_Decision_APPROVED.md) added: Parent PIN for linked child Unlink, minimal Parent App notification, normal same-household re-pair, separate child-specific authority verification before different-household link. Group 01 candidate amended by explicit supersession note; FR01-T01..T11 proposed. FR-01 HIGH **OPEN / SPEC_REVIEW_PENDING**; exact PIN security parameters and cross-household verification method not decided. No real-data processing, canonical edit, release or PR merge.
+
+
+## 2026-11-14 — Claude OD-02..OD-05 Owner gate recorded
+
+Owner has approved OD-02 under-18 sponsored-content exclusion; OD-03 reviewed static 111 child safety and parent emergency 111/113/115 with no generated advice/outbound action; OD-04 B01 v3.1 supplemental pin; OD-05 global AI-output approved-scope gate without blanket external sourcing. See [Decision Log](Feature_3_2_L4_OD02_OD05_Owner_Decision_Log_APPROVED.md) and [Supplemental Reviewer Manifest](Feature_3_2_L4_20261114_Owner_Finding_Remediation_Supplemental_Manifest_REVIEW.md). Detailed groups 02/04/08/24 have explicit supersession annotations. FR-01 earlier approved with Parent PIN and new household verification. Claude focused recheck required for FR-01, FR-06, FR-09, FR-08, H2; FR-03/H4 legal gates remain open. Value/Cost 3.3 scoring still provisional; no MVP selection, Final L4 or PR merge.
