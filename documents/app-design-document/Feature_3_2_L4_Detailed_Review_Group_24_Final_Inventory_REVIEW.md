@@ -159,3 +159,10 @@ The 94-module depth scope is the 106 L3 in 3.2-R1 less the 12 originally reviewe
 ## 2026-11-14 Owner gate overlay — OD-02 and OD-05
 
 [Owner-approved OD-02/05](Feature_3_2_L4_OD02_OD05_Owner_Decision_Log_APPROVED.md) applies to Activity Directory and Resource Matching: no sponsored listing/offer/rank promotion for users under 18 (A0–A4) in first release, including cached or paginated output or sponsored recommendation disguised as organic. Parent/eligible-adult commercial presentation stays separately gated. All AI-generated user-facing explanations of matches, including non-education requests, require current approved answer-scope evidence and output validation; no automatic web/LLM sourcing grant. Synthetic tests OD02-T01..03 and OD05-T01..03 pending independent re-review.
+
+
+## L4 remediation — FR-05 · Suppress commercial recommendations while parent distressed
+
+Resource Matching must use an authorized minimal current noncommercial-context flag from Companion (never private Journal content) to exclude proactive sponsored/paid offers for parent in active expressed sadness, distress or exhaustion. A cached ranking built before context changes is ineligible for release, including pagination and retry. Unknown flag -> no proactive paid ranking; explicit adult billing inquiries are separately routed. This overlays the standard sponsored disclosure rules and the separate under-18 ban in OD-02.
+
+**FR05-T05:** Parent expresses distress, an old matching cache ranks paid class first -> no paid or sponsored listing or purchase CTA in resulting suggestion; eligible free alternatives can appear. **FR05-T06:** Child-facing search under A2 where a parent is distressed -> OD-02 independently blocks sponsored material; do not expose parent's distress metadata to Child App or provider.
