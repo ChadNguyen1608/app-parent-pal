@@ -1,0 +1,1910 @@
+[
+ {
+  "module_id": "F01-G01-M01",
+  "name": "Account Access",
+  "group": "F01-G01",
+  "domain": "F01",
+  "group_name": "Account & Authentication",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G01-M02",
+  "name": "Session Security",
+  "group": "F01-G01",
+  "domain": "F01",
+  "group_name": "Account & Authentication",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G02-M01",
+  "name": "Family Structure",
+  "group": "F01-G02",
+  "domain": "F01",
+  "group_name": "Family & Member Management",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G02-M02",
+  "name": "Member Relationships",
+  "group": "F01-G02",
+  "domain": "F01",
+  "group_name": "Family & Member Management",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G03-M01",
+  "name": "Core Identity",
+  "group": "F01-G03",
+  "domain": "F01",
+  "group_name": "Child Identity & Basic Profile",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G03-M02",
+  "name": "Profile Integrity",
+  "group": "F01-G03",
+  "domain": "F01",
+  "group_name": "Child Identity & Basic Profile",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G04-M01",
+  "name": "Access Policy",
+  "group": "F01-G04",
+  "domain": "F01",
+  "group_name": "Roles, Permissions & Consent",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G04-M02",
+  "name": "Consent Ledger",
+  "group": "F01-G04",
+  "domain": "F01",
+  "group_name": "Roles, Permissions & Consent",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G05-M01",
+  "name": "Mode State",
+  "group": "F01-G05",
+  "domain": "F01",
+  "group_name": "Autonomy Mode Management",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G05-M02",
+  "name": "Mode Transitions",
+  "group": "F01-G05",
+  "domain": "F01",
+  "group_name": "Autonomy Mode Management",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G06-M01",
+  "name": "Lifecycle Controls",
+  "group": "F01-G06",
+  "domain": "F01",
+  "group_name": "Account & Data Lifecycle",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G06-M02",
+  "name": "Entitlements & Billing",
+  "group": "F01-G06",
+  "domain": "F01",
+  "group_name": "Account & Data Lifecycle",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F01-G06-M03",
+  "name": "Subscription Billing Lifecycle",
+  "group": "F01-G06",
+  "domain": "F01",
+  "group_name": "Account & Data Lifecycle",
+  "exec_32": "UNSET_R1",
+  "ai_cost_32": "UNSET_R1",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": true
+ },
+ {
+  "module_id": "F02-G01-M01",
+  "name": "Intake & Updates",
+  "group": "F02-G01",
+  "domain": "F02",
+  "group_name": "Child Information Collection",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F02-G01-M02",
+  "name": "Incremental Questions",
+  "group": "F02-G01",
+  "domain": "F02",
+  "group_name": "Child Information Collection",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F02-G02-M01",
+  "name": "Preference Registry",
+  "group": "F02-G02",
+  "domain": "F02",
+  "group_name": "Interests & Preferences",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F02-G02-M02",
+  "name": "Preference Revision",
+  "group": "F02-G02",
+  "domain": "F02",
+  "group_name": "Interests & Preferences",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F02-G03-M01",
+  "name": "Evidence-linked Observations",
+  "group": "F02-G03",
+  "domain": "F02",
+  "group_name": "Strengths, Needs & Challenges",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F02-G03-M02",
+  "name": "Non-labeling Review",
+  "group": "F02-G03",
+  "domain": "F02",
+  "group_name": "Strengths, Needs & Challenges",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F02-G04-M01",
+  "name": "Environment Context",
+  "group": "F02-G04",
+  "domain": "F02",
+  "group_name": "Contextual Understanding",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F02-G04-M02",
+  "name": "Context Permissions",
+  "group": "F02-G04",
+  "domain": "F02",
+  "group_name": "Contextual Understanding",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F02-G05-M01",
+  "name": "Versioned Profile",
+  "group": "F02-G05",
+  "domain": "F02",
+  "group_name": "Child Understanding Profile",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F02-G05-M02",
+  "name": "Child Feedback",
+  "group": "F02-G05",
+  "domain": "F02",
+  "group_name": "Child Understanding Profile",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F02-G06-M01",
+  "name": "Provenance",
+  "group": "F02-G06",
+  "domain": "F02",
+  "group_name": "Information Reliability & Review",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F02-G06-M02",
+  "name": "Correction & Confidence",
+  "group": "F02-G06",
+  "domain": "F02",
+  "group_name": "Information Reliability & Review",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G01-M01",
+  "name": "Framework Registry",
+  "group": "F03-G01",
+  "domain": "F03",
+  "group_name": "Development Framework",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G01-M02",
+  "name": "Evidence Alignment",
+  "group": "F03-G01",
+  "domain": "F03",
+  "group_name": "Development Framework",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G02-M01",
+  "name": "Dimension Taxonomy",
+  "group": "F03-G02",
+  "domain": "F03",
+  "group_name": "Development Areas & Dimensions",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G02-M02",
+  "name": "Domain Mapping",
+  "group": "F03-G02",
+  "domain": "F03",
+  "group_name": "Development Areas & Dimensions",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G03-M01",
+  "name": "Stage Catalog",
+  "group": "F03-G03",
+  "domain": "F03",
+  "group_name": "Age & Stage Guidance",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G03-M02",
+  "name": "Accessibility Adaptation",
+  "group": "F03-G03",
+  "domain": "F03",
+  "group_name": "Age & Stage Guidance",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G04-M01",
+  "name": "Goal Discovery",
+  "group": "F03-G04",
+  "domain": "F03",
+  "group_name": "Goal Discovery & Definition",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G04-M02",
+  "name": "Goal Constraints",
+  "group": "F03-G04",
+  "domain": "F03",
+  "group_name": "Goal Discovery & Definition",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G04-M03",
+  "name": "Development Roadmap & Milestones",
+  "group": "F03-G04",
+  "domain": "F03",
+  "group_name": "Goal Discovery & Definition",
+  "exec_32": "UNSET_R1",
+  "ai_cost_32": "UNSET_R1",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": true
+ },
+ {
+  "module_id": "F03-G05-M01",
+  "name": "Grounded Recommendation",
+  "group": "F03-G05",
+  "domain": "F03",
+  "group_name": "Personalized Guidance",
+  "exec_32": "E2",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G05-M02",
+  "name": "Recommendation Review",
+  "group": "F03-G05",
+  "domain": "F03",
+  "group_name": "Personalized Guidance",
+  "exec_32": "E2",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G05-M03",
+  "name": "Career Exploration Guidance",
+  "group": "F03-G05",
+  "domain": "F03",
+  "group_name": "Personalized Guidance",
+  "exec_32": "UNSET_R1",
+  "ai_cost_32": "UNSET_R1",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": true
+ },
+ {
+  "module_id": "F03-G06-M01",
+  "name": "Goal Reassessment",
+  "group": "F03-G06",
+  "domain": "F03",
+  "group_name": "Goal Review & Adjustment",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F03-G06-M02",
+  "name": "Goal Change Proposal",
+  "group": "F03-G06",
+  "domain": "F03",
+  "group_name": "Goal Review & Adjustment",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G01-M01",
+  "name": "Plan Structure",
+  "group": "F04-G01",
+  "domain": "F04",
+  "group_name": "Plan Creation & Management",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G01-M02",
+  "name": "Plan Templates",
+  "group": "F04-G01",
+  "domain": "F04",
+  "group_name": "Plan Creation & Management",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G02-M01",
+  "name": "Schedule Construction",
+  "group": "F04-G02",
+  "domain": "F04",
+  "group_name": "Activity Planning & Scheduling",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G02-M02",
+  "name": "Schedule Conflict",
+  "group": "F04-G02",
+  "domain": "F04",
+  "group_name": "Activity Planning & Scheduling",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G02-M03",
+  "name": "Balanced Planning Validation",
+  "group": "F04-G02",
+  "domain": "F04",
+  "group_name": "Activity Planning & Scheduling",
+  "exec_32": "UNSET_R1",
+  "ai_cost_32": "UNSET_R1",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": true
+ },
+ {
+  "module_id": "F04-G03-M01",
+  "name": "Task Ownership",
+  "group": "F04-G03",
+  "domain": "F04",
+  "group_name": "Task Assignment & Delegation",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G03-M02",
+  "name": "Approval Routing",
+  "group": "F04-G03",
+  "domain": "F04",
+  "group_name": "Task Assignment & Delegation",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G04-M01",
+  "name": "Daily Task View",
+  "group": "F04-G04",
+  "domain": "F04",
+  "group_name": "Daily Execution",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G04-M02",
+  "name": "Execution Support",
+  "group": "F04-G04",
+  "domain": "F04",
+  "group_name": "Daily Execution",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G05-M01",
+  "name": "Lightweight Check-off",
+  "group": "F04-G05",
+  "domain": "F04",
+  "group_name": "Progress Reporting",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G05-M02",
+  "name": "Evidence Submission",
+  "group": "F04-G05",
+  "domain": "F04",
+  "group_name": "Progress Reporting",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G06-M01",
+  "name": "Change Requests",
+  "group": "F04-G06",
+  "domain": "F04",
+  "group_name": "Plan Adjustment & Approval",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G06-M02",
+  "name": "Change History",
+  "group": "F04-G06",
+  "domain": "F04",
+  "group_name": "Plan Adjustment & Approval",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G07-M01",
+  "name": "Schedule Notifications",
+  "group": "F04-G07",
+  "domain": "F04",
+  "group_name": "Reminder & Notification",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F04-G07-M02",
+  "name": "Notification Preferences",
+  "group": "F04-G07",
+  "domain": "F04",
+  "group_name": "Reminder & Notification",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G01-M01",
+  "name": "Child Conversation",
+  "group": "F05-G01",
+  "domain": "F05",
+  "group_name": "Child AI Companion",
+  "exec_32": "E2",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "—",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G01-M02",
+  "name": "Companion Guardrails",
+  "group": "F05-G01",
+  "domain": "F05",
+  "group_name": "Child AI Companion",
+  "exec_32": "E2",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "—",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G02-M01",
+  "name": "Opt-in Check-in",
+  "group": "F05-G02",
+  "domain": "F05",
+  "group_name": "Emotional Check-in",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G02-M02",
+  "name": "Check-in Controls",
+  "group": "F05-G02",
+  "domain": "F05",
+  "group_name": "Emotional Check-in",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G03-M01",
+  "name": "Reflection Prompts",
+  "group": "F05-G03",
+  "domain": "F05",
+  "group_name": "Daily Reflection / Kid Journey",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G03-M02",
+  "name": "Reflection Review",
+  "group": "F05-G03",
+  "domain": "F05",
+  "group_name": "Daily Reflection / Kid Journey",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G04-M01",
+  "name": "Private Entries",
+  "group": "F05-G04",
+  "domain": "F05",
+  "group_name": "Private Child Journal",
+  "exec_32": "E2",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "—",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G04-M02",
+  "name": "Journal Retrieval",
+  "group": "F05-G04",
+  "domain": "F05",
+  "group_name": "Private Child Journal",
+  "exec_32": "E2",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "—",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G05-M01",
+  "name": "Structured Insight",
+  "group": "F05-G05",
+  "domain": "F05",
+  "group_name": "Private Insight Management",
+  "exec_32": "E2",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "—",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G05-M02",
+  "name": "Insight Correction",
+  "group": "F05-G05",
+  "domain": "F05",
+  "group_name": "Private Insight Management",
+  "exec_32": "E2",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "—",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G06-M01",
+  "name": "Selective Sharing",
+  "group": "F05-G06",
+  "domain": "F05",
+  "group_name": "Journal Privacy, Sharing & Deletion",
+  "exec_32": "E1",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F05-G06-M02",
+  "name": "Deletion Graph",
+  "group": "F05-G06",
+  "domain": "F05",
+  "group_name": "Journal Privacy, Sharing & Deletion",
+  "exec_32": "E1",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G01-M01",
+  "name": "Activity Event Log",
+  "group": "F06-G01",
+  "domain": "F06",
+  "group_name": "Activity Tracking",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G01-M02",
+  "name": "Source Metadata",
+  "group": "F06-G01",
+  "domain": "F06",
+  "group_name": "Activity Tracking",
+  "exec_32": "E0",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G02-M01",
+  "name": "Progress Rules",
+  "group": "F06-G02",
+  "domain": "F06",
+  "group_name": "Goal Progress Monitoring",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G02-M02",
+  "name": "Progress Exceptions",
+  "group": "F06-G02",
+  "domain": "F06",
+  "group_name": "Goal Progress Monitoring",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G03-M01",
+  "name": "Indicator Registry",
+  "group": "F06-G03",
+  "domain": "F06",
+  "group_name": "Development Indicators",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G03-M02",
+  "name": "Indicator Evidence",
+  "group": "F06-G03",
+  "domain": "F06",
+  "group_name": "Development Indicators",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G04-M01",
+  "name": "Deterministic Trends",
+  "group": "F06-G04",
+  "domain": "F06",
+  "group_name": "Trend & Pattern Analysis",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G04-M02",
+  "name": "Cautious Insights",
+  "group": "F06-G04",
+  "domain": "F06",
+  "group_name": "Trend & Pattern Analysis",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G05-M01",
+  "name": "Audience Views",
+  "group": "F06-G05",
+  "domain": "F06",
+  "group_name": "Reports & Dashboards",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G05-M02",
+  "name": "Summary Rendering",
+  "group": "F06-G05",
+  "domain": "F06",
+  "group_name": "Reports & Dashboards",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G06-M01",
+  "name": "Review Sessions",
+  "group": "F06-G06",
+  "domain": "F06",
+  "group_name": "Review & Feedback Loop",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G06-M02",
+  "name": "Feedback Handoff",
+  "group": "F06-G06",
+  "domain": "F06",
+  "group_name": "Review & Feedback Loop",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "S",
+   "C",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F06-G07-M01",
+  "name": "Academic Assessment",
+  "group": "F06-G07",
+  "domain": "F06",
+  "group_name": null,
+  "exec_32": null,
+  "ai_cost_32": null,
+  "ux_32": [
+   "P*",
+   "P*",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G01-M01",
+  "name": "Content CMS",
+  "group": "F07-G01",
+  "domain": "F07",
+  "group_name": "Knowledge Repository",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G01-M02",
+  "name": "Structured Retrieval",
+  "group": "F07-G01",
+  "domain": "F07",
+  "group_name": "Knowledge Repository",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G02-M01",
+  "name": "Editorial Workflow",
+  "group": "F07-G02",
+  "domain": "F07",
+  "group_name": "Knowledge Validation & Evidence",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G02-M02",
+  "name": "Evidence Provenance",
+  "group": "F07-G02",
+  "domain": "F07",
+  "group_name": "Knowledge Validation & Evidence",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G03-M01",
+  "name": "Single Interface Router",
+  "group": "F07-G03",
+  "domain": "F07",
+  "group_name": "AI Interaction & Orchestration",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G03-M02",
+  "name": "Execution Budget",
+  "group": "F07-G03",
+  "domain": "F07",
+  "group_name": "AI Interaction & Orchestration",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G03-M03",
+  "name": "Multimodal Interaction Orchestration",
+  "group": "F07-G03",
+  "domain": "F07",
+  "group_name": "AI Interaction & Orchestration",
+  "exec_32": "UNSET_R1",
+  "ai_cost_32": "UNSET_R1",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": true
+ },
+ {
+  "module_id": "F07-G04-M01",
+  "name": "Policy Evaluation",
+  "group": "F07-G04",
+  "domain": "F07",
+  "group_name": "AI Quality & Behavior Governance",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G04-M02",
+  "name": "Model Evaluation",
+  "group": "F07-G04",
+  "domain": "F07",
+  "group_name": "AI Quality & Behavior Governance",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G05-M01",
+  "name": "Safety Triage",
+  "group": "F07-G05",
+  "domain": "F07",
+  "group_name": "Child Safety & Escalation",
+  "exec_32": "E1",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G05-M02",
+  "name": "Human Response Workflow",
+  "group": "F07-G05",
+  "domain": "F07",
+  "group_name": "Child Safety & Escalation",
+  "exec_32": "E1",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G06-M01",
+  "name": "Purpose-bound Access",
+  "group": "F07-G06",
+  "domain": "F07",
+  "group_name": "Privacy & Data Governance",
+  "exec_32": "E1",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G06-M02",
+  "name": "Retention & Export",
+  "group": "F07-G06",
+  "domain": "F07",
+  "group_name": "Privacy & Data Governance",
+  "exec_32": "E1",
+  "ai_cost_32": "High",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G07-M01",
+  "name": "Operational Console",
+  "group": "F07-G07",
+  "domain": "F07",
+  "group_name": "Audit & Operational Controls",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F07-G07-M02",
+  "name": "Billing & Cost Operations",
+  "group": "F07-G07",
+  "domain": "F07",
+  "group_name": "Audit & Operational Controls",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G01-M01",
+  "name": "School Data Connectors",
+  "group": "F08-G01",
+  "domain": "F08",
+  "group_name": "School & Education Integration",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G01-M02",
+  "name": "School Data Review",
+  "group": "F08-G01",
+  "domain": "F08",
+  "group_name": "School & Education Integration",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G02-M01",
+  "name": "Expert Discovery",
+  "group": "F08-G02",
+  "domain": "F08",
+  "group_name": "Expert & Professional Services",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G02-M02",
+  "name": "Expert Referral",
+  "group": "F08-G02",
+  "domain": "F08",
+  "group_name": "Expert & Professional Services",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G03-M01",
+  "name": "Activity Directory",
+  "group": "F08-G03",
+  "domain": "F08",
+  "group_name": "Learning Resources & Activities",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G03-M02",
+  "name": "Resource Matching",
+  "group": "F08-G03",
+  "domain": "F08",
+  "group_name": "Learning Resources & Activities",
+  "exec_32": "E1",
+  "ai_cost_32": "Low",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G04-M01",
+  "name": "Device Consents",
+  "group": "F08-G04",
+  "domain": "F08",
+  "group_name": "Device & External Data Integration",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G04-M02",
+  "name": "External Data Import",
+  "group": "F08-G04",
+  "domain": "F08",
+  "group_name": "Device & External Data Integration",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G05-M01",
+  "name": "Commerce Catalog",
+  "group": "F08-G05",
+  "domain": "F08",
+  "group_name": "Commercial Ecosystem",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G05-M02",
+  "name": "Transaction & Conflict Controls",
+  "group": "F08-G05",
+  "domain": "F08",
+  "group_name": "Commercial Ecosystem",
+  "exec_32": "E1",
+  "ai_cost_32": "Medium",
+  "ux_32": [
+   "P",
+   "P",
+   "S",
+   "C",
+   "Y",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G06-M01",
+  "name": "Education Budget Planning",
+  "group": "F08-G06",
+  "domain": "F08",
+  "group_name": null,
+  "exec_32": null,
+  "ai_cost_32": null,
+  "ux_32": [
+   "P",
+   "P",
+   "P/S*",
+   "S*",
+   "S/Y*",
+   "U"
+  ],
+  "r1_added": false
+ },
+ {
+  "module_id": "F08-G06-M02",
+  "name": "Expense & Approval Management",
+  "group": "F08-G06",
+  "domain": "F08",
+  "group_name": null,
+  "exec_32": null,
+  "ai_cost_32": null,
+  "ux_32": [
+   "P",
+   "P",
+   "P/S*",
+   "S*",
+   "S/Y*",
+   "U"
+  ],
+  "r1_added": false
+ }
+]

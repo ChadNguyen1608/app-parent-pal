@@ -1,0 +1,858 @@
+{
+ "comparisons": [
+  {
+   "module": "F04-G07-M01",
+   "key": "core_loop_contribution",
+   "claude": 4,
+   "qa": 4,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "adoption_potential",
+   "claude": 4,
+   "qa": 4,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "differentiation",
+   "claude": 2,
+   "qa": 2,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "dependency_enablement",
+   "claude": 2,
+   "qa": 2,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "A2.parent_value",
+   "claude": 4,
+   "qa": 4,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "A2.child_value",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "A3.parent_value",
+   "claude": 4,
+   "qa": 4,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "A3.child_value",
+   "claude": 3,
+   "qa": 4,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "implementation_effort",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "maintenance_effort",
+   "claude": 2,
+   "qa": 2,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "operating_cost",
+   "claude": "M",
+   "qa": "M",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "ai_cost_risk",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "latency_and_reliability",
+   "claude": "H",
+   "qa": "H",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "implementation_complexity",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G07-M01",
+   "key": "scalability",
+   "claude": "M",
+   "qa": "M",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "core_loop_contribution",
+   "claude": 4,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "adoption_potential",
+   "claude": "NOT_APPLICABLE",
+   "qa": "N/A",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "differentiation",
+   "claude": 5,
+   "qa": 4,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "dependency_enablement",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "A2.parent_value",
+   "claude": 4,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "A2.child_value",
+   "claude": 4,
+   "qa": "INDIRECT",
+   "agreement": "LABEL_MISMATCH"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "A3.parent_value",
+   "claude": 4,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "A3.child_value",
+   "claude": 4,
+   "qa": "INDIRECT",
+   "agreement": "LABEL_MISMATCH"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "implementation_effort",
+   "claude": 2,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "maintenance_effort",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "operating_cost",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "ai_cost_risk",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "latency_and_reliability",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "implementation_complexity",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F04-G02-M03",
+   "key": "scalability",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "core_loop_contribution",
+   "claude": 4,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "adoption_potential",
+   "claude": "NOT_APPLICABLE",
+   "qa": "N/A",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "differentiation",
+   "claude": 2,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "dependency_enablement",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "A2.parent_value",
+   "claude": "INDIRECT",
+   "qa": "INDIRECT",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "A2.child_value",
+   "claude": "INDIRECT",
+   "qa": "INDIRECT",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "A3.parent_value",
+   "claude": "INDIRECT",
+   "qa": "INDIRECT",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "A3.child_value",
+   "claude": "INDIRECT",
+   "qa": "INDIRECT",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "implementation_effort",
+   "claude": 2,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "maintenance_effort",
+   "claude": 2,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "operating_cost",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "ai_cost_risk",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "latency_and_reliability",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "implementation_complexity",
+   "claude": 2,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F06-G02-M01",
+   "key": "scalability",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "core_loop_contribution",
+   "claude": 3,
+   "qa": 4,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "adoption_potential",
+   "claude": 4,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "differentiation",
+   "claude": 2,
+   "qa": 2,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "dependency_enablement",
+   "claude": 4,
+   "qa": 5,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "A2.parent_value",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "A2.child_value",
+   "claude": "INDIRECT",
+   "qa": "INDIRECT",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "A3.parent_value",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "A3.child_value",
+   "claude": 2,
+   "qa": "INDIRECT",
+   "agreement": "LABEL_MISMATCH"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "implementation_effort",
+   "claude": 2,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "maintenance_effort",
+   "claude": 2,
+   "qa": 2,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "operating_cost",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "ai_cost_risk",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "latency_and_reliability",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "implementation_complexity",
+   "claude": 3,
+   "qa": 4,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F02-G01-M01",
+   "key": "scalability",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "core_loop_contribution",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "adoption_potential",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "differentiation",
+   "claude": 3,
+   "qa": 4,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "dependency_enablement",
+   "claude": 1,
+   "qa": 2,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "A2.parent_value",
+   "claude": "INDIRECT",
+   "qa": "INDIRECT",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "A2.child_value",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "A3.parent_value",
+   "claude": "INDIRECT",
+   "qa": "INDIRECT",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "A3.child_value",
+   "claude": 3,
+   "qa": 4,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "implementation_effort",
+   "claude": 2,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "maintenance_effort",
+   "claude": 2,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "operating_cost",
+   "claude": "L",
+   "qa": "M",
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "ai_cost_risk",
+   "claude": "L",
+   "qa": "M",
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "latency_and_reliability",
+   "claude": "L",
+   "qa": "M",
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "implementation_complexity",
+   "claude": 3,
+   "qa": 4,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F05-G02-M01",
+   "key": "scalability",
+   "claude": "L",
+   "qa": "M",
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "core_loop_contribution",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "adoption_potential",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "differentiation",
+   "claude": 4,
+   "qa": 4,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "dependency_enablement",
+   "claude": 2,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "A2.parent_value",
+   "claude": 4,
+   "qa": 4,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "A2.child_value",
+   "claude": "INDIRECT",
+   "qa": 2,
+   "agreement": "LABEL_MISMATCH"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "A3.parent_value",
+   "claude": 3,
+   "qa": 4,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "A3.child_value",
+   "claude": "INDIRECT",
+   "qa": 3,
+   "agreement": "LABEL_MISMATCH"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "implementation_effort",
+   "claude": 3,
+   "qa": 4,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "maintenance_effort",
+   "claude": 4,
+   "qa": 5,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "operating_cost",
+   "claude": "L",
+   "qa": "M",
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "ai_cost_risk",
+   "claude": "M",
+   "qa": "M",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "latency_and_reliability",
+   "claude": "M",
+   "qa": "M",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "implementation_complexity",
+   "claude": 4,
+   "qa": 5,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F03-G05-M01",
+   "key": "scalability",
+   "claude": "M",
+   "qa": "M",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "core_loop_contribution",
+   "claude": 1,
+   "qa": 2,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "adoption_potential",
+   "claude": 3,
+   "qa": "N/A",
+   "agreement": "LABEL_MISMATCH"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "differentiation",
+   "claude": 1,
+   "qa": 2,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "dependency_enablement",
+   "claude": 4,
+   "qa": 4,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "A2.parent_value",
+   "claude": "INDIRECT",
+   "qa": "INDIRECT",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "A2.child_value",
+   "claude": "INDIRECT",
+   "qa": "INDIRECT",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "A3.parent_value",
+   "claude": "INDIRECT",
+   "qa": "INDIRECT",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "A3.child_value",
+   "claude": "INDIRECT",
+   "qa": "INDIRECT",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "implementation_effort",
+   "claude": 3,
+   "qa": 4,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "maintenance_effort",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "operating_cost",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "ai_cost_risk",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "latency_and_reliability",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "implementation_complexity",
+   "claude": 4,
+   "qa": 5,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F01-G04-M02",
+   "key": "scalability",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "core_loop_contribution",
+   "claude": 2,
+   "qa": 4,
+   "agreement": "DIVERGENT"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "adoption_potential",
+   "claude": "NOT_APPLICABLE",
+   "qa": 3,
+   "agreement": "LABEL_MISMATCH"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "differentiation",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "dependency_enablement",
+   "claude": 3,
+   "qa": 3,
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "A2.parent_value",
+   "claude": "INDIRECT",
+   "qa": 4,
+   "agreement": "LABEL_MISMATCH"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "A2.child_value",
+   "claude": "INDIRECT",
+   "qa": 2,
+   "agreement": "LABEL_MISMATCH"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "A3.parent_value",
+   "claude": "INDIRECT",
+   "qa": 4,
+   "agreement": "LABEL_MISMATCH"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "A3.child_value",
+   "claude": "INDIRECT",
+   "qa": 3,
+   "agreement": "LABEL_MISMATCH"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "implementation_effort",
+   "claude": 2,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "maintenance_effort",
+   "claude": 2,
+   "qa": 3,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "operating_cost",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "ai_cost_risk",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "latency_and_reliability",
+   "claude": "L",
+   "qa": "M",
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "implementation_complexity",
+   "claude": 3,
+   "qa": 4,
+   "agreement": "ADJACENT"
+  },
+  {
+   "module": "F06-G05-M01",
+   "key": "scalability",
+   "claude": "L",
+   "qa": "L",
+   "agreement": "EXACT"
+  }
+ ],
+ "summary": {
+  "EXACT": 68,
+  "ADJACENT": 40,
+  "LABEL_MISMATCH": 11,
+  "DIVERGENT": 1
+ },
+ "rubric_ambiguities": [
+  "adoption_potential N/A vs 1 for engine modules is a judgment call",
+  "INDIRECT vs 1 when parent is partly indirect (parent-entered intake)",
+  "dependency_enablement score before CP-03 graph is a guess",
+  "ai_cost_risk for modules whose digest says Medium but spec has no model call",
+  "latency anchor: H for reminders vs M for sync validation is subjective",
+  "A2 child_value when feature is parent-driven"
+ ]
+}

@@ -1,0 +1,912 @@
+{
+ "errors": [],
+ "explicit_edges": 95,
+ "expanded_edges": 951,
+ "build_cycles": [],
+ "run_cycles": [
+  [
+   "F01-G04-M01",
+   "F01-G05-M01",
+   "F01-G04-M01"
+  ],
+  [
+   "F01-G05-M01",
+   "F07-G06-M01",
+   "F01-G05-M01"
+  ],
+  [
+   "F01-G04-M01",
+   "F01-G05-M01",
+   "F07-G06-M01",
+   "F01-G03-M01",
+   "F01-G04-M01"
+  ],
+  [
+   "F01-G02-M01",
+   "F01-G04-M01",
+   "F01-G05-M01",
+   "F07-G06-M01",
+   "F01-G03-M01",
+   "F01-G02-M01"
+  ],
+  [
+   "F07-G06-M01",
+   "F01-G03-M01",
+   "F07-G06-M01"
+  ],
+  [
+   "F01-G04-M01",
+   "F01-G05-M01",
+   "F07-G06-M01",
+   "F01-G04-M02",
+   "F01-G04-M01"
+  ],
+  [
+   "F07-G06-M01",
+   "F01-G04-M02",
+   "F07-G06-M01"
+  ],
+  [
+   "F01-G02-M01",
+   "F01-G04-M01",
+   "F01-G05-M01",
+   "F07-G06-M01",
+   "F01-G02-M01"
+  ],
+  [
+   "F01-G02-M01",
+   "F01-G04-M01",
+   "F01-G02-M01"
+  ]
+ ],
+ "workflows": {
+  "W1": {
+   "name": "Lập lịch & thực thi cùng con (Plan → Execute → Evaluate nhẹ)",
+   "apps": "Parent App + Child App",
+   "cohorts": "A2-A3 (A1/A4 conditional)",
+   "seeds": [
+    "F02-G01-M01",
+    "F04-G01-M01",
+    "F04-G01-M02",
+    "F04-G02-M01",
+    "F04-G02-M02",
+    "F04-G02-M03",
+    "F04-G03-M01",
+    "F04-G04-M01",
+    "F04-G05-M01",
+    "F04-G07-M01",
+    "F04-G07-M02",
+    "F06-G01-M01",
+    "F06-G02-M01",
+    "F06-G05-M01",
+    "F06-G05-M02"
+   ],
+   "required": [
+    "F01-G01-M01",
+    "F01-G01-M02",
+    "F01-G02-M01",
+    "F01-G03-M01",
+    "F01-G04-M01",
+    "F01-G04-M02",
+    "F01-G05-M01",
+    "F01-G06-M01",
+    "F02-G01-M01",
+    "F04-G01-M01",
+    "F04-G01-M02",
+    "F04-G02-M01",
+    "F04-G02-M02",
+    "F04-G02-M03",
+    "F04-G03-M01",
+    "F04-G04-M01",
+    "F04-G05-M01",
+    "F04-G07-M01",
+    "F04-G07-M02",
+    "F06-G01-M01",
+    "F06-G02-M01",
+    "F06-G05-M01",
+    "F06-G05-M02",
+    "F07-G01-M01",
+    "F07-G02-M01",
+    "F07-G03-M01",
+    "F07-G03-M02",
+    "F07-G04-M01",
+    "F07-G04-M02",
+    "F07-G05-M01",
+    "F07-G06-M01",
+    "F07-G06-M02"
+   ],
+   "optional": [
+    "F01-G02-M02",
+    "F02-G05-M02",
+    "F03-G03-M01",
+    "F04-G03-M02",
+    "F04-G04-M02",
+    "F04-G05-M02",
+    "F04-G06-M01",
+    "F04-G06-M02",
+    "F06-G01-M02",
+    "F06-G02-M02",
+    "F06-G04-M01"
+   ],
+   "n_required": 32,
+   "n_optional": 11,
+   "legal_blocked_required": [
+    "F01-G06-M01",
+    "F07-G05-M01",
+    "F07-G06-M02"
+   ],
+   "deferred_pulled_in": [],
+   "e2_required": [
+    "F04-G02-M01"
+   ]
+  },
+  "W1E1": {
+   "name": "W1 không dùng LLM (lịch từ mẫu + quy tắc E1)",
+   "apps": "Parent App + Child App",
+   "cohorts": "A2-A3",
+   "seeds": [
+    "F02-G01-M01",
+    "F04-G01-M01",
+    "F04-G01-M02",
+    "F04-G02-M02",
+    "F04-G02-M03",
+    "F04-G03-M01",
+    "F04-G04-M01",
+    "F04-G05-M01",
+    "F04-G07-M01",
+    "F04-G07-M02",
+    "F06-G01-M01",
+    "F06-G02-M01",
+    "F06-G05-M01",
+    "F06-G05-M02"
+   ],
+   "required": [
+    "F01-G01-M01",
+    "F01-G01-M02",
+    "F01-G02-M01",
+    "F01-G03-M01",
+    "F01-G04-M01",
+    "F01-G04-M02",
+    "F01-G05-M01",
+    "F01-G06-M01",
+    "F02-G01-M01",
+    "F04-G01-M01",
+    "F04-G01-M02",
+    "F04-G02-M02",
+    "F04-G02-M03",
+    "F04-G03-M01",
+    "F04-G04-M01",
+    "F04-G05-M01",
+    "F04-G07-M01",
+    "F04-G07-M02",
+    "F06-G01-M01",
+    "F06-G02-M01",
+    "F06-G05-M01",
+    "F06-G05-M02",
+    "F07-G06-M01",
+    "F07-G06-M02"
+   ],
+   "optional": [],
+   "n_required": 24,
+   "n_optional": 0,
+   "legal_blocked_required": [
+    "F01-G06-M01",
+    "F07-G06-M02"
+   ],
+   "deferred_pulled_in": [],
+   "e2_required": []
+  },
+  "W2": {
+   "name": "Pal đồng hành phụ huynh (Understand → Orient, chỉ Parent App)",
+   "apps": "Parent App",
+   "cohorts": "Phụ huynh của A0-A3 (A4 conditional)",
+   "seeds": [
+    "F02-G01-M01",
+    "F02-G05-M01",
+    "F02-G06-M02",
+    "F03-G05-M01",
+    "F03-G05-M02",
+    "F05-G01-M01",
+    "F07-G02-M01"
+   ],
+   "required": [
+    "F01-G01-M01",
+    "F01-G01-M02",
+    "F01-G02-M01",
+    "F01-G03-M01",
+    "F01-G04-M01",
+    "F01-G04-M02",
+    "F01-G05-M01",
+    "F01-G06-M01",
+    "F02-G01-M01",
+    "F02-G05-M01",
+    "F02-G06-M02",
+    "F03-G05-M01",
+    "F03-G05-M02",
+    "F05-G01-M01",
+    "F05-G01-M02",
+    "F07-G01-M01",
+    "F07-G01-M02",
+    "F07-G02-M01",
+    "F07-G02-M02",
+    "F07-G03-M01",
+    "F07-G03-M02",
+    "F07-G04-M01",
+    "F07-G04-M02",
+    "F07-G05-M01",
+    "F07-G06-M01",
+    "F07-G06-M02"
+   ],
+   "optional": [
+    "F02-G01-M02",
+    "F02-G02-M01",
+    "F02-G03-M01",
+    "F03-G03-M01",
+    "F03-G04-M01",
+    "F04-G01-M01",
+    "F04-G03-M01"
+   ],
+   "n_required": 26,
+   "n_optional": 7,
+   "legal_blocked_required": [
+    "F01-G06-M01",
+    "F05-G01-M01",
+    "F05-G01-M02",
+    "F07-G05-M01",
+    "F07-G06-M02"
+   ],
+   "deferred_pulled_in": [],
+   "e2_required": [
+    "F03-G05-M01",
+    "F05-G01-M01"
+   ]
+  },
+  "W3": {
+   "name": "Tiếng nói của trẻ: check-in, phản tư, Nhật ký riêng (mở rộng W1)",
+   "apps": "Parent App + Child App",
+   "cohorts": "A2-A4",
+   "seeds": [
+    "F02-G01-M01",
+    "F02-G05-M02",
+    "F04-G01-M01",
+    "F04-G01-M02",
+    "F04-G02-M01",
+    "F04-G02-M02",
+    "F04-G02-M03",
+    "F04-G03-M01",
+    "F04-G04-M01",
+    "F04-G05-M01",
+    "F04-G07-M01",
+    "F04-G07-M02",
+    "F05-G01-M01",
+    "F05-G02-M01",
+    "F05-G02-M02",
+    "F05-G03-M01",
+    "F05-G03-M02",
+    "F05-G04-M01",
+    "F05-G04-M02",
+    "F05-G06-M01",
+    "F05-G06-M02",
+    "F06-G01-M01",
+    "F06-G02-M01",
+    "F06-G05-M01",
+    "F06-G05-M02",
+    "F06-G06-M01",
+    "F06-G06-M02"
+   ],
+   "required": [
+    "F01-G01-M01",
+    "F01-G01-M02",
+    "F01-G02-M01",
+    "F01-G03-M01",
+    "F01-G04-M01",
+    "F01-G04-M02",
+    "F01-G05-M01",
+    "F01-G06-M01",
+    "F02-G01-M01",
+    "F02-G05-M02",
+    "F04-G01-M01",
+    "F04-G01-M02",
+    "F04-G02-M01",
+    "F04-G02-M02",
+    "F04-G02-M03",
+    "F04-G03-M01",
+    "F04-G03-M02",
+    "F04-G04-M01",
+    "F04-G05-M01",
+    "F04-G06-M01",
+    "F04-G07-M01",
+    "F04-G07-M02",
+    "F05-G01-M01",
+    "F05-G01-M02",
+    "F05-G02-M01",
+    "F05-G02-M02",
+    "F05-G03-M01",
+    "F05-G03-M02",
+    "F05-G04-M01",
+    "F05-G04-M02",
+    "F05-G06-M01",
+    "F05-G06-M02",
+    "F06-G01-M01",
+    "F06-G02-M01",
+    "F06-G05-M01",
+    "F06-G05-M02",
+    "F06-G06-M01",
+    "F06-G06-M02",
+    "F07-G01-M01",
+    "F07-G01-M02",
+    "F07-G02-M01",
+    "F07-G02-M02",
+    "F07-G03-M01",
+    "F07-G03-M02",
+    "F07-G04-M01",
+    "F07-G04-M02",
+    "F07-G05-M01",
+    "F07-G06-M01",
+    "F07-G06-M02"
+   ],
+   "optional": [],
+   "n_required": 49,
+   "n_optional": 0,
+   "legal_blocked_required": [
+    "F01-G06-M01",
+    "F05-G01-M01",
+    "F05-G01-M02",
+    "F05-G04-M01",
+    "F05-G04-M02",
+    "F05-G06-M01",
+    "F05-G06-M02",
+    "F07-G05-M01",
+    "F07-G06-M02"
+   ],
+   "deferred_pulled_in": [],
+   "e2_required": [
+    "F04-G02-M01",
+    "F05-G01-M01"
+   ]
+  }
+ },
+ "tier3": [
+  "F01-G01-M01",
+  "F01-G01-M02",
+  "F01-G02-M01",
+  "F01-G02-M02",
+  "F01-G03-M01",
+  "F01-G04-M01",
+  "F01-G04-M02",
+  "F01-G05-M01",
+  "F01-G06-M01",
+  "F02-G01-M01",
+  "F02-G01-M02",
+  "F02-G02-M01",
+  "F02-G03-M01",
+  "F02-G03-M02",
+  "F02-G05-M01",
+  "F02-G05-M02",
+  "F02-G06-M02",
+  "F03-G03-M01",
+  "F03-G04-M01",
+  "F03-G05-M01",
+  "F03-G05-M02",
+  "F04-G01-M01",
+  "F04-G01-M02",
+  "F04-G02-M01",
+  "F04-G02-M02",
+  "F04-G02-M03",
+  "F04-G03-M01",
+  "F04-G03-M02",
+  "F04-G04-M01",
+  "F04-G04-M02",
+  "F04-G05-M01",
+  "F04-G05-M02",
+  "F04-G06-M01",
+  "F04-G06-M02",
+  "F04-G07-M01",
+  "F04-G07-M02",
+  "F05-G01-M01",
+  "F05-G01-M02",
+  "F05-G02-M01",
+  "F05-G02-M02",
+  "F05-G03-M01",
+  "F05-G03-M02",
+  "F05-G04-M01",
+  "F05-G04-M02",
+  "F05-G06-M01",
+  "F05-G06-M02",
+  "F06-G01-M01",
+  "F06-G01-M02",
+  "F06-G02-M01",
+  "F06-G02-M02",
+  "F06-G04-M01",
+  "F06-G05-M01",
+  "F06-G05-M02",
+  "F06-G06-M01",
+  "F06-G06-M02",
+  "F07-G01-M01",
+  "F07-G01-M02",
+  "F07-G02-M01",
+  "F07-G02-M02",
+  "F07-G03-M01",
+  "F07-G03-M02",
+  "F07-G04-M01",
+  "F07-G04-M02",
+  "F07-G05-M01",
+  "F07-G06-M01",
+  "F07-G06-M02"
+ ],
+ "tier3_count": 66,
+ "reentry_log": [
+  {
+   "module": "F02-G03-M02",
+   "trigger": "HARD S/RELEASE dependency of Tier-3 F02-G03-M01"
+  }
+ ],
+ "tier3_by_tier": {
+  "CORE_VALUE": 39,
+  "MIN_FOUNDATION": 25,
+  "DEFERRED": 2
+ },
+ "coarse_only": [
+  "F01-G03-M02",
+  "F01-G05-M02",
+  "F01-G06-M02",
+  "F01-G06-M03",
+  "F02-G02-M02",
+  "F02-G04-M01",
+  "F02-G04-M02",
+  "F02-G06-M01",
+  "F03-G01-M01",
+  "F03-G01-M02",
+  "F03-G02-M01",
+  "F03-G02-M02",
+  "F03-G03-M02",
+  "F03-G04-M02",
+  "F03-G04-M03",
+  "F03-G05-M03",
+  "F03-G06-M01",
+  "F03-G06-M02",
+  "F05-G05-M01",
+  "F05-G05-M02",
+  "F06-G03-M01",
+  "F06-G03-M02",
+  "F06-G04-M02",
+  "F06-G07-M01",
+  "F07-G03-M03",
+  "F07-G05-M02",
+  "F07-G07-M01",
+  "F07-G07-M02",
+  "F08-G01-M01",
+  "F08-G01-M02",
+  "F08-G02-M01",
+  "F08-G02-M02",
+  "F08-G03-M01",
+  "F08-G03-M02",
+  "F08-G04-M01",
+  "F08-G04-M02",
+  "F08-G05-M01",
+  "F08-G05-M02",
+  "F08-G06-M01",
+  "F08-G06-M02"
+ ],
+ "hard_fan_in_tier3": {
+  "F01-G01-M01": 56,
+  "F01-G04-M01": 56,
+  "F07-G06-M01": 56,
+  "F07-G06-M02": 55,
+  "F01-G01-M02": 55,
+  "F01-G03-M01": 54,
+  "F01-G02-M01": 53,
+  "F01-G04-M02": 53,
+  "F01-G06-M01": 53,
+  "F01-G05-M01": 52,
+  "F04-G01-M01": 5,
+  "F07-G01-M01": 5,
+  "F07-G04-M01": 4,
+  "F07-G03-M02": 4,
+  "F07-G05-M01": 4,
+  "F02-G01-M01": 3,
+  "F04-G03-M01": 3,
+  "F04-G04-M01": 3,
+  "F06-G02-M01": 3,
+  "F07-G03-M01": 3,
+  "F07-G04-M02": 3,
+  "F07-G01-M02": 2,
+  "F07-G02-M02": 2,
+  "F04-G02-M03": 2,
+  "F05-G04-M01": 2,
+  "F02-G05-M01": 1,
+  "F02-G03-M02": 1,
+  "F03-G05-M01": 1,
+  "F04-G03-M02": 1,
+  "F04-G07-M02": 1,
+  "F05-G01-M02": 1,
+  "F05-G02-M01": 1,
+  "F05-G03-M01": 1,
+  "F05-G06-M02": 1,
+  "F04-G05-M01": 1,
+  "F06-G01-M01": 1,
+  "F06-G05-M01": 1,
+  "F06-G05-M02": 1,
+  "F06-G06-M01": 1,
+  "F04-G06-M01": 1,
+  "F07-G02-M01": 1
+ },
+ "l2_edges": [
+  {
+   "source": "F01-G02",
+   "target": "F01-G01",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F01-G03",
+   "target": "F01-G02",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F01-G04",
+   "target": "F01-G03",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F01-G04",
+   "target": "F01-G05",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F01-G05",
+   "target": "F01-G03",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F01-G06",
+   "target": "F07-G06",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F02-G02",
+   "target": "F01-G03",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F02-G05",
+   "target": "F02-G01",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F02-G05",
+   "target": "F04-G01",
+   "criticality": "SOFT",
+   "module_edges": 1
+  },
+  {
+   "source": "F02-G06",
+   "target": "F02-G05",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F03-G04",
+   "target": "F03-G03",
+   "criticality": "SOFT",
+   "module_edges": 1
+  },
+  {
+   "source": "F03-G05",
+   "target": "F03-G03",
+   "criticality": "SOFT",
+   "module_edges": 1
+  },
+  {
+   "source": "F03-G05",
+   "target": "F07-G01",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F03-G05",
+   "target": "F07-G02",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F04-G01",
+   "target": "F03-G04",
+   "criticality": "SOFT",
+   "module_edges": 1
+  },
+  {
+   "source": "F04-G01",
+   "target": "F03-G05",
+   "criticality": "SOFT",
+   "module_edges": 1
+  },
+  {
+   "source": "F04-G02",
+   "target": "F02-G01",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F04-G02",
+   "target": "F03-G03",
+   "criticality": "SOFT",
+   "module_edges": 2
+  },
+  {
+   "source": "F04-G02",
+   "target": "F04-G01",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F04-G03",
+   "target": "F01-G04",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F04-G03",
+   "target": "F04-G01",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F04-G04",
+   "target": "F04-G03",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F04-G04",
+   "target": "F07-G01",
+   "criticality": "SOFT",
+   "module_edges": 1
+  },
+  {
+   "source": "F04-G05",
+   "target": "F04-G04",
+   "criticality": "HARD",
+   "module_edges": 2
+  },
+  {
+   "source": "F04-G06",
+   "target": "F04-G01",
+   "criticality": "HARD",
+   "module_edges": 2
+  },
+  {
+   "source": "F04-G06",
+   "target": "F04-G02",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F04-G06",
+   "target": "F04-G03",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F04-G07",
+   "target": "F04-G03",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F05-G01",
+   "target": "F02-G05",
+   "criticality": "SOFT",
+   "module_edges": 1
+  },
+  {
+   "source": "F05-G01",
+   "target": "F07-G01",
+   "criticality": "HARD",
+   "module_edges": 2
+  },
+  {
+   "source": "F05-G01",
+   "target": "F07-G02",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F05-G01",
+   "target": "F07-G02",
+   "criticality": "SOFT",
+   "module_edges": 1
+  },
+  {
+   "source": "F05-G02",
+   "target": "F04-G03",
+   "criticality": "SOFT",
+   "module_edges": 1
+  },
+  {
+   "source": "F05-G03",
+   "target": "F07-G01",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F05-G04",
+   "target": "F05-G06",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F05-G04",
+   "target": "F07-G06",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F05-G05",
+   "target": "F05-G04",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F05-G05",
+   "target": "F05-G06",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F05-G06",
+   "target": "F05-G04",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F05-G06",
+   "target": "F07-G06",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F06-G01",
+   "target": "F04-G05",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F06-G02",
+   "target": "F04-G03",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F06-G02",
+   "target": "F06-G01",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F06-G04",
+   "target": "F02-G03",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F06-G04",
+   "target": "F06-G02",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F06-G05",
+   "target": "F06-G02",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F06-G05",
+   "target": "F06-G04",
+   "criticality": "SOFT",
+   "module_edges": 1
+  },
+  {
+   "source": "F06-G06",
+   "target": "F04-G06",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F06-G06",
+   "target": "F06-G05",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F06-G07",
+   "target": "F06-G01",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F07-G01",
+   "target": "F07-G02",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F07-G02",
+   "target": "F07-G01",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F07-G03",
+   "target": "F07-G04",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F07-G03",
+   "target": "F07-G05",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F07-G05",
+   "target": "F07-G01",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F07-G06",
+   "target": "F01-G04",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F07-G07",
+   "target": "F07-G03",
+   "criticality": "HARD",
+   "module_edges": 1
+  },
+  {
+   "source": "F08-G03",
+   "target": "F02-G02",
+   "criticality": "SOFT",
+   "module_edges": 1
+  }
+ ],
+ "critical_path_W1": [
+  "F06-G05-M02",
+  "F06-G02-M01",
+  "F06-G01-M01",
+  "F04-G05-M01",
+  "F04-G04-M01",
+  "F04-G03-M01",
+  "F04-G01-M01",
+  "F01-G04-M01",
+  "F01-G05-M01",
+  "F01-G03-M01",
+  "F01-G02-M01",
+  "F07-G06-M01",
+  "F01-G04-M02",
+  "F01-G01-M01"
+ ],
+ "critical_path_W2": [
+  "F02-G06-M02",
+  "F02-G05-M01",
+  "F02-G01-M01",
+  "F01-G04-M01",
+  "F01-G05-M01",
+  "F01-G03-M01",
+  "F01-G02-M01",
+  "F07-G06-M01",
+  "F01-G04-M02",
+  "F01-G01-M01"
+ ]
+}

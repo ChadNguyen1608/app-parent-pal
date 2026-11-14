@@ -1,0 +1,396 @@
+{
+ "assumptions": {
+  "prices": {
+   "haiku": [
+    0.1,
+    0.5
+   ],
+   "sonnet": [
+    2.0,
+    10.0
+   ]
+  },
+  "fx": 26000,
+  "scenarios": {
+   "Low": 30,
+   "Base": 300,
+   "High": 3000
+  },
+  "heavy_multiplier": 3.0,
+  "actions": {
+   "F04-G02-M01 schedule draft (Sonnet)": {
+    "module": "F04-G02-M01",
+    "model": "sonnet",
+    "tin": 6000,
+    "tout": 1500,
+    "calls": 1.2,
+    "per_hh": {
+     "Low": 2,
+     "Base": 4,
+     "High": 8
+    },
+    "success": 0.7,
+    "note": "Rules prompt (spec-quy-tac-lap-lich) + profile + timetable; weekly replan + edits; 20% retry; success = parent accepts draft (unknown)"
+   },
+   "F04-G02-M01 schedule draft (Haiku alt)": {
+    "module": "F04-G02-M01",
+    "model": "haiku",
+    "tin": 6000,
+    "tout": 1500,
+    "calls": 1.3,
+    "per_hh": {
+     "Low": 2,
+     "Base": 4,
+     "High": 8
+    },
+    "success": 0.6,
+    "note": "Same with cheaper model; lower assumed acceptance; quality unverified (MR-026)"
+   },
+   "F05-G01-M01 Pal message (Haiku)": {
+    "module": "F05-G01-M01",
+    "model": "haiku",
+    "tin": 3000,
+    "tout": 400,
+    "calls": 1.25,
+    "per_hh": {
+     "Low": 20,
+     "Base": 60,
+     "High": 200
+    },
+    "success": 0.8,
+    "note": "System + memory + retrieved knowledge; +25% for output-validation call (OD-05) and retries"
+   },
+   "F05-G01-M01 Pal message (Sonnet alt)": {
+    "module": "F05-G01-M01",
+    "model": "sonnet",
+    "tin": 3000,
+    "tout": 400,
+    "calls": 1.25,
+    "per_hh": {
+     "Low": 20,
+     "Base": 60,
+     "High": 200
+    },
+    "success": 0.85,
+    "note": "If Haiku quality insufficient in Vietnamese (MR-026)"
+   },
+   "F03-G05-M01 grounded recommendation (Haiku)": {
+    "module": "F03-G05-M01",
+    "model": "haiku",
+    "tin": 4000,
+    "tout": 600,
+    "calls": 1.2,
+    "per_hh": {
+     "Low": 2,
+     "Base": 6,
+     "High": 15
+    },
+    "success": 0.5,
+    "note": "Retrieval context + profile; success = parent accepts suggestion (unknown)"
+   }
+  }
+ },
+ "rows": [
+  {
+   "action": "F04-G02-M01 schedule draft (Sonnet)",
+   "module": "F04-G02-M01",
+   "model": "sonnet",
+   "scenario": "Low",
+   "households": 30,
+   "actions_per_hh": 2,
+   "usd_per_action": 0.0324,
+   "usd_per_hh_month": 0.0648,
+   "vnd_per_hh_month": 1685,
+   "vnd_p95_heavy_hh": 5054,
+   "usd_total_month": 1.94,
+   "usd_per_successful_activity": 0.04629,
+   "vnd_per_successful_activity": 1203,
+   "note": "Rules prompt (spec-quy-tac-lap-lich) + profile + timetable; weekly replan + edits; 20% retry; success = parent accepts draft (unknown)"
+  },
+  {
+   "action": "F04-G02-M01 schedule draft (Sonnet)",
+   "module": "F04-G02-M01",
+   "model": "sonnet",
+   "scenario": "Base",
+   "households": 300,
+   "actions_per_hh": 4,
+   "usd_per_action": 0.0324,
+   "usd_per_hh_month": 0.1296,
+   "vnd_per_hh_month": 3370,
+   "vnd_p95_heavy_hh": 10109,
+   "usd_total_month": 38.88,
+   "usd_per_successful_activity": 0.04629,
+   "vnd_per_successful_activity": 1203,
+   "note": "Rules prompt (spec-quy-tac-lap-lich) + profile + timetable; weekly replan + edits; 20% retry; success = parent accepts draft (unknown)"
+  },
+  {
+   "action": "F04-G02-M01 schedule draft (Sonnet)",
+   "module": "F04-G02-M01",
+   "model": "sonnet",
+   "scenario": "High",
+   "households": 3000,
+   "actions_per_hh": 8,
+   "usd_per_action": 0.0324,
+   "usd_per_hh_month": 0.2592,
+   "vnd_per_hh_month": 6739,
+   "vnd_p95_heavy_hh": 20218,
+   "usd_total_month": 777.6,
+   "usd_per_successful_activity": 0.04629,
+   "vnd_per_successful_activity": 1203,
+   "note": "Rules prompt (spec-quy-tac-lap-lich) + profile + timetable; weekly replan + edits; 20% retry; success = parent accepts draft (unknown)"
+  },
+  {
+   "action": "F04-G02-M01 schedule draft (Haiku alt)",
+   "module": "F04-G02-M01",
+   "model": "haiku",
+   "scenario": "Low",
+   "households": 30,
+   "actions_per_hh": 2,
+   "usd_per_action": 0.00176,
+   "usd_per_hh_month": 0.0035,
+   "vnd_per_hh_month": 91,
+   "vnd_p95_heavy_hh": 274,
+   "usd_total_month": 0.11,
+   "usd_per_successful_activity": 0.00293,
+   "vnd_per_successful_activity": 76,
+   "note": "Same with cheaper model; lower assumed acceptance; quality unverified (MR-026)"
+  },
+  {
+   "action": "F04-G02-M01 schedule draft (Haiku alt)",
+   "module": "F04-G02-M01",
+   "model": "haiku",
+   "scenario": "Base",
+   "households": 300,
+   "actions_per_hh": 4,
+   "usd_per_action": 0.00176,
+   "usd_per_hh_month": 0.007,
+   "vnd_per_hh_month": 183,
+   "vnd_p95_heavy_hh": 548,
+   "usd_total_month": 2.11,
+   "usd_per_successful_activity": 0.00293,
+   "vnd_per_successful_activity": 76,
+   "note": "Same with cheaper model; lower assumed acceptance; quality unverified (MR-026)"
+  },
+  {
+   "action": "F04-G02-M01 schedule draft (Haiku alt)",
+   "module": "F04-G02-M01",
+   "model": "haiku",
+   "scenario": "High",
+   "households": 3000,
+   "actions_per_hh": 8,
+   "usd_per_action": 0.00176,
+   "usd_per_hh_month": 0.014,
+   "vnd_per_hh_month": 365,
+   "vnd_p95_heavy_hh": 1095,
+   "usd_total_month": 42.12,
+   "usd_per_successful_activity": 0.00293,
+   "vnd_per_successful_activity": 76,
+   "note": "Same with cheaper model; lower assumed acceptance; quality unverified (MR-026)"
+  },
+  {
+   "action": "F05-G01-M01 Pal message (Haiku)",
+   "module": "F05-G01-M01",
+   "model": "haiku",
+   "scenario": "Low",
+   "households": 30,
+   "actions_per_hh": 20,
+   "usd_per_action": 0.00063,
+   "usd_per_hh_month": 0.0125,
+   "vnd_per_hh_month": 325,
+   "vnd_p95_heavy_hh": 975,
+   "usd_total_month": 0.38,
+   "usd_per_successful_activity": 0.00078,
+   "vnd_per_successful_activity": 20,
+   "note": "System + memory + retrieved knowledge; +25% for output-validation call (OD-05) and retries"
+  },
+  {
+   "action": "F05-G01-M01 Pal message (Haiku)",
+   "module": "F05-G01-M01",
+   "model": "haiku",
+   "scenario": "Base",
+   "households": 300,
+   "actions_per_hh": 60,
+   "usd_per_action": 0.00063,
+   "usd_per_hh_month": 0.0375,
+   "vnd_per_hh_month": 975,
+   "vnd_p95_heavy_hh": 2925,
+   "usd_total_month": 11.25,
+   "usd_per_successful_activity": 0.00078,
+   "vnd_per_successful_activity": 20,
+   "note": "System + memory + retrieved knowledge; +25% for output-validation call (OD-05) and retries"
+  },
+  {
+   "action": "F05-G01-M01 Pal message (Haiku)",
+   "module": "F05-G01-M01",
+   "model": "haiku",
+   "scenario": "High",
+   "households": 3000,
+   "actions_per_hh": 200,
+   "usd_per_action": 0.00063,
+   "usd_per_hh_month": 0.125,
+   "vnd_per_hh_month": 3250,
+   "vnd_p95_heavy_hh": 9750,
+   "usd_total_month": 375.0,
+   "usd_per_successful_activity": 0.00078,
+   "vnd_per_successful_activity": 20,
+   "note": "System + memory + retrieved knowledge; +25% for output-validation call (OD-05) and retries"
+  },
+  {
+   "action": "F05-G01-M01 Pal message (Sonnet alt)",
+   "module": "F05-G01-M01",
+   "model": "sonnet",
+   "scenario": "Low",
+   "households": 30,
+   "actions_per_hh": 20,
+   "usd_per_action": 0.0125,
+   "usd_per_hh_month": 0.25,
+   "vnd_per_hh_month": 6500,
+   "vnd_p95_heavy_hh": 19500,
+   "usd_total_month": 7.5,
+   "usd_per_successful_activity": 0.01471,
+   "vnd_per_successful_activity": 382,
+   "note": "If Haiku quality insufficient in Vietnamese (MR-026)"
+  },
+  {
+   "action": "F05-G01-M01 Pal message (Sonnet alt)",
+   "module": "F05-G01-M01",
+   "model": "sonnet",
+   "scenario": "Base",
+   "households": 300,
+   "actions_per_hh": 60,
+   "usd_per_action": 0.0125,
+   "usd_per_hh_month": 0.75,
+   "vnd_per_hh_month": 19500,
+   "vnd_p95_heavy_hh": 58500,
+   "usd_total_month": 225.0,
+   "usd_per_successful_activity": 0.01471,
+   "vnd_per_successful_activity": 382,
+   "note": "If Haiku quality insufficient in Vietnamese (MR-026)"
+  },
+  {
+   "action": "F05-G01-M01 Pal message (Sonnet alt)",
+   "module": "F05-G01-M01",
+   "model": "sonnet",
+   "scenario": "High",
+   "households": 3000,
+   "actions_per_hh": 200,
+   "usd_per_action": 0.0125,
+   "usd_per_hh_month": 2.5,
+   "vnd_per_hh_month": 65000,
+   "vnd_p95_heavy_hh": 195000,
+   "usd_total_month": 7500.0,
+   "usd_per_successful_activity": 0.01471,
+   "vnd_per_successful_activity": 382,
+   "note": "If Haiku quality insufficient in Vietnamese (MR-026)"
+  },
+  {
+   "action": "F03-G05-M01 grounded recommendation (Haiku)",
+   "module": "F03-G05-M01",
+   "model": "haiku",
+   "scenario": "Low",
+   "households": 30,
+   "actions_per_hh": 2,
+   "usd_per_action": 0.00084,
+   "usd_per_hh_month": 0.0017,
+   "vnd_per_hh_month": 44,
+   "vnd_p95_heavy_hh": 131,
+   "usd_total_month": 0.05,
+   "usd_per_successful_activity": 0.00168,
+   "vnd_per_successful_activity": 44,
+   "note": "Retrieval context + profile; success = parent accepts suggestion (unknown)"
+  },
+  {
+   "action": "F03-G05-M01 grounded recommendation (Haiku)",
+   "module": "F03-G05-M01",
+   "model": "haiku",
+   "scenario": "Base",
+   "households": 300,
+   "actions_per_hh": 6,
+   "usd_per_action": 0.00084,
+   "usd_per_hh_month": 0.005,
+   "vnd_per_hh_month": 131,
+   "vnd_p95_heavy_hh": 393,
+   "usd_total_month": 1.51,
+   "usd_per_successful_activity": 0.00168,
+   "vnd_per_successful_activity": 44,
+   "note": "Retrieval context + profile; success = parent accepts suggestion (unknown)"
+  },
+  {
+   "action": "F03-G05-M01 grounded recommendation (Haiku)",
+   "module": "F03-G05-M01",
+   "model": "haiku",
+   "scenario": "High",
+   "households": 3000,
+   "actions_per_hh": 15,
+   "usd_per_action": 0.00084,
+   "usd_per_hh_month": 0.0126,
+   "vnd_per_hh_month": 328,
+   "vnd_p95_heavy_hh": 983,
+   "usd_total_month": 37.8,
+   "usd_per_successful_activity": 0.00168,
+   "vnd_per_successful_activity": 44,
+   "note": "Retrieval context + profile; success = parent accepts suggestion (unknown)"
+  }
+ ],
+ "packages": {
+  "A (W1, Sonnet schedule)": {
+   "Low": {
+    "vnd_per_hh_month": 1685,
+    "usd_total_month": 1.94
+   },
+   "Base": {
+    "vnd_per_hh_month": 3370,
+    "usd_total_month": 38.88
+   },
+   "High": {
+    "vnd_per_hh_month": 6739,
+    "usd_total_month": 777.6
+   }
+  },
+  "A-lite (W1E1, no LLM)": {
+   "Low": {
+    "vnd_per_hh_month": 0,
+    "usd_total_month": 0
+   },
+   "Base": {
+    "vnd_per_hh_month": 0,
+    "usd_total_month": 0
+   },
+   "High": {
+    "vnd_per_hh_month": 0,
+    "usd_total_month": 0
+   }
+  },
+  "B (W2, Haiku Pal + recommendation)": {
+   "Low": {
+    "vnd_per_hh_month": 369,
+    "usd_total_month": 0.43
+   },
+   "Base": {
+    "vnd_per_hh_month": 1106,
+    "usd_total_month": 12.76
+   },
+   "High": {
+    "vnd_per_hh_month": 3578,
+    "usd_total_month": 412.8
+   }
+  },
+  "C (W1+W3, Sonnet schedule + Haiku Pal)": {
+   "Low": {
+    "vnd_per_hh_month": 2010,
+    "usd_total_month": 2.32
+   },
+   "Base": {
+    "vnd_per_hh_month": 4345,
+    "usd_total_month": 50.13
+   },
+   "High": {
+    "vnd_per_hh_month": 9989,
+    "usd_total_month": 1152.6
+   }
+  }
+ },
+ "reference": {
+  "econ_model_v1": "mo-hinh-kinh-te-v1 (project doc, 29/10/2026): AI ~1,200 VND per free user/month and ~8,200 VND per paid user/month incl. 30% buffer (ASSUMPTION, not measured)"
+ }
+}

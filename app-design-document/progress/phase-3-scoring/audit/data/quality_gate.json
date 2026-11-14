@@ -1,0 +1,62 @@
+[
+ {
+  "check": "baseline_v1 unchanged (sha256)",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "8 deliverables exist",
+  "result": "PASS",
+  "detail": "01_Scoring_Quality_Audit.md,02_Dependency_Granularity_Audit.md,03_A_Lite_Workflow_Validation.md,04_Delivery_Economics_Analysis.md,05_Sensitivity_Analysis.md,06_MVP_Readiness_Summary.md,07_Proposed_Change_Register.md,08_Research_Gaps_and_Decisions.md"
+ },
+ {
+  "check": "106 modules classified in Phase A",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "40 COARSE manually reviewed",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "95 baseline edges preserved",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "no invented Feature IDs in reports",
+  "result": "PASS",
+  "detail": "[]"
+ },
+ {
+  "check": "no hard gate marked PASS in proposals",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "every report states sources/confidence/approval",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "MVP not selected",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "A-lite v2 count consistent",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "original and proposed scores both shown",
+  "result": "PASS",
+  "detail": ""
+ },
+ {
+  "check": "no secrets/emails",
+  "result": "PASS",
+  "detail": ""
+ }
+]

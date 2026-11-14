@@ -1,0 +1,2107 @@
+{
+ "gate_held_out_of_ranking": [
+  "F05-G01-M01",
+  "F05-G04-M01"
+ ],
+ "ranked_pool": 39,
+ "delivery_matrix": [
+  {
+   "module_id": "F01-G01-M01",
+   "name": "Account Access",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E0",
+   "build": "L",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 56"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 56"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F01-G01-M02",
+   "name": "Session Security",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E0",
+   "build": "L",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 55"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 55"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F01-G02-M01",
+   "name": "Family Structure",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E0",
+   "build": "H",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 53"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 4, safety H (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 53"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F01-G02-M02",
+   "name": "Member Relationships",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E0",
+   "build": "M",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 3, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 3, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F01-G03-M01",
+   "name": "Core Identity",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E0",
+   "build": "L",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 54"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 54"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F01-G04-M01",
+   "name": "Access Policy",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "H",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 4, complexity 5, safety H",
+    "run": "ai L, op L, scale M",
+    "change": "maint 3, fan-in 56; legal-text dependent"
+   },
+   "drivers_minimal": {
+    "build": "effort 4, complexity 5, safety H (minimal capability -1)",
+    "run": "ai L, op L, scale M",
+    "change": "maint 3, fan-in 56; legal-text dependent"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F01-G04-M02",
+   "name": "Consent Ledger",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "H",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 53; legal-text dependent"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 4, safety H (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 53; legal-text dependent"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F01-G05-M01",
+   "name": "Mode State",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 3, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 52"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 3, safety M (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 52"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F01-G06-M01",
+   "name": "Lifecycle Controls",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E0",
+   "build": "H",
+   "run": "M",
+   "change": "M",
+   "build_minimal": "H",
+   "run_minimal": "M",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai L, op L, scale L; human ops: manual deletion runbook (pilot)",
+    "change": "maint 2, fan-in 53; legal-text dependent"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai L, op L, scale L; human ops: manual deletion runbook (pilot)",
+    "change": "maint 2, fan-in 53; legal-text dependent"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F02-G01-M01",
+   "name": "Intake & Updates",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 3, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 3"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 3, safety M (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 3"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F02-G01-M02",
+   "name": "Incremental Questions",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F02-G02-M01",
+   "name": "Preference Registry",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F02-G03-M01",
+   "name": "Evidence-linked Observations",
+   "tier": "DEFERRED",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 3, complexity 3, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 3, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F02-G03-M02",
+   "name": "Non-labeling Review",
+   "tier": "DEFERRED",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 3, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 3, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 1"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F02-G05-M01",
+   "name": "Versioned Profile",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 3, complexity 3, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 3, safety M (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F02-G05-M02",
+   "name": "Child Feedback",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F02-G06-M02",
+   "name": "Correction & Confidence",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F03-G03-M01",
+   "name": "Stage Catalog",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0; age tables"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0; age tables"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F03-G04-M01",
+   "name": "Goal Discovery",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F03-G05-M01",
+   "name": "Grounded Recommendation",
+   "tier": "CORE_VALUE",
+   "exec": "E2",
+   "build": "H",
+   "run": "M",
+   "change": "H",
+   "build_minimal": "H",
+   "run_minimal": "M",
+   "change_minimal": "H",
+   "drivers": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai M, op L, scale M",
+    "change": "maint 4, fan-in 1; retrieval/prompt/eval upkeep"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai M, op L, scale M",
+    "change": "maint 4, fan-in 1; retrieval/prompt/eval upkeep"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F03-G05-M02",
+   "name": "Recommendation Review",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F04-G01-M01",
+   "name": "Plan Structure",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 3, complexity 3, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 5"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 3, safety M (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 5"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F04-G01-M02",
+   "name": "Plan Templates",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F04-G02-M01",
+   "name": "Schedule Construction",
+   "tier": "CORE_VALUE",
+   "exec": "E2",
+   "build": "H",
+   "run": "M",
+   "change": "M",
+   "build_minimal": "H",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 4, complexity 3, safety M",
+    "run": "ai M, op L, scale M",
+    "change": "maint 3, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 4, complexity 3, safety M",
+    "run": "ai L, op L, scale M",
+    "change": "maint 3, fan-in 0"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F04-G02-M02",
+   "name": "Schedule Conflict",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F04-G02-M03",
+   "name": "Balanced Planning Validation",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 3, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 2; sourced thresholds + Standard Bar policy"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 3, safety M (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 2; sourced thresholds + Standard Bar policy"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F04-G03-M01",
+   "name": "Task Ownership",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 3"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 3"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F04-G03-M02",
+   "name": "Approval Routing",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 3, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 3, safety M (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F04-G04-M01",
+   "name": "Daily Task View",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 3"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 3"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F04-G04-M02",
+   "name": "Execution Support",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F04-G05-M01",
+   "name": "Lightweight Check-off",
+   "tier": "CORE_VALUE",
+   "exec": "E0",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 1, complexity 1, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 1, complexity 1, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 1"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F04-G05-M02",
+   "name": "Evidence Submission",
+   "tier": "CORE_VALUE",
+   "exec": "E0",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op M, scale M",
+    "change": "maint 2, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op M, scale M",
+    "change": "maint 2, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F04-G06-M01",
+   "name": "Change Requests",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "H",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 4, complexity 4, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 4, complexity 4, safety M (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 1"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F04-G06-M02",
+   "name": "Change History",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F04-G07-M01",
+   "name": "Schedule Notifications",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 3, complexity 3, safety L",
+    "run": "ai L, op M, scale M",
+    "change": "maint 2, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 3, safety L",
+    "run": "ai L, op M, scale M",
+    "change": "maint 2, fan-in 0"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F04-G07-M02",
+   "name": "Notification Preferences",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 1, complexity 1, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 1, complexity 1, safety L (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 1"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F05-G01-M01",
+   "name": "Child Conversation",
+   "tier": "CORE_VALUE",
+   "exec": "E2",
+   "build": "H",
+   "run": "H",
+   "change": "H",
+   "build_minimal": "H",
+   "run_minimal": "H",
+   "change_minimal": "H",
+   "drivers": {
+    "build": "effort 4, complexity 5, safety H",
+    "run": "ai H, op L, scale H",
+    "change": "maint 5, fan-in 0; prompts/evals/model migration"
+   },
+   "drivers_minimal": {
+    "build": "effort 4, complexity 5, safety H",
+    "run": "ai H, op L, scale H",
+    "change": "maint 5, fan-in 0; prompts/evals/model migration"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F05-G01-M02",
+   "name": "Companion Guardrails",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "H",
+   "run": "M",
+   "change": "H",
+   "build_minimal": "H",
+   "run_minimal": "M",
+   "change_minimal": "H",
+   "drivers": {
+    "build": "effort 4, complexity 4, safety H",
+    "run": "ai M, op L, scale M",
+    "change": "maint 4, fan-in 1; safety rules + static content"
+   },
+   "drivers_minimal": {
+    "build": "effort 4, complexity 4, safety H",
+    "run": "ai M, op L, scale M",
+    "change": "maint 4, fan-in 1; safety rules + static content"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F05-G02-M01",
+   "name": "Opt-in Check-in",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 3, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 3, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F05-G02-M02",
+   "name": "Check-in Controls",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 1, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 1, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F05-G03-M01",
+   "name": "Reflection Prompts",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 1"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F05-G03-M02",
+   "name": "Reflection Review",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 1, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 1, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F05-G04-M01",
+   "name": "Private Entries",
+   "tier": "CORE_VALUE",
+   "exec": "E0",
+   "build": "H",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "H",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai L, op M, scale M",
+    "change": "maint 2, fan-in 2"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai L, op M, scale M",
+    "change": "maint 2, fan-in 2"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F05-G04-M02",
+   "name": "Journal Retrieval",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 3, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 3, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F05-G06-M01",
+   "name": "Selective Sharing",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "H",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "H",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F05-G06-M02",
+   "name": "Deletion Graph",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "H",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 4, complexity 4, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 1; legal-text dependent"
+   },
+   "drivers_minimal": {
+    "build": "effort 4, complexity 4, safety H (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 3, fan-in 1; legal-text dependent"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F06-G01-M01",
+   "name": "Activity Event Log",
+   "tier": "CORE_VALUE",
+   "exec": "E0",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale M",
+    "change": "maint 1, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale M",
+    "change": "maint 1, fan-in 1"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F06-G01-M02",
+   "name": "Source Metadata",
+   "tier": "CORE_VALUE",
+   "exec": "E0",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 1, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 1, complexity 2, safety L (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F06-G02-M01",
+   "name": "Progress Rules",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 3"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 3"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F06-G02-M02",
+   "name": "Progress Exceptions",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 1, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 1, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F06-G04-M01",
+   "name": "Deterministic Trends",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 1, fan-in 0"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F06-G05-M01",
+   "name": "Audience Views",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 3, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 3, safety M (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F06-G05-M02",
+   "name": "Summary Rendering",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F06-G06-M01",
+   "name": "Review Sessions",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 1"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F06-G06-M02",
+   "name": "Feedback Handoff",
+   "tier": "CORE_VALUE",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 3, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 3, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 0"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F07-G01-M01",
+   "name": "Content CMS",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "M",
+   "run": "M",
+   "change": "H",
+   "build_minimal": "L",
+   "run_minimal": "M",
+   "change_minimal": "H",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety H",
+    "run": "ai L, op L, scale L; human ops: content approval",
+    "change": "maint 4, fan-in 5; approved content upkeep + expert review"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety H (minimal capability -1)",
+    "run": "ai L, op L, scale L; human ops: content approval",
+    "change": "maint 4, fan-in 5; approved content upkeep + expert review"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F07-G01-M02",
+   "name": "Structured Retrieval",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 3, complexity 3, safety M",
+    "run": "ai L, op L, scale M",
+    "change": "maint 3, fan-in 2"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 3, safety M (minimal capability -1)",
+    "run": "ai L, op L, scale M",
+    "change": "maint 3, fan-in 2"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F07-G02-M01",
+   "name": "Editorial Workflow",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "L",
+   "run": "M",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "M",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L; human ops: expert editorial review",
+    "change": "maint 3, fan-in 1"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L; human ops: expert editorial review",
+    "change": "maint 3, fan-in 1"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F07-G02-M02",
+   "name": "Evidence Provenance",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "L",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "L",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety M",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 2"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety M (minimal capability -1)",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 2"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F07-G03-M01",
+   "name": "Single Interface Router",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "H",
+   "run": "M",
+   "change": "M",
+   "build_minimal": "H",
+   "run_minimal": "M",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai M, op L, scale M",
+    "change": "maint 3, fan-in 3"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai M, op L, scale M",
+    "change": "maint 3, fan-in 3"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F07-G03-M02",
+   "name": "Execution Budget",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "L",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "L",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 4"
+   },
+   "drivers_minimal": {
+    "build": "effort 2, complexity 2, safety L",
+    "run": "ai L, op L, scale L",
+    "change": "maint 2, fan-in 4"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F07-G04-M01",
+   "name": "Policy Evaluation",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "H",
+   "run": "M",
+   "change": "H",
+   "build_minimal": "M",
+   "run_minimal": "M",
+   "change_minimal": "H",
+   "drivers": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai M, op L, scale M",
+    "change": "maint 4, fan-in 4; scope allowlist/threshold upkeep"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 4, safety H (minimal capability -1)",
+    "run": "ai M, op L, scale M",
+    "change": "maint 4, fan-in 4; scope allowlist/threshold upkeep"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F07-G04-M02",
+   "name": "Model Evaluation",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "M",
+   "run": "M",
+   "change": "H",
+   "build_minimal": "M",
+   "run_minimal": "M",
+   "change_minimal": "H",
+   "drivers": {
+    "build": "effort 3, complexity 3, safety M",
+    "run": "ai M, op L, scale L",
+    "change": "maint 4, fan-in 3; Vietnamese eval suite upkeep"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 3, safety M",
+    "run": "ai M, op L, scale L",
+    "change": "maint 4, fan-in 3; Vietnamese eval suite upkeep"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F07-G05-M01",
+   "name": "Safety Triage",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "M",
+   "run": "L",
+   "change": "H",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "H",
+   "drivers": {
+    "build": "effort 3, complexity 3, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 4, fan-in 4; safety rules + static content"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 3, safety H",
+    "run": "ai L, op L, scale L",
+    "change": "maint 4, fan-in 4; safety rules + static content"
+   },
+   "in_alite_v2": false
+  },
+  {
+   "module_id": "F07-G06-M01",
+   "name": "Purpose-bound Access",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "H",
+   "run": "L",
+   "change": "M",
+   "build_minimal": "M",
+   "run_minimal": "L",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai L, op L, scale M",
+    "change": "maint 3, fan-in 56; legal-text dependent"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 4, safety H (minimal capability -1)",
+    "run": "ai L, op L, scale M",
+    "change": "maint 3, fan-in 56; legal-text dependent"
+   },
+   "in_alite_v2": true
+  },
+  {
+   "module_id": "F07-G06-M02",
+   "name": "Retention & Export",
+   "tier": "MIN_FOUNDATION",
+   "exec": "E1",
+   "build": "H",
+   "run": "M",
+   "change": "M",
+   "build_minimal": "H",
+   "run_minimal": "M",
+   "change_minimal": "M",
+   "drivers": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai L, op M, scale L; human ops: manual purge runbook (pilot)",
+    "change": "maint 3, fan-in 55; legal-text dependent"
+   },
+   "drivers_minimal": {
+    "build": "effort 3, complexity 4, safety H",
+    "run": "ai L, op M, scale L; human ops: manual purge runbook (pilot)",
+    "change": "maint 3, fan-in 55; legal-text dependent"
+   },
+   "in_alite_v2": true
+  }
+ ],
+ "workflow_comparison": {
+  "A-lite v1 (W1E1)": {
+   "modules": 24,
+   "build": {
+    "L": 12,
+    "H": 6,
+    "M": 6
+   },
+   "run": {
+    "L": 22,
+    "M": 2
+   },
+   "change": {
+    "M": 13,
+    "L": 11
+   },
+   "build_H": [
+    "F01-G02-M01",
+    "F01-G04-M01",
+    "F01-G04-M02",
+    "F01-G06-M01",
+    "F07-G06-M01",
+    "F07-G06-M02"
+   ],
+   "change_H": [],
+   "ai_vnd_per_hh_month_base_ASSUMPTION": 0
+  },
+  "A-lite v2 (corrected)": {
+   "modules": 29,
+   "build": {
+    "L": 20,
+    "M": 6,
+    "H": 3
+   },
+   "run": {
+    "L": 27,
+    "M": 2
+   },
+   "change": {
+    "M": 15,
+    "L": 14
+   },
+   "build_H": [
+    "F01-G06-M01",
+    "F04-G02-M01",
+    "F07-G06-M02"
+   ],
+   "change_H": [],
+   "ai_vnd_per_hh_month_base_ASSUMPTION": 0
+  },
+  "W1 (E2 schedule)": {
+   "modules": 32,
+   "build": {
+    "L": 14,
+    "H": 9,
+    "M": 9
+   },
+   "run": {
+    "L": 24,
+    "M": 8
+   },
+   "change": {
+    "M": 17,
+    "L": 11,
+    "H": 4
+   },
+   "build_H": [
+    "F01-G02-M01",
+    "F01-G04-M01",
+    "F01-G04-M02",
+    "F01-G06-M01",
+    "F04-G02-M01",
+    "F07-G03-M01",
+    "F07-G04-M01",
+    "F07-G06-M01",
+    "F07-G06-M02"
+   ],
+   "change_H": [
+    "F07-G01-M01",
+    "F07-G04-M01",
+    "F07-G04-M02",
+    "F07-G05-M01"
+   ],
+   "ai_vnd_per_hh_month_base_ASSUMPTION": 3370
+  },
+  "W2 (parent Pal)": {
+   "modules": 26,
+   "build": {
+    "L": 8,
+    "H": 11,
+    "M": 7
+   },
+   "run": {
+    "L": 16,
+    "M": 9,
+    "H": 1
+   },
+   "change": {
+    "M": 14,
+    "L": 5,
+    "H": 7
+   },
+   "build_H": [
+    "F01-G02-M01",
+    "F01-G04-M01",
+    "F01-G04-M02",
+    "F01-G06-M01",
+    "F03-G05-M01",
+    "F05-G01-M01",
+    "F05-G01-M02",
+    "F07-G03-M01",
+    "F07-G04-M01",
+    "F07-G06-M01",
+    "F07-G06-M02"
+   ],
+   "change_H": [
+    "F03-G05-M01",
+    "F05-G01-M01",
+    "F05-G01-M02",
+    "F07-G01-M01",
+    "F07-G04-M01",
+    "F07-G04-M02",
+    "F07-G05-M01"
+   ],
+   "ai_vnd_per_hh_month_base_ASSUMPTION": 1106
+  },
+  "W3 (child voice)": {
+   "modules": 49,
+   "build": {
+    "L": 20,
+    "H": 15,
+    "M": 14
+   },
+   "run": {
+    "L": 39,
+    "M": 9,
+    "H": 1
+   },
+   "change": {
+    "M": 21,
+    "L": 22,
+    "H": 6
+   },
+   "build_H": [
+    "F01-G02-M01",
+    "F01-G04-M01",
+    "F01-G04-M02",
+    "F01-G06-M01",
+    "F04-G02-M01",
+    "F04-G06-M01",
+    "F05-G01-M01",
+    "F05-G01-M02",
+    "F05-G04-M01",
+    "F05-G06-M01",
+    "F05-G06-M02",
+    "F07-G03-M01",
+    "F07-G04-M01",
+    "F07-G06-M01",
+    "F07-G06-M02"
+   ],
+   "change_H": [
+    "F05-G01-M01",
+    "F05-G01-M02",
+    "F07-G01-M01",
+    "F07-G04-M01",
+    "F07-G04-M02",
+    "F07-G05-M01"
+   ],
+   "ai_vnd_per_hh_month_base_ASSUMPTION": 4345
+  }
+ },
+ "sensitivity": {
+  "baseline_v1": {
+   "rankings": {
+    "value_oriented": [
+     "F04-G02-M01",
+     "F04-G04-M01",
+     "F04-G05-M01",
+     "F04-G07-M01",
+     "F06-G05-M02",
+     "F04-G02-M03",
+     "F04-G01-M02",
+     "F02-G05-M02",
+     "F03-G05-M01",
+     "F04-G06-M01",
+     "F04-G03-M01",
+     "F02-G01-M01",
+     "F04-G04-M02",
+     "F05-G02-M01",
+     "F03-G04-M01",
+     "F05-G03-M01",
+     "F06-G06-M01",
+     "F06-G06-M02",
+     "F02-G05-M01",
+     "F04-G02-M02",
+     "F02-G01-M02",
+     "F02-G02-M01",
+     "F02-G03-M01",
+     "F03-G05-M02",
+     "F04-G03-M02",
+     "F04-G05-M02",
+     "F04-G07-M02",
+     "F05-G02-M02",
+     "F05-G03-M02",
+     "F06-G02-M02",
+     "F04-G06-M02",
+     "F04-G01-M01",
+     "F06-G01-M01",
+     "F06-G02-M01",
+     "F06-G04-M01",
+     "F03-G03-M01",
+     "F06-G01-M02",
+     "F06-G05-M01",
+     "F02-G03-M02"
+    ],
+    "cost_constrained": [
+     "F02-G05-M02",
+     "F04-G04-M01",
+     "F04-G05-M01",
+     "F06-G05-M02",
+     "F02-G02-M01",
+     "F03-G05-M02",
+     "F04-G02-M02",
+     "F04-G03-M01",
+     "F04-G05-M02",
+     "F04-G07-M02",
+     "F05-G02-M02",
+     "F05-G03-M02",
+     "F06-G02-M02",
+     "F06-G06-M01",
+     "F04-G06-M02",
+     "F06-G01-M01",
+     "F06-G01-M02",
+     "F06-G02-M01",
+     "F06-G04-M01",
+     "F04-G01-M02",
+     "F02-G01-M02",
+     "F03-G04-M01",
+     "F04-G04-M02",
+     "F05-G03-M01",
+     "F03-G03-M01",
+     "F04-G07-M01",
+     "F02-G01-M01",
+     "F02-G05-M01",
+     "F04-G03-M02",
+     "F05-G02-M01",
+     "F06-G06-M02",
+     "F06-G05-M01",
+     "F04-G02-M03",
+     "F02-G03-M01",
+     "F02-G03-M02",
+     "F04-G01-M01",
+     "F04-G06-M01",
+     "F04-G02-M01",
+     "F03-G05-M01"
+    ],
+    "dependency_constrained": [
+     "F02-G05-M02",
+     "F02-G01-M01",
+     "F02-G02-M01",
+     "F03-G04-M01",
+     "F04-G02-M02",
+     "F04-G03-M02",
+     "F04-G07-M02",
+     "F05-G02-M01",
+     "F02-G03-M02",
+     "F03-G03-M01",
+     "F04-G01-M01",
+     "F06-G01-M02",
+     "F06-G05-M01",
+     "F04-G01-M02",
+     "F02-G01-M02",
+     "F02-G03-M01",
+     "F02-G05-M01",
+     "F04-G03-M01",
+     "F05-G02-M02",
+     "F04-G06-M02",
+     "F04-G02-M03",
+     "F04-G04-M01",
+     "F05-G03-M01",
+     "F04-G05-M01",
+     "F04-G07-M01",
+     "F04-G04-M02",
+     "F04-G05-M02",
+     "F05-G03-M02",
+     "F04-G06-M01",
+     "F06-G01-M01",
+     "F06-G02-M01",
+     "F06-G02-M02",
+     "F06-G04-M01",
+     "F06-G05-M02",
+     "F06-G06-M01",
+     "F03-G05-M01",
+     "F03-G05-M02",
+     "F04-G02-M01",
+     "F06-G06-M02"
+    ]
+   },
+   "top": 15,
+   "stability": {
+    "F02-G01-M01": "MODERATE",
+    "F02-G01-M02": "VOLATILE",
+    "F02-G02-M01": "MODERATE",
+    "F02-G03-M01": "STABLE_LOW",
+    "F02-G03-M02": "VOLATILE",
+    "F02-G05-M01": "STABLE_LOW",
+    "F02-G05-M02": "STABLE_HIGH",
+    "F03-G03-M01": "VOLATILE",
+    "F03-G04-M01": "MODERATE",
+    "F03-G05-M01": "VOLATILE",
+    "F03-G05-M02": "VOLATILE",
+    "F04-G01-M01": "VOLATILE",
+    "F04-G01-M02": "MODERATE",
+    "F04-G02-M01": "VOLATILE",
+    "F04-G02-M02": "MODERATE",
+    "F04-G02-M03": "VOLATILE",
+    "F04-G03-M01": "MODERATE",
+    "F04-G03-M02": "VOLATILE",
+    "F04-G04-M01": "MODERATE",
+    "F04-G04-M02": "VOLATILE",
+    "F04-G05-M01": "MODERATE",
+    "F04-G05-M02": "VOLATILE",
+    "F04-G06-M01": "VOLATILE",
+    "F04-G06-M02": "VOLATILE",
+    "F04-G07-M01": "VOLATILE",
+    "F04-G07-M02": "MODERATE",
+    "F05-G02-M01": "MODERATE",
+    "F05-G02-M02": "VOLATILE",
+    "F05-G03-M01": "STABLE_LOW",
+    "F05-G03-M02": "VOLATILE",
+    "F06-G01-M01": "STABLE_LOW",
+    "F06-G01-M02": "VOLATILE",
+    "F06-G02-M01": "STABLE_LOW",
+    "F06-G02-M02": "VOLATILE",
+    "F06-G04-M01": "STABLE_LOW",
+    "F06-G05-M01": "VOLATILE",
+    "F06-G05-M02": "MODERATE",
+    "F06-G06-M01": "VOLATILE",
+    "F06-G06-M02": "STABLE_LOW"
+   },
+   "counts": {
+    "MODERATE": 11,
+    "VOLATILE": 20,
+    "STABLE_LOW": 7,
+    "STABLE_HIGH": 1
+   }
+  },
+  "with_phase_A_corrections": {
+   "rankings": {
+    "value_oriented": [
+     "F04-G02-M01",
+     "F04-G04-M01",
+     "F04-G05-M01",
+     "F04-G07-M01",
+     "F06-G05-M02",
+     "F04-G02-M03",
+     "F04-G01-M02",
+     "F03-G05-M01",
+     "F04-G06-M01",
+     "F02-G05-M02",
+     "F04-G03-M01",
+     "F02-G01-M01",
+     "F04-G04-M02",
+     "F05-G02-M01",
+     "F03-G04-M01",
+     "F05-G03-M01",
+     "F06-G06-M01",
+     "F06-G06-M02",
+     "F02-G05-M01",
+     "F04-G02-M02",
+     "F02-G01-M02",
+     "F02-G02-M01",
+     "F02-G03-M01",
+     "F03-G05-M02",
+     "F04-G03-M02",
+     "F04-G05-M02",
+     "F04-G07-M02",
+     "F05-G02-M02",
+     "F05-G03-M02",
+     "F06-G02-M02",
+     "F04-G06-M02",
+     "F04-G01-M01",
+     "F06-G01-M01",
+     "F06-G02-M01",
+     "F06-G04-M01",
+     "F03-G03-M01",
+     "F06-G01-M02",
+     "F06-G05-M01",
+     "F02-G03-M02"
+    ],
+    "cost_constrained": [
+     "F02-G05-M02",
+     "F04-G04-M01",
+     "F04-G05-M01",
+     "F06-G05-M02",
+     "F02-G01-M01",
+     "F02-G02-M01",
+     "F02-G05-M01",
+     "F03-G05-M02",
+     "F04-G02-M02",
+     "F04-G03-M01",
+     "F04-G03-M02",
+     "F04-G05-M02",
+     "F04-G07-M02",
+     "F05-G02-M02",
+     "F05-G03-M02",
+     "F06-G02-M02",
+     "F06-G06-M01",
+     "F04-G06-M02",
+     "F06-G01-M01",
+     "F06-G01-M02",
+     "F06-G02-M01",
+     "F06-G04-M01",
+     "F06-G05-M01",
+     "F04-G01-M02",
+     "F04-G02-M03",
+     "F02-G01-M02",
+     "F03-G04-M01",
+     "F04-G04-M02",
+     "F05-G03-M01",
+     "F03-G03-M01",
+     "F04-G01-M01",
+     "F04-G07-M01",
+     "F05-G02-M01",
+     "F06-G06-M02",
+     "F04-G06-M01",
+     "F02-G03-M01",
+     "F02-G03-M02",
+     "F04-G02-M01",
+     "F03-G05-M01"
+    ],
+    "dependency_constrained": [
+     "F02-G05-M02",
+     "F02-G01-M01",
+     "F02-G02-M01",
+     "F03-G04-M01",
+     "F04-G02-M02",
+     "F04-G03-M02",
+     "F04-G07-M02",
+     "F05-G02-M01",
+     "F02-G03-M02",
+     "F03-G03-M01",
+     "F04-G01-M01",
+     "F06-G01-M02",
+     "F06-G05-M01",
+     "F04-G01-M02",
+     "F02-G01-M02",
+     "F02-G03-M01",
+     "F02-G05-M01",
+     "F04-G03-M01",
+     "F05-G02-M02",
+     "F04-G06-M02",
+     "F04-G02-M03",
+     "F04-G04-M01",
+     "F05-G03-M01",
+     "F04-G05-M01",
+     "F04-G07-M01",
+     "F04-G04-M02",
+     "F04-G05-M02",
+     "F05-G03-M02",
+     "F04-G02-M01",
+     "F04-G06-M01",
+     "F06-G01-M01",
+     "F06-G02-M01",
+     "F06-G02-M02",
+     "F06-G04-M01",
+     "F06-G05-M02",
+     "F06-G06-M01",
+     "F03-G05-M01",
+     "F03-G05-M02",
+     "F06-G06-M02"
+    ]
+   },
+   "top": 15,
+   "stability": {
+    "F02-G01-M01": "STABLE_HIGH",
+    "F02-G01-M02": "VOLATILE",
+    "F02-G02-M01": "MODERATE",
+    "F02-G03-M01": "STABLE_LOW",
+    "F02-G03-M02": "VOLATILE",
+    "F02-G05-M01": "VOLATILE",
+    "F02-G05-M02": "STABLE_HIGH",
+    "F03-G03-M01": "VOLATILE",
+    "F03-G04-M01": "MODERATE",
+    "F03-G05-M01": "VOLATILE",
+    "F03-G05-M02": "VOLATILE",
+    "F04-G01-M01": "VOLATILE",
+    "F04-G01-M02": "MODERATE",
+    "F04-G02-M01": "VOLATILE",
+    "F04-G02-M02": "MODERATE",
+    "F04-G02-M03": "VOLATILE",
+    "F04-G03-M01": "MODERATE",
+    "F04-G03-M02": "MODERATE",
+    "F04-G04-M01": "MODERATE",
+    "F04-G04-M02": "VOLATILE",
+    "F04-G05-M01": "MODERATE",
+    "F04-G05-M02": "VOLATILE",
+    "F04-G06-M01": "VOLATILE",
+    "F04-G06-M02": "STABLE_LOW",
+    "F04-G07-M01": "VOLATILE",
+    "F04-G07-M02": "MODERATE",
+    "F05-G02-M01": "MODERATE",
+    "F05-G02-M02": "VOLATILE",
+    "F05-G03-M01": "STABLE_LOW",
+    "F05-G03-M02": "VOLATILE",
+    "F06-G01-M01": "STABLE_LOW",
+    "F06-G01-M02": "VOLATILE",
+    "F06-G02-M01": "STABLE_LOW",
+    "F06-G02-M02": "STABLE_LOW",
+    "F06-G04-M01": "STABLE_LOW",
+    "F06-G05-M01": "VOLATILE",
+    "F06-G05-M02": "MODERATE",
+    "F06-G06-M01": "STABLE_LOW",
+    "F06-G06-M02": "STABLE_LOW"
+   },
+   "counts": {
+    "STABLE_HIGH": 2,
+    "VOLATILE": 17,
+    "MODERATE": 11,
+    "STABLE_LOW": 9
+   }
+  }
+ },
+ "moved_by_corrections": {
+  "F02-G01-M01": [
+   "MODERATE",
+   "STABLE_HIGH"
+  ],
+  "F02-G05-M01": [
+   "STABLE_LOW",
+   "VOLATILE"
+  ],
+  "F04-G03-M02": [
+   "VOLATILE",
+   "MODERATE"
+  ],
+  "F04-G06-M02": [
+   "VOLATILE",
+   "STABLE_LOW"
+  ],
+  "F06-G02-M02": [
+   "VOLATILE",
+   "STABLE_LOW"
+  ],
+  "F06-G06-M01": [
+   "VOLATILE",
+   "STABLE_LOW"
+  ]
+ },
+ "workflow_feasibility": {
+  "A-lite v2 (corrected)": {
+   "value_oriented": "FEASIBLE",
+   "cost_constrained": "FEASIBLE (0 AI run cost)",
+   "dependency_constrained": "FEASIBLE (29 modules, 12 minimal, no AI gate)",
+   "blocker": "H4/lawful basis before real data"
+  },
+  "W1 (E2 schedule)": {
+   "value_oriented": "FEASIBLE",
+   "cost_constrained": "FEASIBLE with Haiku; sensitive to model choice",
+   "dependency_constrained": "CONDITIONAL (+AI gate, static catalog, eval)",
+   "blocker": "H4; OD-05; MR-023/026"
+  },
+  "W2 (parent Pal)": {
+   "value_oriented": "CONDITIONAL (approved KB needed)",
+   "cost_constrained": "FEASIBLE with Haiku; H if Sonnet",
+   "dependency_constrained": "NOT_FEASIBLE now (0 approved knowledge items)",
+   "blocker": "KB review, GAP-16 ownership, H4"
+  },
+  "W3 (child voice)": {
+   "value_oriented": "CONDITIONAL",
+   "cost_constrained": "MODERATE",
+   "dependency_constrained": "NOT_FEASIBLE (9 legally blocked modules)",
+   "blocker": "FR-03, H4, PIA"
+  }
+ },
+ "band_rules": {
+  "build": "H if effort>=4 or complexity>=4; M if effort=3 or complexity=3 or safety overhead H; else L; minimal-capability view lowers one level for MINIMAL targets",
+  "run": "H if ai_cost_risk H; M if operating_cost H or ai M or scalability H or human ops; else L",
+  "change": "H if maintenance>=4 or content/eval-bound core (F05-G01-M01, F07-G01-M01, F07-G04-M02); M if maintenance 3 or hard fan-in>=4 or content/eval/legal dependent; else L"
+ }
+}

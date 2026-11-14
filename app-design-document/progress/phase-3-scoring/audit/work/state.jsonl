@@ -1,0 +1,5 @@
+{"phase":"A","status":"DONE","ts":"2026-11-14T13:02:49Z","audited":106,"manual_reviewed":66,"status_counts":{"KEEP":80,"CLARIFY":15,"REVIEW":6,"BLOCKED":5},"auto_flags":9}
+{"phase":"B","status":"DONE","ts":"2026-11-14T13:04:29Z","edges_audited":95,"bundles_audited":4,"proposed_edges":7,"reversed":1}
+{"phase":"C","status":"DONE","ts":"2026-11-14T13:05:41Z","capabilities":34,"essential_missing_baseline":5,"alite_v1":24,"alite_v2":29}
+{"phase":"D-E","status":"DONE","ts":"2026-11-14T13:07:06Z","matrix_modules":66,"scenarios":3,"ranked_pool":39,"stable_high":2}
+{"phase":"FINAL","status":"DONE","ts":"2026-11-14T13:18:16Z","adversarial":"Sonnet 5.5, 17 verdicts (8 SUPPORTED, 9 PARTLY), 8 missed","quality_gate":"12/12"}

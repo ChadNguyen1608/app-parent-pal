@@ -1,0 +1,14 @@
+{
+ "rubric_version": "R1.0 (pre-calibration)",
+ "value_keys_module": ["core_loop_contribution","adoption_potential","differentiation","dependency_enablement"],
+ "value_keys_cohort": ["parent_value","child_value","adult_user_value"],
+ "delivery_keys": {"implementation_effort":"1-5","maintenance_effort":"1-5","operating_cost":"L/M/H","ai_cost_risk":"L/M/H","latency_and_reliability":"L/M/H","implementation_complexity":"1-5","scalability":"L/M/H"},
+ "supplementary_keys": {"safety_compliance_overhead":"L/M/H"},
+ "gates": ["G-Legal","G-Privacy","G-Safety","G-Feasibility"],
+ "gate_values": ["PASS","CONDITIONAL","BLOCKED","UNKNOWN"],
+ "evidence_labels": ["EVIDENCE_BACKED","EXPERT_HYPOTHESIS","ESTIMATE","UNKNOWN","NOT_APPLICABLE"],
+ "confidence": ["UNKNOWN","HYPOTHESIS","LOW","MEDIUM","HIGH"],
+ "applicability": ["APPLICABLE","CONDITIONAL","NOT_APPLICABLE","UNKNOWN"],
+ "tiers": ["CORE_VALUE","MIN_FOUNDATION","ADV_SECURITY_OPS","DEFERRED"],
+ "exec": ["E0","E1","E2","E3"]
+}
