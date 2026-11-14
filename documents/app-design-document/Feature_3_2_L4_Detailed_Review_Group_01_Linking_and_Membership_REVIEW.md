@@ -27,3 +27,8 @@ Binding facts: opaque child/app and household refs, state, epoch, provenance and
 | D01-T07 | Refresh old session or resume old offline action after B pairing | Independently authorized session functions may proceed; A-scoped operation denied. |
 
 H1/M3 design amended. Runtime proof of atomic transitions, version fences, identity assurance and legal scope remains open. No runtime or independent re-review performed.
+
+
+## 2026-11-14 — FR-01 Owner decision superseding prior candidate Unlink/Pairs
+
+Authoritative business decision: [FR-01 Parent PIN Unlink and Re-pairing](Feature_3_2_L4_FR01_Parent_PIN_Unlink_and_Repairing_Owner_Decision_APPROVED.md). Prior wording in this candidate document that Child App may unlink without a caregiver-controlled PIN, or household B may pair from a fresh code solely by virtue of B adult authentication, is **superseded**. For linked-child Unlink require authorized Parent PIN, explicit confirmation and current server-side Access Policy. On effective unlink, notify eligible Parent App and preserve unrelated child data/Journal. Same-household re-pair retains normal current-auth flow. Different-household re-pair requires independently verified **child-specific authority of receiving adult**, beyond a valid account or pairing ID; missing proof denies the binding. Active link transfer remains denied; no A grants/data migrate to B. PIN recovery details, B proof method and recipient notification policy still require design/verification. Test references FR01-T01..T11 are proposed, not executed; independent Claude focused re-review required. Historic original candidate prose retained as source history only.
