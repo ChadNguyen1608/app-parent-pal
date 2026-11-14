@@ -29,3 +29,7 @@ A0 caregiver-led interface in verified scope; A1 supervised interaction; A2 guid
 - BI-05/10 remain blocking for real data. Independent review deferred to consolidation. Six proposed test oracles, zero runtime executions. 73 untouched L3 remain plus B02 partial-slice follow-up. Next B08.
 
 Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.
+
+## Current detailed design amendment
+
+[Detailed group 02: Pal responses](Feature_3_2_L4_Detailed_Review_Group_02_Pal_Response_REVIEW.md) applies to this checkpoint and supersedes conflicting earlier candidate clauses and oracles. Earlier text remains source history where superseded.

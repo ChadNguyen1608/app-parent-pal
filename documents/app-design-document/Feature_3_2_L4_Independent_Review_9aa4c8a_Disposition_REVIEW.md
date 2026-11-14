@@ -25,3 +25,7 @@ Reviewed snapshot `9aa4c8a08cc10fb0771303299843cb7ab8d83b46`. Source: Owner-supp
 - IR-T05: input classifier marks request in scope, actual output exceeds evidenced capability. Separate output check denies release. Expired evidence on retry produces UNKNOWN.
 
 No approved decision log, canonical Blueprint or final L4 status changes. P5/P6/B01 evidence gaps remain open.
+
+## Current detailed design amendment
+
+[Detailed group 01: linking](Feature_3_2_L4_Detailed_Review_Group_01_Linking_and_Membership_REVIEW.md) and [Detailed group 02: Pal responses](Feature_3_2_L4_Detailed_Review_Group_02_Pal_Response_REVIEW.md) applies to this checkpoint and supersedes conflicting earlier candidate clauses and oracles. Earlier text remains source history where superseded.

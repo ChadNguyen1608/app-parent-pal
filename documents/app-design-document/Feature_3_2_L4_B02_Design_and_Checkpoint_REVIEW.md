@@ -164,3 +164,7 @@ Repository commit `5633291348b9a111795572ab0d6fd4c337ca8ed6` is the design sourc
 Structural checks executed: 106 unique inventory L3, 42 unique approved IDs across nine logs, 11 unique candidate IDs whose parents occur in inventory, 22 unique design-test IDs. Policy consistency was reviewed by the designer. Independent review and runtime verification remain pending.
 
 Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.
+
+## Current detailed design amendment
+
+[Detailed group 01: linking](Feature_3_2_L4_Detailed_Review_Group_01_Linking_and_Membership_REVIEW.md) applies to this checkpoint and supersedes conflicting earlier candidate clauses and oracles. Earlier text remains source history where superseded.

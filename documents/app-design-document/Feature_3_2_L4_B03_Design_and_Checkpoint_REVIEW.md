@@ -100,3 +100,7 @@ These candidate profiles specify interaction only. Minor legal authority, approv
 Structural check executed: five canonical parents, ten unique candidates and 17 unique proposed test IDs.
 
 Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.
+
+## Current detailed design amendment
+
+[Detailed group 01: linking](Feature_3_2_L4_Detailed_Review_Group_01_Linking_and_Membership_REVIEW.md) applies to this checkpoint and supersedes conflicting earlier candidate clauses and oracles. Earlier text remains source history where superseded.

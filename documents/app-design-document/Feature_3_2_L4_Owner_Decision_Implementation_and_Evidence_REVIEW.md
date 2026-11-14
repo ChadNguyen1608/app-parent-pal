@@ -4,9 +4,9 @@ Design revision only. Source commit `7d008616c5fdd9cbd55cbf98ce43c375e468341c`. 
 
 ## ODP-01 · Household binding
 
-Family Structure owns the scope check. Invitation, acceptance, recovery, support and administrative operations must reject a change of household for the existing child profile. Unlinking or revoking a credential does not remove the household association or make it eligible to transfer. Same-household relinking remains possible under current verified authority. If association cannot be determined or is disputed, deny the mutation and allow scoped verification without transfer. Check canonical association and binding epoch at commit; a prior invite or recovery receipt does not authorize a subsequent commit. On denial, no new binding, membership, access grant or unauthorized profile existence signal.
+Family Structure owns the scope check. Invitation, acceptance, recovery, support and administrative operations must reject a change of household for the existing child profile. Credential revocation alone does not unlink. After effective Child App unlink, a fresh authorized pairing may target the same or a different household. If association cannot be determined or is disputed, deny the mutation and allow scoped verification without transfer. Check canonical association and binding epoch at commit; a prior invite or recovery receipt does not authorize a subsequent commit. On denial, no new binding, membership, access grant or unauthorized profile existence signal.
 
-- ODP-X01 · Race a same-household recovery with a cross-household acceptance. Only the eligible same-household mutation can commit. Retry a cross-household claim after unlink or through support; original household association and grants remain unchanged.
+- ODP-X01 · Race a same-household recovery with a cross-household acceptance. Only the eligible same-household mutation can commit. A stale claim or support bypass is denied; a fresh authorized pairing after effective unlink may establish a new household binding with no prior grants.
 
 ## ODP-02 · Journal deletion
 
@@ -32,3 +32,7 @@ Resolve scope before invoking a model; evaluate emitted content against the same
 | BI-05/06/07/08/10/12 | Design amended; legal and runtime gates remain open. | Purpose and lawful-basis evidence, link/plan commit verification, lineage and backup receipts. |
 
 B08–B25 now include 73 module-specific supplemental oracles. They extend the existing candidates and do not claim full schema, cohort matrix or runtime coverage. Review priority: B08/B09 Journal and AI, B16–B18 plan concurrency, B19–B21 reporting provenance, B22–B25 third-party and financial controls. Use the new cases for independent review after source freeze. Zero runtime executions.
+
+## Current detailed design amendment
+
+[Detailed group 01: linking](Feature_3_2_L4_Detailed_Review_Group_01_Linking_and_Membership_REVIEW.md) and [Detailed group 02: Pal responses](Feature_3_2_L4_Detailed_Review_Group_02_Pal_Response_REVIEW.md) applies to this checkpoint and supersedes conflicting earlier candidate clauses and oracles. Earlier text remains source history where superseded.

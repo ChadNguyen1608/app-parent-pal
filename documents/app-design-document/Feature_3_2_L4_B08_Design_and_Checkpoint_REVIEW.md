@@ -47,3 +47,7 @@ For each synthetic fixture, inspect the authorized response and relevant durable
 | CAND-F05-G03-M01-prompt | B08-T05 | B08-X05. Template hết hiệu lực giữa chọn và hiển thị: không dùng prompt cũ. |
 
 Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.
+
+## Current detailed design amendment
+
+[Detailed group 02: Pal responses](Feature_3_2_L4_Detailed_Review_Group_02_Pal_Response_REVIEW.md) applies to this checkpoint and supersedes conflicting earlier candidate clauses and oracles. Earlier text remains source history where superseded.
