@@ -41,7 +41,7 @@ for (const prof of PROFILES) {
   // P6-OD-03: chỉ dùng mặc định [MĐ] chưa thẩm định → UNKNOWN; có bar gia đình đã duyệt và không lệch → WITHIN_FAMILY_BAR
   const budgetDev = Object.values(perDay).some(x => x.extra.some(w => w.rule === "D4"));
   const balance = !floorsOk ? "FLOOR_VIOLATION" : prof.familyBarApproved ? (budgetDev ? "OUTSIDE_FAMILY_BAR" : "WITHIN_FAMILY_BAR") : "UNKNOWN (app default [MĐ] chưa thẩm định)";
-  const r = { id: prof.id, label: prof.label, weekStatus: worst, statuses, floorsOk, balance, deterministic, avgMs: +avgMs.toFixed(3), checkDayK: nCheck, checkDayKRelaxed: nCheckRelaxed, extra: nExtra, byKey, tradeoffs: res.tradeoffs, notes: res.notes, phase: phaseRes, phaseExtra: extraPhase, board, blocks: V.DAYS.reduce((n, d) => n + res.plan.ngay[d].length, 0) };
+  const r = { id: prof.id, label: prof.label, weekStatus: worst, statuses, floorsOk, balance, deterministic, avgMs: +avgMs.toFixed(3), checkDayK: nCheck, checkDayKRelaxed: nCheckRelaxed, extra: nExtra, byKey, tradeoffs: res.tradeoffs, notes: res.notes, questions: res.questions, phase: phaseRes, phaseExtra: extraPhase, board, blocks: V.DAYS.reduce((n, d) => n + res.plan.ngay[d].length, 0) };
   summary.push(r);
   fs.writeFileSync(path.join(OUT, prof.id + ".json"), JSON.stringify({ profile: prof, result: r, perDay, plan: res.plan }, null, 1));
 
@@ -55,12 +55,14 @@ for (const prof of PROFILES) {
   }
   res.tradeoffs.forEach(t => text += " * ĐÁNH ĐỔI " + t.day + " [" + t.rule + "] " + t.t + " → " + t.options.join(" | ") + "\n");
   res.notes.forEach(n => text += " - ghi chú [" + n.rule + "] " + n.t + "\n");
+  (res.questions || []).forEach(q => text += " ? HỎI BỐ MẸ " + q.day + " [" + q.rule + "] mặc định=" + q.default + " → " + q.options.join(" | ") + "\n");
   if (phaseRes) { text += " # giai đoạn: " + phaseRes.status + " " + JSON.stringify(phaseRes.findings) + " reviews=" + phaseRes.reviews.join(",") + "\n"; extraPhase.forEach(x => text += " # thử: " + x.label + " → " + x.res.status + " " + x.res.findings.map(f => f.rule + ":" + f.k).join(",") + "\n"); }
 }
 fs.writeFileSync(path.join(OUT, "weeks.txt"), text);
 fs.writeFileSync(path.join(OUT, "summary.json"), JSON.stringify(summary.map(({ board, ...x }) => x), null, 1));
 fs.writeFileSync(path.join(OUT, "rules.json"), JSON.stringify(RULES, null, 1));
 fs.writeFileSync(path.join(OUT, "params.json"), JSON.stringify(PARAMS, null, 1));
+console.log("spike E1 v2 (áp D-02, D-08, D-09, D-10; B-1/B-2 fail-safe)");
 console.log("id  status                     floors det  ms     blk chk relax extra tradeoffs  keys");
 summary.forEach(s => console.log([s.id, s.weekStatus.padEnd(26), String(s.floorsOk).padEnd(6), String(s.deterministic).padEnd(4), String(s.avgMs).padEnd(6), String(s.blocks).padEnd(3), String(s.checkDayK).padEnd(3), String(s.checkDayKRelaxed).padEnd(5), String(s.extra).padEnd(5), String(s.tradeoffs.length).padEnd(10), JSON.stringify(s.byKey)].join(" ")));
 const cnt = k => RULES.filter(r => r.det === k).length;

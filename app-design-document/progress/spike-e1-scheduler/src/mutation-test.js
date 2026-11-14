@@ -19,6 +19,7 @@ const M = [
   ["màn hình sát giờ ngủ → x_man_hinh_ngu", "x_man_hinh_ngu", p => { put(p, { bat_dau: "19:30", ket_thuc: "19:50", khoi: "Xem tivi", tai: "thap", man_hinh: true }); }],
   ["phiên học quá dài → x_phien", "x_phien", p => { put(p, { bat_dau: "19:00", ket_thuc: "20:00", khoi: "Ôn bài dài", tai: "vua", nhom: "hoc_nha" }); }],
   ["bỏ ăn tối → x_bo_bua", "x_bo_bua", p => { p.ngay.T2 = p.ngay.T2.filter(b => !/Ăn tối/.test(b.khoi)); }],
+  ["v2/B-1: hai phiên học cách 4′ → x_nghi_giua (sàn 5′)", "x_nghi_giua", p => { put(p, { bat_dau: "19:00", ket_thuc: "19:20", khoi: "Ôn bài phần 1", tai: "vua", nhom: "hoc_nha" }, { bat_dau: "19:24", ket_thuc: "19:40", khoi: "Ôn bài phần 2", tai: "vua", nhom: "hoc_nha" }); }],
 ];
 let ok = 0;
 for (const [name, key, f] of M) { const p = clone(); f(p); const ks = run(p, "T2"); const hit = ks.includes(key); ok += hit; console.log((hit ? "BẮT ĐƯỢC " : "BỎ LỌT   ") + name + "  " + JSON.stringify([...new Set(ks)])); }

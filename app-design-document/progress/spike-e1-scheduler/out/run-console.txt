@@ -1,0 +1,11 @@
+spike E1 v2 (áp D-02, D-08, D-09, D-10; B-1/B-2 fail-safe)
+id  status                     floors det  ms     blk chk relax extra tradeoffs  keys
+P1 OK                         true   true 0.365  137 0   0     0     0          {}
+P2 DIEU_CHINH_TRONG_DUNG_SAI  true   true 0.784  133 0   0     0     0          {}
+P3 OK                         true   true 0.582  128 0   0     0     0          {}
+P4 CAN_BO_ME_CHON             true   true 1.297  139 5   0     0     5          {"an_xa":5}
+P5 CAN_BO_ME_CHON             true   true 1.752  181 6   0     0     6          {"an_xa":6}
+P6 XUNG_DOT                   true   true 7.968  144 0   0     0     8          {}
+P7 OK                         true   true 0.307  144 0   0     0     0          {}
+P8 CAN_BO_ME_CHON             true   true 2.19   117 10  0     0     10         {"an_xa":10}
+rules: total 88 yes 63 partly 19 no 6

@@ -1,0 +1,34 @@
+PASS TC-D02-1 Ô Ngủ đỏ không có nút Giữ mức này; confirmKeep từ chối
+PASS TC-D02-2 Ô khác đỏ (màn hình 150′) vẫn có nút và xác nhận được (D6)
+PASS TC-D02-3 Ô Ngủ cam (thiếu ≤30′) cũng không giữ được; bộ xếp dùng sàn C1
+PASS TC-D02-4 Quỹ ngủ dưới sàn: mọi đêm trong lịch vẫn ≥ sàn theo tuổi
+PASS TC-D02-5 keepAllowed: chỉ ô đỏ, không bao giờ ô Ngủ
+PASS TC-D08-1 Mọi thông số có nhãn mac_dinh_chua_kiem_chung, mã PR-xx duy nhất, quyết định D-08
+PASS TC-D09-1 60 ngày (cả hai đầu) được nhận
+PASS TC-D09-2 61 ngày bị từ chối, nêu ngày kết thúc muộn nhất
+PASS TC-D09-3 61 ngày không nới gì vẫn bị từ chối (trần áp cho giai đoạn, không chỉ cho constraint)
+PASS TC-D09-4 J2: 43 ngày có mốc xem lại mỗi 14 ngày; 42 ngày không có
+PASS TC-D09-5 Áp dụng: lưu hồ sơ trước, chuyển sang hồ sơ giai đoạn
+PASS TC-D09-6 Ngày cuối vẫn áp; ngày sau ngày cuối TỰ về hồ sơ trước và phát sự kiện
+PASS TC-D09-7 Mở app trễ nhiều ngày sau hạn: vẫn về hồ sơ trước (không kẹt ở giai đoạn)
+PASS TC-D09-8 Kết thúc sớm: về hồ sơ trước
+PASS TC-D09-9 Con đề xuất ở CHILD_EXECUTED: chờ xác nhận, chưa áp, chưa lưu hồ sơ trước; bố mẹ xác nhận thì áp
+PASS TC-D09-10 Con đề xuất ở PARENT_LED hoặc thiếu mode (UNSET): thành mong muốn, không có trạng thái duyệt
+PASS TC-D09-11 Đề xuất của con quá ngày kết thúc mà chưa xác nhận: hủy
+PASS TC-D09-12 Lịch đang khóa: không áp (chờ mở khóa)
+PASS TC-D09-13 Nới sàn protected (ngủ) bị từ chối dù trong 60 ngày (J4, OD-02)
+PASS TC-D09-14 Mốc xem lại phát sự kiện đúng ngày
+PASS TC-D10-1 Rất mệt: schedule_changed=false ở mọi chế độ; bản ghi thuộc F04-G05-M01
+PASS TC-D10-2 Đường đổi lịch theo chế độ
+PASS TC-D10-3 PARENT_LED không tạo CR (cr=false)
+PASS TC-D10-4 Lời cho con không hứa đổi lịch; có báo con rằng bố mẹ thấy xu hướng (D-03)
+PASS TC-D10-5 Không khối nào trong lịch của 8 hồ sơ còn hứa tự bỏ học khi Rất mệt
+PASS TC-D10-6 Lịch tuần giống hệt trước và sau khi con báo Rất mệt
+PASS TC-D03-1 Xu hướng 14 ngày: ngoài cửa sổ bị loại; ngưỡng chưa chốt → không gửi; không có chữ của con
+PASS TC-D10-7 Lựa chọn không hợp lệ bị từ chối
+PASS TC-B1-1 Hai phiên học cách 4′ bị bắt (sàn 5′); cách 5′ thì không
+PASS TC-B1-2 8 hồ sơ: không phiên học nào cách nhau dưới 5′
+PASS TC-B2-1 Ngày học thêm tối: không tự bỏ học ở nhà; có đúng 1 câu hỏi/ngày, mặc định giu_quy
+PASS TC-DET-1 Tất định: 8 hồ sơ chạy hai lần ra cùng kết quả
+
+TỔNG: 32 đạt, 0 lỗi / 32

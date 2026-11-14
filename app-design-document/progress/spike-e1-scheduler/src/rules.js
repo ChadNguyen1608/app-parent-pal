@@ -5,7 +5,8 @@
 // type: hard | soft | ordering | budget | n/a (hội thoại, dữ liệu, UI, an toàn ngoài lập lịch)
 // det (deterministic): yes | partly | no
 // ev: mức căn cứ ghi trong spec ([NC], [NL], [MĐ], SP = yêu cầu sản phẩm, BGD = Bộ GD&ĐT, OD = quyết định chủ sản phẩm)
-// impl: nơi bộ xếp lịch E1 xử lý (scheduler | validator | phase | none)
+// impl: nơi bộ xếp lịch E1 xử lý (scheduler | validator | phase | fatigue | none)
+// v2 (15/11/2026): thêm D-02, D-03, D-08, D-09, D-10, D-11; sửa ghi chú C3, D6, G3, G7, J6.
 
 const R = (id, type, det, ev, impl, text, note = "") => ({ id, type, det, ev, impl, text, note });
 
@@ -26,7 +27,7 @@ const RULES = [
   // C. Sàn cứng
   R("C1", "hard", "yes", "[NC] AASM", "scheduler+validator", "Ngủ ≥ 9h (6–12 tuổi) / ≥ 8h (13–18 tuổi); không bao giờ nới", "protected_hard"),
   R("C2", "hard", "yes", "[NC] NT-01; thời lượng [MĐ]", "scheduler+validator", "Sau giờ học có phục hồi 20–30′ (tối thiểu 15′) trước việc học", "protected_hard ở mức 15′; 20–30′ là mặc định"),
-  R("C3", "hard", "yes", "[NL] NT-09, [MĐ]", "scheduler+validator", "Không có hai khối tải cao liền nhau; nghỉ 3–5′ giữa hai khối học", "protected_hard; E1 dùng 5′ (giao của C3 3–5′ và F4 5–10′)"),
+  R("C3", "hard", "yes", "[NL] NT-09, [MĐ]", "scheduler+validator", "Không có hai khối tải cao liền nhau; nghỉ 3–5′ giữa hai khối học", "protected_hard; v2: sàn kiểm và mặc định xếp = 5′ (B-1 fail-safe, chờ chủ sản phẩm)"),
   R("C4", "hard", "yes", "[MĐ]", "scheduler+validator", "Không có khối học trước giờ đi học", "family/relaxable: truoc_gio_hoc"),
   R("C5", "hard", "yes", "[NC] NT-05", "scheduler+validator", "Tập mạnh kết thúc ≥60′ trước tắt đèn", "Không nới; E1 thử lùi giờ ngủ ≤30′ (G7), không được thì báo đánh đổi"),
   R("C6", "hard", "yes", "[NC] NT-06", "scheduler+validator", "Màn hình giải trí kết thúc ≥60′ trước tắt đèn", "relaxable: man_hinh"),
@@ -37,7 +38,7 @@ const RULES = [
   R("D3", "budget", "yes", "SP", "validator", "choi_nghi = phần còn lại của 24h; bữa ăn tính 1/2 vào nghỉ", "Prototype restRange cộng 1/4 sinh_hoat (giả định 1/2 sinh_hoat là bữa)"),
   R("D4", "budget", "yes", "[MĐ]", "scheduler+validator", "Lệch tối đa ±30′ quanh mỗi số; ngủ không thấp hơn số chọn quá 30′, không dưới C1"),
   R("D5", "budget", "yes", "SP", "scheduler", "Học ở nhà không chấm màu, không trần riêng; chỉ chia phiên (F4)"),
-  R("D6", "n/a", "yes", "SP", "validator", "Màu chỉ trên bảng quỹ; vùng đỏ cần 'Giữ mức này' một lần", "judge() port 1:1"),
+  R("D6", "n/a", "yes", "SP", "validator", "Màu chỉ trên bảng quỹ; vùng đỏ cần 'Giữ mức này' một lần", "judge() port 1:1; v2: ô Ngủ không có nút (D-02), confirmKeep() từ chối"),
   R("D7", "n/a", "yes", "SP", "none", "Preset (Bình thường, Thi cử…)", "Dữ liệu/UI"),
   R("D-ngu", "budget", "yes", "[NC] AASM", "validator", "Ngưỡng màu Ngủ: xanh ≥ tối thiểu, cam thiếu ≤30′, đỏ >30′"),
   R("D-mh", "budget", "yes", "đỏ [NC] Canada 24h; cam [MĐ]", "validator", "Ngưỡng Màn hình: ≤1h xanh, 1–2h cam, >2h đỏ"),
@@ -63,11 +64,11 @@ const RULES = [
   // G. Nhịp ngày
   R("G1", "ordering", "yes", "[NC] AASM", "scheduler", "Giờ dậy theo giờ vào học, lùi ra giờ tắt đèn; T2 sớm thì tối CN ngủ sớm"),
   R("G2", "soft", "yes", "[MĐ]", "scheduler", "Vận động sáng 15–25′ nếu có chỗ", "Nội dung an toàn (mũ bảo hiểm…) là văn bản cố định"),
-  R("G3", "ordering", "yes", "[NC] NT-01; thời lượng [MĐ]", "scheduler", "Về nhà: 10′ ghi việc + hỏi thăm, rồi phục hồi 20–30′; 'Rất mệt' thì +15′ và bỏ học định hướng", "Nhánh 'Rất mệt' là sự kiện runtime trong ngày, tất định"),
+  R("G3", "ordering", "yes", "[NC] NT-01; thời lượng [MĐ]", "scheduler", "Về nhà: 10′ ghi việc + hỏi thăm, rồi phục hồi 20–30′; 'Rất mệt' thì +15′ và bỏ học định hướng", "v2: phần 'Rất mệt' bị D-10 thay: không tự đổi lịch; ghi tín hiệu ở F04-G05 (fatigue.js), con đi qua đường đề xuất theo chế độ"),
   R("G4", "ordering", "yes", "[NC] NT-06; còn lại [MĐ]", "scheduler+validator", "Tối: ôn bài → soạn cặp ngay sau → tự do (màn hình ≤ bed−60) → vệ sinh → đọc 15′ + nhật ký → tắt đèn"),
   R("G5", "ordering", "yes", "[MĐ]", "scheduler", "Chuỗi hai ngày: tối nay + sáng mai", "E1 tính giờ ngủ theo giờ dậy hôm sau"),
   R("G6", "soft", "yes", "[MĐ]", "none", "Soạn cặp có thể dời sáng nếu sáng còn ≥10′ trống", "Tùy chọn của bố mẹ; spike chưa bật"),
-  R("G7", "soft", "partly", "[MĐ]", "scheduler", "Ngày học thêm tối: bữa phụ chắc, giờ ngủ lùi ≤15–30′, hỏi bố mẹ có muốn bớt học ở nhà", "Câu hỏi cần hội thoại; prompt lại ghi 'bỏ ôn bài' (mâu thuẫn, xem blocker B-2)"),
+  R("G7", "soft", "partly", "[MĐ]", "scheduler", "Ngày học thêm tối: bữa phụ chắc, giờ ngủ lùi ≤15–30′, hỏi bố mẹ có muốn bớt học ở nhà", "v2: B-2 fail-safe theo spec: giữ quỹ, không tự bỏ; tạo 1 câu hỏi có cấu trúc (questions[]) với 2 phương án"),
   R("G8", "soft", "partly", "[NC] NT-07", "scheduler", "11–15 tuổi: ít khối hơn, con tự sắp xếp, xác nhận nhẹ; cuối tuần giữ giờ dậy gần ngày thường", "'Ít khối hơn' không có số"),
   R("G9", "ordering", "yes", "[MĐ]", "scheduler", "Cuối tuần: học mới/khó buổi sáng, vận động vui dài, tối CN soạn đồ T2"),
   R("G10", "soft", "yes", "BGD", "scheduler", "Không xếp việc nhà; tiểu học 2 buổi/ngày → ôn nhẹ"),
@@ -90,7 +91,13 @@ const RULES = [
   R("J3", "n/a", "yes", "SP", "validator", "Trong giai đoạn không nhắc điều đã nới", "Lọc theo noi_long như checkDay()"),
   R("J4", "hard", "yes", "SP", "phase", "Chỉ nới truoc_gio_hoc, van_dong, man_hinh, an_uong, tong_gio_hoc; không bao giờ nới C1, C2(≥15′), C3, C7"),
   R("J5", "hard", "yes", "SP", "phase", "Đề xuất từ con cần bố mẹ xác nhận"),
-  R("J6", "n/a", "yes", "SP", "phase", "Hết hạn: 3 lựa chọn"),
+  R("J6", "n/a", "yes", "SP", "phase", "Hết hạn: 3 lựa chọn", "v2: D-09 thay phần mặc định: hết hạn TỰ về hồ sơ trước giai đoạn rồi mới báo; 'giữ lịch hiện tại' phải thành hồ sơ mới qua kiểm đủ, không nới"),
+  R("D-02", "hard", "yes", "OD 15/11", "validator", "Ô Ngủ không có 'Giữ mức này'; ngủ không được giữ dưới mức tối thiểu", "budgetBoard().ngu.giu_muc=false; confirmKeep('ngu') → từ chối"),
+  R("D-09", "hard", "yes", "OD 15/11", "phase", "Giai đoạn tạm thời tối đa 60 ngày; hết hạn tự về hồ sơ lịch trước giai đoạn", "validatePhase(): >60 → TU_CHOI; tickPhases(): HET_HAN → active = ho_so_truoc"),
+  R("D-10", "hard", "yes", "OD 15/11", "fatigue", "'Rất mệt' không tự đổi lịch; đổi phải qua đề xuất/mong muốn theo chế độ", "onCheckin() không có quyền ghi lịch; schedule_changed luôn false"),
+  R("D-03", "n/a", "partly", "OD 15/11", "fatigue", "Báo bố mẹ xu hướng mệt liên quan đến lịch, không báo cảm xúc; con được biết", "trend(): đếm theo thứ/đặc điểm lịch; ngưỡng UNKNOWN → chưa gửi"),
+  R("D-11", "n/a", "yes", "OD 15/11", "none", "Con phải có máy; không có thì chỉ lập lịch phía phụ huynh", "Cờ child_device=false: không đặt nhắc trên máy con, không có hỏi thăm/Xong của con"),
+  R("D-08", "n/a", "yes", "OD 15/11", "scheduler", "Thông số dùng params.json của spike, nhãn mặc định chưa kiểm chứng", "PARAMS[k].status = mac_dinh_chua_kiem_chung"),
   R("P6-OD-01", "hard", "yes", "OD", "phase", "Nới cùng constraint liên tục tối đa 60 ngày (kể cả đổi purpose); ≥7 ngày trống giữa ngoại lệ tương tự"),
   R("P6-OD-02", "hard", "yes", "OD", "phase", "Không có đường tắt khẩn vượt protected_hard; family_hard thay đổi có quyền, audit"),
   R("P6-OD-03", "hard", "yes", "OD", "validator", "Không có bar hợp lệ → UNKNOWN; không gắn nhãn VALID/BALANCED khi điều kiện chưa kiểm chứng"),

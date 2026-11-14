@@ -38,8 +38,10 @@ module.exports = [
     phaseHistory: [{ ten: "Ôn thi giữa kỳ", purpose: "on_thi", scope: "child:P5", tu_ngay: "2026-10-20", den_ngay: "2026-11-25", noi_long: ["tong_gio_hoc"] }],
     phaseExtraTests: [
       { label: "Đổi mục đích để nối dài (thi đấu) sát sau ôn thi", ph: { purpose: "thi_dau", scope: "child:P5", nguon: "bo_me", tu_ngay: "2026-11-26", den_ngay: "2027-01-10", noi_long: ["tong_gio_hoc"] } },
+      { label: "Con đề xuất khi PARENT_LED (v2)", ph: { mode: "PARENT_LED", purpose: "on_thi", scope: "child:P5", nguon: "con_de_xuat", tu_ngay: "2026-12-04", den_ngay: "2026-12-20", noi_long: ["man_hinh"] } },
+      { label: "Giai đoạn 61 ngày (v2, D-09)", ph: { purpose: "thi_dau", scope: "child:P5", nguon: "bo_me", tu_ngay: "2027-02-01", den_ngay: "2027-04-02", noi_long: [] } },
       { label: "Xin nới giờ ngủ", ph: { purpose: "on_thi", scope: "child:P5", nguon: "bo_me", tu_ngay: "2026-12-05", den_ngay: "2026-12-20", noi_long: ["ngu"] } },
-      { label: "Con đề xuất, bắt đầu sau 8 ngày trống", ph: { purpose: "on_thi", scope: "child:P5", nguon: "con_de_xuat", tu_ngay: "2026-12-04", den_ngay: "2026-12-20", noi_long: ["man_hinh"] } }] },
+      { label: "Con đề xuất (CHILD_EXECUTED), bắt đầu sau 8 ngày trống", ph: { mode: "CHILD_EXECUTED", purpose: "on_thi", scope: "child:P5", nguon: "con_de_xuat", tu_ngay: "2026-12-04", den_ngay: "2026-12-20", noi_long: ["man_hinh"] } }] },
 
   { id: "P6", label: "Lớp 4, quá tải (không khả thi)", grade: 4, age: 9, twoSessions: true,
     school: wd({ start: "07:30", end: "17:00", lunch: "11:00", pmStart: "13:30", snack: "15:00", snackDur: 15 }), commute: 15,

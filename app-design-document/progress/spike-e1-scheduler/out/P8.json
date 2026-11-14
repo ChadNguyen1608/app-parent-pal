@@ -65,7 +65,7 @@
   "floorsOk": true,
   "balance": "UNKNOWN (app default [MĐ] chưa thẩm định)",
   "deterministic": true,
-  "avgMs": 1.714,
+  "avgMs": 1.538,
   "checkDayK": 10,
   "checkDayKRelaxed": 0,
   "extra": 0,
@@ -308,56 +308,69 @@
     "t": "CN: phục hồi 20′."
    }
   ],
+  "questions": [],
   "phase": null,
   "phaseExtra": [],
   "board": {
    "wd": {
-    "ngu": [
-     "xanh",
-     ""
-    ],
-    "man_hinh": [
-     "xanh",
-     ""
-    ],
-    "sinh_hoat": [
-     "xanh",
-     ""
-    ],
-    "hoc_them": [
-     "xanh",
-     ""
-    ],
-    "choi_nghi": [
-     "cam",
-     "Chơi và nghỉ 31′ [MĐ + WHO]"
-    ],
+    "ngu": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false,
+     "duoi_san": false
+    },
+    "man_hinh": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
+    "sinh_hoat": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
+    "hoc_them": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
+    "choi_nghi": {
+     "color": "cam",
+     "why": "Chơi và nghỉ 31′ [MĐ + WHO]",
+     "giu_muc": false
+    },
     "choi_nghi_range": [
      31,
      31
     ]
    },
    "we": {
-    "ngu": [
-     "xanh",
-     ""
-    ],
-    "man_hinh": [
-     "cam",
-     "Màn hình 120′ > 1h [MĐ]"
-    ],
-    "sinh_hoat": [
-     "xanh",
-     ""
-    ],
-    "hoc_them": [
-     "xanh",
-     ""
-    ],
-    "choi_nghi": [
-     "xanh",
-     ""
-    ],
+    "ngu": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false,
+     "duoi_san": false
+    },
+    "man_hinh": {
+     "color": "cam",
+     "why": "Màn hình 120′ > 1h [MĐ]",
+     "giu_muc": false
+    },
+    "sinh_hoat": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
+    "hoc_them": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
+    "choi_nghi": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
     "choi_nghi_range": [
      680,
      680
@@ -650,7 +663,7 @@
      "the_thao": false,
      "man_hinh": false,
      "trang_thai": "binh_thuong",
-     "ghi_chu": "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3)."
+     "ghi_chu": "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ."
     },
     {
      "bat_dau": "18:00",
@@ -887,7 +900,7 @@
      "the_thao": false,
      "man_hinh": false,
      "trang_thai": "binh_thuong",
-     "ghi_chu": "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3)."
+     "ghi_chu": "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ."
     },
     {
      "bat_dau": "18:00",
@@ -1124,7 +1137,7 @@
      "the_thao": false,
      "man_hinh": false,
      "trang_thai": "binh_thuong",
-     "ghi_chu": "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3)."
+     "ghi_chu": "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ."
     },
     {
      "bat_dau": "18:00",
@@ -1361,7 +1374,7 @@
      "the_thao": false,
      "man_hinh": false,
      "trang_thai": "binh_thuong",
-     "ghi_chu": "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3)."
+     "ghi_chu": "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ."
     },
     {
      "bat_dau": "18:00",
@@ -1598,7 +1611,7 @@
      "the_thao": false,
      "man_hinh": false,
      "trang_thai": "binh_thuong",
-     "ghi_chu": "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3)."
+     "ghi_chu": "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ."
     },
     {
      "bat_dau": "18:00",

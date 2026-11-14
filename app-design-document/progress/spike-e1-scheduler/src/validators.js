@@ -13,6 +13,7 @@ const SPORT = /(tập|thi đấu|bóng|bơi|võ|chạy|đạp xe|thể thao|gym)
 const BED = /(tắt đèn|đi ngủ|^ngủ)/i;
 const MEAL = /(ăn sáng|ăn trưa|ăn tối|bữa|ăn nhẹ|^ăn )/i;
 const SOFT = 30;
+const BREAK_MIN = 5; // B-1 fail-safe, khớp PARAMS.BREAK
 
 const isStudy = b => (b.tai === "cao" || b.tai === "vua") && STUDY.test(b.khoi + " " + (b.viec || []).join(" ")) && !NOT_HOME.test(b.khoi);
 const isSchool = b => /(ở trường|tại trường|học ở trường)/i.test(b.khoi) && (b.e - b.s) >= 150;
@@ -140,8 +141,25 @@ function budgetBoard(ctx) {
       choi_nghi: judge(ctx, "choi_nghi", c.k, restRange(ctx, c.k)[0]),
       choi_nghi_range: restRange(ctx, c.k),
     };
+    // D-02 (15/11/2026): ô Ngủ KHÔNG có nút "Giữ mức này"; các ô khác đỏ thì có (D6).
+    // v2 fail-safe: ngủ dưới mức tối thiểu (cả cam lẫn đỏ) đều không được giữ; bộ xếp luôn dùng sàn C1.
+    for (const k of ["ngu", "man_hinh", "sinh_hoat", "hoc_them", "choi_nghi"]) {
+      const color = out[c.k][k][0];
+      out[c.k][k] = { color, why: out[c.k][k][1], giu_muc: keepAllowed(k, color) };
+    }
+    out[c.k].ngu.duoi_san = B.ngu < sleepNeed(ctx.age);
   }
   return out;
+}
+// D-02, D6: nút "Giữ mức này" chỉ có ở ô đỏ và không bao giờ có ở ô Ngủ.
+function keepAllowed(cell, color) { return color === "do" && cell !== "ngu"; }
+// Bố mẹ bấm "Giữ mức này": trả về quyết định có cấu trúc. Ô Ngủ luôn từ chối (D-02, C1, P6-BP-OD-02).
+function confirmKeep(board, col, cell) {
+  const x = board[col] && board[col][cell];
+  if (!x) return { ok: false, rule: "—", t: "Không có ô " + cell };
+  if (cell === "ngu") return { ok: false, rule: "D-02/C1", t: "Ngủ không được giữ dưới mức tối thiểu; lịch xếp theo sàn." };
+  if (x.color !== "do") return { ok: false, rule: "D6", t: "Chỉ ô đỏ cần xác nhận." };
+  return { ok: true, rule: "D6/A2", t: "Bố mẹ đã xác nhận; không nhắc lại." };
 }
 
 // ---- EXTRA: kiểm tra bổ sung cho quy tắc checkDayK chưa bao phủ ----
@@ -154,9 +172,9 @@ function extraChecks(ctx, d, meta) {
   for (let i = 1; i < real.length; i++) if (real[i].s < real[i - 1].e) push("x_chong", "—", "Chồng giờ: \"" + real[i - 1].khoi + "\" và \"" + real[i].khoi + "\"");
   // F4 phiên học
   B.filter(b => isStudy(b) && groupOf(b) === "hoc_nha").forEach(b => { if (b.e - b.s > sessionMax(ctx.grade)) push("x_phien", "F4", "Phiên \"" + b.khoi + "\" " + (b.e - b.s) + "′ > " + sessionMax(ctx.grade) + "′"); });
-  // C3: hai khối học ở nhà cần cách ≥3′
+  // C3 + F4, B-1 fail-safe (v2): hai khối học ở nhà cần cách ≥ BREAK_MIN (5′). Bản v1 dùng 3′ (sàn C3).
   const st = B.filter(b => isStudy(b) && groupOf(b) === "hoc_nha");
-  for (let i = 1; i < st.length; i++) if (st[i].s - st[i - 1].e < 3) push("x_nghi_giua", "C3", "Hai phiên học liền nhau không nghỉ");
+  for (let i = 1; i < st.length; i++) if (st[i].s - st[i - 1].e < BREAK_MIN) push("x_nghi_giua", "C3/F4/B-1", "Hai phiên học cách " + (st[i].s - st[i - 1].e) + "′ < " + BREAK_MIN + "′");
   // C2: phục hồi ≥15′ sau giờ học, trước việc học
   const school = B.find(isSchool);
   if (school) {
@@ -199,4 +217,4 @@ function extraChecks(ctx, d, meta) {
   return W;
 }
 
-module.exports = { DAYS, toMin, isStudy, isSchool, groupOf, liveBlocks, makeCtx, checkDayK, checkDay, actualDay, fixedDay, restRange, judge, budgetBoard, extraChecks, sessionMax, sleepNeed, STUDY, NOT_HOME, SPORT };
+module.exports = { keepAllowed, confirmKeep, BREAK_MIN, DAYS, toMin, isStudy, isSchool, groupOf, liveBlocks, makeCtx, checkDayK, checkDay, actualDay, fixedDay, restRange, judge, budgetBoard, extraChecks, sessionMax, sleepNeed, STUDY, NOT_HOME, SPORT };

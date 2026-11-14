@@ -1,11 +1,36 @@
 # 04.1 – USER FLOW: VÒNG LẬP LỊCH (BATCH 1)
 
 **Product Blueprint – Bước 4: User Flow**
-**Người soạn:** AI, chưa kiểm chứng độc lập · **Trạng thái:** nháp chờ duyệt · **Ngày:** 14/11/2026
+**Người soạn:** AI, chưa kiểm chứng độc lập · **Trạng thái:** nháp chờ duyệt · **Bản:** 15/11/2026 (thay bản 14/11/2026)
 **Phạm vi:** F1 Onboarding phụ huynh · F2 Lập lịch tuần · F3 Ghép máy con và Parent PIN · F4 Một ngày của con · F5 Thay đổi lịch.
-**Không thuộc phạm vi:** wireframe, giao diện, API, mô hình dữ liệu, thuật toán. Không tạo Feature ID mới. Không thêm ngưỡng thời gian hay ngưỡng sức khỏe mới.
+**Không thuộc phạm vi:** wireframe, giao diện, API, mô hình dữ liệu, thuật toán. Không tạo Feature ID mới. Không thêm ngưỡng thời gian hay ngưỡng sức khỏe mới. Không chọn MVP.
 
-> **Đọc trước:** Tài liệu này có 2 **Blocker** (mục 9). Các bước bị chặn được đánh dấu `⛔ BLOCKED – xem B-x` và không được vẽ tiếp. Các điểm chờ Owner (OD-A1, OD-A2, OD-A7, OD-A8) chỉ vẽ **nhánh mặc định** và ghi `chờ Owner quyết`; tài liệu này không quyết định thay Owner.
+> **Đọc trước:** Hai Blocker của bản 14/11 (B-1 ô Ngủ, B-2 dữ liệu hỏi thăm) **đã được chủ sản phẩm quyết** ngày 15/11 (D-02, D-03), xem mục 9. Luồng chính của bản này là **A-lite E1** (nhập có cấu trúc, không AI) theo OD-A2. Các bước chỉ có ở **nấc 2 (A-lite Plan A, có Pal trò chuyện)** được gắn nhãn `[Nấc 2]` và không thuộc luồng A-lite E1. Chỗ nguồn còn thiếu hay mâu thuẫn: vẽ nhánh mặc định an toàn, gắn `chờ Owner quyết`, đưa vào mục 8.
+
+---
+
+## Thay đổi so với bản 14/11
+
+Nguồn quyết định: `OD-1115` = `app-design-document/progress/Owner_Decision_Log_20261115.md` (APPROVED theo lời chủ sản phẩm). Khi khác nguồn cũ, `OD-1115` thắng.
+
+| # | Quyết định | Chỗ sửa trong tài liệu | Thay đổi |
+|---|---|---|---|
+| 1 | **OD-A1** (a) | 0.5, F1 | Bắt đầu từ thời khóa biểu. Mục tiêu là trường tùy chọn. Bỏ nhãn `chờ Owner quyết` |
+| 2 | **OD-A2** (c) | 0.4, 0.5, F1–F5, mục 7 | A-lite E1 là luồng chính (không AI, nhập có cấu trúc). Pal chat, 🎤, 📷, "Pal vừa ghi", báo đói, thời tiết chuyển thành `[Nấc 2]` |
+| 3 | **OD-A6** (b), **OD-A7** (a) | 0.5, F4 | Hội thoại Pal với phụ huynh: F07-G03 làm entry, F03-G05 làm outcome (chỉ nấc 2). Tín hiệu mệt, đói: chủ là F04-G05 |
+| 4 | **OD-A8** (b), D-04 | 0.5, F3 | Mã gia đình chỉ trong spike kỹ thuật. FR-01 (tài khoản, ghép máy, Parent PIN) **bắt buộc trước pilot với gia đình thật** |
+| 5 | **D-02** | F2 bước 6, 3.2, sơ đồ 3.6, B-1 | Ô Ngủ đỏ **không có** nút "Giữ mức này". Ngủ dưới mức tối thiểu không lưu-phê duyệt được. Gỡ `⛔ BLOCKED` |
+| 6 | **D-03** | F4 bước 6 và 11, F5A-X6, F5B-X10, B-2 | Phụ huynh nhận **xu hướng mệt liên quan đến lịch**, không nhận cảm xúc, không nhận nguyên văn. Con được báo trước là bố mẹ nhận thông tin này. Gỡ `⛔ BLOCKED` |
+| 7 | **D-06** (theo OD-03) | 0.6 mục 1, F4-X9, CA-14, PA-24 | Con chỉ nhận lời "nói với người lớn tin cậy", có thể kèm 111. Số 113, 115 chỉ hiện cho người lớn |
+| 8 | **D-07** | F5B-X4 | Đổi người quản lý chính: quyền đã cấp cho con giữ nguyên. CR đã duyệt chưa áp phải duyệt lại |
+| 9 | **D-08** | F2 bước 9–10 | Bộ dựng E1 dùng thông số mặc định của spike E1, gắn nhãn "mặc định chưa kiểm chứng" |
+| 10 | **D-09** | F5-A bước 1, 3, 9; F5A-X2; sơ đồ 6.6 | Giai đoạn tạm thời tối đa 60 ngày. Hết hạn (hoặc kết thúc sớm) **tự về lịch trước giai đoạn**. Bỏ ba lựa chọn khi hết hạn |
+| 11 | **D-10** | F4 bước 7, sơ đồ 5.6, F5-B | "Rất mệt" **không tự đổi lịch**. Muốn đổi thì con đi bước đề xuất; ở `PARENT_LED`/`UNSET` là mong muốn gửi bố mẹ |
+| 12 | **D-11** | F1 bước 10, F3-X5, F4-X8 | App yêu cầu con có thiết bị. Không có thiết bị: chỉ dùng phần lập lịch phía phụ huynh |
+| 13 | Sổ ràng buộc C-01, C-03, C-04 | F5-B | Thêm nhánh: không có Primary hợp lệ (fail-closed, vẫn nhận đề xuất); `CHILD_DIRECTED` trong A-lite chưa có quyết định bật; mong muốn của con ở E1 là lựa chọn có sẵn, không chữ tự do |
+| 14 | B01C-OD-03 | F5-B | CR đã duyệt chưa áp có hiệu lực tối đa 7 ngày kể từ lúc duyệt |
+| 15 | Bảng UF-Q | Mục 8 | UF-Q01, Q02, Q03, Q04, Q07 đánh dấu **đã quyết** kèm mã D-xx. Thêm mục 8.3 "đồng bộ tài liệu" cho các chỗ QT, TAB, PROTO, CLAUDE.md trái với quyết định mới |
+| 16 | Danh mục màn hình | Mục 7 | Giữ 40 màn, thêm cột "A-lite E1 / Nấc 2". Không thêm màn mới trong đợt 1 |
 
 ---
 
@@ -15,9 +40,9 @@
 
 | Mã dẫn | File |
 |---|---|
-| `02.5` | `main/app-design-document/02_User_Research/User_Research_02_5_User_Scenarios.md` (S01, S03–S05, S09, S11; Q1–Q4; R3) |
-| `02.S§3` | `main/app-design-document/02_User_Research/User_Research_02_Summary.md` §3 (ma trận vai trò) |
-| `03.4` | `main/app-design-document/03_Feature_Planning/Product_Blueprint_03_4_Feature_Interaction_and_Use_Case_Mapping.md` (UC-001…UC-010, UC-012, UC-015) |
+| `02.5` | `app-design-document/02_User_Research/User_Research_02_5_User_Scenarios.md` (S01, S03–S05, S09, S11; Q1–Q4; R3) |
+| `02.S§3` | `app-design-document/02_User_Research/User_Research_02_Summary.md` §3 (ma trận vai trò) |
+| `03.4` | `app-design-document/03_Feature_Planning/Product_Blueprint_03_4_Feature_Interaction_and_Use_Case_Mapping.md` (UC-001…UC-010, UC-012, UC-015) |
 | `QT` | `repo/documents/pal/spec-quy-tac-lap-lich.md` (**nguồn chuẩn quy tắc**; trích theo ID A1…O) |
 | `TAB` | `repo/documents/pal/spec-quy-thoi-gian-va-tab-cua-con.md` (trích theo §) |
 | `PROTO` | `repo/prototype/index.html` (hành vi chuẩn; trích theo hàm và số dòng) |
@@ -30,6 +55,11 @@
 | `A-lite` | `phase-3-scoring-audit/03_A_Lite_Workflow_Validation.md` (A-lite v2) và `08_Research_Gaps_and_Decisions.md` (OD-A1…OD-A8) |
 | `PA` | `repo/documents/app/spec-phuong-an-a-app-android.md` (Plan A: nhắc giờ, quyền Android, không popup) |
 | `CLAUDE` | `repo/CLAUDE.md` (Pal xưng "mình", nghe trước, không chẩn đoán, lớp an toàn trước AI, 111/113/115) |
+| `OD-1115` | `app-design-document/progress/Owner_Decision_Log_20261115.md` (OD-A1..A8, D-01..D-13). **Thắng nguồn cũ khi khác** |
+| `CRG` | `app-design-document/progress/Constraint_Register_Approved_Decisions.md` (C-01..C-16, OC-01..04, cổng chặn §6) |
+| `SPIKE` | `app-design-document/progress/spike-e1-scheduler/Spike_E1_Scheduler_Report.md` (bộ xếp E1 tất định, tự báo cáo FEASIBLE cho lõi xếp lịch, chưa kiểm chứng độc lập) |
+| `OD` | `Feature_3_2_L4_OD02_OD05_Owner_Decision_Log_APPROVED.md` (OD-03 an toàn theo người nhận) |
+| `B01C` | `Feature_3_2_L4_B01_Consolidation_Owner_Decision_Log_APPROVED.md` |
 
 ### 0.2 Mức căn cứ khi nêu con số
 
@@ -50,28 +80,37 @@ Mode **không** xóa các quyền khác của con: tự làm việc đã duyệt
 
 - `PA-xx` màn Parent App; `CA-xx` màn Child App (danh mục ở mục 7).
 - `[E1]` xử lý theo quy tắc, không AI; `[E2]` có LLM (chỉ ở nhánh Pal chat).
+- `[Nấc 2]` = chỉ có ở A-lite Plan A (có Pal trò chuyện, chụp ảnh, ghi âm, báo đói, thời tiết, vùng GPS). **Không thuộc A-lite E1** (OD-A2 (c)). Ghi lại để nấc 2 không phải vẽ lại.
 - `chờ Owner quyết` = nhánh mặc định do AI vẽ, chưa được duyệt.
 - `đề xuất nội bộ` = cách xử lý luồng do AI đề xuất, không có trong nguồn đã duyệt.
 
-### 0.5 Nhánh mặc định cho các quyết định đang chờ
+### 0.5 Quyết định Owner áp trong tài liệu này (OD-1115)
 
-| OD | Câu hỏi | Nhánh vẽ trong tài liệu này |
-|---|---|---|
-| OD-A1 | Bắt đầu từ mục tiêu hay từ thời khóa biểu | **Từ thời khóa biểu**; mục tiêu là trường tùy chọn `muc_tieu_bo_me` (QT B3) · `chờ Owner quyết` |
-| OD-A2 | A-lite E1 hay biến thể Pal chat | **Nhập có cấu trúc [E1]** là luồng chính; **Pal chat [E2] là nhánh tùy chọn** · `chờ Owner quyết` |
-| OD-A7 | L3 nào sở hữu tín hiệu mệt/đói | Vẽ hành vi theo `TAB §4`, không gán module chủ · `chờ Owner quyết` |
-| OD-A8 | Mã gia đình (Plan A) hay tài khoản + PIN (FR-01) | Vẽ theo **FR-01** (hợp đồng đã duyệt); biến thể mã gia đình ghi chú cho spike kỹ thuật · `chờ Owner quyết` |
+| OD | Câu hỏi | Quyết định | Cách vẽ |
+|---|---|---|---|
+| OD-A1 | Bắt đầu từ mục tiêu hay từ thời khóa biểu | **(a)** Từ thời khóa biểu; đặt mục tiêu tùy chọn | F1 bắt đầu từ giờ học và thẻ hoạt động; mục tiêu là trường tùy chọn `muc_tieu_bo_me` (QT B3). UC-005 không bắt buộc trước UC-007 |
+| OD-A2 | A-lite E1 hay biến thể Pal chat | **(c)** A-lite E1 trước; Plan A (có Pal) là nấc 2 | **Nhập có cấu trúc [E1]** là luồng duy nhất của A-lite E1. Nhánh Pal chat [E2] ghi `[Nấc 2]` |
+| OD-A6 | Chủ hội thoại Pal với phụ huynh | **(b)** F07-G03 entry, F03-G05 outcome | Chỉ áp ở `[Nấc 2]` (PA-22) |
+| OD-A7 | L3 nào sở hữu tín hiệu mệt/đói | **(a)** F04-G05 | Hỏi thăm sau giờ học và báo đói gán F04-G05. Xu hướng do F06-G04-M01 tính |
+| OD-A8 | Mã gia đình (Plan A) hay tài khoản + PIN (FR-01) | **(b)** Mã gia đình chỉ trong spike kỹ thuật; FR-01 phải có trước pilot với gia đình thật | Vẽ theo **FR-01**. Biến thể mã gia đình chỉ dùng cho spike, không có người dùng thật ngoài ngoại lệ D-01 |
+
+**Ghi chú về D-01 (ngoại lệ có giới hạn cho Plan A):** thử nội bộ tối đa 3 gia đình, có đồng ý bằng văn bản, có hạn kết thúc, xóa khi kết thúc. **Cổng pháp lý H4, FR-03 vẫn mở, không PASS.** Tài liệu này không đánh dấu cổng nào là đạt.
 
 ### 0.6 Bất biến áp cho mọi flow
 
-1. **Lớp an toàn chạy trước AI.** Mọi ô nhập chữ tự do hoặc giọng nói đi qua lớp an toàn trước khi tới Pal. Tình huống khẩn chỉ hiện thông tin tĩnh: **111** bảo vệ trẻ em, **113** công an, **115** cấp cứu (CLAUDE; QT N2; PA §4). Không gọi Claude cho tin khẩn.
-2. **Ẩn danh trước khi gọi LLM:** tên con, trường, địa chỉ thay bằng mã (`[CON_1]`, `[TRUONG_1]`) (PA §4).
+1. **Lớp an toàn chạy trước AI, nội dung theo người nhận (D-06, OD-03).**
+   - **Người lớn** (Parent App): tình huống khẩn chỉ hiện thông tin tĩnh **115** cấp cứu, **113** công an, **111** bảo vệ trẻ em, khi phù hợp (OD-03b). Không chẩn đoán, không gợi ý trả phí, không tự gọi.
+   - **Trẻ** (Child App): chỉ hiện lời tĩnh **"Con hãy nói với một người lớn con tin cậy"**, có thể kèm **111** (OD-03a). Không hiện 113, 115 cho trẻ. Không tự liên hệ, không tự báo gia đình, không mở hồ sơ (OD-03a; REM-HRW trong CRG).
+   - Không gọi Claude cho tin khẩn.
+   - **A-lite E1:** không có AI. Child App ở E1 **không có ô chữ tự do** (chỉ lựa chọn có sẵn), nên không phát sinh xử lý chữ của trẻ (tránh cổng FR-03, CRG C-10) · nhánh mặc định an toàn, `chờ Owner quyết` UF-Q15. Ô chữ tự do còn lại ở Parent App (ghi chú thẻ, lý do thay đổi) đi qua bộ kiểm từ khóa theo quy tắc [E1] trước khi lưu; khớp dấu hiệu khẩn thì hiện PA-24 · `đề xuất nội bộ`, chờ thẩm định danh sách từ khóa (cổng B-6 trong CRG).
+2. **Ẩn danh trước khi gọi LLM** `[Nấc 2]`: tên con, trường, địa chỉ thay bằng mã (`[CON_1]`, `[TRUONG_1]`) (PA §4).
 3. **Không popup.** Cảnh báo là một dòng chữ có biểu tượng, nằm ngay dưới ô nhập, ghi số hiện tại, mốc và nguồn (QT D6; TAB §1.3; PA §4).
 4. **Cảnh báo đúng một lần;** đã xác nhận thì không nhắc lại (QT A2). Tín hiệu mới từ con không tính là nhắc lại (TAB §1.5).
 5. **Thông báo chỉ gửi sau khi commit thành công;** không có thông báo "đã đổi" trước commit (03.4 §2, §7).
-6. **Pal** xưng "mình", tối đa 3 câu ngắn, mỗi lượt tối đa 1 câu hỏi (QT A3); không gắn nhãn tính cách, không chẩn đoán (QT A4); không bao giờ tự đề xuất kéo dài giờ học (QT A5).
+6. **Pal** xưng "mình", tối đa 3 câu ngắn, mỗi lượt tối đa 1 câu hỏi (QT A3); không gắn nhãn tính cách, không chẩn đoán (QT A4); không bao giờ tự đề xuất kéo dài giờ học (QT A5). Ở A-lite E1, lời của app là **câu mẫu cố định** theo cùng quy tắc này (không sinh bằng AI).
 7. **Có nhiều con mà phụ huynh không nêu tên: hỏi lại, không đoán** (CLAUDE). Áp ở mọi màn có thao tác theo con.
 8. Không so sánh trẻ với trẻ khác; không điểm tổng; không chấm điểm (TAB §4; CLAUDE).
+9. **Không có gì tự đổi lịch có hiệu lực ngoài thao tác commit của người có quyền** (D-10; B01-CR-OD-01; B01-PS-OD-01). Ngoại lệ duy nhất đã được quyết: giai đoạn tạm thời hết hạn thì tự về lịch trước giai đoạn (D-09).
 
 ---
 
@@ -87,9 +126,10 @@ flowchart LR
   F4 --> F5["F5 Thay đổi"]
   F4W --> F5
   F5 --> F2
+  F2 -. "Con không có thiết bị (D-11)" .-> PO["Chỉ phần lập lịch phía phụ huynh"]
 ```
 
-Phụ huynh có thể lập lịch trước khi con ghép máy (B01-CL-OD-01). Con chỉ truy cập chương trình sau khi ghép hợp lệ (B01-CL-OD-01).
+Phụ huynh có thể lập lịch trước khi con ghép máy (B01-CL-OD-01). Con chỉ truy cập chương trình sau khi ghép hợp lệ (B01-CL-OD-01). App yêu cầu con có thiết bị riêng để dùng F4 phía con; không có thiết bị thì gia đình chỉ dùng F1, F2, F5 phía phụ huynh (D-11). Các luồng còn lại (xem lại tuần, thông báo, thành viên, đồng ý và dữ liệu, an toàn, hủy tài khoản) nằm ở `User_Flow_04_2_Remaining_Flows.md`.
 
 ---
 
@@ -107,7 +147,7 @@ Phụ huynh có thể lập lịch trước khi con ghép máy (B01-CL-OD-01). C
 
 | # | Màn | Người dùng làm | Hệ thống phản hồi |
 |---|---|---|---|
-| 1 | PA-01 Chào mừng / Đăng ký | Tạo tài khoản hoặc đăng nhập | Tạo tài khoản người lớn (F01-G01-M01). Thất bại → báo lỗi, giữ dữ liệu đã nhập |
+| 1 | PA-01 Chào mừng / Đăng ký | Tạo tài khoản hoặc đăng nhập | Tạo tài khoản người lớn (F01-G01-M01). Thất bại → báo lỗi, giữ dữ liệu đã nhập. Spike kỹ thuật dùng mã gia đình thay bước này; pilot với gia đình thật phải dùng tài khoản theo FR-01 (OD-A8 (b)) |
 | 2 | PA-02 Đồng ý và quyền riêng tư | Đọc, đồng ý | Ghi consent dạng `SELF_DECLARED`, không bắt xác minh tư cách giám hộ ở onboarding thường (B01-CL-OD-01; F01-G04-M02). Không đồng ý → dừng, không tạo hồ sơ con |
 | 3 | PA-03 Hồ sơ gia đình | Đặt tên gia đình, cách Pal gọi mình ("chị Lan") | Tạo hộ gia đình (F01-G02-M01); người tạo là Primary Caregiver (B01-CL) |
 | 4 | PA-04 Thêm con – cơ bản | Nhập tên gọi, tuổi/lớp | Tạo hồ sơ con (F01-G03-M01). Bắt buộc tuổi/lớp (QT B1). Mode = `UNSET` |
@@ -115,8 +155,8 @@ Phụ huynh có thể lập lịch trước khi con ghép máy (B01-CL-OD-01). C
 | 6 | PA-07 Hoạt động của con | Bấm "Thêm hoạt động" | Mở PA-07a |
 | 7 | PA-07a Thẻ hoạt động | Nhập tên, loại (học thêm/tập luyện/năng khiếu/khác), các thứ, giờ bắt đầu–kết thúc, đi lại (phút, cả đi và về), địa điểm, ghi chú; bấm Lưu | Kiểm: có tên, ≥1 thứ, giờ kết thúc sau giờ bắt đầu (PROTO `actForm`, dòng ~918). Hợp lệ → thêm thẻ; dải T2…CN và tổng giờ/tuần cập nhật (TAB §2.3). Tập có huấn luyện viên tính vào Học thêm; vận động vui không phải thẻ học thêm (QT E6) |
 | 8 | PA-07 | Lặp lại cho các hoạt động khác, hoặc "Xong" | Không tạo trùng (QT E2). Tổng giờ học thêm + đi lại vào nhóm "Học thêm và tập luyện" của quỹ, không nhập tay (QT D2) |
-| 9 | PA-06 Hồ sơ bổ sung (tùy chọn) | Trả lời hoặc "Để sau": sức khỏe, giấc ngủ, thể lực, tính cách, môn mạnh/khó, ăn uống ở trường | Tối đa 2 câu ngắn mỗi lượt (QT B2). Sức khỏe là dữ liệu nhạy cảm: không bắt buộc, giữ tối thiểu (02.5 S11; A-lite SG-03, MR-021) |
-| 10 | — | — | Chuyển sang F2 (PA-09) hoặc F3 (PA-13). Hiện lời mời ghép máy con, không bắt buộc ngay (02.5 Q1) |
+| 9 | PA-06 Hồ sơ bổ sung (tùy chọn) | Trả lời hoặc "Để sau": giấc ngủ, thể lực, tính cách, môn mạnh/khó, ăn uống ở trường, **mục tiêu của bố mẹ (tùy chọn, OD-A1)** | Câu hỏi có sẵn, chọn hoặc nhập ngắn (E1). Sức khỏe (dị ứng, thuốc) là dữ liệu nhạy cảm: **ẩn trường này khi dùng dữ liệu thật** cho tới khi có purpose ID đã duyệt (CRG C-07, cổng B-4) · nhánh mặc định an toàn, `chờ Owner quyết` UF-Q16 |
+| 10 | PA-03 | Chọn "Con có điện thoại riêng không?" | **Có** → mời ghép máy (F3), không bắt buộc ngay (02.5 Q1). **Không** → báo rõ: app cần con có thiết bị; hiện tại gia đình chỉ dùng được phần lập lịch phía phụ huynh, không có nhắc và theo dõi trên máy con (D-11). Chuyển F2 |
 
 ### 2.2 Nhánh ngoại lệ
 
@@ -129,7 +169,7 @@ Phụ huynh có thể lập lịch trước khi con ghép máy (B01-CL-OD-01). C
 | F1-X5 | Phụ huynh muốn nhanh, bỏ qua nhiều câu | Đặt giả định hợp lý, nói ngắn giả định chính, mời bổ sung sau (QT B4). Giả định hiện trong hồ sơ, gắn nhãn "giả định" |
 | F1-X6 | Mất mạng giữa chừng | Giữ nháp trên máy; đồng bộ khi có mạng · `đề xuất nội bộ`, chờ System Design |
 | F1-X7 | Phụ huynh không đồng ý điều khoản | Không tạo hồ sơ con; có thể quay lại sau |
-| F1-X8 | **Nhánh Pal chat** (OD-A2, `chờ Owner quyết`) | Phụ huynh kể tự do hoặc gửi ảnh thời khóa biểu. Lớp an toàn → ẩn danh → Pal [E2] tạo thẻ, viền xanh, nhãn "● Pal vừa ghi" (TAB §2.3). Phụ huynh xác nhận dữ liệu quan trọng (ngày/giờ, tên, lưu ý sức khỏe) trước khi lưu (02.5 S11). Pal không tự thêm hoạt động phụ huynh chưa nói (QT E2) |
+| F1-X8 | **Nhánh Pal chat** `[Nấc 2]` (OD-A2 (c): không thuộc A-lite E1) | Phụ huynh kể tự do hoặc gửi ảnh thời khóa biểu. Lớp an toàn → ẩn danh → Pal [E2] tạo thẻ, viền xanh, nhãn "● Pal vừa ghi" (TAB §2.3). Phụ huynh xác nhận dữ liệu quan trọng (ngày/giờ, tên, lưu ý sức khỏe) trước khi lưu (02.5 S11). Pal không tự thêm hoạt động phụ huynh chưa nói (QT E2) |
 | F1-X9 | Người dùng từ 18 tuổi tự quản | Ngoài phạm vi batch này; không mặc định phụ huynh quản (B01-MS-OD-04; 02.S§3) |
 
 ### 2.3 Dữ liệu ghi nhận
@@ -138,9 +178,9 @@ Tài khoản người lớn; consent (`SELF_DECLARED`, phiên bản chính sách
 
 ### 2.4 Liên kết
 
-- **Feature IDs:** F01-G01-M01, F01-G02-M01, F01-G03-M01, F01-G04-M02, F01-G05-M01, F02-G01-M01, F02-G01-M02 (hỏi dần), F02-G04-M01 (ứng viên chủ của thẻ hoạt động, A-lite SG-02), F03-G04-M01 (chỉ khi OD-A1 chọn mục tiêu).
-- **UC:** UC-001; UC-003 (cập nhật thông tin có nguồn); UC-005 (chỉ khi OD-A1 chọn nhánh mục tiêu).
-- **Quy tắc:** QT B1–B4, E1, E2, E6, D2; TAB §2.3; 02.5 Q1, N3, S01, S11; B01-CL-OD-01; B01-MS-OD-04; CLAUDE (nhiều con).
+- **Feature IDs:** F01-G01-M01, F01-G02-M01, F01-G03-M01, F01-G04-M02, F01-G05-M01, F02-G01-M01, F02-G01-M02 (hỏi dần), F02-G04-M01 (ứng viên chủ của thẻ hoạt động, A-lite SG-02), F03-G04-M01 (tùy chọn, chỉ khi phụ huynh nhập mục tiêu; OD-A1 (a)).
+- **UC:** UC-001; UC-003 (cập nhật thông tin có nguồn); UC-005 (tùy chọn, không phải điều kiện trước UC-007; OD-A1 (a)).
+- **Quy tắc:** QT B1–B4, E1, E2, E6, D2; TAB §2.3; 02.5 Q1, N3, S01, S11; B01-CL-OD-01; B01-MS-OD-04; CLAUDE (nhiều con); OD-A1, OD-A2, OD-A8, D-11; CRG C-07.
 
 ### 2.5 Sơ đồ
 
@@ -152,11 +192,11 @@ flowchart TD
   C -- Có --> D["PA-03 Hồ sơ gia đình"]
   D --> E["PA-04 Thêm con: tên gọi, tuổi/lớp"]
   E --> F["PA-05 Giờ học, bán trú, nơi ở"]
-  F --> G{"Nhập kiểu nào? OD-A2 chờ Owner quyết"}
-  G -- "Mặc định: có cấu trúc" --> H["PA-07a Thẻ hoạt động"]
-  G -- "Tùy chọn: Pal chat" --> P["PA-22 Pal chat"]
+  F --> G{"Nhập kiểu nào? OD-A2 (c)"}
+  G -- "A-lite E1: có cấu trúc" --> H["PA-07a Thẻ hoạt động"]
+  G -. "Nấc 2: Pal chat" .-> P["PA-22 Pal chat"]
   P --> S{"Lớp an toàn"}
-  S -- Khẩn --> S1["PA-24 Thông tin 111 / 113 / 115"]
+  S -- Khẩn --> S1["PA-24 Thông tin 115 / 113 / 111 cho người lớn"]
   S -- Bình thường --> P2["Ẩn danh, Pal tạo thẻ 'Pal vừa ghi'"]
   P2 --> P3{"Phụ huynh xác nhận?"}
   P3 -- Sửa --> H
@@ -169,9 +209,10 @@ flowchart TD
   I --> J{"Thêm nữa?"}
   J -- Có --> H
   J -- Không --> K["PA-06 Hồ sơ bổ sung, cho bỏ qua"]
-  K --> L{"Đi tiếp"}
-  L --> M([F2 Lập lịch tuần])
-  L --> N([F3 Ghép máy con])
+  K --> L{"Con có thiết bị riêng? D-11"}
+  L -- Không --> L1["Báo: chỉ dùng phần lập lịch phía phụ huynh"] --> M([F2 Lập lịch tuần])
+  L -- Có --> M
+  L -- Có --> N([F3 Ghép máy con])
   E -. "Gia đình nhiều con, thao tác chưa nêu con" .-> X["PA-08 Hỏi: của bạn nào?"]
 ```
 
@@ -183,7 +224,7 @@ flowchart TD
 |---|---|
 | **Actor / App** | Phụ huynh · Parent App (tab 🧭 Lên kế hoạch và 🗓️ Lịch tuần, TAB §0) |
 | **Mode** | Commit bởi phụ huynh ở mọi mode. Ở `PARENT_LED`/`UNSET`: **lưu = phê duyệt** (A-lite §2 bước 4; UC-008; B01-MS-OD-04) |
-| **Entry point** | Sau F1; hoặc PA-09 từ tab Lên kế hoạch; hoặc nút "Nhờ Pal cập nhật lịch" khi thẻ hoạt động đổi (QT E5) |
+| **Entry point** | Sau F1; hoặc PA-09 từ tab Lên kế hoạch; hoặc nút "Xếp lại lịch" (E1; PROTO gọi là "Nhờ Pal cập nhật lịch") khi thẻ hoạt động đổi (QT E5) |
 | **Mục tiêu** | Một lịch mẫu tuần có phiên bản, đã kiểm cân bằng và xung đột, được phụ huynh chốt |
 
 ### 3.1 Các bước
@@ -195,23 +236,25 @@ flowchart TD
 | 3 | PA-09 | Chọn preset (Bình thường, Thi cử, Nghỉ hè, Nghỉ lễ…) hoặc giữ mặc định | Nạp preset; mỗi preset giữ riêng các xác nhận vùng đỏ (TAB §2.1). Thi cử/Nghỉ hè là ngoại lệ có thời hạn, không phải Standard Bar dài hạn (A-lite, SC-001-D03) → nếu chọn, gợi ý tạo giai đoạn tạm thời (F5-A) |
 | 4 | PA-09 | Nhập **một con số** (giờ/ngày) cho: học ở nhà, ăn uống và vệ sinh, ngủ, màn hình giải trí tối đa (QT D1) | Tính lại "Chơi và nghỉ"; chấm màu theo bảng ngưỡng QT D (xem 3.2). Học ở nhà **không chấm màu**, Pal không đặt trần riêng (QT D5) |
 | 5 | PA-09 | Ô cam: không cần làm gì | Dòng ⚠️ dưới ô, ghi số hiện tại, mốc, nguồn; mốc không nguồn ghi "mặc định của Pal" (TAB §1.3) |
-| 6 | PA-09 | Ô đỏ (trần mềm): bấm **"Giữ mức này"** hoặc sửa số | Bấm "Giữ mức này": ô vẫn đỏ, dòng chữ đổi thành "bố mẹ đã xác nhận", Pal không nhắc lại (TAB §1.4; QT A2, D6). Đây là "ngoại lệ soft-cap hợp lệ" cho phép commit (B01-CR-OD-05; B01-PS-OD-02). **Riêng ô Ngủ đỏ: ⛔ BLOCKED – xem B-1** |
+| 6 | PA-09 | Ô đỏ (trần mềm, **trừ ô Ngủ**): bấm **"Giữ mức này"** hoặc sửa số | Bấm "Giữ mức này": ô vẫn đỏ, dòng chữ đổi thành "bố mẹ đã xác nhận", Pal không nhắc lại (TAB §1.4; QT A2, D6). Đây là "ngoại lệ soft-cap hợp lệ" cho phép commit (B01-CR-OD-05; B01-PS-OD-02) |
+| 6b | PA-09 | **Ô Ngủ đỏ** (thiếu >30′ so với mức tối thiểu theo tuổi) | **Không có nút "Giữ mức này"** (D-02; khớp QT C1, P6-BP-OD-02). Dòng chữ dưới ô: số hiện tại, mức tối thiểu theo tuổi, nguồn [NC] AASM. Nháp vẫn lưu được (B01-PS-OD-02) nhưng gắn `NOT_APPROVABLE`; phụ huynh phải nâng số mới lưu-phê duyệt được. Bộ dựng không bao giờ xếp ngủ dưới sàn C1 (QT D4) |
+| 6c | PA-09 | **Ô Ngủ cam** (thiếu ≤30′) | QT D chỉ yêu cầu dòng cảnh báo cho ô cam. Nhưng D-02 ghi "giờ ngủ không được giữ dưới mức tối thiểu". Nhánh mặc định an toàn: hiện dòng cảnh báo; bộ dựng vẫn xếp ngủ đủ mức tối thiểu (QT D4), nên lịch có hiệu lực không dưới sàn; dòng chữ ghi "Lịch sẽ xếp đủ mức tối thiểu" · `đề xuất nội bộ`, `chờ Owner quyết` UF-Q14 |
 | 7 | PA-09 | Tổng các nhóm > 24 giờ | Dòng "Chơi và nghỉ" báo đỏ kèm số giờ bị vượt (TAB §2.1; PROTO `judge` dòng 769). Không có nút "Giữ mức này" cho dòng này (PROTO dòng 838 chỉ hiện nút ở ô nhập). Phụ huynh phải giảm một ô nhập. Nháp vẫn lưu được (B01-PS-OD-02), nhưng không dựng được lịch hợp lệ nên không lưu-phê duyệt được · phần "không lưu-phê duyệt" là `đề xuất nội bộ` suy từ ràng buộc 24 giờ |
 | 8 | PA-09 | (Tùy chọn) "Lưu preset" / "Lưu thành mới" / "Xóa" | Lưu quỹ thành preset (QT D7) |
-| 9 | PA-09 | Bấm **"Xếp lịch theo quỹ này"** | **Dựng lịch đề xuất** (F04-G02-M01). Nhánh mặc định [E1]: mẫu theo lớp (F04-G01-M02) + quy tắc thứ tự trong ngày + xê dịch ±30′ quanh số phụ huynh nhập (QT D4) · `chờ Owner quyết` OD-A2; khả thi E1 là `UNKNOWN` tới khi có spike RG-01. Nhánh Pal chat [E2]: như PROTO (Pal xếp theo prompt `RULES`) |
+| 9 | PA-09 | Bấm **"Xếp lịch theo quỹ này"** | **Dựng lịch đề xuất** (F04-G02-M01) bằng bộ xếp **[E1]** (OD-A2 (c)): mẫu theo lớp (F04-G01-M02) + quy tắc thứ tự trong ngày + xê dịch ±30′ quanh số phụ huynh nhập (QT D4). Thông số khối (thời lượng, nghỉ giữa khối, giãn cách trước giờ ngủ…) lấy từ `out/params.json` của spike, gắn nhãn **"mặc định chưa kiểm chứng"**, chờ thẩm định ở bước 14b (D-08). Spike tự báo cáo lõi xếp lịch E1 khả thi (SPIKE §1), chưa kiểm chứng độc lập. `[Nấc 2]`: Pal xếp theo prompt `RULES` như PROTO, kết quả vẫn qua bước 11 |
 | 10 | (hệ thống) | — | Áp quy tắc dựng: sàn C1–C7; khối và nhãn tải F1–F3; phiên học F4; màn hình không phải nghỉ F5; nhịp ngày G1–G10; bữa ăn H1–H3; điều chỉnh mùa I1–I3 trong quỹ ăn uống-vệ sinh ±30′. Lỗi thứ tự (hai khối học liền nhau, học ngay khi vừa về, học trước giờ đi học) **tự sửa, không hỏi lại** (QT C cuối mục; TAB §1.2) |
 | 11 | (hệ thống) | — | **Kiểm tự động** cho từng ngày (QT O; PROTO `checkDayK`): `ngu`, `phuc_hoi`, `cao_lien`, `an_xa` (hiện cho phụ huynh); `truoc_gio_hoc`, `tong_gio_hoc`, `tap_muon` (chỉ dùng nội bộ). **Kiểm xung đột** chồng giờ (F04-G02-M02; UC-010). **Kiểm cân bằng** (F04-G02-M03) |
 | 12 | PA-10 Xem trước lịch tuần | Xem từng ngày; xem 1 điều đã chỉnh theo con (QT B5) | Lịch chi tiết **không có màu** (QT D6). Vi phạm còn lại hiện thành dòng chữ ở ngày đó. Phần mới đổi tô đỏ (QT K2) |
-| 13 | PA-10 | Sửa (quay lại PA-09 hoặc PA-07) hoặc bấm **"Lưu lịch"** | Kiểm lại: quyền (F01-G04-M01), phiên bản lịch, lock, cân bằng. Nếu còn vi phạm `protected_hard_cap` → `NOT_APPROVABLE`, không commit (B01-CR-OD-05; P6-BP-OD-02). Soft-cap đỏ chưa xác nhận → yêu cầu xác nhận hoặc sửa |
+| 13 | PA-10 | Sửa (quay lại PA-09 hoặc PA-07) hoặc bấm **"Lưu lịch"** | Kiểm lại: quyền (F01-G04-M01), phiên bản lịch, lock, cân bằng. Nếu còn vi phạm `protected_hard_cap` (gồm ngủ dưới mức tối thiểu, D-02) → `NOT_APPROVABLE`, không commit (B01-CR-OD-05; P6-BP-OD-02). Soft-cap đỏ chưa xác nhận → yêu cầu xác nhận hoặc sửa. Không có Primary hợp lệ cho scope → chặn commit (P5-OD-03; xem 04.2 luồng G4) |
 | 14 | (hệ thống) | — | Commit lịch mẫu tuần phiên bản mới (F04-G01-M01, idempotent); ghi lịch sử người lưu, lý do (F04-G06-M02). Ở `PARENT_LED`/`UNSET`, đây là phê duyệt |
-| 15 | (hệ thống) | — | Sau commit: đặt lại toàn bộ lời nhắc trên máy con (F04-G07-M01; PA bước 3); báo máy con "Lịch mới" nếu đã ghép (F04-G07-M01). Chưa ghép → lịch chờ, không gửi |
+| 15 | (hệ thống) | — | Sau commit: đặt lại toàn bộ lời nhắc trên máy con (F04-G07-M01; PA bước 3); báo máy con "Lịch mới" nếu đã ghép (F04-G07-M01). Chưa ghép → lịch chờ, không gửi. Con không có thiết bị → không có nhắc phía con (D-11) |
 | 16 | PA-11 Lịch tuần | Xem lịch đã lưu | Hiện hồ sơ, tổng quan, chi tiết ngày, thẻ giai đoạn tạm thời (TAB §0) |
 
 ### 3.2 Ngưỡng màu dùng ở bước 4–7 (chép từ QT D, giữ mức căn cứ)
 
 | Ô | Xanh | Cam | Đỏ | Căn cứ |
 |---|---|---|---|---|
-| Ngủ | ≥ mức tối thiểu theo tuổi (6–12 tuổi 9–12 giờ; 13–18 tuổi 8–10 giờ) | thiếu ≤30′ | thiếu >30′ | [NC] AASM |
+| Ngủ | ≥ mức tối thiểu theo tuổi (6–12 tuổi 9–12 giờ; 13–18 tuổi 8–10 giờ) | thiếu ≤30′ | thiếu >30′, **không có "Giữ mức này"** (D-02) | [NC] AASM |
 | Màn hình giải trí | ≤1 giờ | 1–2 giờ | >2 giờ | Đỏ [NC] Canada 24h; cam [MĐ] |
 | Ăn uống, vệ sinh | ≥1h30 | 1h–1h30 | <1 giờ | [MĐ] |
 | Chơi và nghỉ (ngày đi học) | ≥1 giờ | 30′–1 giờ | <30′ hoặc tổng >24 giờ | [MĐ]; WHO 60′ vận động/ngày [NC] |
@@ -233,13 +276,15 @@ Nhánh theo tuổi: A2 (6–10) và A3 (11–14) khác nhau ở mức ngủ tố
 | F2-X5 | Ngày có học thêm buổi tối | Bữa phụ chắc sau giờ học; giờ ngủ lùi tối đa 15–30′; hỏi phụ huynh có muốn bớt học ở nhà không (QT G7, [MĐ]) |
 | F2-X6 | Hai lần ăn cách quá 5 giờ (6 tuổi: quá 4 giờ) | Dòng cảnh báo `an_xa`; chưa biết giờ ăn trưa thì giả định 11h15 và nói rõ là giả định (QT H2, [NC] + nguồn phổ thông) |
 | F2-X7 | Phụ huynh đổi preset sau khi đã có lịch | Lịch chưa đổi; hiện nút "Xếp lịch theo quỹ này" (TAB §2.1) |
-| F2-X8 | Phụ huynh tự sửa thẻ hoạt động sau khi đã có lịch | Hiện "Lịch tuần chưa cập nhật" + nút "Nhờ Pal cập nhật lịch"; **không tự xếp lại khi chưa được nhờ** (QT E5) |
+| F2-X8 | Phụ huynh tự sửa thẻ hoạt động sau khi đã có lịch | Hiện "Lịch tuần chưa cập nhật" + nút "Xếp lại lịch" (E1); **không tự xếp lại khi chưa được nhờ** (QT E5) |
 | F2-X9 | Hai người lớn cùng sửa (đổi phiên bản giữa chừng) | Commit bị từ chối do lệch phiên bản; yêu cầu tải lại và đánh giá lại (03.4 UC-010 "concurrent change"; B01-PS-OD-01) |
 | F2-X10 | Lịch đang `LOCK` | Không commit; người có quyền unlock trước hoặc dùng `authorized override` có audit (B01-PS-OD-04) |
 | F2-X11 | Mất mạng khi bấm Lưu | Không báo "đã lưu" khi chưa commit; giữ nháp; thử lại idempotent; đối soát trạng thái thật trước khi thử lại (B01-CR-OD-04 "timeout ≠ failed") |
 | F2-X12 | Commit thành công nhưng gửi lịch tới máy con thất bại | Lịch vẫn có hiệu lực; gửi lại; hiện trạng thái "máy con chưa nhận" cho phụ huynh · cách hiển thị là `đề xuất nội bộ` |
 | F2-X13 | Mùa lạnh/nồm miền Bắc làm quỹ ăn uống-vệ sinh vượt ±30′ | Nói với phụ huynh một lần, gợi ý lưu preset theo mùa (QT I3) |
-| F2-X14 | **Nhánh Pal chat** (OD-A2) | Phụ huynh nói "xếp lại cả tuần". Lớp an toàn → ẩn danh → Pal [E2] dựng. Kết quả vẫn qua `checkDayK`, kiểm xung đột, kiểm cân bằng [E1] trước khi hiện PA-10. LLM không có quyền commit (03.4 §7) |
+| F2-X15 | Phụ huynh cố lưu khi ô Ngủ đỏ | Không lưu-phê duyệt; nháp giữ `NOT_APPROVABLE`; dòng chữ chỉ ra ô Ngủ (D-02; B01-PS-OD-02) |
+| F2-X16 | Không có Primary hợp lệ, hoặc có hai người cùng quyền trên scope | Chặn commit (fail-closed); vẫn lưu nháp (P5-OD-03; CRG C-03) |
+| F2-X14 | **Nhánh Pal chat** `[Nấc 2]` | Phụ huynh nói "xếp lại cả tuần". Lớp an toàn → ẩn danh → Pal [E2] dựng. Kết quả vẫn qua `checkDayK`, kiểm xung đột, kiểm cân bằng [E1] trước khi hiện PA-10. LLM không có quyền commit (03.4 §7) |
 
 ### 3.4 Dữ liệu ghi nhận
 
@@ -249,7 +294,7 @@ Quỹ theo con: 4 ô nhập × 2 cột, preset đang dùng, danh sách xác nh�
 
 - **Feature IDs:** F04-G02-M03 (Balanced Planning), F04-G02-M01 (dựng lịch), F04-G02-M02 (xung đột), F04-G01-M01 (lưu phiên bản), F04-G01-M02 (mẫu), F04-G06-M02 (lịch sử), F04-G07-M01 (đặt lại nhắc), F01-G04-M01 (quyền), F01-G05-M01 (mode), F03-G03-M01 (tùy chọn, mốc theo giai đoạn).
 - **UC:** UC-007, UC-008; UC-010 (nhánh xung đột).
-- **Quy tắc:** QT A1–A6, B4–B5, C1–C7, D1–D7, E4–E6, F1–F7, G1–G10, H1–H4, I1–I3, O; TAB §1, §2; P6-BP-OD-02, -03; B01-PS-OD-01, -02, -04; B01-CR-OD-04, -05; B01-MS-OD-04.
+- **Quy tắc:** QT A1–A6, B4–B5, C1–C7, D1–D7, E4–E6, F1–F7, G1–G10, H1–H4, I1–I3, O; TAB §1, §2; P6-BP-OD-02, -03; B01-PS-OD-01, -02, -04; B01-CR-OD-04, -05; B01-MS-OD-04; P5-OD-03; **D-02, D-08, OD-A2**.
 
 ### 3.6 Sơ đồ
 
@@ -265,11 +310,12 @@ flowchart TD
   D -- "Đỏ, ô không phải Ngủ" --> D2{"Giữ mức này?"}
   D2 -- Sửa số --> C
   D2 -- Giữ --> D3["Ghi 'bố mẹ đã xác nhận', không nhắc lại"] --> E
-  D -- "Đỏ, ô Ngủ" --> BL["⛔ BLOCKED - xem B-1"]
+  D -- "Đỏ, ô Ngủ (D-02)" --> BL["Không có nút giữ; nháp NOT_APPROVABLE; phải nâng số"] --> C
+  D -- "Cam, ô Ngủ" --> BC["Dòng cảnh báo; lịch vẫn xếp đủ mức tối thiểu (UF-Q14)"] --> E
   D -- "Tổng quá 24 giờ" --> D4["Chơi và nghỉ đỏ, không có nút giữ"] --> C
-  E["Bấm: Xếp lịch theo quỹ này"] --> F{"Bộ dựng: OD-A2 chờ Owner quyết"}
-  F -- "Mặc định E1" --> G["Mẫu theo lớp + quy tắc thứ tự + lệch 30 phút"]
-  F -- "Tùy chọn Pal E2" --> G2["Lớp an toàn, ẩn danh, Pal dựng"]
+  E["Bấm: Xếp lịch theo quỹ này"] --> F{"Bộ dựng (OD-A2 c)"}
+  F -- "A-lite E1" --> G["Mẫu theo lớp + quy tắc thứ tự + lệch 30 phút; thông số spike, chưa kiểm chứng (D-08)"]
+  F -. "Nấc 2: Pal E2" .-> G2["Lớp an toàn, ẩn danh, Pal dựng"]
   G --> H
   G2 --> H["Kiểm checkDayK + xung đột + cân bằng"]
   H --> H1{"Có slot hợp lệ?"}
@@ -296,7 +342,8 @@ flowchart TD
 | **Actor / App** | Con (Child App) tạo mã; phụ huynh (Parent App) ghép; người chăm sóc có quyền nhập PIN trên máy con khi hủy liên kết |
 | **Mode** | Không phụ thuộc mode lịch. Ghép là **identity linking**, không chứng minh thẩm quyền pháp lý (B01-CL-OD-01) |
 | **Entry point** | Con mở Child App lần đầu (CA-01); phụ huynh mở PA-13 "Ghép máy của con" từ PA-03 hoặc lời mời sau F1 |
-| **Mô hình định danh** | Vẽ theo FR-01 (tài khoản phụ huynh + ghép + PIN). Biến thể "mã gia đình" của Plan A chỉ cho spike kỹ thuật · `chờ Owner quyết` OD-A8 |
+| **Mô hình định danh** | Vẽ theo FR-01 (tài khoản phụ huynh + ghép + PIN). **FR-01 phải có trước pilot với gia đình thật** (OD-A8 (b), D-04). Biến thể "mã gia đình" của Plan A chỉ dùng trong spike kỹ thuật; không có PIN phía máy chủ, không thu hồi liên kết được (CRG OC-02), nên không dùng cho người dùng ngoài ngoại lệ D-01 |
+| **Điều kiện thiết bị** | App yêu cầu con có thiết bị riêng (D-11) |
 
 ### 4.1 Các bước – ghép lần đầu
 
@@ -335,7 +382,7 @@ flowchart TD
 | F3-X2 | Nhập PIN sai (hủy liên kết) | Không hủy, không lộ dữ liệu; giới hạn số lần thử ở máy chủ (FR01-T02). Số lần cụ thể: `UNKNOWN` |
 | F3-X3 | Máy con ngoại tuyến khi hủy | **Không** coi trạng thái trên máy là đã hủy; hủy chỉ có hiệu lực khi máy chủ commit (FR-01 "Offline… fail-closed"; FR01-T09) |
 | F3-X4 | Mất phản hồi sau commit hủy, thử lại | Đúng một lần hủy, đúng một lần tăng epoch (FR01-T03) |
-| F3-X5 | **Con chưa có máy** | Phụ huynh vẫn lập và lưu lịch (B01-CL-OD-01). Không có Child App thì không có nhắc trên máy con. Cách theo dõi khi không có máy con (dùng chung máy như PROTO, hay chỉ phụ huynh xem): chưa chốt · `chờ Owner quyết` OD-A8 phương án (c) |
+| F3-X5 | **Con chưa có máy** | **Đã quyết (D-11):** app yêu cầu con có thiết bị. Không có thiết bị thì gia đình chỉ dùng phần lập lịch phía phụ huynh (F1, F2, F5 phía phụ huynh); không có CA-xx, không nhắc, không ✓ từ con. **Không** cho dùng chung máy phụ huynh làm máy con (nhánh mặc định an toàn, vì dùng chung làm mất ranh giới quyền giữa Parent App và Child App) · `chờ Owner quyết` UF-Q17. Khi con có máy sau này → F3 bình thường |
 | F3-X6 | Nhiều con | Mỗi con ghép riêng; PA-13 bắt chọn con trước khi nhập mã (CLAUDE). Một máy ghép nhầm con → hủy liên kết (4.2) rồi ghép lại đúng con · `đề xuất nội bộ` |
 | F3-X7 | Từ chối quyền thông báo trên máy con | Vẫn ghép được; CA-04 hiện hướng dẫn bật lại; báo phụ huynh "nhắc trên máy con đang tắt" · `đề xuất nội bộ` |
 | F3-X8 | Người dùng 18+ tự quản | Parent PIN không tạo quyền người chăm sóc đối với người lớn tự quản (FR-01 mục 1; FR01-T11) |
@@ -349,7 +396,7 @@ Mã ghép (một lần, có hạn, không lưu sau khi dùng), liên kết hộ�
 
 - **Feature IDs:** F01-G02-M01, F01-G02-M02, F01-G01-M02, F01-G04-M01, F01-G04-M02, F04-G07-M01 (thông báo cho phụ huynh).
 - **UC:** UC-001 (liên kết thiết bị khi thiết lập gia đình), UC-002 (cấp/thu hồi quyền).
-- **Quy tắc:** FR-01 mục 1–5, FR01-T01…T11; B01-CL-OD-01; B01-MS-OD-04 (18+); PA §7.
+- **Quy tắc:** FR-01 mục 1–5, FR01-T01…T11; B01-CL-OD-01; B01-MS-OD-04 (18+); PA §7; OD-A8, D-04, D-11.
 
 ### 4.7 Sơ đồ
 
@@ -393,7 +440,8 @@ flowchart TD
 | **Actor / App** | Con (Child App, tab 🧒 "Hôm nay"); phụ huynh (Parent App, tab 🗓️ Lịch tuần, tóm tắt tuần) |
 | **Mode** | Mọi mode: con tự làm và báo các việc đã duyệt (B01-MS-OD-02). Mode chỉ ảnh hưởng quyền sửa lịch (xem F5) |
 | **Entry point** | Con chạm thông báo nhắc; hoặc mở Child App (CA-04); phụ huynh mở PA-11 hoặc PA-21 |
-| **Tiền điều kiện** | Đã có lịch commit (F2) và máy con đã ghép (F3) |
+| **Tiền điều kiện** | Đã có lịch commit (F2) và máy con đã ghép (F3). Con không có thiết bị → không có F4 phía con (D-11) |
+| **Phạm vi A-lite E1** | ✓ Xong, Hoàn tác, hỏi thăm 3 lựa chọn, tóm tắt tuần. `[Nấc 2]`: 📷 Chụp gửi, 🎤 Kể cho Pal, 🍎 báo đói, thời tiết soạn cặp, vùng GPS |
 
 ### 5.1 Các bước – trong ngày
 
@@ -402,20 +450,20 @@ flowchart TD
 | 1 | CA-06 Thông báo | Nhận nhắc theo khối; buổi sáng có báo thức | Mỗi khối lịch thành một lời nhắc cục bộ, có nút "Xong" ngay trên thông báo (PA §2, bước 3; F04-G07-M01). Tôn trọng tùy chọn thông báo (F04-G07-M02); giờ yên lặng cụ thể: `UNKNOWN` |
 | 2 | CA-06 | Bấm "Xong" trên thông báo (với khối loại con bấm) | Ghi hoàn thành + giờ (F04-G05-M01 → F06-G01-M01) |
 | 3 | CA-04 Hôm nay | Mở tab | Danh sách khối hôm nay, chữ to, lời đơn giản; lấy ngoại lệ tuần này nếu có, ẩn khối đã hủy (PROTO `renderToday` dòng 999). Khối đang diễn ra có nhãn **"Bây giờ"**; thanh **"Đã xong x/y"** chỉ đếm khối cần xác nhận; **không chấm điểm, không xếp hạng** (TAB §4; QT L1; F04-G04-M01) |
-| 4 | CA-04 | Bấm nút trên khối, tùy cách xác nhận (QT F1, L1) | **✓ Xong** → ghi giờ. **📷 Chụp gửi** → chỉ ở biến thể Plan A (F04-G05-M02); AI chấm bài chỉ cho pilot có kiểm soát (A-lite: SC-002-D05). **🎤 Kể cho Pal** → chỉ ở nhánh Pal chat (OD-A2). **"Tự ghi nhận"** → tự động. **"Chờ bố mẹ xác nhận"** → không có nút cho con. Khối nghỉ → không có nút |
+| 4 | CA-04 | Bấm nút trên khối, tùy cách xác nhận (QT F1, L1) | **✓ Xong** → ghi giờ. **"Tự ghi nhận"** → tự động. **"Chờ bố mẹ xác nhận"** → không có nút cho con. Khối nghỉ → không có nút. `[Nấc 2]`: **📷 Chụp gửi** (F04-G05-M02; AI chấm bài chỉ cho pilot có kiểm soát, SC-002-D05, CRG C-13); **🎤 Kể cho Pal** (phân loại ghi âm là Journal hay không còn mở, CRG C-12). Ở A-lite E1, khối có cách xác nhận ảnh/giọng nói hiện nút ✓ Xong thay thế · `đề xuất nội bộ` |
 | 5 | CA-04 | Bấm **"Hoàn tác"** nếu bấm nhầm | Xóa ghi nhận khối đó (QT L1; PROTO dòng 1025) |
-| 6 | CA-05 Hỏi thăm sau giờ học | Ở khối "Ghi lại việc được giao và hỏi thăm" (QT G3), chọn **Ổn / Hơi mệt / Rất mệt**, hoặc bỏ qua | Lời mời **tùy chọn**, con được bỏ qua hoặc tắt; không hỏi lặp khi con bỏ qua (02.5 R3, S09). Lưu lựa chọn trong nhật ký ngày |
-| 7 | CA-05 | Chọn **"Rất mệt"** | Hiện lời cho con: "Hôm nay con nghỉ thêm một chút nhé. Tối nay mình chỉ làm phần cô giao thôi." (PROTO dòng 1038). Quy tắc giảm tải theo QT G3 / TAB §4: phục hồi thêm khoảng 15′ (**[MĐ]**), bỏ phần học theo định hướng bố mẹ hôm đó, giữ bài cô giao. Việc áp thay đổi này vào lịch hôm nay (ai sở hữu, có coi là thay đổi lịch trong `PARENT_LED` không) · `chờ Owner quyết` OD-A7. PROTO hiện chỉ ghi nhận và hiện lời, chưa đổi lịch (A-lite SG-14) |
-| 8 | CA-04 | (Biến thể Plan A) Bấm **🍎 "Con thấy đói"** | Ghi giờ. Lần đầu trong ngày vào hàng chờ của phụ huynh, kèm bữa gần nhất và bữa tiếp theo. Với con: chỉ nhắc uống nước hoặc chờ bữa sắp tới, không tự cho ăn (QT H5; TAB §4). Module chủ · `chờ Owner quyết` OD-A7. A-lite E1 xếp là hoãn được |
-| 9 | CA-04 khối Soạn cặp | (Biến thể Plan A) Chọn "Ngày mai trời thế nào?" ☀️/🌧/🧥/🌤 | Hiện đồ cần mang; sáng hôm sau khối thay đồ nhắc lại (QT I4) |
+| 6 | CA-05 Hỏi thăm sau giờ học | Ở khối "Ghi lại việc được giao và hỏi thăm" (QT G3), chọn **Ổn / Hơi mệt / Rất mệt**, hoặc bỏ qua | Lời mời **tùy chọn**, con được bỏ qua hoặc tắt; không hỏi lặp khi con bỏ qua (02.5 R3, S09). Lưu lựa chọn trong nhật ký ngày (chủ: F04-G05, OD-A7 (a)). **Lần đầu con thấy CA-05**, và luôn có dòng nhỏ cố định: "Khi con hay mệt vào những ngày có lịch dày, bố mẹ sẽ được báo là con hay mệt vào ngày nào. Bố mẹ không thấy con chọn gì từng ngày." (D-03: trẻ được biết) · câu chữ là `đề xuất nội bộ`; phạm vi "không thấy từng ngày" là nhánh an toàn, `chờ Owner quyết` UF-Q18 |
+| 7 | CA-05 | Chọn **"Rất mệt"** | **Không tự đổi lịch** (D-10). Lời cho con (câu mẫu, không hứa đổi lịch): "Con thấy rất mệt. Con có muốn nhắn bố mẹ xin nghỉ thêm hôm nay không?" · `đề xuất nội bộ`. Nút theo mode của con (F01-G05-M01): **`PARENT_LED`/`UNSET`** → "Nhắn bố mẹ" mở CA-08 với mong muốn có sẵn "Hôm nay con rất mệt, con muốn nghỉ thêm và chỉ làm bài cô giao" (F5-B B1). **`CHILD_EXECUTED`** → "Đề xuất đổi lịch hôm nay" mở CA-09 với đề xuất điền sẵn theo QT G3: phục hồi thêm khoảng 15′ (**[MĐ]**), bỏ phần học theo định hướng bố mẹ hôm đó, giữ bài cô giao (F5-B B2). **`CHILD_DIRECTED`** → cũng mở CA-09 (đi bước đề xuất, đúng chữ của D-10); việc con tự sửa trong phạm vi qua CA-09b là thao tác riêng, không phải phản ứng tự động · `chờ Owner quyết` UF-Q19. Con có thể bỏ qua nút; lịch giữ nguyên |
+| 8 | CA-04 | `[Nấc 2]` Bấm **🍎 "Con thấy đói"** | Ghi giờ (chủ: F04-G05, OD-A7 (a)). Lần đầu trong ngày vào hàng chờ của phụ huynh, kèm bữa gần nhất và bữa tiếp theo. Với con: chỉ nhắc uống nước hoặc chờ bữa sắp tới, không tự cho ăn (QT H5; TAB §4). A-lite E1 xếp là hoãn được |
+| 9 | CA-04 khối Soạn cặp | `[Nấc 2]` Chọn "Ngày mai trời thế nào?" ☀️/🌧/🧥/🌤 | Hiện đồ cần mang; sáng hôm sau khối thay đồ nhắc lại (QT I4) |
 | 10 | PA-11 Lịch tuần | Phụ huynh xem hôm nay | Thấy dấu ✓ và giờ con làm xong từng việc (TAB §4; F06-G05-M02) |
-| 11 | PA-11 / PA-21 | Phụ huynh xem tín hiệu mệt của con | **⛔ BLOCKED – xem B-2** (ai được xem dữ liệu hỏi thăm, dưới dạng nào) |
+| 11 | PA-21 Tóm tắt tuần | Phụ huynh xem **xu hướng mệt liên quan đến lịch** | **Đã quyết (D-03).** F06-G04-M01 xét cửa sổ 2 tuần, không kết luận từ một ngày (QT L2). Chỉ hiện xu hướng gắn với lịch, ví dụ "2 tuần qua, con hay báo mệt vào những ngày có học thêm buổi tối". **Không** hiện từng lựa chọn Ổn/Hơi mệt/Rất mệt theo ngày, **không** hiện cảm xúc, **không** chép nguyên văn. Kèm câu hỏi về bối cảnh và một đề xuất cụ thể, không kết luận nguyên nhân (TAB §1.5; A-lite §2 bước 7). Ngưỡng số ngày để báo: `UNKNOWN`, chưa có nguồn (A-lite SG-16); khi chưa có ngưỡng đã duyệt, hệ thống **không báo** (fail-closed) · `chờ Owner quyết` UF-Q20. Thời hạn lưu dữ liệu hỏi thăm: `UNKNOWN` (cổng H4) |
 
 ### 5.2 Các bước – tóm tắt tuần
 
 | # | Màn | Người dùng làm | Hệ thống phản hồi |
 |---|---|---|---|
-| 1 | PA-21 Tóm tắt tuần | Phụ huynh mở (từ thông báo hoặc tab) | Tổng hợp theo đối tượng xem (F06-G05-M01/M02; UC-015): việc đã xong theo ngày, ngày có ngoại lệ, giai đoạn tạm thời đang chạy. Phân biệt "đã bấm xong" (tự báo cáo) với tiến bộ năng lực (02.5 S04; 03.4 §6.4) |
+| 1 | PA-21 Tóm tắt tuần | Phụ huynh mở (từ thông báo hoặc tab) | Tổng hợp theo đối tượng xem (F06-G05-M01/M02; UC-015): việc đã xong theo ngày, ngày có ngoại lệ, giai đoạn tạm thời đang chạy, xu hướng mệt liên quan lịch nếu đủ điều kiện (bước 11). Phân biệt "đã bấm xong" (tự báo cáo) với tiến bộ năng lực (02.5 S04; 03.4 §6.4). Luồng xem lại tuần chi tiết: 04.2 luồng G1 |
 | 2 | PA-21 | — | Ngày ốm, ngày nghỉ, ngày giảm tải **không tính là chưa hoàn thành** (QT K4; F06-G02-M02) |
 | 3 | PA-21 | Bấm "Điều chỉnh" | Sang F5 hoặc F2 |
 | 4 | CA-13 Tuần của con | Con xem tuần của mình | Chỉ thứ con được xem; không điểm, không so sánh với trẻ khác (TAB §4; CLAUDE) |
@@ -433,21 +481,22 @@ Tần suất và thời điểm gửi tóm tắt tuần: `UNKNOWN` (nguồn chư
 | F4-X5 | Con bấm Xong khi ngoại tuyến | Ghi trên máy, đồng bộ khi có mạng; đây là ghi nhận thực hiện, không phải sửa lịch · `đề xuất nội bộ`, chờ System Design |
 | F4-X6 | Con không mở app, không bấm gì | Không nhắc dồn; không coi là thất bại; phụ huynh thấy "chưa ghi nhận", không thấy "không làm" · `đề xuất nội bộ` |
 | F4-X7 | Thông báo nhắc gửi thất bại | Tab Hôm nay vẫn đúng lịch; ghi lỗi vào nhật ký sự kiện (PA bước 1 có nhật ký giờ hẹn, giờ thật, độ lệch) |
-| F4-X8 | **Con không có máy** | Không có CA-04. Hiển thị lịch của con ở đâu, ai bấm Xong · `chờ Owner quyết` OD-A8 |
-| F4-X9 | Con nhập chữ tự do hoặc nói (🎤, Pal chat) có dấu hiệu nguy hiểm | Lớp an toàn chạy trước; tình huống khẩn chỉ hiện CA-14 với 111/113/115; không gọi Claude (CLAUDE; PA §4; QT N2). Quy trình chuyển tuyến chi tiết thuộc F07-G05 (UC-019), ngoài batch này |
-| F4-X10 | Con báo ốm qua chữ tự do | Pal không chẩn đoán, không nêu liều thuốc; gợi ý báo bố mẹ (QT N1). Khó thở, co giật, bất tỉnh → 115 (QT N2) |
+| F4-X8 | **Con không có máy** | **Đã quyết (D-11):** không có F4 phía con. Phụ huynh vẫn xem lịch trên PA-11; không có ✓ từ con, không có hỏi thăm, không có xu hướng mệt. PA-21 ghi rõ "chưa có dữ liệu từ máy con", không ghi "không làm" |
+| F4-X9 | `[Nấc 2]` Con nhập chữ tự do hoặc nói (🎤, Pal chat) có dấu hiệu nguy hiểm | Lớp an toàn chạy trước; CA-14 chỉ hiện lời "nói với người lớn con tin cậy", có thể kèm 111; **không** hiện 113, 115 cho trẻ; không tự báo gia đình; không gọi Claude (D-06; OD-03a). A-lite E1 không có ô chữ tự do phía con nên nhánh này không phát sinh. Luồng an toàn chi tiết: 04.2 luồng G8 |
+| F4-X10 | `[Nấc 2]` Con báo ốm qua chữ tự do | Pal không chẩn đoán, không nêu liều thuốc; gợi ý báo bố mẹ (QT N1). Dấu hiệu khẩn (khó thở, co giật, bất tỉnh): với trẻ chỉ hiện lời "nói ngay với người lớn ở gần con", có thể kèm 111 (D-06). QT N2 ghi "gọi 115" nhưng D-06 dành 115 cho người lớn → cần đồng bộ QT N2 (mục 8.3) |
+| F4-X13 | Con chọn "Rất mệt" nhiều ngày | Mỗi lần là tín hiệu mới (TAB §1.5), không tính là nhắc lại. Không tự đổi lịch (D-10). Xu hướng gửi phụ huynh theo bước 11 |
 | F4-X11 | Gia đình nhiều con dùng chung một máy phụ huynh để xem | PA-11 và PA-21 luôn hiện tên con đang xem; đổi con qua PA-08 (CLAUDE) |
 | F4-X12 | Con 11–14 tuổi (A3) | Ít khối hơn, con tự sắp xếp trong khối, xác nhận nhẹ hơn (QT G8, [NC] NT-07) |
 
 ### 5.4 Dữ liệu ghi nhận
 
-Nhật ký ngày theo con: khối, giờ bấm Xong, cách xác nhận, hoàn tác (F06-G01-M01; nguồn dữ liệu F06-G01-M02 tùy chọn). Lựa chọn hỏi thăm (Ổn/Hơi mệt/Rất mệt) hoặc "bỏ qua" – **phạm vi hiển thị bị chặn ở B-2**. Báo đói: giờ báo, bữa gần nhất, bữa tiếp theo. Lựa chọn thời tiết. Trạng thái gửi nhắc (giờ hẹn, giờ thật). Không lưu ghi âm gốc (02.5 S06 định hướng chung; chi tiết ngoài batch).
+Nhật ký ngày theo con: khối, giờ bấm Xong, cách xác nhận, hoàn tác (F06-G01-M01; nguồn dữ liệu F06-G01-M02 tùy chọn). Lựa chọn hỏi thăm (Ổn/Hơi mệt/Rất mệt) hoặc "bỏ qua" (chủ F04-G05); phụ huynh **chỉ** thấy xu hướng mệt liên quan lịch do F06-G04-M01 tính (D-03). Mốc con đã được báo về việc chia sẻ xu hướng (D-03). Mong muốn hoặc đề xuất phát sinh từ "Rất mệt" (F5-B). `[Nấc 2]`: báo đói (giờ báo, bữa gần nhất, bữa tiếp theo), lựa chọn thời tiết. Trạng thái gửi nhắc (giờ hẹn, giờ thật). Không lưu ghi âm gốc (02.5 S06 định hướng chung; chi tiết ngoài batch).
 
 ### 5.5 Liên kết
 
-- **Feature IDs:** F04-G04-M01, F04-G05-M01, F04-G05-M02 (biến thể Plan A), F04-G07-M01, F04-G07-M02, F06-G01-M01, F06-G01-M02, F06-G02-M01, F06-G02-M02, F06-G05-M01, F06-G05-M02, F06-G04-M01 (xu hướng, **bị chặn ở B-2**), F07-G05-M01 và F07-G01-M01 (lớp an toàn, nội dung tĩnh).
-- **UC:** UC-009, UC-015.
-- **Quy tắc:** QT F1, G3, G8, H5, I4, K4, L1, L2, N1, N2; TAB §4; 02.5 S04, S09, R3; PA §2, §4, §6 bước 3, §7.
+- **Feature IDs:** F04-G04-M01, F04-G05-M01 (gồm hỏi thăm và báo đói, OD-A7 (a)), F04-G05-M02 (`[Nấc 2]`), F04-G07-M01, F04-G07-M02, F06-G01-M01, F06-G01-M02, F06-G02-M01, F06-G02-M02, F06-G05-M01, F06-G05-M02, F06-G04-M01 (xu hướng mệt liên quan lịch, D-03), F01-G05-M01 (rẽ nhánh theo mode khi "Rất mệt"), F07-G05-M01 và F07-G01-M01 (lớp an toàn, nội dung tĩnh; `[Nấc 2]` ở phía con).
+- **UC:** UC-009, UC-015; UC-010 (khi "Rất mệt" dẫn tới đề xuất).
+- **Quy tắc:** QT F1, G3, G8, H5, I4, K4, L1, L2, N1, N2; TAB §1.5, §4; 02.5 S04, S09, R3; PA §2, §4, §6 bước 3, §7; **D-03, D-06, D-10, D-11, OD-A7**.
 
 ### 5.6 Sơ đồ
 
@@ -463,9 +512,9 @@ flowchart TD
   C1 --> E["CA-04 Hôm nay: Bây giờ, Đã xong x/y, không điểm"]
   E --> F{"Loại xác nhận của khối"}
   F -- "Con bấm" --> F1["✓ Xong"] --> L
-  F -- "Ảnh, biến thể Plan A" --> F2["📷 Chụp gửi"] --> L
-  F -- "Giọng nói, nhánh Pal" --> F3["🎤 Kể cho Pal"] --> S{"Lớp an toàn"}
-  S -- Khẩn --> S1["CA-14 111 / 113 / 115"]
+  F -. "Nấc 2: ảnh" .-> F2["📷 Chụp gửi"] --> L
+  F -. "Nấc 2: giọng nói" .-> F3["🎤 Kể cho Pal"] --> S{"Lớp an toàn"}
+  S -- Khẩn --> S1["CA-14 Nói với người lớn tin cậy, có thể kèm 111"]
   S -- "Bình thường" --> L
   F -- "Bố mẹ xác nhận" --> F4["Hiện: Chờ bố mẹ"]
   F -- "Khối nghỉ" --> F5["Không có nút"]
@@ -475,10 +524,16 @@ flowchart TD
   E --> K{"Khối hỏi thăm sau giờ học"}
   K -- "Bỏ qua / tắt" --> K0["Không hỏi lặp"]
   K -- "Ổn / Hơi mệt" --> K1["Ghi nhận"]
-  K -- "Rất mệt" --> K2["Lời cho con: nghỉ thêm, chỉ làm bài cô giao"]
-  K2 --> K3["Áp giảm tải vào lịch hôm nay: chờ Owner quyết OD-A7"]
-  K1 --> T["Phụ huynh xem xu hướng mệt: ⛔ BLOCKED - xem B-2"]
+  K -- "Rất mệt" --> K2["Không tự đổi lịch (D-10); hỏi con có muốn nhắn bố mẹ"]
+  K2 --> K3{"Mode của con"}
+  K3 -- "PARENT_LED / UNSET" --> K4["CA-08 Mong muốn có sẵn gửi bố mẹ"]
+  K3 -- "CHILD_EXECUTED / CHILD_DIRECTED" --> K5["CA-09 Đề xuất điền sẵn theo QT G3"]
+  K3 -- "Con bỏ qua" --> K6["Lịch giữ nguyên"]
+  K1 --> T["F06-G04-M01: xu hướng 2 tuần liên quan lịch (D-03)"]
   K2 --> T
+  T --> T1{"Có ngưỡng đã duyệt?"}
+  T1 -- "Chưa (UNKNOWN)" --> T2["Không báo, fail-closed (UF-Q20)"]
+  T1 -- Có --> T3["PA-21 Xu hướng, không cảm xúc, không nguyên văn; con đã được báo"]
   P --> W["PA-21 Tóm tắt tuần: ngày ốm/nghỉ không tính là chưa xong"]
   W --> W1([F5 Thay đổi])
 ```
@@ -495,33 +550,36 @@ F5 có ba luồng con: **F5-A** giai đoạn tạm thời; **F5-B** đề xuất
 |---|---|
 | **Actor / App** | Phụ huynh · Parent App. Con chỉ khởi tạo qua F5-B |
 | **Mode** | Phụ huynh tạo ở mọi mode. Đề xuất từ con phải có bố mẹ xác nhận mới áp dụng (QT J5) |
-| **Entry point** | PA-11 "Thêm giai đoạn tạm thời"; chọn preset Thi cử/Nghỉ hè ở PA-09; nhánh Pal chat khi phụ huynh kể "con thi ngày 28/11…" (PROTO `renderChips`) |
+| **Entry point** | PA-11 "Thêm giai đoạn tạm thời"; chọn preset Thi cử/Nghỉ hè ở PA-09; `[Nấc 2]` Pal chat khi phụ huynh kể "con thi ngày 28/11…" (PROTO `renderChips`) |
 
 | # | Màn | Người dùng làm | Hệ thống phản hồi |
 |---|---|---|---|
-| 1 | PA-18 Giai đoạn tạm thời | Nhập tên, lý do (ôn thi, chỉ định bác sĩ, hồi phục sau ốm, thi đấu, việc gia đình), từ ngày, **đến ngày** | Lý do chính đáng có thời hạn: Pal không phản đối, không giảng giải (QT J1). Bắt buộc có ngày kết thúc (QT J2). Form có cấu trúc là nhánh mặc định [E0/E1] (A-lite SG-17: PROTO tạo giai đoạn qua LLM, dòng 497) |
+| 1 | PA-18 Giai đoạn tạm thời | Nhập tên, lý do (ôn thi, chỉ định bác sĩ, hồi phục sau ốm, thi đấu, việc gia đình), từ ngày, **đến ngày** | Lý do chính đáng có thời hạn: app không phản đối, không giảng giải (QT J1). Bắt buộc có ngày kết thúc (QT J2). **Ngày kết thúc không quá 60 ngày** kể từ ngày bắt đầu; ô chọn ngày không cho chọn quá mốc này (D-09; P6-BP-OD-01). Form có cấu trúc [E1] là luồng A-lite E1 (A-lite SG-17: PROTO tạo giai đoạn qua LLM, dòng 497) |
 | 2 | PA-18 | Chọn các kiểm tra muốn nới | **Chỉ được chọn:** `truoc_gio_hoc`, `van_dong`, `man_hinh`, `an_uong` (chỉ theo bác sĩ), `tong_gio_hoc` (QT J4). Không hiện lựa chọn nới C1, C2 (giữ ≥15′), C3, C7 (QT J4; TAB §3 "Sàn cố định không bao giờ được nới") |
-| 3 | (hệ thống) | — | Kiểm **P6-BP-OD-01** (quyết định Owner): cùng một ràng buộc chỉ được nới **liên tục tối đa 60 ngày**, kể cả khi đổi mục đích; giữa hai ngoại lệ **tương tự** (cùng phạm vi + ràng buộc + mục đích) phải có **≥7 ngày trống hoàn chỉnh**. Không đạt → không kích hoạt, nêu lý do |
+| 3 | (hệ thống) | — | Kiểm **P6-BP-OD-01** và **D-09** (quyết định Owner): cùng một ràng buộc chỉ được nới **liên tục tối đa 60 ngày**, kể cả khi đổi mục đích, **không có ngoại lệ dài hơn**; giữa hai ngoại lệ **tương tự** (cùng phạm vi + ràng buộc + mục đích) phải có **≥7 ngày trống hoàn chỉnh**. Không đạt → không kích hoạt, nêu lý do |
 | 4 | (hệ thống) | — | Kỳ dài hơn 6 tuần → đặt mốc xem lại mỗi 2 tuần (QT J2; TAB §3) – quy tắc sản phẩm |
 | 5 | PA-18 | Đọc **một** cảnh báo nhẹ kèm 1 cách giữ cân bằng tối thiểu | Cảnh báo đúng một lần (QT J2, A2). Ăn uống/giảm cân chỉ theo đúng lời bác sĩ phụ huynh kể; không đặt calo hay mục tiêu cân; không nói về cân nặng với con (QT H6) |
 | 6 | PA-18 | Bấm "Áp dụng" | Lưu bản lịch cũ để khôi phục (QT J2; PROTO `snapshotPlan`); lập bộ quy tắc tạm; dựng lại lịch (bước 9–14 F2); commit phiên bản mới (F04-G01-M01). Pal không tự đề xuất thêm giờ học, kể cả khi nhóm học đang được nới (QT A5) |
 | 7 | PA-11 Thẻ giai đoạn | Xem "⏳ [tên] · từ → đến · Đang áp dụng · còn N ngày" + danh sách quy tắc tạm + dòng "Luôn giữ: đủ giờ ngủ, nghỉ sau giờ học ít nhất 15 phút, nghỉ ngắn giữa các khối học, không bỏ bữa" | PROTO `renderPlan` dòng ~345–350. Trong giai đoạn: không nhắc lại cảnh báo về những điều đã nới (QT J3); `checkDay` bỏ qua các mã đã nới (PROTO dòng 589–591) |
 | 8 | PA-11 | (Tùy chọn) "Kết thúc sớm" | Chuyển sang hết hạn, sang bước 9 (PROTO `applyPeriod` "ket_thuc") |
-| 9 | PA-15 → PA-19 | Hết hạn: nhận thông báo, chọn 1 trong 3 | **Quay về lịch cũ** (PROTO `revertPeriod`), **nhờ Pal sắp xếp lại**, hoặc **giữ lịch hiện tại** (QT J6; PROTO `checkPeriodExpiry`, `renderChips`). Phần đổi lại tô đỏ (QT K2) |
+| 9 | (hệ thống) | — | **Hết hạn hoặc kết thúc sớm: tự về lại lịch trước giai đoạn** (D-09; PROTO `revertPeriod`). Đây là commit do hệ thống thực hiện theo quyết định Owner, ghi lịch sử với lý do "hết hạn giai đoạn" (F04-G06-M02), idempotent; đặt lại nhắc trên máy con (F04-G07-M01). Quy tắc tạm **ngừng áp dụng đúng ngày hết hạn** kể cả khi commit khôi phục chưa chạy xong (fail-closed về phía bảo vệ con) · cách thực thi khi máy ngoại tuyến `chờ Owner quyết` UF-Q21. Lịch đang `LOCK` không chặn việc khôi phục này, vì khôi phục thu hẹp ngoại lệ chứ không nới · `đề xuất nội bộ`, `chờ Owner quyết` UF-Q21 |
+| 10 | PA-15 → PA-19 | Sau khi đã khôi phục: nhận thông báo "Giai đoạn [tên] đã kết thúc, lịch đã về như trước" | Thông báo chỉ gửi sau commit (0.6 mục 5). Phần đổi lại tô đỏ (QT K2). Phụ huynh có thể sửa lịch mẫu qua F2 như bình thường (không còn quy tắc nới). **Bỏ** ba lựa chọn của QT J6 ("quay về", "nhờ Pal sắp xếp lại", "giữ lịch hiện tại"): D-09 thắng QT J6 · cần đồng bộ QT J6 và PROTO `checkPeriodExpiry` (mục 8.3) |
+| 11 | (hệ thống) | — | Nếu trong giai đoạn phụ huynh đã sửa thẻ hoạt động hay giờ học, bản lịch cũ có thể không còn khớp: khôi phục bản cũ, rồi hiện "Lịch tuần chưa cập nhật" + nút "Xếp lại lịch"; không tự xếp lại (QT E5) · `đề xuất nội bộ` |
 
 **Nhánh ngoại lệ F5-A**
 
 | Mã | Tình huống | Xử lý |
 |---|---|---|
 | F5A-X1 | Thiếu ngày kết thúc | Không áp dụng; hỏi ngày kết thúc (QT J2) |
-| F5A-X2 | Vượt 60 ngày liên tục cho cùng ràng buộc, hoặc chưa đủ 7 ngày trống | Không kích hoạt; nêu lý do (P6-BP-OD-01). Phụ huynh muốn dài hơn: chưa có luồng · xem mục 8, UF-Q07 |
-| F5A-X3 | Giai đoạn đè lên giai đoạn đang chạy | Chưa có quy tắc (P6-BP §3 "tương tác ngoại lệ khác loại: UNKNOWN") · mục 8, UF-Q08 |
-| F5A-X4 | Đề xuất giai đoạn từ con (`CHILD_EXECUTED`) | Trạng thái "Chờ bố mẹ xác nhận", chưa áp vào lịch, chưa lưu bản lịch cũ (QT J5; TAB §3; PROTO `applyPeriod` `cho_xac_nhan`) → PA-17 |
+| F5A-X2 | Vượt 60 ngày liên tục cho cùng ràng buộc, hoặc chưa đủ 7 ngày trống | Không kích hoạt; nêu lý do (P6-BP-OD-01). **Đã quyết (D-09):** không có luồng xin dài hơn 60 ngày. Muốn tiếp, phải chờ đủ 7 ngày trống rồi tạo giai đoạn mới; hoặc sửa lịch mẫu thường trong giới hạn không nới |
+| F5A-X3 | Giai đoạn đè lên giai đoạn đang chạy | Chưa có quy tắc (P6-BP §3 "tương tác ngoại lệ khác loại: UNKNOWN"). Nhánh mặc định an toàn: không cho kích hoạt giai đoạn thứ hai khi giai đoạn khác đang chạy · `chờ Owner quyết` UF-Q08 |
+| F5A-X10 | Phụ huynh sửa ngày kết thúc khi đang chạy | Ngày mới vẫn phải ≤ 60 ngày tính từ ngày bắt đầu ban đầu (D-09; P6-BP-OD-01 "liên tục") |
+| F5A-X4 | Đề xuất giai đoạn từ con (`CHILD_EXECUTED`) | Trạng thái "Chờ bố mẹ xác nhận", chưa áp vào lịch, chưa lưu bản lịch cũ (QT J5; TAB §3; PROTO `applyPeriod` `cho_xac_nhan`) → PA-17. Đề xuất cũng bị giới hạn 60 ngày (D-09) |
 | F5A-X5 | Đề xuất giai đoạn từ con khi `CHILD_DIRECTED` | Chưa xác định giai đoạn tạm thời có nằm trong phạm vi ủy quyền không · mục 8, UF-Q05. Tạm xử lý như CR chờ phụ huynh (đạt cả QT J5 và B01-CR-OD-01 "ngoài phạm vi → CR") · `chờ Owner quyết` |
-| F5A-X6 | Con báo "Rất mệt" lặp lại trong giai đoạn | Đề xuất "Pal vẫn báo bố mẹ một lần" **chưa chốt** (TAB §3; QT P), và phần hiển thị cho phụ huynh đang bị chặn ở B-2 |
-| F5A-X7 | Gắn giai đoạn với preset, hết hạn tự về "Bình thường" | **Chưa chốt** (TAB §3; QT P) · không vẽ |
-| F5A-X8 | Thông báo hết hạn gửi thất bại | Thẻ giai đoạn trên PA-11 vẫn hiện "Đã hết hạn" với 3 lựa chọn; các quy tắc tạm ngừng áp dụng đúng ngày (PROTO `checkPeriodExpiry` chạy khi mở app) |
-| F5A-X9 | Lịch đang `LOCK` | Không áp dụng tới khi unlock hoặc `authorized override` (B01-PS-OD-04) |
+| F5A-X6 | Con báo "Rất mệt" lặp lại trong giai đoạn | Lịch không tự đổi (D-10). Xu hướng mệt liên quan lịch vẫn báo phụ huynh theo F4 bước 11 (D-03), **kể cả trong giai đoạn**, vì là tín hiệu mới, không phải cảnh báo nhắc lại về điều đã nới (TAB §1.5; QT J3) · việc báo trong giai đoạn là `đề xuất nội bộ` (TAB §3 và QT P ghi còn mở), `chờ Owner quyết` UF-Q22 |
+| F5A-X7 | Gắn giai đoạn với preset, hết hạn tự về "Bình thường" | Một phần đã rõ: hết hạn tự về **lịch trước giai đoạn** (D-09), gồm cả preset đang dùng trước giai đoạn · `đề xuất nội bộ` suy từ D-09. Việc tự gắn preset khi tạo giai đoạn vẫn **chưa chốt** (TAB §3; QT P) |
+| F5A-X8 | Thông báo hết hạn gửi thất bại | Lịch đã khôi phục vẫn có hiệu lực; thẻ giai đoạn trên PA-11 hiện "Đã kết thúc, lịch đã về như trước"; thử gửi lại |
+| F5A-X9 | Lịch đang `LOCK` | Không **bắt đầu** giai đoạn tới khi unlock hoặc `authorized override` (B01-PS-OD-04). Việc **khôi phục khi hết hạn**: xem bước 9, UF-Q21 |
 
 ### 6.2 F5-B – Mong muốn và đề xuất của con
 
@@ -529,20 +587,22 @@ F5 có ba luồng con: **F5-A** giai đoạn tạm thời; **F5-B** đề xuất
 |---|---|
 | **Actor / App** | Con (Child App) gửi; phụ huynh (Parent App) xem, duyệt |
 | **Mode** | Rẽ nhánh theo mode hiệu lực của **con đó** (B01-MS-OD-01). `PARENT_LED`/`UNSET`: chỉ gửi mong muốn. `CHILD_EXECUTED`: tạo đề xuất (CR). `CHILD_DIRECTED`: sửa trực tiếp trong phạm vi, ngoài phạm vi dùng CR |
-| **Entry point** | CA-07 "Thời gian của con" (con xem quỹ, không sửa – TAB §4; QT L3) |
+| **Entry point** | CA-07 "Thời gian của con" (con xem quỹ, không sửa – TAB §4; QT L3); hoặc nút sau khi chọn "Rất mệt" ở CA-05 (D-10, F4 bước 7) |
+| **A-lite E1** | B1 và B2 là luồng A-lite v2 (A-lite §2 bước 4). B3 (`CHILD_DIRECTED`) **không có** trong A-lite v2 (CRG C-01); bản này vẽ đủ để Owner chọn, nhánh mặc định an toàn là **ẩn lựa chọn `CHILD_DIRECTED` ở PA-12 trong A-lite E1** · `chờ Owner quyết` UF-Q23 |
 
 | # | Màn | Người dùng làm | Hệ thống phản hồi |
 |---|---|---|---|
 | 1 | CA-07 | Con xem quỹ thời gian (chỉ xem) | Máy chủ đọc mode hiệu lực của con, quyết định nút hiện ra (F01-G05-M01; F01-G04-M01) |
 | **B1** | **`PARENT_LED` / `UNSET`** | | |
-| B1.1 | CA-08 Gửi mong muốn | Bấm "Con muốn nói với bố mẹ"; chọn loại mong muốn có sẵn, có thể thêm vài chữ | Không tạo Change Request, không có trạng thái duyệt, không đổi lịch (B01-CR §2; B01-MS-OD-02 regression 4). Lựa chọn có sẵn giúp tránh lộ nguyên văn (A-lite SG-10). Chữ tự do đi qua lớp an toàn trước nếu được xử lý bởi AI (CLAUDE) |
+| B1.1 | CA-08 Gửi mong muốn | Bấm "Con muốn nói với bố mẹ"; chọn loại mong muốn có sẵn (ví dụ: "con mệt, muốn nghỉ thêm hôm nay", "con muốn thêm giờ chơi", "con muốn đổi giờ một việc") và, nếu cần, chọn ngày/khối liên quan | Không tạo Change Request, không có trạng thái duyệt, không đổi lịch (B01-CR §2; B01-MS-OD-02 regression 4; D-10). Ở A-lite E1 **chỉ có lựa chọn có sẵn, không chữ tự do** (A-lite SG-10; nhánh an toàn tránh FR-03). B01C-OD-08 giao kênh này cho "AI communication của F05", nhưng A-lite E1 không có AI → kênh có cấu trúc, module chủ chưa gán · `chờ Owner quyết` UF-Q24 (CRG C-04). `[Nấc 2]`: thêm chữ tự do qua lớp an toàn |
 | B1.2 | PA-16 Hàng chờ "Con đề xuất và báo" | Phụ huynh xem; "Để sau" hoặc tự sửa lịch (F2/F5-C) | Mong muốn vào hàng chờ ở màn Lên kế hoạch (QT L3; PROTO dòng 853–864). Phụ huynh sửa lịch là thao tác của phụ huynh, không phải "duyệt" |
 | **B2** | **`CHILD_EXECUTED`** | | |
-| B2.1 | CA-09 Tạo đề xuất | Con chọn ngày/khối, đổi giờ hoặc đổi việc; có thể ghi lý do; "Lưu nháp" hoặc "Gửi bố mẹ" | Chạy kiểm cân bằng và xung đột (F04-G02-M02, -M03). Phạm `protected_hard_cap` → nháp vẫn lưu và gửi được để thảo luận, trạng thái `VIEWABLE_FOR_DISCUSSION / NOT_APPROVABLE`, cảnh báo rõ mức vi phạm (B01-CR-OD-05). Phạm soft-cap → hiện cần chỉnh hoặc cần ngoại lệ hợp lệ |
-| B2.2 | (hệ thống) | — | Tạo CR `PENDING`, gắn phiên bản lịch gốc, người gửi, epoch mode/policy/lock, thời điểm gửi theo giờ máy chủ (B01-CR-OD-02, -04). Chuyển tới người quản lý lịch có quyền (F04-G03-M02). Báo phụ huynh sau khi CR được ghi |
+| B2.1 | CA-09 Tạo đề xuất | Con chọn ngày/khối, đổi giờ hoặc đổi việc; chọn lý do có sẵn (E1, không chữ tự do); "Lưu nháp" hoặc "Gửi bố mẹ". Từ "Rất mệt": đề xuất điền sẵn theo QT G3 | Chạy kiểm cân bằng và xung đột (F04-G02-M02, -M03). Phạm `protected_hard_cap` → nháp vẫn lưu và gửi được để thảo luận, trạng thái `VIEWABLE_FOR_DISCUSSION / NOT_APPROVABLE`, cảnh báo rõ mức vi phạm (B01-CR-OD-05). Phạm soft-cap → hiện cần chỉnh hoặc cần ngoại lệ hợp lệ |
+| B2.2 | (hệ thống) | — | Tạo CR `PENDING`, gắn phiên bản lịch gốc, người gửi, epoch mode/policy/lock, thời điểm gửi theo giờ máy chủ (B01-CR-OD-02, -04). Chuyển tới người quản lý lịch có quyền (F04-G03-M02). Báo phụ huynh sau khi CR được ghi. Không có Primary hợp lệ → vẫn nhận CR, chờ đến khi có người có quyền (P5-R-FC; CRG C-03). Supporter/Observer không duyệt được (B01-CR-OD-03) |
+| B2.2b | (hệ thống) | — | Đề xuất đổi lịch **hôm nay** (ví dụ từ "Rất mệt"): nếu phụ huynh không duyệt trước khi khối liên quan bắt đầu, khối vẫn chạy theo lịch cũ; CR vẫn chờ tới hạn 7 ngày hoặc tới khi phụ huynh quyết · việc CR "hôm nay" trở nên vô nghĩa sau hết ngày: `chờ Owner quyết` UF-Q25 |
 | B2.3 | CA-10 Trạng thái đề xuất | Con thấy "Đang chờ bố mẹ" | — |
 | B2.4 | PA-17 Chi tiết đề xuất | Phụ huynh xem phần đổi (tô đỏ), kết quả kiểm; bấm **Duyệt** hoặc **Không duyệt** | Duyệt chỉ được khi không phạm hard-cap; soft-cap cần xác nhận "Giữ mức này" hoặc sửa (B01-CR-OD-05). Lời Pal trong chat không phải bằng chứng duyệt (03.4 UC-010) |
-| B2.5 | (hệ thống) | — | Duyệt → kiểm lại quyền, phiên bản, lock, cân bằng → commit phiên bản mới (F04-G01-M01) → lịch sử (F04-G06-M02) → đặt lại nhắc → báo con. `APPROVED ≠ APPLIED` (B01-CR §2). Không duyệt → giữ lịch cũ, báo con (03.4 UC-010) |
+| B2.5 | (hệ thống) | — | Duyệt → kiểm lại quyền, phiên bản, lock, cân bằng → commit phiên bản mới (F04-G01-M01) → lịch sử (F04-G06-M02) → đặt lại nhắc → báo con. `APPROVED ≠ APPLIED` (B01-CR §2). CR đã duyệt nhưng chưa áp có hiệu lực **tối đa 7 ngày kể từ lúc duyệt** (B01C-OD-03). Không duyệt → giữ lịch cũ, báo con (03.4 UC-010) |
 | **B3** | **`CHILD_DIRECTED`** | | |
 | B3.1 | CA-09b Sửa lịch | Con sửa trong phạm vi được ủy quyền | Sửa trực tiếp không cần CR, nhưng vẫn qua Access Policy, mode, lock, phiên bản, Balanced Planning, hard-cap, audit (B01-CR-OD-01). Ngoài phạm vi → thành CR như B2 |
 | B3.2 | PA-11 | Phụ huynh xem; có thể `overwrite` hoặc `lock` | Lock có phạm vi, người khóa, thời điểm, phiên bản, audit; AI không tự lock (B01-MS-OD-02; B01-PS-OD-04). Thời hạn khóa tối đa: chưa chốt (B01-PS-OD-04) |
@@ -554,13 +614,14 @@ F5 có ba luồng con: **F5-A** giai đoạn tạm thời; **F5-B** đề xuất
 | F5B-X1 | CR chờ quá **7 ngày** (quyết định Owner) | Tự hết hạn, tính từ thời điểm gửi hợp lệ theo giờ máy chủ; con có thể tạo CR mới (B01-CR-OD-04) |
 | F5B-X2 | Lịch đổi phiên bản khi CR đang chờ | CR chuyển "cần đánh giá lại", không tự duyệt/áp; CR đã duyệt chưa áp → vô hiệu, cần CR mới (B01-CR-OD-02 i) |
 | F5B-X3 | Lịch bị lock | CR chờ vẫn xem được nhưng không áp; CR đã duyệt chưa áp → vô hiệu (B01-CR-OD-02 ii) |
-| F5B-X4 | Đổi Primary Caregiver | CR chờ chuyển cho người có quyền mới; CR đã duyệt chưa áp phải duyệt lại (B01-CR-OD-02 iii) |
+| F5B-X4 | Đổi Primary Caregiver | **Đã quyết (D-07):** quyền đã cấp cho con (mode, phạm vi ủy quyền sửa lịch) **giữ nguyên**, không tạm ngưng, không chuyển `REVIEW_REQUIRED` (B01-CL-OD-03, B01C-OD-01). CR chờ chuyển cho người có quyền mới; CR đã duyệt chưa áp phải duyệt lại (B01-CR-OD-02 iii; B01C-OD-01). Luồng đổi người quản lý: 04.2 luồng G4 |
 | F5B-X5 | Phụ huynh đổi mode làm con mất quyền (ví dụ về `PARENT_LED`) | Cả CR chờ và CR đã duyệt chưa áp đều vô hiệu (B01-CR-OD-02 iv) |
 | F5B-X6 | Duyệt xong nhưng commit bị timeout | Đối soát trạng thái thật trước khi thử lại; không tạo trùng phiên bản (B01-CR-OD-04) |
 | F5B-X7 | Con ngoại tuyến, gửi đề xuất với mode/lịch cũ | Máy chủ kiểm lại; xung đột thì từ chối, không ghi đè im lặng (B01-MS-OD regression 7) |
 | F5B-X8 | Con ở `PARENT_LED` cố gửi CR qua API | Từ chối (B01-MS-OD regression 4) |
-| F5B-X9 | Nhánh Pal chat: con nhờ Pal giúp diễn đạt đề xuất | Lớp an toàn → ẩn danh → Pal [E2] lắng nghe, giúp con nói lý do (02.5 S05; UC-012). Pal không duyệt, không tự ghi (03.4 §7) |
-| F5B-X10 | Mong muốn của con là than mệt, đói, thiếu giờ chơi | Là tín hiệu mới, không tính là nhắc lại (TAB §1.5). Cách báo xu hướng cho phụ huynh: **⛔ B-2** |
+| F5B-X11 | Mong muốn ở `PARENT_LED` không ai xem | Không hết hạn, không đổi lịch; con thấy "đã gửi" · việc báo con "bố mẹ đã xem" và hạn của mong muốn: `chờ Owner quyết` UF-Q06 |
+| F5B-X9 | `[Nấc 2]` Con nhờ Pal giúp diễn đạt đề xuất | Lớp an toàn → ẩn danh → Pal [E2] lắng nghe, giúp con nói lý do (02.5 S05; UC-012). Pal không duyệt, không tự ghi (03.4 §7) |
+| F5B-X10 | Mong muốn của con là than mệt, đói, thiếu giờ chơi | Là tín hiệu mới, không tính là nhắc lại (TAB §1.5). Bản thân mong muốn hiện cho phụ huynh ở PA-16 vì con chủ động gửi. Xu hướng mệt liên quan lịch báo theo F4 bước 11 (D-03) |
 
 ### 6.3 F5-C – Thay đổi chỉ trong tuần này
 
@@ -586,30 +647,30 @@ F5 có ba luồng con: **F5-A** giai đoạn tạm thời; **F5-B** đề xuất
 |---|---|---|
 | F5C-X1 | Thay đổi thật ra là lâu dài (đổi lịch học, đổi giờ cố định) | Sửa lịch mẫu tuần hoặc sửa thẻ hoạt động (QT E3, K3) → "Lịch tuần chưa cập nhật" + nút xếp lại; không tự xếp lại (QT E5) |
 | F5C-X2 | Học bù trùng giờ khối khác | Kiểm xung đột, hiện trade-off (F04-G02-M02; UC-010) |
-| F5C-X3 | Phụ huynh kể con ốm có dấu hiệu khẩn (khó thở, co giật, bất tỉnh) | Lớp an toàn: hiện 115 (QT N2; CLAUDE). Không chẩn đoán, không nêu liều thuốc (QT N1) |
+| F5C-X3 | Phụ huynh nhập lý do có dấu hiệu khẩn (khó thở, co giật, bất tỉnh) | Bộ kiểm từ khóa [E1] trên ô lý do (0.6 mục 1): hiện PA-24 cho người lớn với 115 (QT N2; OD-03b). Không chẩn đoán, không nêu liều thuốc (QT N1). Vẫn cho lưu ngoại lệ ốm |
 | F5C-X4 | Hết tuần | Ngoại lệ tự hết hiệu lực khi sang tuần mới: **chưa có quy tắc**; PROTO lưu ngoại lệ theo thứ (T2…CN), không theo ngày, nên không tự hết · mục 8, UF-Q09 |
 | F5C-X5 | Nhiều con cùng nghỉ (ví dụ ngày lễ) | Hỏi áp cho con nào; không mặc định áp cho tất cả (CLAUDE) · cách hỏi là `đề xuất nội bộ` |
 | F5C-X6 | Lịch đang lock | Như F2-X10 |
 
 ### 6.4 Dữ liệu ghi nhận (F5)
 
-Giai đoạn: tên, lý do, nguồn (`bo_me`/`con_de_xuat`), từ ngày, đến ngày, danh sách mã nới, quy tắc tạm, bản lịch cũ, trạng thái (`cho_xac_nhan`, `dang_ap_dung`, `het_han`, `da_ket_thuc`), mốc xem lại, ngày kết thúc sớm. CR: người gửi, phiên bản gốc, epoch mode/policy/lock, thời điểm gửi (giờ máy chủ), trạng thái (`PENDING`, `REASSESSMENT`, `APPROVED`, `APPLIED`, `REJECTED`, `EXPIRED`, `INVALIDATED`, `VIEWABLE_FOR_DISCUSSION/NOT_APPROVABLE`), người duyệt, khóa idempotency. Mong muốn (`PARENT_LED`): loại, chữ kèm theo, ngày, trạng thái đã xem. Ngoại lệ tuần: ngày, khối, lý do. Lock: phạm vi, người khóa, thời điểm, phiên bản.
+Giai đoạn: tên, lý do, nguồn (`bo_me`/`con_de_xuat`), từ ngày, đến ngày (≤60 ngày, D-09), danh sách mã nới, quy tắc tạm, bản lịch cũ, trạng thái (`cho_xac_nhan`, `dang_ap_dung`, `het_han`, `da_ket_thuc`), mốc xem lại, ngày kết thúc sớm, thời điểm và kết quả commit khôi phục tự động. CR: người gửi, phiên bản gốc, epoch mode/policy/lock, thời điểm gửi (giờ máy chủ), trạng thái (`PENDING`, `REASSESSMENT`, `APPROVED`, `APPLIED`, `REJECTED`, `EXPIRED`, `INVALIDATED`, `VIEWABLE_FOR_DISCUSSION/NOT_APPROVABLE`), người duyệt, khóa idempotency. Mong muốn (`PARENT_LED`): loại, chữ kèm theo, ngày, trạng thái đã xem. Ngoại lệ tuần: ngày, khối, lý do. Lock: phạm vi, người khóa, thời điểm, phiên bản.
 
 ### 6.5 Liên kết (F5)
 
 - **Feature IDs:** F04-G06-M01, F04-G06-M02, F04-G03-M02, F04-G01-M01, F04-G02-M02, F04-G02-M03, F01-G05-M01, F01-G04-M01, F04-G07-M01, F06-G02-M02; F05-G01-M01 (nhánh Pal của con, UC-012).
 - **UC:** UC-010, UC-008, UC-012 (nhánh Pal chat).
-- **Quy tắc:** QT A2, A5, E3, E5, G5, H6, J1–J6, K1–K4, L3, N1, N2; TAB §1.5, §3, §4; P6-BP-OD-01, -02; B01-CR-OD-01…05 và §2; B01-MS-OD-01, -02, -04; B01-PS-OD-01, -04.
+- **Quy tắc:** QT A2, A5, E3, E5, G5, H6, J1–J5 (J6 bị D-09 thay), K1–K4, L3, N1, N2; TAB §1.5, §3, §4; P6-BP-OD-01, -02; B01-CR-OD-01…05 và §2; B01-MS-OD-01, -02, -04; B01-PS-OD-01, -04; B01C-OD-01, -03, -08; P5-OD-03, P5-R-FC; **D-03, D-07, D-09, D-10**; CRG C-01, C-03, C-04.
 
 ### 6.6 Sơ đồ F5-A
 
 ```mermaid
 flowchart TD
   A([PA-11 Thêm giai đoạn tạm thời]) --> B["PA-18 Tên, lý do, từ ngày, đến ngày"]
-  B --> B1{"Có ngày kết thúc?"}
+  B --> B1{"Có ngày kết thúc, không quá 60 ngày? (D-09)"}
   B1 -- Không --> B
   B1 -- Có --> C["Chọn mã được nới: chỉ danh sách J4"]
-  C --> D{"P6-BP-OD-01: tối đa 60 ngày liên tục, 7 ngày trống"}
+  C --> D{"P6-BP-OD-01 + D-09: tối đa 60 ngày liên tục, 7 ngày trống, không gia hạn"}
   D -- "Không đạt" --> D1["Không kích hoạt, nêu lý do"]
   D -- Đạt --> E{"Dài hơn 6 tuần?"}
   E -- Có --> E1["Đặt mốc xem lại mỗi 2 tuần"] --> F
@@ -618,10 +679,12 @@ flowchart TD
   G --> H["PA-11 Thẻ giai đoạn: không nhắc lại điều đã nới"]
   H --> I{"Kết thúc"}
   I -- "Kết thúc sớm" --> J
-  I -- "Đến hạn" --> J["PA-19 Báo phụ huynh, 3 lựa chọn"]
-  J --> J1["Quay về lịch cũ"]
-  J --> J2["Nhờ Pal sắp xếp lại"]
-  J --> J3["Giữ lịch hiện tại"]
+  I -- "Đến hạn" --> J["Quy tắc tạm ngừng đúng ngày; tự commit về lịch trước giai đoạn (D-09)"]
+  J --> J1["Lịch sử: lý do hết hạn; đặt lại nhắc máy con"]
+  J1 --> J2{"Thẻ hoạt động / giờ học đã đổi trong giai đoạn?"}
+  J2 -- Có --> J3["Lịch tuần chưa cập nhật + nút Xếp lại lịch, không tự xếp"]
+  J2 -- Không --> J4
+  J3 --> J4["PA-19 Báo phụ huynh sau commit: lịch đã về như trước"]
   K([Đề xuất giai đoạn từ con]) --> K1{"Mode của con"}
   K1 -- "PARENT_LED" --> K2["Chỉ là mong muốn, PA-16"]
   K1 -- "CHILD_EXECUTED" --> K3["Chờ bố mẹ xác nhận, chưa áp"] --> B
@@ -633,7 +696,8 @@ flowchart TD
 ```mermaid
 flowchart TD
   A([CA-07 Con xem quỹ thời gian]) --> M{"Mode hiệu lực của con"}
-  M -- "PARENT_LED / UNSET" --> P1["CA-08 Gửi mong muốn, lựa chọn có sẵn"]
+  R([CA-05 Con chọn Rất mệt, D-10]) --> M
+  M -- "PARENT_LED / UNSET" --> P1["CA-08 Gửi mong muốn, chỉ lựa chọn có sẵn (E1)"]
   P1 --> P2["PA-16 Hàng chờ, không có trạng thái duyệt"]
   P2 --> P3{"Phụ huynh"}
   P3 -- "Để sau" --> P4([Kết thúc])
@@ -650,11 +714,13 @@ flowchart TD
   E7 -- "Quá 7 ngày" --> X1["EXPIRED, con tạo CR mới"]
   E7 -- "Đổi phiên bản" --> X2["REASSESSMENT"]
   E7 -- "Lock / mất quyền / lưu trữ" --> X3["Không áp / INVALIDATED"]
+  E7 -- "Đổi Primary (D-07)" --> X4["CR chờ chuyển người mới; đã duyệt chưa áp phải duyệt lại; quyền của con giữ nguyên"]
+  E7 -- "Không có Primary hợp lệ" --> X5["Giữ PENDING, chặn duyệt (P5-OD-03)"]
   E7 -- Không --> E8{"Duyệt?"}
   E8 -- "Không duyệt" --> E9["Giữ lịch cũ, báo con"]
   E8 -- "Duyệt, còn hard-cap" --> E3
-  E8 -- "Duyệt hợp lệ" --> E10["Kiểm lại, commit, lịch sử, đặt lại nhắc, báo con"]
-  M -- "CHILD_DIRECTED" --> D1{"Trong phạm vi ủy quyền và không lock?"}
+  E8 -- "Duyệt hợp lệ" --> E10["Kiểm lại, commit, lịch sử, đặt lại nhắc, báo con; đã duyệt chưa áp tối đa 7 ngày"]
+  M -- "CHILD_DIRECTED (A-lite E1: mặc định ẩn, UF-Q23)" --> D1{"Trong phạm vi ủy quyền và không lock?"}
   D1 -- Có --> D2["Sửa trực tiếp qua đủ kiểm tra, audit"]
   D1 -- "Ngoài phạm vi" --> E1
   D1 -- "Đang lock" --> D3["Từ chối, fail-closed"]
@@ -687,145 +753,149 @@ flowchart TD
 
 ## 7. Danh mục màn hình
 
+Cột **Phạm vi**: `E1` = có trong A-lite E1; `E1 (một phần)` = màn có trong E1 nhưng một số thành phần là nấc 2; `Nấc 2` = chỉ có ở A-lite Plan A (OD-A2 (c)).
+
 ### 7.1 Parent App (24 màn)
 
-| Mã | Tên màn | Dùng ở | Ghi chú |
-|---|---|---|---|
-| PA-01 | Chào mừng / Đăng ký – Đăng nhập | F1 | |
-| PA-02 | Đồng ý và quyền riêng tư | F1 | Consent `SELF_DECLARED` |
-| PA-03 | Hồ sơ gia đình (danh sách con, trạng thái ghép) | F1, F3 | |
-| PA-04 | Thêm con – thông tin cơ bản | F1 | |
-| PA-05 | Giờ học và thời khóa biểu | F1, F2 | |
-| PA-06 | Hồ sơ bổ sung (tùy chọn) | F1 | Cho bỏ qua |
-| PA-07 | Hoạt động của con (khung thẻ, dải T2…CN, tổng giờ/tuần) | F1, F2, F5-C | |
-| PA-07a | Form thẻ hoạt động | F1 | Form con của PA-07, không tính là màn riêng |
-| PA-08 | Chọn con | F1–F5 | Bắt buộc khi nhiều con và chưa nêu con |
-| PA-09 | Lên kế hoạch – Quỹ giờ (6 nhóm × 2 cột, preset) | F2, F5-A | |
-| PA-10 | Xem trước lịch tuần / kết quả kiểm | F2, F5-C | Không màu |
-| PA-11 | Lịch tuần (chi tiết ngày, ✓ và giờ, thẻ giai đoạn) | F2, F4, F5 | |
-| PA-12 | Chế độ tự chủ của con | F5-B | Chuyển mode thuộc F01-G05-M02, chưa chạy trong batch thiết kế B01 (B01-MS §4) |
-| PA-13 | Ghép máy của con | F3 | |
-| PA-14 | Parent PIN (đặt / đổi) | F3 | Chi tiết chờ System Design |
-| PA-15 | Thông báo | F3, F4, F5 | |
-| PA-16 | Hàng chờ "Con đề xuất và báo" | F4, F5-B | Nằm ở tab Lên kế hoạch (QT L3) |
-| PA-17 | Chi tiết đề xuất / Change Request | F5-A, F5-B | |
-| PA-18 | Giai đoạn tạm thời – tạo, sửa | F5-A | |
-| PA-19 | Giai đoạn hết hạn – 3 lựa chọn | F5-A | Có thể là trạng thái của thẻ trên PA-11 |
-| PA-20 | Đổi chỉ tuần này | F5-C | |
-| PA-21 | Tóm tắt tuần | F4, F5 | |
-| PA-22 | Trò chuyện với Pal | F1, F2, F5 | Nhánh tùy chọn, `chờ Owner quyết` OD-A2; chủ module chờ OD-A6 |
-| PA-23 | Xin quyền thông báo | F2, F4 | Plan A §7 |
-| PA-24 | Thông tin hỗ trợ khẩn cấp (111/113/115, tĩnh) | mọi ô chữ tự do | |
+| Mã | Tên màn | Dùng ở | Phạm vi | Ghi chú |
+|---|---|---|---|---|
+| PA-01 | Chào mừng / Đăng ký – Đăng nhập | F1 | E1 | Spike dùng mã gia đình; pilot gia đình thật dùng tài khoản FR-01 (OD-A8) |
+| PA-02 | Đồng ý và quyền riêng tư | F1 | E1 | Consent `SELF_DECLARED`. Luồng xem, rút đồng ý: 04.2 G6 |
+| PA-03 | Hồ sơ gia đình (danh sách con, trạng thái ghép, con có thiết bị không) | F1, F3 | E1 | Thêm câu hỏi thiết bị (D-11) |
+| PA-04 | Thêm con – thông tin cơ bản | F1 | E1 | |
+| PA-05 | Giờ học và thời khóa biểu | F1, F2 | E1 | Điểm bắt đầu (OD-A1) |
+| PA-06 | Hồ sơ bổ sung (tùy chọn) | F1 | E1 | Mục tiêu tùy chọn (OD-A1); trường sức khỏe ẩn khi dùng dữ liệu thật (UF-Q16) |
+| PA-07 | Hoạt động của con (khung thẻ, dải T2…CN, tổng giờ/tuần) | F1, F2, F5-C | E1 | |
+| PA-07a | Form thẻ hoạt động | F1 | E1 | Form con của PA-07, không tính là màn riêng |
+| PA-08 | Chọn con | F1–F5 | E1 | Bắt buộc khi nhiều con và chưa nêu con |
+| PA-09 | Lên kế hoạch – Quỹ giờ (6 nhóm × 2 cột, preset) | F2, F5-A | E1 | Ô Ngủ đỏ không có nút giữ (D-02) |
+| PA-10 | Xem trước lịch tuần / kết quả kiểm | F2, F5-C | E1 | Không màu |
+| PA-11 | Lịch tuần (chi tiết ngày, ✓ và giờ, thẻ giai đoạn) | F2, F4, F5 | E1 | |
+| PA-12 | Chế độ tự chủ của con | F5-B | E1 | Chuyển mode thuộc F01-G05-M02, chưa chạy trong batch thiết kế B01 (B01-MS §4). `CHILD_DIRECTED` mặc định ẩn ở E1 (UF-Q23) |
+| PA-13 | Ghép máy của con | F3 | E1 | |
+| PA-14 | Parent PIN (đặt / đổi) | F3 | E1 | Chi tiết chờ System Design. Bắt buộc trước pilot gia đình thật (OD-A8) |
+| PA-15 | Thông báo | F3, F4, F5 | E1 | Luồng thông báo: 04.2 G3 |
+| PA-16 | Hàng chờ "Con đề xuất và báo" | F4, F5-B | E1 | Nằm ở tab Lên kế hoạch (QT L3). Báo đói là `Nấc 2` |
+| PA-17 | Chi tiết đề xuất / Change Request | F5-A, F5-B | E1 | |
+| PA-18 | Giai đoạn tạm thời – tạo, sửa | F5-A | E1 | Ngày kết thúc ≤60 ngày (D-09) |
+| PA-19 | Giai đoạn đã kết thúc – lịch đã về như trước | F5-A | E1 | Không còn 3 lựa chọn (D-09). Có thể là trạng thái của thẻ trên PA-11 |
+| PA-20 | Đổi chỉ tuần này | F5-C | E1 | |
+| PA-21 | Tóm tắt tuần | F4, F5 | E1 | Có mục xu hướng mệt liên quan lịch (D-03) |
+| PA-22 | Trò chuyện với Pal | F1, F2, F5 | **Nấc 2** | Chủ: F07-G03 entry, F03-G05 outcome (OD-A6 (b)) |
+| PA-23 | Xin quyền thông báo | F2, F4 | E1 | Plan A §7 |
+| PA-24 | Thông tin hỗ trợ khẩn cấp cho người lớn (115/113/111, tĩnh) | ô chữ tự do Parent App | E1 | D-06; OD-03b |
 
-Đếm: 25 mục, trong đó PA-07a là form con của PA-07 → **24 màn Parent App**.
+Đếm: 25 mục, PA-07a là form con → **24 màn Parent App** (23 E1, 1 nấc 2).
 
 ### 7.2 Child App (16 màn)
 
-| Mã | Tên màn | Dùng ở | Ghi chú |
-|---|---|---|---|
-| CA-01 | Chào / chưa ghép | F3 | |
-| CA-02 | Mã ghép | F3 | Mã một lần, có hạn |
-| CA-03 | Ghép thành công | F3 | |
-| CA-04 | Hôm nay | F4 | "Bây giờ", "Đã xong x/y", nút theo cách xác nhận, Hoàn tác |
-| CA-05 | Hỏi thăm sau giờ học | F4 | Trong khối; tùy chọn, bỏ qua được |
-| CA-06 | Thông báo nhắc (của hệ điều hành) có nút "Xong" | F4 | |
-| CA-07 | Thời gian của con (quỹ, chỉ xem) | F5-B | |
-| CA-08 | Gửi mong muốn | F5-B | `PARENT_LED`/`UNSET` |
-| CA-09 | Tạo đề xuất | F5-B | `CHILD_EXECUTED`; và `CHILD_DIRECTED` ngoài phạm vi |
-| CA-09b | Sửa lịch trong phạm vi | F5-B | `CHILD_DIRECTED` |
-| CA-10 | Trạng thái đề xuất | F5-B | |
-| CA-11 | Cài đặt | F3 | |
-| CA-12 | Nhập Parent PIN | F3 | |
-| CA-13 | Tuần của con | F4 | |
-| CA-14 | Thông tin hỗ trợ khẩn cấp (111/113/115, tĩnh) | F4, F5 | |
-| CA-15 | Xin quyền thông báo | F3, F4 | |
+| Mã | Tên màn | Dùng ở | Phạm vi | Ghi chú |
+|---|---|---|---|---|
+| CA-01 | Chào / chưa ghép | F3 | E1 | |
+| CA-02 | Mã ghép | F3 | E1 | Mã một lần, có hạn |
+| CA-03 | Ghép thành công | F3 | E1 | |
+| CA-04 | Hôm nay | F4 | E1 (một phần) | ✓ Xong, Hoàn tác là E1. 📷, 🎤, 🍎, thời tiết là nấc 2 |
+| CA-05 | Hỏi thăm sau giờ học | F4 | E1 | Tùy chọn; có dòng báo con về việc bố mẹ nhận xu hướng (D-03); "Rất mệt" không đổi lịch (D-10) |
+| CA-06 | Thông báo nhắc (của hệ điều hành) có nút "Xong" | F4 | E1 | |
+| CA-07 | Thời gian của con (quỹ, chỉ xem) | F5-B | E1 | |
+| CA-08 | Gửi mong muốn | F5-B, F4 | E1 | `PARENT_LED`/`UNSET`; chỉ lựa chọn có sẵn |
+| CA-09 | Tạo đề xuất | F5-B, F4 | E1 | `CHILD_EXECUTED`; và `CHILD_DIRECTED` ngoài phạm vi |
+| CA-09b | Sửa lịch trong phạm vi | F5-B | E1, mặc định ẩn | `CHILD_DIRECTED` (UF-Q23) |
+| CA-10 | Trạng thái đề xuất | F5-B | E1 | |
+| CA-11 | Cài đặt | F3 | E1 | |
+| CA-12 | Nhập Parent PIN | F3 | E1 | |
+| CA-13 | Tuần của con | F4 | E1 | |
+| CA-14 | Lời an toàn cho trẻ ("nói với người lớn con tin cậy", có thể kèm 111; tĩnh) | F4, F5 | **Nấc 2** | Phát sinh khi có ô chữ tự do hoặc giọng nói phía con. Không hiện 113, 115 (D-06; OD-03a). 04.2 G8 đề xuất thêm lối vào tĩnh "Con cần giúp đỡ" ở E1 (UF-Q37); nếu Owner chọn, màn này thành E1 |
+| CA-15 | Xin quyền thông báo | F3, F4 | E1 | |
 
-Đếm: **16 màn Child App** (gồm CA-09b).
+Đếm: **16 màn Child App** (gồm CA-09b; 15 E1, 1 nấc 2).
 
-**Tổng: 40 màn** (24 Parent App + 16 Child App), chưa gồm màn hướng dẫn tắt tối ưu pin theo hãng (PA §7) và màn Phòng thử của Plan A (chỉ cho spike).
+**Tổng: 40 màn** (24 Parent App + 16 Child App; 38 E1, 2 nấc 2), chưa gồm màn hướng dẫn tắt tối ưu pin theo hãng (PA §7) và màn Phòng thử của Plan A (chỉ cho spike). Các màn mới của đợt 2 đánh số từ PA-25 và CA-16, xem `User_Flow_04_2_Remaining_Flows.md`.
 
 ---
 
-## 8. Quyết định còn mở
+## 8. Quyết định và câu hỏi
 
-### 8.1 Đang chờ Owner (đã có mã)
+### 8.1 Quyết định Owner đã áp (OD-1115)
 
-| Mã | Câu hỏi | Ảnh hưởng tới flow | Nhánh đang vẽ |
+| Mã | Câu hỏi | Quyết định | Ảnh hưởng tới flow |
 |---|---|---|---|
-| OD-A1 | Bắt đầu từ mục tiêu hay thời khóa biểu | F1, F2 | Thời khóa biểu trước, mục tiêu tùy chọn |
-| OD-A2 | A-lite E1 hay biến thể Pal chat | F1, F2, F4, F5 (PA-22, 🎤, "Pal vừa ghi") | Có cấu trúc là chính; Pal chat tùy chọn |
-| OD-A6 | Chủ module hội thoại Pal với phụ huynh | PA-22 | Không gán |
-| OD-A7 | L3 sở hữu tín hiệu mệt/đói | F4 bước 7–8; F5A-X6 | Không gán; quy tắc giảm tải chưa áp vào lịch |
-| OD-A8 | Mã gia đình hay tài khoản + PIN | F3; F3-X5; F4-X8 | FR-01 |
+| OD-A1 | Bắt đầu từ mục tiêu hay thời khóa biểu | **Đã quyết:** (a) thời khóa biểu, mục tiêu tùy chọn | F1, F2 |
+| OD-A2 | A-lite E1 hay biến thể Pal chat | **Đã quyết:** (c) E1 trước, Plan A là nấc 2 | F1, F2, F4, F5; mọi nhãn `[Nấc 2]` |
+| OD-A6 | Chủ module hội thoại Pal với phụ huynh | **Đã quyết:** (b) F07-G03 entry, F03-G05 outcome | PA-22 (nấc 2) |
+| OD-A7 | L3 sở hữu tín hiệu mệt/đói | **Đã quyết:** (a) F04-G05 | F4 bước 6–8 |
+| OD-A8 | Mã gia đình hay tài khoản + PIN | **Đã quyết:** (b) mã gia đình chỉ trong spike; FR-01 trước pilot gia đình thật | F3, PA-01, PA-14 |
 
-### 8.2 Câu hỏi mới phát sinh khi vẽ flow (đề xuất nội bộ, chưa có ID quyết định chính thức)
+### 8.2 Bảng UF-Q
 
-| Mã | Câu hỏi | Flow | Ghi chú |
-|---|---|---|---|
-| UF-Q01 | Ô Ngủ dưới mức tối thiểu: chặn nhập hay cảnh báo + "Giữ mức này"? | F2 | Chính là Blocker B-1 |
-| UF-Q02 | Dữ liệu hỏi thăm (Ổn/Hơi mệt/Rất mệt) có hiện cho phụ huynh không, dạng nào, lưu bao lâu? | F4, F5 | Chính là Blocker B-2 |
-| UF-Q03 | Khi con chọn "Rất mệt", hệ thống tự đổi lịch hôm nay hay chỉ hiện lời và chờ phụ huynh? Ở `PARENT_LED` có coi là thay đổi lịch của con không? | F4 | Liên quan OD-A7; PROTO chỉ hiện lời |
-| UF-Q04 | Con không có máy riêng: theo dõi ra sao, ai bấm Xong? | F3, F4 | Liên quan OD-A8 (c) |
-| UF-Q05 | Ở `CHILD_DIRECTED`, giai đoạn tạm thời (nới kiểm tra) có thuộc phạm vi ủy quyền không? | F5-A | QT J5 viết trước khi có mode; phạm vi ủy quyền thuộc Access Policy (B01-MS-OD-03). Tạm vẽ fail-closed: thành CR |
-| UF-Q06 | Mong muốn của con ở `PARENT_LED` có hết hạn, có báo con "bố mẹ đã xem" không? | F5-B | Nguồn chưa nêu |
-| UF-Q07 | Phụ huynh cần giai đoạn dài hơn 60 ngày cho cùng ràng buộc (ví dụ ôn thi vào 10 kéo dài) thì đi luồng nào? | F5-A | P6-BP-OD-01 đặt trần, QT J2 chưa ghi trần; QT chưa được cập nhật theo quyết định này |
-| UF-Q08 | Hai giai đoạn khác loại chồng nhau | F5-A | P6-BP §3: UNKNOWN |
-| UF-Q09 | Ngoại lệ "chỉ tuần này" tự hết khi nào; lưu theo ngày hay theo thứ | F5-C | PROTO lưu theo thứ |
-| UF-Q10 | Thời hạn mã ghép, số lần thử PIN, đặt PIN lúc nào | F3 | FR-01 giao System Design |
-| UF-Q11 | Giờ yên lặng của nhắc; tần suất và thời điểm gửi tóm tắt tuần | F4 | Không có số trong nguồn |
-| UF-Q12 | Ghi nhận khi ngoại tuyến (Xong, nháp onboarding) | F1, F4 | Chờ System Design |
-| UF-Q13 | Thiết lập mode ở onboarding hay để `UNSET` tới khi phụ huynh chủ động chọn | F1, F5-B | B01-MS-OD-04 cho phép `UNSET`; F01-G05-M02 chưa chạy |
+| Mã | Câu hỏi | Flow | Trạng thái | Ghi chú / nhánh đang vẽ |
+|---|---|---|---|---|
+| UF-Q01 | Ô Ngủ dưới mức tối thiểu: chặn hay "Giữ mức này"? | F2 | **Đã quyết – D-02** | Không có nút giữ cho ô Ngủ. Phần ô cam: UF-Q14 |
+| UF-Q02 | Dữ liệu hỏi thăm có hiện cho phụ huynh không, dạng nào? | F4, F5 | **Đã quyết – D-03** | Chỉ xu hướng mệt liên quan lịch; con được biết. Còn mở: ngưỡng (UF-Q20), phạm vi hiển thị (UF-Q18), thời hạn lưu (H4) |
+| UF-Q03 | "Rất mệt" có tự đổi lịch hôm nay không? | F4 | **Đã quyết – D-10** | Không tự đổi; đi bước đề xuất / mong muốn. Còn mở: UF-Q19, UF-Q25 |
+| UF-Q04 | Con không có máy riêng | F3, F4 | **Đã quyết – D-11** | Chỉ phần lập lịch phía phụ huynh. Còn mở: dùng chung máy (UF-Q17) |
+| UF-Q05 | Ở `CHILD_DIRECTED`, giai đoạn tạm thời có thuộc phạm vi ủy quyền? | F5-A | Mở | Fail-closed: thành CR |
+| UF-Q06 | Mong muốn ở `PARENT_LED` có hết hạn, có báo con "bố mẹ đã xem"? | F5-B | Mở | Không hết hạn, không báo đã xem |
+| UF-Q07 | Giai đoạn cần dài hơn 60 ngày | F5-A | **Đã quyết – D-09** | Không cho quá 60 ngày; hết hạn tự về lịch cũ |
+| UF-Q08 | Hai giai đoạn khác loại chồng nhau | F5-A | Mở | Fail-closed: không cho kích hoạt giai đoạn thứ hai |
+| UF-Q09 | Ngoại lệ "chỉ tuần này" tự hết khi nào; lưu theo ngày hay theo thứ | F5-C | Mở | PROTO lưu theo thứ |
+| UF-Q10 | Thời hạn mã ghép, số lần thử PIN, đặt PIN lúc nào | F3 | Mở | FR-01 giao System Design |
+| UF-Q11 | Giờ yên lặng của nhắc; tần suất và thời điểm gửi tóm tắt tuần | F4 | Mở | Không có số trong nguồn; xem thêm 04.2 G1, G3 |
+| UF-Q12 | Ghi nhận khi ngoại tuyến (Xong, nháp onboarding) | F1, F4 | Mở | Chờ System Design |
+| UF-Q13 | Thiết lập mode ở onboarding hay để `UNSET` | F1, F5-B | Mở | Để `UNSET` |
+| UF-Q14 | Ô Ngủ **cam** (thiếu ≤30′): D-02 "không giữ dưới mức tối thiểu" có áp cho ô cam không? | F2 | Mở (mới) | Dòng cảnh báo; bộ dựng vẫn xếp đủ mức tối thiểu |
+| UF-Q15 | A-lite E1: Child App không có ô chữ tự do (chỉ lựa chọn có sẵn)? | F4, F5-B | Mở (mới) | Không có chữ tự do phía con |
+| UF-Q16 | Trường sức khỏe (dị ứng, thuốc) trong A-lite E1 khi chưa có purpose ID | F1 | Mở (mới) | Ẩn khi dùng dữ liệu thật (CRG C-07) |
+| UF-Q17 | Con không có máy: có cho dùng chung máy phụ huynh làm máy con không? | F3 | Mở (mới) | Không |
+| UF-Q18 | D-03: phụ huynh có được xem lựa chọn từng ngày không, hay chỉ xu hướng? | F4 | Mở (mới) | Chỉ xu hướng |
+| UF-Q19 | D-10 ở `CHILD_DIRECTED`: "Rất mệt" mở đề xuất (CR) hay cho sửa trong phạm vi? | F4, F5-B | Mở (mới) | Mở CR |
+| UF-Q20 | Ngưỡng số ngày mệt trong 2 tuần để báo phụ huynh | F4 | Mở (mới) | `UNKNOWN` → không báo |
+| UF-Q21 | Khôi phục tự động khi hết giai đoạn: ai thực thi khi máy ngoại tuyến, có vượt `LOCK` không | F5-A | Mở (mới) | Quy tắc tạm ngừng đúng ngày; khôi phục không bị LOCK chặn |
+| UF-Q22 | Trong giai đoạn tạm thời có báo xu hướng mệt không | F5-A | Mở (mới) | Có báo (tín hiệu mới) |
+| UF-Q23 | A-lite E1 có bật `CHILD_DIRECTED` không (CRG C-01) | F5-B | Mở (mới) | Ẩn trong E1 |
+| UF-Q24 | Kênh mong muốn của con ở E1 thuộc module nào, khi B01C-OD-08 giao cho AI của F05 | F5-B | Mở (mới) | Lựa chọn có sẵn, chưa gán module |
+| UF-Q25 | CR đổi lịch "hôm nay" chưa được duyệt trong ngày thì xử lý ra sao | F5-B | Mở (mới) | Giữ chờ tới 7 ngày |
+
+Câu hỏi mới của đợt 2 tiếp tục từ UF-Q26 (xem 04.2 §15).
 
 ### 8.3 Cần đồng bộ tài liệu (không phải blocker)
 
-| Điểm | Chi tiết | Hướng xử lý đã có |
+Tài liệu này **không** sửa các nguồn dưới đây. Theo quy trình đổi quy tắc, sửa QT trước, rồi PROTO và skill.
+
+| Điểm | Chi tiết | Hướng xử lý |
 |---|---|---|
-| QT L3 và TAB §4 cho mọi con "gửi đề xuất" | Viết trước quyết định mode | B01-MS-OD-02 và B01-CR §2 (sau) giới hạn: `PARENT_LED` chỉ gửi mong muốn. Flow F5-B theo quyết định sau. Cần sửa QT L3, TAB §4 và nhãn nút "Con muốn đề xuất" trong PROTO dòng 1051 qua quy trình đổi quy tắc |
-| QT J chưa có trần 60 ngày và 7 ngày trống | P6-BP-OD-01 (12/11) sau QT (03/11) | Theo QT "Cách dùng file này", cần đưa vào QT trước rồi mới sửa PROTO |
-| R3 (02.5) yêu cầu check-in bỏ qua/tắt được; QT G3 đặt check-in trong khối 10′ cố định | Không mâu thuẫn nếu khối vẫn có, chỉ phần hỏi là tùy chọn | Flow F4 bước 6 vẽ "bỏ qua / tắt" |
+| QT L3 và TAB §4 cho mọi con "gửi đề xuất" | Viết trước quyết định mode | B01-MS-OD-02 và B01-CR §2 giới hạn: `PARENT_LED` chỉ gửi mong muốn. Sửa QT L3, TAB §4 và nhãn nút "Con muốn đề xuất" trong PROTO dòng 1051 |
+| QT J chưa có trần 60 ngày và 7 ngày trống | P6-BP-OD-01, D-09 | Đưa vào QT J2 (SPIKE B-9 cũng nêu) |
+| QT J6 ba lựa chọn khi hết hạn | D-09: tự về lịch trước giai đoạn | Sửa QT J6, TAB §3, PROTO `checkPeriodExpiry`, `renderChips` |
+| QT D6, TAB §1.4: "Giữ mức này" cho mọi vùng đỏ | D-02: không áp cho ô Ngủ | Sửa QT D6, TAB §1.4; PROTO dòng 838 không hiện nút ở ô `ngu` |
+| QT G3, TAB §4: "Rất mệt" thì phục hồi thêm 15′ và bỏ phần học định hướng bố mẹ | D-10: không tự đổi lịch | Ghi lại thành nội dung đề xuất điền sẵn; sửa lời trong PROTO dòng 1038 (không hứa "tối nay chỉ làm phần cô giao") |
+| QT L2, TAB §1.5 và 02.5 S09 | D-03: báo xu hướng mệt liên quan lịch, không báo cảm xúc, trẻ được biết | Thêm câu "trẻ được báo trước" và "không báo cảm xúc" vào QT L2 |
+| CLAUDE.md, QT N2, A-lite SG-20: 111/113/115 cho mọi ô chữ | D-06 / OD-03: trẻ chỉ nhận "nói với người lớn tin cậy" + có thể 111 | Sửa CLAUDE.md mục an toàn, QT N2, A-lite SG-20 |
+| CLAUDE.md mục "Nguồn trả lời" | D-05 / OD-05: tra mạng chỉ cho câu hỏi giáo dục | Không ảnh hưởng A-lite E1 (không tra mạng). Ghi ở đây để nhắc |
+| R3 (02.5) và QT G3 | Không mâu thuẫn: khối vẫn có, chỉ phần hỏi là tùy chọn | Flow F4 bước 6 vẽ "bỏ qua / tắt" |
 
 ---
 
 ## 9. Blockers
 
-Mỗi blocker là mâu thuẫn giữa các nguồn đã duyệt. Flow dừng ở bước bị ảnh hưởng; các flow khác vẫn vẽ tiếp.
+**Bản này không còn blocker chặn vẽ.** Hai blocker của bản 14/11 đã được giải quyết:
 
-### B-1 – Ô Ngủ đỏ có được "Giữ mức này" không
+| Mã | Nội dung | Quyết định | Phần còn lại (không chặn vẽ) |
+|---|---|---|---|
+| B-1 | Ô Ngủ đỏ có được "Giữ mức này" không | **D-02:** không. Khớp QT C1, D4 và P6-BP-OD-02 | Ô Ngủ cam (UF-Q14); đồng bộ QT D6, TAB §1.4, PROTO dòng 838 |
+| B-2 | Ai được xem dữ liệu hỏi thăm | **D-03:** phụ huynh nhận xu hướng mệt liên quan lịch, không nhận cảm xúc; trẻ được biết | Ngưỡng (UF-Q20), phạm vi hiển thị (UF-Q18), thời hạn lưu (cổng H4); đồng bộ QT L2 |
 
-- **Bước bị chặn:** F2 bước 6, nhánh ô Ngủ đỏ (thiếu >30′ so với mức tối thiểu theo tuổi).
-- **Nguồn cho phép xác nhận:**
-  - `repo/documents/pal/spec-quy-tac-lap-lich.md` dòng 65 (D6: "Vùng đỏ cần bố mẹ bấm 'Giữ mức này' một lần") và dòng 72 (bảng ngưỡng có hàng Ngủ: đỏ = thiếu >30′).
-  - `repo/documents/pal/spec-quy-thoi-gian-va-tab-cua-con.md` dòng 30 (§1.4 trần mềm: dòng đỏ có nút "Giữ mức này").
-  - `repo/prototype/index.html` dòng 838: nút "Giữ mức này" hiện cho **mọi** ô nhập màu đỏ, gồm ô `ngu`.
-- **Nguồn cấm:**
-  - `spec-quy-tac-lap-lich.md` dòng 46 (C1 ngủ đủ mức tối thiểu, nới trong giai đoạn tạm thời: "Không bao giờ") và dòng 63 (D4: ngủ "không dưới sàn C1").
-  - `spec-quy-thoi-gian-va-tab-cua-con.md` dòng 25 (Sàn cố định "Không ai chỉnh": ngủ không dưới mức tối thiểu) và dòng 55 (Ngủ: "không thấp hơn mức tối thiểu theo tuổi").
-  - `Feature_3_2_L4_P6_Balanced_Planning_Owner_Decision_Log_APPROVED.md` P6-BP-OD-02 (không có đường tắt vượt `protected_hard_cap`) và `Feature_3_2_L4_B01_Change_Requests_Owner_Decision_Log_APPROVED.md` B01-CR-OD-05 (không APPROVE/APPLY khi phạm hard-cap). A-lite §3 xếp sàn ngủ [NC] là HARD_SAFETY.
-- **Vì sao chặn:** Nếu ô Ngủ là sàn cứng, nút "Giữ mức này" ở ô này không có ý nghĩa hoặc cho phép vượt sàn. Nếu là trần mềm, mâu thuẫn với C1/D4. Flow không thể vẽ màn PA-09 cho ô Ngủ đỏ (cho nhập hay chặn, có nút hay không, lịch dựng ra theo số nào) mà không chọn một bên.
-- **Không bị ảnh hưởng:** các ô khác của quỹ; ô Ngủ xanh/cam; bộ dựng lịch vẫn không xếp dưới sàn C1 (D4).
-- **Cần:** Owner quyết, rồi sửa QT trước, sau đó PROTO (theo quy trình đổi quy tắc).
-
-### B-2 – Ai được xem dữ liệu hỏi thăm "Ổn / Hơi mệt / Rất mệt"
-
-- **Bước bị chặn:** F4 bước 11 (phụ huynh xem tín hiệu mệt); phần hiển thị trong PA-11, PA-21; F5A-X6; F5B-X10.
-- **Nguồn yêu cầu báo phụ huynh:**
-  - `repo/documents/pal/spec-quy-tac-lap-lich.md` dòng 171 (L2: "Báo bố mẹ xu hướng, không chép nguyên văn lời con") và dòng 116 (G3).
-  - `repo/documents/pal/spec-quy-thoi-gian-va-tab-cua-con.md` dòng 31 (§1.5: Pal báo bố mẹ theo xu hướng).
-  - `repo/documents/app-design-document/Scenario_Change_Log_SC-001.md` dòng 22 (SC-001-D02 Cause-Aware Adaptive Planning dùng tín hiệu mệt để điều chỉnh).
-- **Nguồn hạn chế:**
-  - `main/app-design-document/02_User_Research/User_Research_02_5_User_Scenarios.md` dòng 100 (S09: "không mặc định báo cáo trạng thái cảm xúc riêng tư cho phụ huynh. Muốn dùng dữ liệu cảm xúc làm chỉ số dài hạn cần chính sách thông báo, quyền truy cập và lưu trữ riêng"); dòng 98 (S09 xếp "mệt" vào lựa chọn cảm xúc/trạng thái); dòng 27 (N1/R3 đã chốt).
-  - `main/app-design-document/02_User_Research/User_Research_02_4_User_Needs_and_Pain_Points.md` dòng 186 ("nơi lưu chỉ số cảm xúc và ai được xem" còn mở).
-- **Bối cảnh:** `Feature_3_2_L4_B01_Consent_Ledger_Owner_Decision_Log_APPROVED.md` dòng 16 (B01-CL-OD-04: chỉ Child Journal là private tuyệt đối; dữ liệu ngoài Journal chia sẻ theo quyền gia đình) có thể nghiêng về cho xem, nhưng không nói rõ dữ liệu hỏi thăm thuộc loại nào và không thay "chính sách riêng" mà S09 đòi. OD-A7 (chủ module) cũng chưa quyết.
-- **Không bị ảnh hưởng:** phía con: hỏi thăm tùy chọn, bỏ qua được, lời giảm tải cho con (F4 bước 6–7); dấu ✓ và giờ hoàn thành cho phụ huynh.
-- **Cần:** Owner quyết (a) dữ liệu hỏi thăm có phải "dữ liệu cảm xúc" theo S09 không; (b) nếu báo phụ huynh: dạng xu hướng, cửa sổ 2 tuần (QT L2), ngưỡng số ngày (`UNKNOWN`, chưa có nguồn – A-lite SG-16), thời hạn lưu, ai xem; (c) chủ module (OD-A7).
+Cổng pháp lý còn mở và **không** được coi là đạt: H4 (thời hạn xóa), FR-03 (xử lý yêu cầu của trẻ khi chưa rõ căn cứ), MR-016 (căn cứ xử lý dữ liệu trẻ), purpose catalog cho sức khỏe và vị trí (CRG §6 B-1..B-6). Các cổng này chặn **dùng dữ liệu thật**, không chặn vẽ flow.
 
 ---
 
 ## 10. Tự kiểm
 
 - Không tạo Feature ID mới: mọi ID đã đối chiếu với `Product_Blueprint_03_2_Feature_Inventory_and_Scope.md`.
-- Không thêm ngưỡng thời gian hay sức khỏe mới: các con số đều từ QT (kèm [NC]/[NL]/[MĐ]), từ quyết định Owner (7 ngày, 60 ngày, ≥7 ngày trống), hoặc từ PA (mục tiêu test, ghi rõ không phải quy tắc sản phẩm). Chỗ không có số ghi `UNKNOWN`.
-- Không quyết thay Owner: OD-A1, A2, A7, A8 và UF-Q01…Q13 chỉ vẽ nhánh mặc định có nhãn.
-- Không sửa file trong `repo/` hay `main/`.
+- Không thêm ngưỡng thời gian hay sức khỏe mới: con số lấy từ QT (kèm [NC]/[NL]/[MĐ]), từ quyết định Owner (7 ngày, 60 ngày, ≥7 ngày trống, 7 ngày hiệu lực CR đã duyệt), từ spike (gắn "mặc định chưa kiểm chứng", D-08), hoặc từ PA (mục tiêu test, không phải quy tắc sản phẩm). Chỗ không có số ghi `UNKNOWN`.
+- Không quyết thay Owner: các UF-Q còn mở chỉ vẽ nhánh mặc định có nhãn.
+- Không chọn MVP. Không đánh dấu cổng pháp lý nào là PASS.
+- Ví dụ không dùng dữ liệu trẻ thật.
+- Không sửa nguồn chuẩn; chỉ soạn bản nháp.
 
 *người soạn: AI, chưa kiểm chứng độc lập; trạng thái: nháp chờ duyệt.*
