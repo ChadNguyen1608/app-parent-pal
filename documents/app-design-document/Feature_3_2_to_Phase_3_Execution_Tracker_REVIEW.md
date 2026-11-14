@@ -88,3 +88,10 @@ Detailed review expands the prior inventory coverage. Track candidate depth sepa
 Of the original 94 L3, all 94 now have detailed design dispositions. No modules remain at candidate-only depth in this scope.
 
 Next, use checkpoint 24's per-L3 crosswalk for consolidated independent re-review. Runtime evidence, legal verification, unresolved source gaps and final Owner acceptance remain pending.
+
+
+## Update 2026-11-14 — Functional Baseline pinned; 3.3 initialized
+
+- **L4 final review input FROZEN:** [Pinned 24-group Functional Baseline Manifest](Feature_3_2_L4_Functional_Baseline_Frozen_Manifest_20261114_REVIEW.md), source branch head pinned at `2e33afb9e5d97c4603a8230cb8f183fddb31bdb1`. Manifest supplies source blob SHA per group and targeted Claude Code independent read-only review instructions. **Independent re-review NOT EXECUTED by this checkpoint**, so final acceptance remains pending.
+- **3.3 B1 STARTED:** [Initial 106-L3 Assessment Registry](Feature_3_3_Initial_106_L3_Assessment_Registry_REVIEW.md), every L3 across F01–F08 present and A0–A5 explicitly UNKNOWN until assessment. Approved 3.3 methodology (Hard Gates → Value → Economics, L3 first, evidence confidence) preserved. Candidate dependency examples are **not an exhaustive graph**. No numeric scores, scores for each cohort, ranking, MVP selection, canonical changes or production claim.
+- **3.4 B2 NOT STARTED**. Next research increment: evidence for gates/value/economics and full dependency verification, then independent Claude review disposition and Owner gate.
