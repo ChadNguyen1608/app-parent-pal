@@ -9,4 +9,5 @@ BỎ LỌT   tập mạnh KẾT THÚC SAU giờ tắt đèn → tap_muon (giới
 BẮT ĐƯỢC màn hình sát giờ ngủ → x_man_hinh_ngu  ["x_man_hinh_ngu","x_quy_sinh_hoat"]
 BẮT ĐƯỢC phiên học quá dài → x_phien  ["tong_gio_hoc","x_phien","x_bo_bua","x_quy_hoc_nha","x_quy_sinh_hoat"]
 BẮT ĐƯỢC bỏ ăn tối → x_bo_bua  ["x_bo_bua"]
-baseline T2: [] | bắt được 10/11
+BẮT ĐƯỢC v2/B-1: hai phiên học cách 4′ → x_nghi_giua (sàn 5′)  ["x_nghi_giua","x_bo_bua","x_quy_sinh_hoat"]
+baseline T2: [] | bắt được 11/12

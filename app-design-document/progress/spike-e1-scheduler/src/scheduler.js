@@ -30,7 +30,19 @@ const PARAMS = {
   MOTION_MAX:     { v: 25, src: "G2 15–25′ [MĐ]" },
   LUNCH_ASSUME:   { v: 675, src: "H2 giả định ăn trưa 11:15" },
   MIN_CHUNK:      { v: 20, src: "F4 cận dưới của lớp 1–3 (20′), dùng làm phiên ngắn nhất [MĐ]" },
+  SNACK:          { v: 10, src: "Thời lượng khối bữa phụ; spec không ghi số, chọn ngang khối G3 (blocker B-7) [MĐ]" },
 };
+// v2 (D-08, sổ quyết định 15/11/2026): mọi thông số là "mặc định chưa kiểm chứng", chờ thẩm định chuyên môn ở bước 14b.
+// Nhãn này áp cả cho số có [NC]: căn cứ của quy tắc có thể là [NC], nhưng con số cụ thể dùng trong bộ xếp vẫn chưa được thẩm định.
+const PARAM_STATUS = "mac_dinh_chua_kiem_chung";
+const BL_ID = { MORNING: "PR-01", DINNER: "PR-02", LUNCH_HOME: "PR-03", HYGIENE: "PR-04", READ: "PR-05", CHECKIN: "PR-06", PACK: "PR-07",
+  REC_DEFAULT: "PR-08", REC_MID: "PR-09", REC_FLOOR: "PR-10", BREAK: "PR-11", MEAL_TO_CAO: "PR-12", SPORT_TO_BED: "PR-13", SCREEN_TO_BED: "PR-14",
+  BED_SHIFT_MAX: "PR-15", SOFT: "PR-16", MOTION_MIN: "PR-17", MOTION_MAX: "PR-18", LUNCH_ASSUME: "PR-19", MIN_CHUNK: "PR-20", SNACK: "PR-21" };
+for (const k of Object.keys(PARAMS)) Object.assign(PARAMS[k], { id: BL_ID[k], status: PARAM_STATUS, quyet_dinh: "D-08", cho_tham_dinh: "buoc_14b" });
+// B-1 (mặc định fail-safe có nhãn, chờ chủ sản phẩm): nghỉ giữa hai khối học tối thiểu 5′ ở CẢ bộ xếp lẫn bộ kiểm tra
+// (chặt hơn sàn 3′ của C3; bằng cận dưới của F4). Không sửa spec gốc.
+PARAMS.BREAK.src = "B-1 fail-safe: sàn kiểm = 5′ (C3 ghi 3–5′, F4 ghi 5–10′; lấy 5′ thỏa cả hai và chặt hơn sàn 3′) [NL NT-09, MĐ]";
+PARAMS.BREAK.b1_default = "fail_safe_5_phut_cho_chu_san_pham_chon";
 const p = k => PARAMS[k].v;
 const hhmm = m => { m = ((m % 1440) + 1440) % 1440; return String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0"); };
 const isWE = d => d === "T7" || d === "CN";
@@ -46,7 +58,7 @@ function defaultBudget(grade, age) { // port defaultBudget() index.html 695–69
 function weekAnchors(prof, budget) {
   const need = V.sleepNeed(prof.age), notes = [];
   const prefWake = toMin(prof.sleep.wake);
-  const tgt = {}; DAYS.forEach(d => { let t = budget[col(d)].ngu; if (t < need) { notes.push({ rule: "C1", t: d + ": quỹ ngủ " + t + "′ thấp hơn sàn " + need + "′; dùng sàn (không bao giờ nới)." }); t = need; } tgt[d] = t; });
+  const tgt = {}; DAYS.forEach(d => { let t = budget[col(d)].ngu; if (t < need) { notes.push({ rule: "C1/D-02", t: d + ": quỹ ngủ " + t + "′ thấp hơn sàn " + need + "′; dùng sàn (không bao giờ nới, không có \"Giữ mức này\" cho ô Ngủ)." }); t = need; } tgt[d] = t; });
   const wake = {};
   const earliestFixed = d => {
     const xs = [];
@@ -77,7 +89,7 @@ function blk(s, e, khoi, o = {}) {
   return Object.assign({ s, e, khoi, viec: [], xac_nhan: "Con bấm Xong", tai: "thap", nhom: "sinh_hoat", the_thao: false, man_hinh: false, trang_thai: "binh_thuong", ghi_chu: "" }, o);
 }
 const MAIN_MEAL = /(ăn sáng|ăn trưa|ăn tối)/i;
-const SNACK = 10; // thời lượng khối bữa phụ: spec không ghi số; chọn ngang khối G3 (xem báo cáo, mục blocker)
+const SNACK = PARAMS.SNACK.v; // B-7: thời lượng khối, không phải giới hạn
 // cùng logic nhận diện bữa với checkDayK (index.html 615–617)
 function mealEvents(B, school) {
   const ML = /(ăn sáng|ăn trưa|ăn tối|bữa|ăn nhẹ|ăn phụ|^ăn )/i, ev = [];
@@ -159,7 +171,8 @@ function buildDay(prof, d, A, prm) {
     const evening = (prof.activities || []).some(a => a.thu.includes(d) && toMin(a.ket_thuc) > toMin(prof.meals.dinner));
     const justAte = B.some(b => MAIN_MEAL.test(b.khoi) && b.e <= arrive + 60 && b.s >= arrive - 60);
     const recViec = [...(justAte ? [] : [evening ? "Bữa phụ chắc (có học thêm tối, G7)" : "Ăn nhẹ (trái cây, sữa, khoai…)"]), "Chơi tự do do con chọn, không màn hình"];
-    const recNote = "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3).";
+    // D-10 (15/11/2026, thắng G3): "Rất mệt" KHÔNG tự đổi lịch. Muốn đổi, con đi qua bước đề xuất theo chế độ (xem fatigue.js).
+    const recNote = "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ.";
     let t = arrive, placed = false;
     // thử ngay khi về, nếu không thì sau hoạt động gần nhất
     const starts = [arrive, ...B.filter(b => b.s >= arrive && (b.nhom === "hoc_them" || MAIN_MEAL.test(b.khoi))).map(b => b.e)].sort((a, b) => a - b);
@@ -295,7 +308,7 @@ function scheduleWeek(prof) {
   const budget = prof.budget || defaultBudget(prof.grade, prof.age);
   const A = weekAnchors(prof, budget);
   const plan = { tong_quan: null, ngay: {}, ngoai_le: {}, giai_doan: prof.phase ? Object.assign({ trang_thai: "dang_ap_dung" }, prof.phase) : null };
-  const days = {}, tradeoffs = [], notes = [...A.notes];
+  const days = {}, tradeoffs = [], notes = [...A.notes], questions = [];
   for (let i = 0; i < 7; i++) {
     const d = DAYS[i], nd = DAYS[(i + 1) % 7], c = col(d), T = budget[c].hoc_nha, M = budget[c].man_hinh;
     const floor = Math.max(A.need, A.tgt[d] - p("SOFT"));
@@ -370,13 +383,19 @@ function scheduleWeek(prof) {
     if (prm.study < T && prm.tier !== "can_bo_me_chon") notes.push({ rule: "D4", t: d + ": học ở nhà " + prm.study + "′ (quỹ " + T + "′, trong ±30′)." });
     if (prm.shift) notes.push({ rule: "G7/D4", t: d + ": giờ tắt đèn lùi " + prm.shift + "′." });
     if (prm.rec < p("REC_DEFAULT")) notes.push({ rule: "C2", t: d + ": phục hồi " + prm.rec + "′." });
-    if ((prof.activities || []).some(a => a.thu.includes(d) && toMin(a.ket_thuc) > toMin(prof.meals.dinner))) notes.push({ rule: "G7", t: d + ": có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại)." });
+    if ((prof.activities || []).some(a => a.thu.includes(d) && toMin(a.ket_thuc) > toMin(prof.meals.dinner))) {
+      // B-2 (mặc định fail-safe có nhãn): theo spec G7 (nguồn chuẩn), KHÔNG tự bỏ ôn bài như prompt bản thử; giữ quỹ, chỉ giảm khi
+      // không vừa (thang sửa), và tạo MỘT câu hỏi cho bố mẹ (A2: hỏi một lần), hai phương án tính sẵn. Không sửa spec gốc.
+      notes.push({ rule: "G7", t: d + ": có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không." });
+      if (prm.study > 0) questions.push({ day: d, kind: "g7_bot_hoc_nha", rule: "G7/B-2", default: "giu_quy", study_now: prm.study,
+        options: ["Giữ " + prm.study + "′ học ở nhà ngày " + d, "Bớt phần học theo định hướng bố mẹ ngày " + d + " (giữ bài cô giao)"] });
+    }
     plan.ngay[d] = toOut(r.blocks);
     days[d] = { status, attempts, params: prm };
   }
   plan.tong_quan = { muc_tieu: [], nguyen_tac: ["Ngủ đủ trước, học sau", "Về nhà nghỉ trước khi học", "Học chia phiên ngắn có nghỉ"], gio_ngu: DAYS.map(d => d + " " + hhmm(A.bed[d] + (days[d].params ? days[d].params.shift : 0))).join(", "), ghi_chu: "Lịch do bộ xếp tất định E1 tạo (spike)." };
   const ms = Number(process.hrtime.bigint() - t0) / 1e6;
-  return { plan, budget, anchors: A, days, tradeoffs, notes, ms };
+  return { plan, budget, anchors: A, days, tradeoffs, notes, questions, ms };
 }
 
 function toOut(B) {
@@ -387,4 +406,4 @@ function toOut(B) {
   });
 }
 
-module.exports = { scheduleWeek, defaultBudget, PARAMS, hhmm };
+module.exports = { scheduleWeek, defaultBudget, PARAMS, PARAM_STATUS, hhmm };

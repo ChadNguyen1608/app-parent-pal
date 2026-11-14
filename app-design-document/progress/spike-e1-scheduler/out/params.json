@@ -1,82 +1,171 @@
 {
  "MORNING": {
   "v": 30,
-  "src": "D (ngưỡng sinh_hoat: 'sáng 30′') [MĐ]"
+  "src": "D (ngưỡng sinh_hoat: 'sáng 30′') [MĐ]",
+  "id": "PR-01",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "DINNER": {
   "v": 30,
-  "src": "D (ngưỡng sinh_hoat: 'ăn tối 30′') [MĐ]"
+  "src": "D (ngưỡng sinh_hoat: 'ăn tối 30′') [MĐ]",
+  "id": "PR-02",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "LUNCH_HOME": {
   "v": 30,
-  "src": "áp mốc ăn tối 30′ của D [MĐ]"
+  "src": "áp mốc ăn tối 30′ của D [MĐ]",
+  "id": "PR-03",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "HYGIENE": {
   "v": 30,
-  "src": "D (ngưỡng sinh_hoat: 'tắm và vệ sinh tối 30′') [MĐ]"
+  "src": "D (ngưỡng sinh_hoat: 'tắm và vệ sinh tối 30′') [MĐ]",
+  "id": "PR-04",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "READ": {
   "v": 15,
-  "src": "G4 đọc sách 15′ [MĐ]"
+  "src": "G4 đọc sách 15′ [MĐ]",
+  "id": "PR-05",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "CHECKIN": {
   "v": 10,
-  "src": "G3 khối 10′ [MĐ]"
+  "src": "G3 khối 10′ [MĐ]",
+  "id": "PR-06",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "PACK": {
   "v": 10,
-  "src": "G6 (≥10′ cho soạn cặp) [MĐ]"
+  "src": "G6 (≥10′ cho soạn cặp) [MĐ]",
+  "id": "PR-07",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "REC_DEFAULT": {
   "v": 30,
-  "src": "C2/G3 20–30′ (cận trên) [NC NT-01, thời lượng MĐ]"
+  "src": "C2/G3 20–30′ (cận trên) [NC NT-01, thời lượng MĐ]",
+  "id": "PR-08",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "REC_MID": {
   "v": 20,
-  "src": "C2/G3 20–30′ (cận dưới)"
+  "src": "C2/G3 20–30′ (cận dưới)",
+  "id": "PR-09",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "REC_FLOOR": {
   "v": 15,
-  "src": "C2 tối thiểu 15′, không nới (J4)"
+  "src": "C2 tối thiểu 15′, không nới (J4)",
+  "id": "PR-10",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "BREAK": {
   "v": 5,
-  "src": "C3 3–5′ ∩ F4 5–10′ [NL NT-09, MĐ]"
+  "src": "B-1 fail-safe: sàn kiểm = 5′ (C3 ghi 3–5′, F4 ghi 5–10′; lấy 5′ thỏa cả hai và chặt hơn sàn 3′) [NL NT-09, MĐ]",
+  "id": "PR-11",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b",
+  "b1_default": "fail_safe_5_phut_cho_chu_san_pham_chon"
  },
  "MEAL_TO_CAO": {
   "v": 15,
-  "src": "H1 15–20′ (cận dưới) [MĐ]"
+  "src": "H1 15–20′ (cận dưới) [MĐ]",
+  "id": "PR-12",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "SPORT_TO_BED": {
   "v": 60,
-  "src": "C5 [NC NT-05]"
+  "src": "C5 [NC NT-05]",
+  "id": "PR-13",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "SCREEN_TO_BED": {
   "v": 60,
-  "src": "C6 [NC NT-06]"
+  "src": "C6 [NC NT-06]",
+  "id": "PR-14",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "BED_SHIFT_MAX": {
   "v": 30,
-  "src": "G7 lùi tối đa 15–30′; D4 ngủ không thấp hơn quỹ quá 30′ [MĐ]"
+  "src": "G7 lùi tối đa 15–30′; D4 ngủ không thấp hơn quỹ quá 30′ [MĐ]",
+  "id": "PR-15",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "SOFT": {
   "v": 30,
-  "src": "D4 ±30′ [MĐ]"
+  "src": "D4 ±30′ [MĐ]",
+  "id": "PR-16",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "MOTION_MIN": {
   "v": 15,
-  "src": "G2 15–25′ [MĐ]"
+  "src": "G2 15–25′ [MĐ]",
+  "id": "PR-17",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "MOTION_MAX": {
   "v": 25,
-  "src": "G2 15–25′ [MĐ]"
+  "src": "G2 15–25′ [MĐ]",
+  "id": "PR-18",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "LUNCH_ASSUME": {
   "v": 675,
-  "src": "H2 giả định ăn trưa 11:15"
+  "src": "H2 giả định ăn trưa 11:15",
+  "id": "PR-19",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  },
  "MIN_CHUNK": {
   "v": 20,
-  "src": "F4 cận dưới của lớp 1–3 (20′), dùng làm phiên ngắn nhất [MĐ]"
+  "src": "F4 cận dưới của lớp 1–3 (20′), dùng làm phiên ngắn nhất [MĐ]",
+  "id": "PR-20",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
+ },
+ "SNACK": {
+  "v": 10,
+  "src": "Thời lượng khối bữa phụ; spec không ghi số, chọn ngang khối G3 (blocker B-7) [MĐ]",
+  "id": "PR-21",
+  "status": "mac_dinh_chua_kiem_chung",
+  "quyet_dinh": "D-08",
+  "cho_tham_dinh": "buoc_14b"
  }
 }

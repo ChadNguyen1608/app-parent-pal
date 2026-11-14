@@ -123,7 +123,7 @@
   "ev": "[NL] NT-09, [MĐ]",
   "impl": "scheduler+validator",
   "text": "Không có hai khối tải cao liền nhau; nghỉ 3–5′ giữa hai khối học",
-  "note": "protected_hard; E1 dùng 5′ (giao của C3 3–5′ và F4 5–10′)"
+  "note": "protected_hard; v2: sàn kiểm và mặc định xếp = 5′ (B-1 fail-safe, chờ chủ sản phẩm)"
  },
  {
   "id": "C4",
@@ -213,7 +213,7 @@
   "ev": "SP",
   "impl": "validator",
   "text": "Màu chỉ trên bảng quỹ; vùng đỏ cần 'Giữ mức này' một lần",
-  "note": "judge() port 1:1"
+  "note": "judge() port 1:1; v2: ô Ngủ không có nút (D-02), confirmKeep() từ chối"
  },
  {
   "id": "D7",
@@ -420,7 +420,7 @@
   "ev": "[NC] NT-01; thời lượng [MĐ]",
   "impl": "scheduler",
   "text": "Về nhà: 10′ ghi việc + hỏi thăm, rồi phục hồi 20–30′; 'Rất mệt' thì +15′ và bỏ học định hướng",
-  "note": "Nhánh 'Rất mệt' là sự kiện runtime trong ngày, tất định"
+  "note": "v2: phần 'Rất mệt' bị D-10 thay: không tự đổi lịch; ghi tín hiệu ở F04-G05 (fatigue.js), con đi qua đường đề xuất theo chế độ"
  },
  {
   "id": "G4",
@@ -456,7 +456,7 @@
   "ev": "[MĐ]",
   "impl": "scheduler",
   "text": "Ngày học thêm tối: bữa phụ chắc, giờ ngủ lùi ≤15–30′, hỏi bố mẹ có muốn bớt học ở nhà",
-  "note": "Câu hỏi cần hội thoại; prompt lại ghi 'bỏ ôn bài' (mâu thuẫn, xem blocker B-2)"
+  "note": "v2: B-2 fail-safe theo spec: giữ quỹ, không tự bỏ; tạo 1 câu hỏi có cấu trúc (questions[]) với 2 phương án"
  },
  {
   "id": "G8",
@@ -636,7 +636,61 @@
   "ev": "SP",
   "impl": "phase",
   "text": "Hết hạn: 3 lựa chọn",
-  "note": ""
+  "note": "v2: D-09 thay phần mặc định: hết hạn TỰ về hồ sơ trước giai đoạn rồi mới báo; 'giữ lịch hiện tại' phải thành hồ sơ mới qua kiểm đủ, không nới"
+ },
+ {
+  "id": "D-02",
+  "type": "hard",
+  "det": "yes",
+  "ev": "OD 15/11",
+  "impl": "validator",
+  "text": "Ô Ngủ không có 'Giữ mức này'; ngủ không được giữ dưới mức tối thiểu",
+  "note": "budgetBoard().ngu.giu_muc=false; confirmKeep('ngu') → từ chối"
+ },
+ {
+  "id": "D-09",
+  "type": "hard",
+  "det": "yes",
+  "ev": "OD 15/11",
+  "impl": "phase",
+  "text": "Giai đoạn tạm thời tối đa 60 ngày; hết hạn tự về hồ sơ lịch trước giai đoạn",
+  "note": "validatePhase(): >60 → TU_CHOI; tickPhases(): HET_HAN → active = ho_so_truoc"
+ },
+ {
+  "id": "D-10",
+  "type": "hard",
+  "det": "yes",
+  "ev": "OD 15/11",
+  "impl": "fatigue",
+  "text": "'Rất mệt' không tự đổi lịch; đổi phải qua đề xuất/mong muốn theo chế độ",
+  "note": "onCheckin() không có quyền ghi lịch; schedule_changed luôn false"
+ },
+ {
+  "id": "D-03",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "OD 15/11",
+  "impl": "fatigue",
+  "text": "Báo bố mẹ xu hướng mệt liên quan đến lịch, không báo cảm xúc; con được biết",
+  "note": "trend(): đếm theo thứ/đặc điểm lịch; ngưỡng UNKNOWN → chưa gửi"
+ },
+ {
+  "id": "D-11",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "OD 15/11",
+  "impl": "none",
+  "text": "Con phải có máy; không có thì chỉ lập lịch phía phụ huynh",
+  "note": "Cờ child_device=false: không đặt nhắc trên máy con, không có hỏi thăm/Xong của con"
+ },
+ {
+  "id": "D-08",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "OD 15/11",
+  "impl": "scheduler",
+  "text": "Thông số dùng params.json của spike, nhãn mặc định chưa kiểm chứng",
+  "note": "PARAMS[k].status = mac_dinh_chua_kiem_chung"
  },
  {
   "id": "P6-OD-01",

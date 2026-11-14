@@ -29,14 +29,17 @@ Nguồn nhập bước 1–2 là các bản Markdown xuất đã lưu trên máy
 
 ## 4. User Flow
 
-- [4.1 Vòng lập lịch (đợt 1)](04_User_Flow/User_Flow_04_1_Scheduling_Loop.md) — nháp AI 14/11/2026: F1–F5, 40 màn hình. Bản cập nhật theo quyết định 15/11 sẽ thay ở PR sau.
+- [4.1 Vòng lập lịch (đợt 1)](04_User_Flow/User_Flow_04_1_Scheduling_Loop.md) — nháp AI, cập nhật 15/11/2026 theo sổ quyết định: F1–F5, 40 màn hình.
+- [4.2 Các luồng còn lại (đợt 2)](04_User_Flow/User_Flow_04_2_Remaining_Flows.md) — nháp AI 15/11/2026: 10 luồng đầy đủ, 8 luồng khung; tổng 56 màn hình.
 
 ## Hồ sơ hỗ trợ (progress)
 
 - [Chấm điểm 3.3 và tự kiểm toán](progress/phase-3-scoring/README.md) — REVIEW, MVP chưa chọn.
-- [Spike bộ xếp lịch E1](progress/spike-e1-scheduler/Spike_E1_Scheduler_Report.md) — xếp lịch bằng thuật toán, không AI: khả thi cho phần lõi.
+- [Spike bộ xếp lịch E1](progress/spike-e1-scheduler/Spike_E1_Scheduler_Report.md) — xếp lịch bằng thuật toán, không AI: khả thi cho phần lõi. Bản v2 (15/11) áp D-02, D-08, D-09, D-10; xem `CHANGES.md`.
 - [Sổ ràng buộc từ các quyết định đã duyệt](progress/Constraint_Register_Approved_Decisions.md)
 - [Bộ câu hỏi pháp lý](progress/Legal_Question_Pack.md) — cần luật sư xác nhận.
 - [Sổ quyết định 15/11/2026](progress/Owner_Decision_Log_20261115.md)
+- [Phương án MVP để chủ sản phẩm chọn](progress/MVP_Options_for_Owner_Decision.md) — chưa chọn.
+- [Business Logic 11.1: lập lịch E1 (nháp)](progress/Business_Logic_11_1_Scheduling_E1_DRAFT.md) — 112 quy tắc BR.
 
 [Tiến độ và trạng thái bàn giao](progress/PHASE_STATUS.md)

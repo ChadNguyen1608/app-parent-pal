@@ -106,6 +106,31 @@
     }
    },
    {
+    "label": "Con đề xuất khi PARENT_LED (v2)",
+    "ph": {
+     "mode": "PARENT_LED",
+     "purpose": "on_thi",
+     "scope": "child:P5",
+     "nguon": "con_de_xuat",
+     "tu_ngay": "2026-12-04",
+     "den_ngay": "2026-12-20",
+     "noi_long": [
+      "man_hinh"
+     ]
+    }
+   },
+   {
+    "label": "Giai đoạn 61 ngày (v2, D-09)",
+    "ph": {
+     "purpose": "thi_dau",
+     "scope": "child:P5",
+     "nguon": "bo_me",
+     "tu_ngay": "2027-02-01",
+     "den_ngay": "2027-04-02",
+     "noi_long": []
+    }
+   },
+   {
     "label": "Xin nới giờ ngủ",
     "ph": {
      "purpose": "on_thi",
@@ -119,8 +144,9 @@
     }
    },
    {
-    "label": "Con đề xuất, bắt đầu sau 8 ngày trống",
+    "label": "Con đề xuất (CHILD_EXECUTED), bắt đầu sau 8 ngày trống",
     "ph": {
+     "mode": "CHILD_EXECUTED",
      "purpose": "on_thi",
      "scope": "child:P5",
      "nguon": "con_de_xuat",
@@ -149,7 +175,7 @@
   "floorsOk": true,
   "balance": "UNKNOWN (app default [MĐ] chưa thẩm định)",
   "deterministic": true,
-  "avgMs": 2.606,
+  "avgMs": 1.595,
   "checkDayK": 6,
   "checkDayKRelaxed": 0,
   "extra": 0,
@@ -241,7 +267,7 @@
    },
    {
     "rule": "G7",
-    "t": "T2: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại)."
+    "t": "T2: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không."
    },
    {
     "rule": "G7/D4",
@@ -253,7 +279,31 @@
    },
    {
     "rule": "G7",
-    "t": "T4: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại)."
+    "t": "T4: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không."
+   }
+  ],
+  "questions": [
+   {
+    "day": "T2",
+    "kind": "g7_bot_hoc_nha",
+    "rule": "G7/B-2",
+    "default": "giu_quy",
+    "study_now": 150,
+    "options": [
+     "Giữ 150′ học ở nhà ngày T2",
+     "Bớt phần học theo định hướng bố mẹ ngày T2 (giữ bài cô giao)"
+    ]
+   },
+   {
+    "day": "T4",
+    "kind": "g7_bot_hoc_nha",
+    "rule": "G7/B-2",
+    "default": "giu_quy",
+    "study_now": 150,
+    "options": [
+     "Giữ 150′ học ở nhà ngày T4",
+     "Bớt phần học theo định hướng bố mẹ ngày T4 (giữ bài cô giao)"
+    ]
    }
   ],
   "phase": {
@@ -291,6 +341,43 @@
     }
    },
    {
+    "label": "Con đề xuất khi PARENT_LED (v2)",
+    "res": {
+     "status": "CHUYEN_THANH_MONG_MUON",
+     "findings": [
+      {
+       "rule": "B01-CR§2/D-10",
+       "k": "mong_muon",
+       "t": "Chế độ PARENT_LED: con không tạo đề xuất chính thức; ghi thành mong muốn gửi bố mẹ.",
+       "block": false
+      }
+     ],
+     "reviews": [],
+     "date_convention": "v1: YYYY-MM-DD, Asia/Ho_Chi_Minh, inclusive both ends"
+    }
+   },
+   {
+    "label": "Giai đoạn 61 ngày (v2, D-09)",
+    "res": {
+     "status": "TU_CHOI",
+     "findings": [
+      {
+       "rule": "D-09",
+       "k": "vuot_60_ngay_giai_doan",
+       "t": "Giai đoạn dài 61 ngày > 60 ngày. Ngày kết thúc muộn nhất: 2027-04-01.",
+       "block": true
+      }
+     ],
+     "reviews": [
+      "2027-02-15",
+      "2027-03-01",
+      "2027-03-15",
+      "2027-03-29"
+     ],
+     "date_convention": "v1: YYYY-MM-DD, Asia/Ho_Chi_Minh, inclusive both ends"
+    }
+   },
+   {
     "label": "Xin nới giờ ngủ",
     "res": {
      "status": "TU_CHOI",
@@ -307,7 +394,7 @@
     }
    },
    {
-    "label": "Con đề xuất, bắt đầu sau 8 ngày trống",
+    "label": "Con đề xuất (CHILD_EXECUTED), bắt đầu sau 8 ngày trống",
     "res": {
      "status": "CHO_BO_ME_XAC_NHAN",
      "findings": [
@@ -325,52 +412,64 @@
   ],
   "board": {
    "wd": {
-    "ngu": [
-     "xanh",
-     ""
-    ],
-    "man_hinh": [
-     "xanh",
-     ""
-    ],
-    "sinh_hoat": [
-     "xanh",
-     ""
-    ],
-    "hoc_them": [
-     "xanh",
-     ""
-    ],
-    "choi_nghi": [
-     "xanh",
-     ""
-    ],
+    "ngu": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false,
+     "duoi_san": false
+    },
+    "man_hinh": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
+    "sinh_hoat": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
+    "hoc_them": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
+    "choi_nghi": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
     "choi_nghi_range": [
      289,
      379
     ]
    },
    "we": {
-    "ngu": [
-     "xanh",
-     ""
-    ],
-    "man_hinh": [
-     "xanh",
-     ""
-    ],
-    "sinh_hoat": [
-     "xanh",
-     ""
-    ],
-    "hoc_them": [
-     "xanh",
-     ""
-    ],
-    "choi_nghi": [
-     "xanh",
-     ""
-    ],
+    "ngu": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false,
+     "duoi_san": false
+    },
+    "man_hinh": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
+    "sinh_hoat": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
+    "hoc_them": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
+    "choi_nghi": {
+     "color": "xanh",
+     "why": "",
+     "giu_muc": false
+    },
     "choi_nghi_range": [
      319,
      619
@@ -667,7 +766,7 @@
      "the_thao": false,
      "man_hinh": false,
      "trang_thai": "binh_thuong",
-     "ghi_chu": "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3)."
+     "ghi_chu": "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ."
     },
     {
      "bat_dau": "13:00",
@@ -1072,7 +1171,7 @@
      "the_thao": false,
      "man_hinh": false,
      "trang_thai": "binh_thuong",
-     "ghi_chu": "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3)."
+     "ghi_chu": "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ."
     },
     {
      "bat_dau": "13:10",
@@ -1459,7 +1558,7 @@
      "the_thao": false,
      "man_hinh": false,
      "trang_thai": "binh_thuong",
-     "ghi_chu": "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3)."
+     "ghi_chu": "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ."
     },
     {
      "bat_dau": "13:00",
@@ -1864,7 +1963,7 @@
      "the_thao": false,
      "man_hinh": false,
      "trang_thai": "binh_thuong",
-     "ghi_chu": "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3)."
+     "ghi_chu": "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ."
     },
     {
      "bat_dau": "13:10",
@@ -2251,7 +2350,7 @@
      "the_thao": false,
      "man_hinh": false,
      "trang_thai": "binh_thuong",
-     "ghi_chu": "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3)."
+     "ghi_chu": "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ."
     },
     {
      "bat_dau": "13:10",
@@ -2638,7 +2737,7 @@
      "the_thao": false,
      "man_hinh": false,
      "trang_thai": "binh_thuong",
-     "ghi_chu": "Nếu con báo 'Rất mệt': phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng bố mẹ hôm đó (G3)."
+     "ghi_chu": "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ."
     },
     {
      "bat_dau": "13:10",

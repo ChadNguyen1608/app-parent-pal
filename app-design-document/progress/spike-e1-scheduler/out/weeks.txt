@@ -1,5 +1,5 @@
 
-==== P1 Lớp 1, bán trú, quỹ mặc định | OK | 0.56 ms/tuần ====
+==== P1 Lớp 1, bán trú, quỹ mặc định | OK | 0.38 ms/tuần ====
 -- T2 [OK] {"truong":570,"hoc_them":0,"hoc_nha":10,"choi_nghi":195,"man_hinh":30,"sinh_hoat":125,"ngu":570}
    06:15-06:40 Dậy, vận động buổi sáng (vua/choi_nghi)
    06:40-06:45 Nghỉ ngắn: đứng dậy, uống nước (phuc_hoi/choi_nghi)
@@ -147,7 +147,7 @@
  - ghi chú [D4] T7: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′).
  - ghi chú [D4] CN: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′).
 
-==== P2 Lớp 3, bán trú, 3 lớp ngoài giờ | DIEU_CHINH_TRONG_DUNG_SAI | 1.00 ms/tuần ====
+==== P2 Lớp 3, bán trú, 3 lớp ngoài giờ | DIEU_CHINH_TRONG_DUNG_SAI | 0.99 ms/tuần ====
 -- T2 [DIEU_CHINH_TRONG_DUNG_SAI] {"truong":570,"hoc_them":120,"hoc_nha":0,"choi_nghi":85,"man_hinh":0,"sinh_hoat":125,"ngu":570}
    06:15-06:40 Dậy, vận động buổi sáng (vua/choi_nghi)
    06:40-06:45 Nghỉ ngắn: đứng dậy, uống nước (phuc_hoi/choi_nghi)
@@ -291,16 +291,16 @@
  - ghi chú [C2] T2: phục hồi rút còn 15′ vì hoạt động ngay sau giờ về.
  - ghi chú [C6] T2: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′.
  - ghi chú [D4] T2: học ở nhà 0′ (quỹ 30′, trong ±30′).
- - ghi chú [G7] T2: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại).
+ - ghi chú [G7] T2: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không.
  - ghi chú [C2] T3: phục hồi rút còn 15′ vì hoạt động ngay sau giờ về.
  - ghi chú [C6] T3: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′.
  - ghi chú [C2] T4: phục hồi rút còn 15′ vì hoạt động ngay sau giờ về.
  - ghi chú [C6] T4: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′.
  - ghi chú [D4] T4: học ở nhà 0′ (quỹ 30′, trong ±30′).
- - ghi chú [G7] T4: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại).
+ - ghi chú [G7] T4: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không.
  - ghi chú [D4] CN: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′).
 
-==== P3 Lớp 5, bán trú cả ngày, quỹ bố mẹ đặt (đã duyệt) | OK | 0.62 ms/tuần ====
+==== P3 Lớp 5, bán trú cả ngày, quỹ bố mẹ đặt (đã duyệt) | OK | 0.54 ms/tuần ====
 -- T2 [OK] {"truong":625,"hoc_them":0,"hoc_nha":60,"choi_nghi":90,"man_hinh":0,"sinh_hoat":125,"ngu":570}
    06:00-06:25 Dậy, vận động buổi sáng (vua/choi_nghi)
    06:25-06:55 Vệ sinh, ăn sáng, thay đồ (thap/sinh_hoat)
@@ -443,7 +443,7 @@
  - ghi chú [C6] T6: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′.
  - ghi chú [D4] CN: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′).
 
-==== P4 Lớp 6, học 1 buổi sáng, ăn trưa ở nhà, 2 hoạt động | CAN_BO_ME_CHON | 1.50 ms/tuần ====
+==== P4 Lớp 6, học 1 buổi sáng, ăn trưa ở nhà, 2 hoạt động | CAN_BO_ME_CHON | 1.09 ms/tuần ====
 -- T2 [CAN_BO_ME_CHON] {"truong":300,"hoc_them":0,"hoc_nha":60,"choi_nghi":395,"man_hinh":60,"sinh_hoat":165,"ngu":570}
    06:00-06:15 Dậy, vận động buổi sáng (vua/choi_nghi)
    06:15-06:45 Vệ sinh, ăn sáng, thay đồ (thap/sinh_hoat)
@@ -602,12 +602,14 @@
  * ĐÁNH ĐỔI T6 [H2] Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (11:45) cách 330′ (mốc 300′) mà con không ở nhà để ăn phụ. → Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về | Hỏi trường có bữa phụ không, cho Pal biết giờ | Giữ như hiện tại (bố mẹ xác nhận một lần)
  - ghi chú [G7/D4] T3: giờ tắt đèn lùi 30′.
  - ghi chú [C2] T3: phục hồi 20′.
- - ghi chú [G7] T3: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại).
+ - ghi chú [G7] T3: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không.
  - ghi chú [G7/D4] T5: giờ tắt đèn lùi 30′.
  - ghi chú [C2] T5: phục hồi 20′.
- - ghi chú [G7] T5: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại).
+ - ghi chú [G7] T5: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không.
+ ? HỎI BỐ MẸ T3 [G7/B-2] mặc định=giu_quy → Giữ 60′ học ở nhà ngày T3 | Bớt phần học theo định hướng bố mẹ ngày T3 (giữ bài cô giao)
+ ? HỎI BỐ MẸ T5 [G7/B-2] mặc định=giu_quy → Giữ 60′ học ở nhà ngày T5 | Bớt phần học theo định hướng bố mẹ ngày T5 (giữ bài cô giao)
 
-==== P5 Lớp 8, mùa thi, học cả sáng T7, giai đoạn tạm thời | CAN_BO_ME_CHON | 2.61 ms/tuần ====
+==== P5 Lớp 8, mùa thi, học cả sáng T7, giai đoạn tạm thời | CAN_BO_ME_CHON | 1.60 ms/tuần ====
 -- T2 [CAN_BO_ME_CHON] {"truong":300,"hoc_them":90,"hoc_nha":150,"choi_nghi":290,"man_hinh":30,"sinh_hoat":165,"ngu":495}
    06:00-06:15 Dậy, vận động buổi sáng (vua/choi_nghi)
    06:15-06:45 Vệ sinh, ăn sáng, thay đồ (thap/sinh_hoat)
@@ -810,16 +812,20 @@
  * ĐÁNH ĐỔI T7 [H2] Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (12:00) cách 345′ (mốc 300′) mà con không ở nhà để ăn phụ. → Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về | Hỏi trường có bữa phụ không, cho Pal biết giờ | Giữ như hiện tại (bố mẹ xác nhận một lần)
  - ghi chú [G7/D4] T2: giờ tắt đèn lùi 15′.
  - ghi chú [C2] T2: phục hồi 20′.
- - ghi chú [G7] T2: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại).
+ - ghi chú [G7] T2: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không.
  - ghi chú [G7/D4] T4: giờ tắt đèn lùi 15′.
  - ghi chú [C2] T4: phục hồi 20′.
- - ghi chú [G7] T4: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại).
+ - ghi chú [G7] T4: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không.
+ ? HỎI BỐ MẸ T2 [G7/B-2] mặc định=giu_quy → Giữ 150′ học ở nhà ngày T2 | Bớt phần học theo định hướng bố mẹ ngày T2 (giữ bài cô giao)
+ ? HỎI BỐ MẸ T4 [G7/B-2] mặc định=giu_quy → Giữ 150′ học ở nhà ngày T4 | Bớt phần học theo định hướng bố mẹ ngày T4 (giữ bài cô giao)
  # giai đoạn: TU_CHOI [{"rule":"P6-OD-01/P5-R2","k":"khoang_trong_7","t":"Chỉ có 4 ngày trống giữa \"on_thi\" trước đó (kết thúc 2026-11-25) và giai đoạn mới; cần ≥7. Sớm nhất được bắt đầu: 2026-12-03.","block":true}] reviews=
  # thử: Đổi mục đích để nối dài (thi đấu) sát sau ôn thi → TU_CHOI P6-OD-01:vuot_60_ngay
+ # thử: Con đề xuất khi PARENT_LED (v2) → CHUYEN_THANH_MONG_MUON B01-CR§2/D-10:mong_muon
+ # thử: Giai đoạn 61 ngày (v2, D-09) → TU_CHOI D-09:vuot_60_ngay_giai_doan
  # thử: Xin nới giờ ngủ → TU_CHOI J4/OD-02:noi_khong_hop_le
- # thử: Con đề xuất, bắt đầu sau 8 ngày trống → CHO_BO_ME_XAC_NHAN J5:cho_xac_nhan
+ # thử: Con đề xuất (CHILD_EXECUTED), bắt đầu sau 8 ngày trống → CHO_BO_ME_XAC_NHAN J5:cho_xac_nhan
 
-==== P6 Lớp 4, quá tải (không khả thi) | XUNG_DOT | 7.63 ms/tuần ====
+==== P6 Lớp 4, quá tải (không khả thi) | XUNG_DOT | 6.51 ms/tuần ====
 -- T2 [XUNG_DOT] {"truong":600,"hoc_them":0,"hoc_nha":75,"choi_nghi":100,"man_hinh":0,"sinh_hoat":125,"ngu":570}
    06:15-06:15 Phương án đề xuất, chờ bố mẹ chọn (thap/sinh_hoat)
    06:15-06:40 Dậy, vận động buổi sáng (vua/choi_nghi)
@@ -1135,7 +1141,7 @@
    20:15-20:15 Tắt đèn, ngủ (phuc_hoi/ngu)
  - ghi chú [D4] CN: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′).
 
-==== P8 Lớp 7, đi lại 60′ mỗi chiều, bán trú | CAN_BO_ME_CHON | 1.71 ms/tuần ====
+==== P8 Lớp 7, đi lại 60′ mỗi chiều, bán trú | CAN_BO_ME_CHON | 1.54 ms/tuần ====
 -- T2 [CAN_BO_ME_CHON] {"truong":690,"hoc_them":0,"hoc_nha":40,"choi_nghi":60,"man_hinh":0,"sinh_hoat":125,"ngu":555}
    05:30-06:00 Vệ sinh, ăn sáng, thay đồ (thap/sinh_hoat)
    06:00-07:00 Đi học (thap/truong)
