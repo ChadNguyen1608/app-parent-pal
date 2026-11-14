@@ -1,9 +1,12 @@
 # Quy tắc lập lịch của Pal (nguồn chuẩn)
 
-Cập nhật: 03/11/2026 · Áp dụng cho bản thử "Pal – Lập lịch cho con" và skill `lap-lich-sinh-hoat-tre`.
+Cập nhật: 15/11/2026 · Áp dụng cho app (A-lite E1, rồi Plan A), skill `lap-lich-sinh-hoat-tre` và làm căn cứ đối chiếu cho bản thử "Pal – Lập lịch cho con".
+
+**Thay đổi 15/11/2026** theo sổ quyết định của chủ sản phẩm (`app-design-document/progress/Owner_Decision_Log_20261115.md`): C2, C3, D6, ngưỡng màu Ngủ, G3, H1, J2, J5, J6, L2, L3, L5, N2, N3, P. Bản thử `prototype/index.html` **giữ nguyên** làm mốc cũ (D-14); chỗ nào bản thử khác file này thì theo file này, danh sách ở `prototype/README.md`.
 
 **Cách dùng file này.** Đây là nơi duy nhất ghi quy tắc. Khi đổi một quy tắc, sửa ở đây trước, rồi mới sửa ở:
-- App bản thử (`index.html`, trong repo là `prototype/index.html`): prompt `RULES`, `ACT_RULES`, `LIFE_RULES`; bộ kiểm tra `checkDayK`; ngưỡng màu `judge`; quỹ mặc định `defaultBudget`.
+- App (A-lite E1): bộ xếp lịch và bộ kiểm tra theo `app-design-document/progress/Business_Logic_11_1_Scheduling_E1_DRAFT.md`; thông số mặc định ở `app-design-document/progress/spike-e1-scheduler/out/params.json` (nhãn "mặc định chưa kiểm chứng", D-08).
+- App bản thử (`prototype/index.html`): từ 15/11/2026 không sửa nữa (D-14); chỉ cập nhật danh sách khác biệt trong `prototype/README.md`.
 - Skill `lap-lich-sinh-hoat-tre`.
 - Các tài liệu khác (spec, guide) chỉ dẫn về đây, không chép lại quy tắc.
 
@@ -44,8 +47,8 @@ Pal tự kiểm tra trước khi thêm giờ học hoặc hoạt động. Nếu 
 | ID | Sàn | Căn cứ | Có được nới trong giai đoạn tạm thời? |
 |---|---|---|---|
 | C1 | Ngủ đủ mức tối thiểu: 6–12 tuổi 9–12 giờ, 13–18 tuổi 8–10 giờ | [NC] AASM | **Không bao giờ** |
-| C2 | Sau giờ học ở trường có khối phục hồi 20–30 phút trước việc học (tối thiểu 15 phút) | [NC] NT-01 (thời lượng [MĐ]) | **Không** (giữ ≥15 phút) |
-| C3 | Không có hai khối tải cao liền nhau; giữa hai khối học nghỉ 3–5 phút | [NL] NT-09, [MĐ] | **Không** |
+| C2 | Sau giờ học ở trường có khối phục hồi 20–30 phút trước việc học (tối thiểu 15 phút). Áp cả khi có lớp học thêm ngay sau giờ trường; không đủ chỗ thì đưa phương án cho bố mẹ chọn, không tự bỏ (D-23) | [NC] NT-01 (thời lượng [MĐ]) | **Không** (giữ ≥15 phút) |
+| C3 | Không có hai khối tải cao liền nhau; giữa hai khối học nghỉ **ít nhất 5 phút** (D-23; trước đây ghi 3–5′, lệch với F4) | [NL] NT-09, [MĐ] | **Không** |
 | C4 | Không có khối học trước giờ đi học buổi sáng | [MĐ] | Có (`truoc_gio_hoc`: ôn nhẹ) |
 | C5 | Tập luyện mạnh kết thúc ≥1 giờ trước giờ tắt đèn | [NC] NT-05 | Không |
 | C6 | Màn hình giải trí kết thúc ≥60 phút trước giờ tắt đèn; thiết bị để ngoài phòng ngủ | [NC] NT-06 | Có (`man_hinh`: đổi giờ) |
@@ -62,14 +65,14 @@ Lỗi thứ tự (hai khối học liền nhau, học ngay khi vừa về, học
 | D3 | "Chơi và nghỉ" là phần còn lại của 24 giờ, tự tính. Bữa ăn chỉ tính **một nửa** thời gian vào nghỉ. |
 | D4 | Pal xếp lịch lệch tối đa **±30 phút** so với mỗi số bố mẹ chọn. Ngủ không được thấp hơn mức đã chọn quá 30 phút và không dưới sàn C1. |
 | D5 | **Học ở nhà do bố mẹ quyết định**: không chấm màu, Pal không đặt trần riêng. Nếu học quá nhiều thì sẽ thấy ở ô Chơi và nghỉ hoặc Ngủ. Pal chỉ lo cách xếp: chia phiên theo độ tập trung (mục F4). |
-| D6 | Màu xanh/cam/đỏ chỉ hiện trên bảng quỹ, **không** hiện trong lịch chi tiết. Cảnh báo là một dòng chữ kèm icon ngay dưới ô, không có popup. Vùng đỏ cần bố mẹ bấm "Giữ mức này" một lần; đã xác nhận thì Pal không nhắc lại. |
+| D6 | Màu xanh/cam/đỏ chỉ hiện trên bảng quỹ, **không** hiện trong lịch chi tiết. Cảnh báo là một dòng chữ kèm icon ngay dưới ô, không có popup. Vùng đỏ cần bố mẹ bấm "Giữ mức này" một lần; đã xác nhận thì Pal không nhắc lại. **Riêng ô Ngủ không có nút "Giữ mức này"** (D-02): bố mẹ vẫn nhập được số dưới mức tối thiểu, app hiện cảnh báo, nhưng lịch luôn xếp ngủ ≥ sàn C1. |
 | D7 | Preset: Bình thường, Thi cử, Nghỉ hè… Bố mẹ lưu, tải và chuyển giữa các preset. |
 
 Ngưỡng màu (mỗi cảnh báo ghi số hiện tại, mốc và nguồn):
 
 | Ô | Xanh | Cam | Đỏ | Căn cứ |
 |---|---|---|---|---|
-| Ngủ | ≥ mức tối thiểu theo tuổi | thiếu ≤30′ | thiếu >30′ | [NC] AASM |
+| Ngủ | ≥ mức tối thiểu theo tuổi | thiếu ≤30′ (chỉ cảnh báo) | thiếu >30′ (chỉ cảnh báo) | [NC] AASM. Cả cam và đỏ: lịch vẫn xếp theo sàn C1, không có "Giữ mức này" (D-02) |
 | Màn hình giải trí | ≤1 giờ | 1–2 giờ | >2 giờ | Đỏ: [NC] Canada 24h; cam: [MĐ] |
 | Ăn uống, vệ sinh | ≥1h30 | 1h–1h30 | <1 giờ | [MĐ] sáng 30′ + ăn tối 30′ + tắm và vệ sinh tối 30′ |
 | Chơi và nghỉ (ngày đi học) | ≥1 giờ | 30′–1 giờ | <30′ hoặc tổng vượt 24 giờ | [MĐ] phục hồi 20–30′ + tự do tối khoảng 30′; kèm WHO 60′ vận động/ngày [NC] |
@@ -113,7 +116,7 @@ Quỹ mặc định theo tuổi [MĐ]:
 |---|---|---|
 | G1 | Tính giờ dậy theo giờ phải có mặt ở trường, rồi lùi ra giờ tắt đèn. Thứ Hai phải đến sớm thì tối Chủ Nhật ngủ sớm tương ứng. | [NC] AASM |
 | G2 | Vận động buổi sáng 15–25′: khởi động, phần chính nhẹ, giãn cơ. Có phương án trong nhà. Trẻ dưới 12 tuổi đạp xe ngoài đường phải có người lớn đi cùng và đội mũ bảo hiểm. | [MĐ] |
-| G3 | Vừa về nhà: khối 10′ ghi lại việc được giao và hỏi thăm (Ổn / Hơi mệt / Rất mệt), rồi phục hồi 20–30′ (ăn nhẹ trước, rồi chơi tự do do con chọn, không giao việc, không màn hình). Con báo "Rất mệt" thì phục hồi thêm khoảng 15′ và bỏ phần học theo định hướng của bố mẹ hôm đó. | [NC] NT-01; thời lượng [MĐ] |
+| G3 | Vừa về nhà: khối 10′ ghi lại việc được giao và hỏi thăm (Ổn / Hơi mệt / Rất mệt), rồi phục hồi 20–30′ (ăn nhẹ trước, rồi chơi tự do do con chọn, không giao việc, không màn hình). Con báo "Rất mệt" thì **app không tự đổi lịch** (D-10). App hỏi con có muốn nhắn bố mẹ đổi lịch không; nếu có thì đi qua bước đề xuất (L3), có điền sẵn gợi ý: phục hồi thêm khoảng 15′, bớt phần học theo định hướng của bố mẹ hôm đó. Câu nói với con không được hứa đổi lịch. | [NC] NT-01; thời lượng [MĐ] |
 | G4 | Buổi tối theo thứ tự: ôn bài (việc cô giao trước, rồi học theo định hướng bố mẹ), **soạn cặp ngay sau ôn bài**, tự do (màn hình nếu có, kết thúc ≥60′ trước giờ ngủ), vệ sinh, đọc sách 15′ và nhật ký 2–3 câu trên giấy, tắt đèn. | [NC] NT-06; còn lại [MĐ] |
 | G5 | Nhìn theo chuỗi hai ngày: tối nay và sáng mai là một chuỗi liền. Dời việc sang hôm sau thì cập nhật cả hai ngày. | [MĐ] |
 | G6 | Soạn cặp có thể dời sang sáng hôm sau nếu buổi sáng còn ≥10′ trống mà không cắt vận động, ăn sáng hay giờ ngủ. Tối hôm trước vẫn giữ 2–3′ "Xem sổ việc". Nói rõ đánh đổi: buổi sáng gấp hơn, dễ quên đồ. | [MĐ] |
@@ -126,7 +129,7 @@ Quỹ mặc định theo tuổi [MĐ]:
 
 | ID | Quy tắc | Căn cứ |
 |---|---|---|
-| H1 | Bữa ăn là khối tải thấp, có thể gộp 5–10′ nghỉ sau ăn. Việc tải cao nên cách bữa chính 15–20′. Bữa ăn không thay khối phục hồi sau giờ học. Không dùng màn hình khi ăn. | [MĐ] |
+| H1 | Bữa ăn là khối tải thấp, mỗi bữa chính **ít nhất 20 phút** khi phải bớt thời lượng (D-23), có thể gộp 5–10′ nghỉ sau ăn. Việc tải cao nên cách bữa chính 15–20′. Bữa ăn không thay khối phục hồi sau giờ học. Không dùng màn hình khi ăn. | [MĐ] |
 | H2 | **Khoảng cách giữa các lần ăn**: trẻ cần ăn khoảng 3–4 giờ một lần; trẻ 7–12 tuổi có thể giãn 4–5 giờ. App báo khi hai lần ăn cách nhau quá 5 giờ (6 tuổi: quá 4 giờ). Bữa ở trường được tính; chưa biết giờ thì giả định ăn trưa 11h15 và nói rõ là giả định. | [NC] Academy of Nutrition and Dietetics; mức 4–5 giờ cho 7–12 tuổi theo một nguồn phổ thông |
 | H3 | Bữa phụ đặt cách bữa chính tiếp theo khoảng 1–2 giờ để con không bỏ bữa. Thường gặp nhất là ngay khi về nhà, trong khối phục hồi. | [NC] khuyến nghị chung về giờ ăn nhẹ |
 | H4 | Bữa phụ là bữa nhỏ (trái cây, sữa, sữa chua, bánh mì nhỏ, khoai, ngô), không thay bữa chính. Chú ý dị ứng. Không đưa con số calo. | [MĐ] |
@@ -148,11 +151,11 @@ Quỹ mặc định theo tuổi [MĐ]:
 | ID | Quy tắc |
 |---|---|
 | J1 | Lý do chính đáng có thời hạn (ôn thi, chỉ định bác sĩ, hồi phục sau ốm, thi đấu, việc gia đình) thì Pal không phản đối, không giảng giải. |
-| J2 | Trong một lượt: xác định ngày kết thúc (quá 6 tuần thì đặt mốc xem lại sau mỗi 2 tuần); cảnh báo nhẹ đúng một lần kèm 1 cách giữ cân bằng tối thiểu; lập bộ quy tắc tạm thời và danh sách sàn được nới; cập nhật lịch (app lưu lịch cũ để khôi phục); báo rằng hết hạn Pal sẽ nhắc. |
+| J2 | Trong một lượt: xác định ngày kết thúc. **Tối đa 60 ngày liên tục**, không gia hạn quá 60 ngày (D-09, P6-BP-OD-01); hai giai đoạn cùng loại cách nhau ít nhất 7 ngày; quá 6 tuần thì đặt mốc xem lại sau mỗi 2 tuần; cảnh báo nhẹ đúng một lần kèm 1 cách giữ cân bằng tối thiểu; lập bộ quy tắc tạm thời và danh sách sàn được nới; cập nhật lịch (app lưu lịch cũ để khôi phục); báo rằng hết hạn Pal sẽ nhắc. |
 | J3 | Đang trong giai đoạn: không nhắc lại cảnh báo về những điều đã nới. |
 | J4 | Chỉ nới được: `truoc_gio_hoc`, `van_dong`, `man_hinh`, `an_uong` (theo bác sĩ), `tong_gio_hoc` (so với quỹ). Không bao giờ nới C1, C2 (≥15′), C3, C7. |
-| J5 | Đề xuất đến từ con thì phải có bố mẹ xác nhận mới áp dụng. |
-| J6 | Hết hạn: báo bố mẹ, với ba lựa chọn: quay về lịch cũ, nhờ Pal sắp xếp lại, hoặc giữ lịch hiện tại. |
+| J5 | Đề xuất đến từ con thì phải có bố mẹ xác nhận mới áp dụng. Ở chế độ bố mẹ quản lịch (`PARENT_LED`, kể cả `UNSET`) đề xuất của con chỉ là **mong muốn** gửi bố mẹ, không phải yêu cầu đổi lịch chính thức. |
+| J6 | Hết hạn hoặc kết thúc sớm: **tự về lịch trước giai đoạn** (bản mới nhất của hồ sơ chuẩn, không mang phần đã nới) và báo bố mẹ (D-09, D-24). Vẫn tự về khi lịch đang khóa; máy ngoại tuyến thì về đúng ngày. Bỏ ba lựa chọn cũ. Muốn tiếp tục thì bố mẹ lập giai đoạn mới theo J2. |
 
 ## K. Khi sửa kế hoạch
 
@@ -168,9 +171,10 @@ Quỹ mặc định theo tuổi [MĐ]:
 | ID | Quy tắc |
 |---|---|
 | L1 | Con xem các khối hôm nay, có nhãn "Bây giờ" và thanh tiến độ. Mỗi khối có nút theo cách xác nhận: ✓ Xong, 📷 Chụp gửi Pal, 🎤 Kể cho Pal; có Hoàn tác. |
-| L2 | Hỏi thăm sau giờ học: Ổn / Hơi mệt / Rất mệt. Pal xem xu hướng trong 2 tuần, không kết luận từ một ngày. Báo bố mẹ xu hướng, không chép nguyên văn lời con, trừ khi có dấu hiệu nguy hiểm. |
-| L3 | Con xem được quỹ thời gian và gửi đề xuất. Đề xuất (và báo đói) nằm ở màn Lên kế hoạch, chờ bố mẹ xem. |
+| L2 | Hỏi thăm sau giờ học: Ổn / Hơi mệt / Rất mệt. Không kết luận từ một ngày. **Không báo lẻ tẻ**: chỉ tổng hợp trong **báo cáo cuối tuần** cho bố mẹ, dạng xu hướng mệt liên quan đến lịch (số ngày "Rất mệt", rơi vào những ngày có lịch nào), không báo cảm xúc, không chép lời con (D-03). Con được biết bố mẹ nhận thông tin này. Dấu hiệu nguy hiểm đi theo mục N, không tự gửi bố mẹ. |
+| L3 | Con xem được quỹ thời gian và gửi đề xuất (hoặc mong muốn, J5) theo chế độ tự chủ. Chưa có AI (A-lite E1) thì dùng mẫu cố định. Đề xuất (và báo đói) nằm ở màn Lên kế hoạch, chờ bố mẹ xem. Chế độ con tự sửa lịch (`CHILD_DIRECTED`) ẩn trong A-lite E1. |
 | L4 | Còn mở: Pal nhận ra lời than thở của con khi con trò chuyện (chế độ "Con đang dùng"). |
+| L5 | Tab của con cần con **có thiết bị riêng** đã ghép với app của bố mẹ (D-11). Không có thiết bị thì chỉ dùng được phần lập lịch phía bố mẹ. |
 
 ## M. Phản hồi bài làm qua ảnh
 
@@ -185,7 +189,8 @@ Quỹ mặc định theo tuổi [MĐ]:
 | ID | Quy tắc |
 |---|---|
 | N1 | Không chẩn đoán, không nêu liều thuốc. Ốm thì gợi ý theo dõi và hỏi bác sĩ. |
-| N2 | Dấu hiệu khẩn cấp (khó thở, co giật, bất tỉnh) thì gọi 115. Bạo hành hoặc xâm hại trẻ thì gọi 111. |
+| N2 | **Với người lớn:** dấu hiệu khẩn cấp (khó thở, co giật, bất tỉnh) thì gọi 115; nguy hiểm về an ninh gọi 113; bạo hành hoặc xâm hại trẻ thì gọi 111. **Với trẻ:** lời chính là "nói với người lớn con tin", có thể kèm 111; không đưa 113, 115 làm lời chính cho trẻ (D-06, OD-03). |
+| N3 | App của con có nút cố định **"Con cần giúp đỡ"** cho lúc con thấy không an toàn (bị đánh, xâm hại, bắt nạt, dụ dỗ trên mạng, có ý nghĩ làm hại bản thân): hiện lời "nói với người lớn con tin" và số 111. App **không ghi lại và không tự báo gia đình**, vì người gây hại có thể ở trong nhà. Con được tự chọn gửi "Con cần nói chuyện" tới người lớn con chọn (D-26). Câu chữ cần chuyên gia duyệt. |
 
 ## O. Kiểm tra tự động trong app
 
@@ -204,7 +209,7 @@ Các kiểm tra này chạy trong app, không phụ thuộc Pal. Mã kiểm tra 
 ## P. Việc còn mở
 
 - Kiểm chứng các mốc [MĐ], ưu tiên: ăn uống và vệ sinh 1h30, chơi và nghỉ 1 giờ, màn hình 1 giờ, học thêm 2 giờ, độ dài phiên học, các điều chỉnh theo mùa.
-- Trong giai đoạn tạm thời: báo tín hiệu mệt một lần; gắn giai đoạn với preset.
+- Gắn giai đoạn tạm thời với preset.
 - Chế độ "Con đang dùng" (L4).
 - Lấy dự báo thời tiết tự động (I5).
 
