@@ -33,3 +33,16 @@ This document supplements — **does not overwrite or alter** — the pinned ori
 - B01 v3.1 status remains `PROPOSED / V3.1_NOT_REVERIFIED` despite being included here. This is **source inclusion**, not independent acceptance.
 - FR-03 (unknown lawful basis and static-safety fallback), H4 (verified deletion timeline obligations), live integration/runtime, jurisdiction, hotline mapping, cost and provider contracts remain separate release gates.
 - No stable L4 IDs, production child data, canonical Blueprint writes or PR merge authorized.
+
+## Post-decision detailed-spec readback pins (updated after initial supplement creation)
+
+The earlier source table pins the **pre-annotation baseline** for comparison. For the actual current candidate amendments, independently check the following **later** blobs. Their respective appended supersession sections implement the Owner-approved policy and have not yet passed Claude review:
+
+| Amended detailed group | Updated Git blob |
+|---|---|
+| [Feature_3_2_L4_Detailed_Review_Group_02_Pal_Response_REVIEW.md](Feature_3_2_L4_Detailed_Review_Group_02_Pal_Response_REVIEW.md) | `8f42a304fe291fe6b1b70582963d07147ef76ff8` |
+| [Feature_3_2_L4_Detailed_Review_Group_04_Plan_Changes_REVIEW.md](Feature_3_2_L4_Detailed_Review_Group_04_Plan_Changes_REVIEW.md) | `03c1b2945af8fd23e8e7d682793dd1d194687246` |
+| [Feature_3_2_L4_Detailed_Review_Group_08_Commerce_and_Expenses_REVIEW.md](Feature_3_2_L4_Detailed_Review_Group_08_Commerce_and_Expenses_REVIEW.md) | `e8c7fe91cc2c82e18cd5e0952fb7ea8bb37bf941` |
+| [Feature_3_2_L4_Detailed_Review_Group_24_Final_Inventory_REVIEW.md](Feature_3_2_L4_Detailed_Review_Group_24_Final_Inventory_REVIEW.md) | `bbc48193254ce0f22539cabfd59a842e777ce332` |
+
+The reviewer must compare each updated blob to its prior pinned blob. Never represent the older and newer versions as the same snapshot. Review under FR-06/FR-09/FR-08/H2 and preserve the original 24-group manifest as historical baseline.
