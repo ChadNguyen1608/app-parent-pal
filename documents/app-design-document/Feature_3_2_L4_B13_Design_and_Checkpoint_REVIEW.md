@@ -44,4 +44,4 @@ For each synthetic fixture, inspect the authorized response and relevant durable
 | CAND-F03-G01-M02-align | B13-T02 | B13-X02. Evidence rút đồng thời với publish: claim không xuất hiện như đã xác nhận. |
 | CAND-F03-G02-M01-classify | B13-T03 | B13-X03. Alias trùng khi đổi taxonomy: giữ bản cũ, trả conflict. |
 | CAND-F03-G02-M02-map | B13-T04 | B13-X04. Crosswalk không có mapping được duyệt cho version mới: UNKNOWN. |
-| CAND-F03-G03-M01-select | B13-T05 | B13-X05. Người dùng thuộc nhóm tuổi chưa xác minh: chỉ nội dung chung được phép. |
+| CAND-F03-G03-M01-select | B13-T05 | B13-X05. Người dùng thuộc nhóm tuổi chưa xác minh: chỉ trả nội dung chung có version đã duyệt trong Stage Catalog và phù hợp với scope; nếu không có, trả UNKNOWN và không có nội dung. |

@@ -40,4 +40,4 @@ For each synthetic fixture, inspect the authorized response and relevant durable
 | CAND-F02-G03-M02-review | B11-T01 | B11-X01. Reviewer bị thu hồi quyền trước khi chốt: disposition giữ nguyên. |
 | CAND-F02-G04-M01-record | B11-T02 | B11-X02. Thông tin trường học hết hiệu lực: không dùng để dựng lịch mới. |
 | CAND-F02-G04-M02-restrict | B11-T03 | B11-X03. Quyền xem chuyển purpose giữa các lần đọc cache: lần sau DENY. |
-| CAND-F02-G05-M01-assemble | B11-T04 | B11-X04. Projection đang dựng từ dữ kiện của hai nguồn; một nguồn mất quyền: loại phần bị ảnh hưởng hoặc giữ toàn bộ output. |
+| CAND-F02-G05-M01-assemble | B11-T04 | B11-X04. Projection đang dựng từ dữ kiện của hai nguồn; một nguồn mất quyền: giữ toàn bộ projection cũ, trả REBUILD_PENDING, không phát dữ liệu hay metadata của nguồn đã mất quyền. |

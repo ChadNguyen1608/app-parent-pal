@@ -37,7 +37,7 @@ For each synthetic fixture, inspect the authorized response and relevant durable
 
 | Candidate | Prior oracle | Additional oracle |
 |---|---|---|
-| CAND-F08-G03-M02-match | B23-T01 | B23-X01. Mất quyền dùng preference: dựng lại hoặc giữ kết quả, không lộ suy luận. |
+| CAND-F08-G03-M02-match | B23-T01 | B23-X01. Mất quyền dùng preference: giữ toàn bộ kết quả cũ, trả REBUILD_PENDING, không lộ dữ liệu hay suy luận từ preference. |
 | CAND-F08-G04-M01-consent | B23-T02 | B23-X02. Kết nối được cấp quyền lại: worker cũ không dùng grant mới cho job cũ. |
 | CAND-F08-G04-M02-import | B23-T03 | B23-X03. Nhập đúp sau timeout với payload khác: giữ phiên bản đầu, báo conflict. |
 | CAND-F08-G05-M01-catalog | B23-T04 | B23-X04. Offer đổi giá trước lúc tiếp tục checkout: phải xác nhận version hiện hành. |

@@ -37,9 +37,9 @@ For each synthetic fixture, inspect the authorized response and relevant durable
 
 | Candidate | Prior oracle | Additional oracle |
 |---|---|---|
-| CAND-F03-G05-M02-review | B15-T01 | B15-X01. Cùng operation ID gửi hai quyết định khác nhau: giữ decision đầu hợp lệ. |
+| CAND-F03-G05-M02-review | B15-T01 | B15-X01. Cùng operation ID gửi hai quyết định khác nhau: giữ decision đầu hợp lệ, trả CONFLICT cho payload khác. |
 | CAND-F03-G05-M03-explore | B15-T02 | B15-X02. Yêu cầu ngoài tập kỹ năng đã duyệt: không xuất gợi ý AI, kể cả retry. |
-| CAND-F03-G06-M01-reassess | B15-T03 | B15-X03. Một tín hiệu bị rút giữa build và release: kết luận cần dựng lại hoặc abstain. |
+| CAND-F03-G06-M01-reassess | B15-T03 | B15-X03. Một tín hiệu bị rút giữa build và release: trả ABSTAINED, không phát kết luận cũ hay metadata của tín hiệu đã rút. |
 | CAND-F03-G06-M02-propose | B15-T04 | B15-X04. Mất quyền lập proposal: không tạo proposal hoặc đổi goal. |
 
 Current design amendment: [Owner decision implementation and evidence](Feature_3_2_L4_Owner_Decision_Implementation_and_Evidence_REVIEW.md). Its ODP acceptance criteria apply where this checkpoint handles the affected operation.
