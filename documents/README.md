@@ -1,5 +1,7 @@
 # Tài liệu Parent-Pal
 
+[Tài liệu thiết kế sản phẩm và tiến độ](../app-design-document/README.md)
+
 ## Cấu trúc
 
 ```
