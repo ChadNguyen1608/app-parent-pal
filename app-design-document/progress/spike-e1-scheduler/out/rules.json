@@ -1,0 +1,740 @@
+[
+ {
+  "id": "A1",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Cân bằng (mục C) đặt cao hơn yêu cầu phụ huynh",
+  "note": "Thứ tự ưu tiên trong thang sửa (repair ladder) là tất định; cách nói khi từ chối cần LLM hoặc mẫu câu"
+ },
+ {
+  "id": "A2",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Cảnh báo một lần, đã nghe thì không nhắc",
+  "note": "Cờ đã_cảnh_báo theo khóa; UI/trạng thái"
+ },
+ {
+  "id": "A3",
+  "type": "n/a",
+  "det": "no",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Trả lời ≤3 câu ngắn, văn nói, ≤1 câu hỏi",
+  "note": "Sinh lời: LLM hoặc mẫu câu"
+ },
+ {
+  "id": "A4",
+  "type": "n/a",
+  "det": "no",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Không gắn nhãn tính cách, không chẩn đoán",
+  "note": "Lọc lời nói: LLM + lớp an toàn"
+ },
+ {
+  "id": "A5",
+  "type": "hard",
+  "det": "yes",
+  "ev": "[MĐ]",
+  "impl": "scheduler",
+  "text": "Pal không bao giờ tự đề xuất kéo dài giờ học",
+  "note": "Bộ xếp chỉ dùng số hoc_nha của bố mẹ, chỉ giảm khi sửa, không tăng"
+ },
+ {
+  "id": "A6",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "[NC] NT",
+  "impl": "scheduler",
+  "text": "Nói rõ mức căn cứ khi giải thích",
+  "note": "Mỗi cảnh báo của E1 mang mã quy tắc + mức căn cứ; câu chữ tự nhiên cần LLM"
+ },
+ {
+  "id": "B1",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Bắt buộc: tuổi/lớp, giờ học, bán trú",
+  "note": "Kiểm tra input bắt buộc"
+ },
+ {
+  "id": "B2",
+  "type": "n/a",
+  "det": "no",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Hỏi sức khỏe, thể lực, giấc ngủ, tính cách, môn học… trước khi lập lịch",
+  "note": "Hội thoại tự nhiên: LLM (hoặc form)"
+ },
+ {
+  "id": "B3",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Ghi đúng lời bố mẹ vào hồ sơ theo trường",
+  "note": "Trích trường từ lời kể: LLM; lưu: tất định"
+ },
+ {
+  "id": "B4",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Bố mẹ muốn nhanh: đặt giả định hợp lý",
+  "note": "E1 có giá trị mặc định (ví dụ ăn trưa 11:15); nói giả định cần mẫu câu"
+ },
+ {
+  "id": "B5",
+  "type": "soft",
+  "det": "partly",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Lịch phản ánh hồ sơ (hen, nhanh mệt, dễ nản…) và nêu 1 điều đã chỉnh",
+  "note": "Ánh xạ hồ sơ → tham số cần bảng ánh xạ; trích hồ sơ tự do cần LLM. Spike chưa làm"
+ },
+ {
+  "id": "C1",
+  "type": "hard",
+  "det": "yes",
+  "ev": "[NC] AASM",
+  "impl": "scheduler+validator",
+  "text": "Ngủ ≥ 9h (6–12 tuổi) / ≥ 8h (13–18 tuổi); không bao giờ nới",
+  "note": "protected_hard"
+ },
+ {
+  "id": "C2",
+  "type": "hard",
+  "det": "yes",
+  "ev": "[NC] NT-01; thời lượng [MĐ]",
+  "impl": "scheduler+validator",
+  "text": "Sau giờ học có phục hồi 20–30′ (tối thiểu 15′) trước việc học",
+  "note": "protected_hard ở mức 15′; 20–30′ là mặc định"
+ },
+ {
+  "id": "C3",
+  "type": "hard",
+  "det": "yes",
+  "ev": "[NL] NT-09, [MĐ]",
+  "impl": "scheduler+validator",
+  "text": "Không có hai khối tải cao liền nhau; nghỉ 3–5′ giữa hai khối học",
+  "note": "protected_hard; E1 dùng 5′ (giao của C3 3–5′ và F4 5–10′)"
+ },
+ {
+  "id": "C4",
+  "type": "hard",
+  "det": "yes",
+  "ev": "[MĐ]",
+  "impl": "scheduler+validator",
+  "text": "Không có khối học trước giờ đi học",
+  "note": "family/relaxable: truoc_gio_hoc"
+ },
+ {
+  "id": "C5",
+  "type": "hard",
+  "det": "yes",
+  "ev": "[NC] NT-05",
+  "impl": "scheduler+validator",
+  "text": "Tập mạnh kết thúc ≥60′ trước tắt đèn",
+  "note": "Không nới; E1 thử lùi giờ ngủ ≤30′ (G7), không được thì báo đánh đổi"
+ },
+ {
+  "id": "C6",
+  "type": "hard",
+  "det": "yes",
+  "ev": "[NC] NT-06",
+  "impl": "scheduler+validator",
+  "text": "Màn hình giải trí kết thúc ≥60′ trước tắt đèn",
+  "note": "relaxable: man_hinh"
+ },
+ {
+  "id": "C7",
+  "type": "hard",
+  "det": "partly",
+  "ev": "[MĐ]",
+  "impl": "scheduler+validator",
+  "text": "Không bỏ bữa; không đồ ăn làm thưởng/phạt; không phạt thể chất; không bỏ hẳn nghỉ",
+  "note": "Bữa và nghỉ: tất định. Thưởng/phạt: là lời nói, cần lọc nội dung"
+ },
+ {
+  "id": "D1",
+  "type": "budget",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Bố mẹ đặt 1 số/ngày cho hoc_nha, sinh_hoat, ngu, man_hinh (2 cột)",
+  "note": ""
+ },
+ {
+  "id": "D2",
+  "type": "budget",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "truong lấy từ TKB; hoc_them lấy từ Hoạt động (gồm đi lại)",
+  "note": ""
+ },
+ {
+  "id": "D3",
+  "type": "budget",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "validator",
+  "text": "choi_nghi = phần còn lại của 24h; bữa ăn tính 1/2 vào nghỉ",
+  "note": "Prototype restRange cộng 1/4 sinh_hoat (giả định 1/2 sinh_hoat là bữa)"
+ },
+ {
+  "id": "D4",
+  "type": "budget",
+  "det": "yes",
+  "ev": "[MĐ]",
+  "impl": "scheduler+validator",
+  "text": "Lệch tối đa ±30′ quanh mỗi số; ngủ không thấp hơn số chọn quá 30′, không dưới C1",
+  "note": ""
+ },
+ {
+  "id": "D5",
+  "type": "budget",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Học ở nhà không chấm màu, không trần riêng; chỉ chia phiên (F4)",
+  "note": ""
+ },
+ {
+  "id": "D6",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "validator",
+  "text": "Màu chỉ trên bảng quỹ; vùng đỏ cần 'Giữ mức này' một lần",
+  "note": "judge() port 1:1"
+ },
+ {
+  "id": "D7",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Preset (Bình thường, Thi cử…)",
+  "note": "Dữ liệu/UI"
+ },
+ {
+  "id": "D-ngu",
+  "type": "budget",
+  "det": "yes",
+  "ev": "[NC] AASM",
+  "impl": "validator",
+  "text": "Ngưỡng màu Ngủ: xanh ≥ tối thiểu, cam thiếu ≤30′, đỏ >30′",
+  "note": ""
+ },
+ {
+  "id": "D-mh",
+  "type": "budget",
+  "det": "yes",
+  "ev": "đỏ [NC] Canada 24h; cam [MĐ]",
+  "impl": "validator",
+  "text": "Ngưỡng Màn hình: ≤1h xanh, 1–2h cam, >2h đỏ",
+  "note": ""
+ },
+ {
+  "id": "D-sh",
+  "type": "budget",
+  "det": "yes",
+  "ev": "[MĐ]",
+  "impl": "validator",
+  "text": "Ngưỡng Ăn uống, vệ sinh: ≥1h30 xanh, 1h–1h30 cam, <1h đỏ (sáng 30′ + tối 30′ + tắm 30′)",
+  "note": ""
+ },
+ {
+  "id": "D-cn",
+  "type": "budget",
+  "det": "yes",
+  "ev": "[MĐ] + WHO [NC]",
+  "impl": "validator",
+  "text": "Ngưỡng Chơi và nghỉ: ngày học ≥1h / cuối tuần ≥2h",
+  "note": ""
+ },
+ {
+  "id": "D-ht",
+  "type": "budget",
+  "det": "yes",
+  "ev": "[MĐ]",
+  "impl": "validator",
+  "text": "Ngưỡng Học thêm: ngày học ≤2h / cuối tuần ≤3h xanh",
+  "note": ""
+ },
+ {
+  "id": "D-def",
+  "type": "budget",
+  "det": "yes",
+  "ev": "[MĐ]; 10′×lớp theo Cooper",
+  "impl": "scheduler",
+  "text": "Quỹ mặc định theo tuổi (hoc_nha 10′×lớp; sinh_hoat 1h45/2h; ngu tối thiểu+30′/+60′; màn hình 30′/1h hoặc 1h/2h)",
+  "note": ""
+ },
+ {
+  "id": "E1",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Cấu trúc thẻ hoạt động (tên, loại, thứ, giờ, đi lại…)",
+  "note": ""
+ },
+ {
+  "id": "E2",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Bố mẹ kể → tạo thẻ; thiếu ngày/giờ thì hỏi; không tạo trùng",
+  "note": "Trích từ lời kể: LLM; chống trùng, thiếu trường: tất định"
+ },
+ {
+  "id": "E3",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Đổi/xóa thẻ; thay đổi một tuần thì sửa lịch tuần đó",
+  "note": "Phân biệt lâu dài/một lần từ lời kể: LLM"
+ },
+ {
+  "id": "E4",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Có lịch thì cập nhật ngày bị ảnh hưởng",
+  "note": "E1 xếp lại toàn tuần, chi phí ~ms"
+ },
+ {
+  "id": "E5",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Bố mẹ tự sửa → 'Lịch tuần chưa cập nhật'",
+  "note": "UI"
+ },
+ {
+  "id": "E6",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Tập có HLV → Học thêm; vận động vui → Chơi và nghỉ",
+  "note": "Phân loại khi nhập thẻ (loại); từ lời kể cần LLM"
+ },
+ {
+  "id": "F1",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Chia ngày thành khối, mức xác nhận nhẹ nhất; không kiểm tra trong giờ học",
+  "note": "Bảng ánh xạ loại khối → xác nhận"
+ },
+ {
+  "id": "F2",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[MĐ] thang nội bộ",
+  "impl": "scheduler",
+  "text": "Nhãn tải cao/vừa/thấp/phục hồi cho mỗi khối",
+  "note": ""
+ },
+ {
+  "id": "F3",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[NC] NT-01",
+  "impl": "scheduler+validator",
+  "text": "Sau khối cao dài có phục hồi; khối cuối trước ngủ là tải thấp",
+  "note": ""
+ },
+ {
+  "id": "F4",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[MĐ] NT-09",
+  "impl": "scheduler+validator",
+  "text": "Phiên học liên tục tối đa ~20–30′ (lớp 1–3), 30–40′ (4–5), 40–45′ (6–9); nghỉ 5–10′ giữa phiên",
+  "note": ""
+ },
+ {
+  "id": "F5",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[NC] NT-04",
+  "impl": "scheduler+validator",
+  "text": "Màn hình không phải nghỉ: không đặt trước/giữa khối học",
+  "note": ""
+ },
+ {
+  "id": "F6",
+  "type": "soft",
+  "det": "partly",
+  "ev": "[NC] NT-02, NT-03",
+  "impl": "scheduler",
+  "text": "Vận động vui là phục hồi, do con chọn",
+  "note": "E1 gắn nhãn khối phục hồi; nội dung do con chọn"
+ },
+ {
+  "id": "F7",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[MĐ] NT-08",
+  "impl": "scheduler",
+  "text": "Trong khối ôn: việc dễ ~5′ → việc khó nhất → việc nhẹ",
+  "note": "Mẫu viec[] cố định; nội dung cụ thể theo sổ việc cần dữ liệu/LLM"
+ },
+ {
+  "id": "G1",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[NC] AASM",
+  "impl": "scheduler",
+  "text": "Giờ dậy theo giờ vào học, lùi ra giờ tắt đèn; T2 sớm thì tối CN ngủ sớm",
+  "note": ""
+ },
+ {
+  "id": "G2",
+  "type": "soft",
+  "det": "yes",
+  "ev": "[MĐ]",
+  "impl": "scheduler",
+  "text": "Vận động sáng 15–25′ nếu có chỗ",
+  "note": "Nội dung an toàn (mũ bảo hiểm…) là văn bản cố định"
+ },
+ {
+  "id": "G3",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[NC] NT-01; thời lượng [MĐ]",
+  "impl": "scheduler",
+  "text": "Về nhà: 10′ ghi việc + hỏi thăm, rồi phục hồi 20–30′; 'Rất mệt' thì +15′ và bỏ học định hướng",
+  "note": "Nhánh 'Rất mệt' là sự kiện runtime trong ngày, tất định"
+ },
+ {
+  "id": "G4",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[NC] NT-06; còn lại [MĐ]",
+  "impl": "scheduler+validator",
+  "text": "Tối: ôn bài → soạn cặp ngay sau → tự do (màn hình ≤ bed−60) → vệ sinh → đọc 15′ + nhật ký → tắt đèn",
+  "note": ""
+ },
+ {
+  "id": "G5",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[MĐ]",
+  "impl": "scheduler",
+  "text": "Chuỗi hai ngày: tối nay + sáng mai",
+  "note": "E1 tính giờ ngủ theo giờ dậy hôm sau"
+ },
+ {
+  "id": "G6",
+  "type": "soft",
+  "det": "yes",
+  "ev": "[MĐ]",
+  "impl": "none",
+  "text": "Soạn cặp có thể dời sáng nếu sáng còn ≥10′ trống",
+  "note": "Tùy chọn của bố mẹ; spike chưa bật"
+ },
+ {
+  "id": "G7",
+  "type": "soft",
+  "det": "partly",
+  "ev": "[MĐ]",
+  "impl": "scheduler",
+  "text": "Ngày học thêm tối: bữa phụ chắc, giờ ngủ lùi ≤15–30′, hỏi bố mẹ có muốn bớt học ở nhà",
+  "note": "Câu hỏi cần hội thoại; prompt lại ghi 'bỏ ôn bài' (mâu thuẫn, xem blocker B-2)"
+ },
+ {
+  "id": "G8",
+  "type": "soft",
+  "det": "partly",
+  "ev": "[NC] NT-07",
+  "impl": "scheduler",
+  "text": "11–15 tuổi: ít khối hơn, con tự sắp xếp, xác nhận nhẹ; cuối tuần giữ giờ dậy gần ngày thường",
+  "note": "'Ít khối hơn' không có số"
+ },
+ {
+  "id": "G9",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[MĐ]",
+  "impl": "scheduler",
+  "text": "Cuối tuần: học mới/khó buổi sáng, vận động vui dài, tối CN soạn đồ T2",
+  "note": ""
+ },
+ {
+  "id": "G10",
+  "type": "soft",
+  "det": "yes",
+  "ev": "BGD",
+  "impl": "scheduler",
+  "text": "Không xếp việc nhà; tiểu học 2 buổi/ngày → ôn nhẹ",
+  "note": ""
+ },
+ {
+  "id": "H1",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[MĐ]",
+  "impl": "scheduler+validator",
+  "text": "Bữa là tải thấp; việc tải cao cách bữa chính 15–20′; bữa không thay phục hồi; không màn hình khi ăn",
+  "note": ""
+ },
+ {
+  "id": "H2",
+  "type": "hard",
+  "det": "yes",
+  "ev": "[NC] AND; 4–5h nguồn phổ thông",
+  "impl": "scheduler+validator",
+  "text": "Báo khi hai lần ăn cách >5h (6 tuổi: >4h); chưa biết giờ ăn trưa ở trường thì giả định 11:15",
+  "note": ""
+ },
+ {
+  "id": "H3",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "[NC] chung",
+  "impl": "scheduler",
+  "text": "Bữa phụ cách bữa chính tiếp theo 1–2h, thường khi về nhà",
+  "note": ""
+ },
+ {
+  "id": "H4",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "[MĐ]",
+  "impl": "none",
+  "text": "Bữa phụ nhỏ, chú ý dị ứng, không đưa calo",
+  "note": "Gợi ý món: lớp thực thi/LLM"
+ },
+ {
+  "id": "H5",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Nút 'Con thấy đói' và xu hướng 14 ngày",
+  "note": "Thống kê tất định; câu đề xuất cần mẫu/LLM"
+ },
+ {
+  "id": "H6",
+  "type": "hard",
+  "det": "no",
+  "ev": "An toàn",
+  "impl": "none",
+  "text": "Ăn uống theo chỉ định bác sĩ do bố mẹ kể lại",
+  "note": "Hiểu lời bác sĩ kể lại: LLM + người duyệt"
+ },
+ {
+  "id": "I1",
+  "type": "soft",
+  "det": "yes",
+  "ev": "[MĐ]",
+  "impl": "none",
+  "text": "Miền Bắc mùa lạnh/nồm: vệ sinh tối +10–15′",
+  "note": "Tất định theo tháng + vùng; spike chưa bật"
+ },
+ {
+  "id": "I2",
+  "type": "soft",
+  "det": "partly",
+  "ev": "[MĐ]",
+  "impl": "none",
+  "text": "Mùa nóng/mưa: phương án trong nhà, tránh nắng trưa",
+  "note": ""
+ },
+ {
+  "id": "I3",
+  "type": "budget",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Điều chỉnh mùa nằm trong ±30′ sinh_hoat",
+  "note": ""
+ },
+ {
+  "id": "I4",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Khối soạn cặp hỏi thời tiết ngày mai (4 lựa chọn)",
+  "note": ""
+ },
+ {
+  "id": "I5",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "Việc còn mở",
+  "impl": "none",
+  "text": "App thật lấy dự báo tự động",
+  "note": ""
+ },
+ {
+  "id": "J1",
+  "type": "n/a",
+  "det": "no",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Lý do chính đáng có thời hạn: không phản đối",
+  "note": "Nhận diện lý do từ lời kể: LLM"
+ },
+ {
+  "id": "J2",
+  "type": "hard",
+  "det": "partly",
+  "ev": "SP",
+  "impl": "phase",
+  "text": "Xác định ngày kết thúc; >6 tuần xem lại mỗi 2 tuần; cảnh báo 1 lần; lưu lịch cũ",
+  "note": ""
+ },
+ {
+  "id": "J3",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "validator",
+  "text": "Trong giai đoạn không nhắc điều đã nới",
+  "note": "Lọc theo noi_long như checkDay()"
+ },
+ {
+  "id": "J4",
+  "type": "hard",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "phase",
+  "text": "Chỉ nới truoc_gio_hoc, van_dong, man_hinh, an_uong, tong_gio_hoc; không bao giờ nới C1, C2(≥15′), C3, C7",
+  "note": ""
+ },
+ {
+  "id": "J5",
+  "type": "hard",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "phase",
+  "text": "Đề xuất từ con cần bố mẹ xác nhận",
+  "note": ""
+ },
+ {
+  "id": "J6",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "phase",
+  "text": "Hết hạn: 3 lựa chọn",
+  "note": ""
+ },
+ {
+  "id": "P6-OD-01",
+  "type": "hard",
+  "det": "yes",
+  "ev": "OD",
+  "impl": "phase",
+  "text": "Nới cùng constraint liên tục tối đa 60 ngày (kể cả đổi purpose); ≥7 ngày trống giữa ngoại lệ tương tự",
+  "note": ""
+ },
+ {
+  "id": "P6-OD-02",
+  "type": "hard",
+  "det": "yes",
+  "ev": "OD",
+  "impl": "phase",
+  "text": "Không có đường tắt khẩn vượt protected_hard; family_hard thay đổi có quyền, audit",
+  "note": ""
+ },
+ {
+  "id": "P6-OD-03",
+  "type": "hard",
+  "det": "yes",
+  "ev": "OD",
+  "impl": "validator",
+  "text": "Không có bar hợp lệ → UNKNOWN; không gắn nhãn VALID/BALANCED khi điều kiện chưa kiểm chứng",
+  "note": ""
+ },
+ {
+  "id": "K1",
+  "type": "ordering",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Xác định mọi ngày bị ảnh hưởng (tối trước, sáng sau)",
+  "note": "Xếp lại cả tuần rồi diff"
+ },
+ {
+  "id": "K2",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "scheduler",
+  "text": "Chỉ gửi ngày có đổi; khối không đổi giữ nguyên từng chữ",
+  "note": "E1 tất định nên khối không đổi giống hệt (cùng input → cùng output)"
+ },
+ {
+  "id": "K3",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Lâu dài → lịch mẫu; một lần → chỉ tuần này; không rõ thì hỏi",
+  "note": "Phân loại từ lời kể: LLM"
+ },
+ {
+  "id": "K4",
+  "type": "n/a",
+  "det": "yes",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Ốm hủy cả ngày: khối cũ trang_thai=huy, thêm khối cho bố mẹ",
+  "note": ""
+ },
+ {
+  "id": "L1-L4",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Tab của con (UI); L4 nhận ra lời than thở cần LLM",
+  "note": ""
+ },
+ {
+  "id": "M1-M3",
+  "type": "n/a",
+  "det": "no",
+  "ev": "SP",
+  "impl": "none",
+  "text": "Phản hồi bài làm qua ảnh",
+  "note": "Cần mô hình thị giác"
+ },
+ {
+  "id": "N1-N2",
+  "type": "n/a",
+  "det": "partly",
+  "ev": "An toàn",
+  "impl": "none",
+  "text": "Không chẩn đoán; dấu hiệu khẩn → 115/111",
+  "note": "Lớp an toàn chạy trước AI (từ khóa + phân loại)"
+ },
+ {
+  "id": "O",
+  "type": "hard",
+  "det": "yes",
+  "ev": "—",
+  "impl": "validator",
+  "text": "7 mã kiểm tra checkDayK: ngu, phuc_hoi, cao_lien, an_xa, truoc_gio_hoc, tong_gio_hoc, tap_muon",
+  "note": "Port 1:1 trong validators.js"
+ }
+]

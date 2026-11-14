@@ -1,0 +1,882 @@
+[
+ {
+  "id": "P1",
+  "label": "Lớp 1, bán trú, quỹ mặc định",
+  "weekStatus": "OK",
+  "statuses": [
+   "OK",
+   "OK",
+   "OK",
+   "OK",
+   "OK",
+   "OK",
+   "OK"
+  ],
+  "floorsOk": true,
+  "balance": "UNKNOWN (app default [MĐ] chưa thẩm định)",
+  "deterministic": true,
+  "avgMs": 0.564,
+  "checkDayK": 0,
+  "checkDayKRelaxed": 0,
+  "extra": 0,
+  "byKey": {},
+  "tradeoffs": [],
+  "notes": [
+   {
+    "rule": "D4",
+    "t": "T7: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′)."
+   },
+   {
+    "rule": "D4",
+    "t": "CN: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′)."
+   }
+  ],
+  "phase": null,
+  "phaseExtra": [],
+  "blocks": 137
+ },
+ {
+  "id": "P2",
+  "label": "Lớp 3, bán trú, 3 lớp ngoài giờ",
+  "weekStatus": "DIEU_CHINH_TRONG_DUNG_SAI",
+  "statuses": [
+   "DIEU_CHINH_TRONG_DUNG_SAI",
+   "OK",
+   "DIEU_CHINH_TRONG_DUNG_SAI",
+   "OK",
+   "OK",
+   "OK",
+   "OK"
+  ],
+  "floorsOk": true,
+  "balance": "UNKNOWN (app default [MĐ] chưa thẩm định)",
+  "deterministic": true,
+  "avgMs": 1.004,
+  "checkDayK": 0,
+  "checkDayKRelaxed": 0,
+  "extra": 0,
+  "byKey": {},
+  "tradeoffs": [],
+  "notes": [
+   {
+    "rule": "C2",
+    "t": "T2: phục hồi rút còn 15′ vì hoạt động ngay sau giờ về."
+   },
+   {
+    "rule": "C6",
+    "t": "T2: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "D4",
+    "t": "T2: học ở nhà 0′ (quỹ 30′, trong ±30′)."
+   },
+   {
+    "rule": "G7",
+    "t": "T2: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại)."
+   },
+   {
+    "rule": "C2",
+    "t": "T3: phục hồi rút còn 15′ vì hoạt động ngay sau giờ về."
+   },
+   {
+    "rule": "C6",
+    "t": "T3: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "C2",
+    "t": "T4: phục hồi rút còn 15′ vì hoạt động ngay sau giờ về."
+   },
+   {
+    "rule": "C6",
+    "t": "T4: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "D4",
+    "t": "T4: học ở nhà 0′ (quỹ 30′, trong ±30′)."
+   },
+   {
+    "rule": "G7",
+    "t": "T4: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại)."
+   },
+   {
+    "rule": "D4",
+    "t": "CN: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′)."
+   }
+  ],
+  "phase": null,
+  "phaseExtra": [],
+  "blocks": 133
+ },
+ {
+  "id": "P3",
+  "label": "Lớp 5, bán trú cả ngày, quỹ bố mẹ đặt (đã duyệt)",
+  "weekStatus": "OK",
+  "statuses": [
+   "OK",
+   "OK",
+   "OK",
+   "OK",
+   "OK",
+   "OK",
+   "OK"
+  ],
+  "floorsOk": true,
+  "balance": "WITHIN_FAMILY_BAR",
+  "deterministic": true,
+  "avgMs": 0.621,
+  "checkDayK": 0,
+  "checkDayKRelaxed": 0,
+  "extra": 0,
+  "byKey": {},
+  "tradeoffs": [],
+  "notes": [
+   {
+    "rule": "C6",
+    "t": "T2: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "C6",
+    "t": "T3: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "C6",
+    "t": "T4: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "C6",
+    "t": "T5: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "C6",
+    "t": "T6: màn hình còn 0′ (tối đa bố mẹ chọn 30′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "D4",
+    "t": "CN: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′)."
+   }
+  ],
+  "phase": null,
+  "phaseExtra": [],
+  "blocks": 128
+ },
+ {
+  "id": "P4",
+  "label": "Lớp 6, học 1 buổi sáng, ăn trưa ở nhà, 2 hoạt động",
+  "weekStatus": "CAN_BO_ME_CHON",
+  "statuses": [
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "OK",
+   "OK"
+  ],
+  "floorsOk": true,
+  "balance": "UNKNOWN (app default [MĐ] chưa thẩm định)",
+  "deterministic": true,
+  "avgMs": 1.497,
+  "checkDayK": 5,
+  "checkDayKRelaxed": 0,
+  "extra": 0,
+  "byKey": {
+   "an_xa": 5
+  },
+  "tradeoffs": [
+   {
+    "day": "T2",
+    "kind": "bua_xa",
+    "a": 375,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (11:45) cách 330′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T3",
+    "kind": "bua_xa",
+    "a": 375,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (11:45) cách 330′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T4",
+    "kind": "bua_xa",
+    "a": 375,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (11:45) cách 330′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T5",
+    "kind": "bua_xa",
+    "a": 375,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (11:45) cách 330′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T6",
+    "kind": "bua_xa",
+    "a": 375,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (11:45) cách 330′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   }
+  ],
+  "notes": [
+   {
+    "rule": "G7/D4",
+    "t": "T3: giờ tắt đèn lùi 30′."
+   },
+   {
+    "rule": "C2",
+    "t": "T3: phục hồi 20′."
+   },
+   {
+    "rule": "G7",
+    "t": "T3: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại)."
+   },
+   {
+    "rule": "G7/D4",
+    "t": "T5: giờ tắt đèn lùi 30′."
+   },
+   {
+    "rule": "C2",
+    "t": "T5: phục hồi 20′."
+   },
+   {
+    "rule": "G7",
+    "t": "T5: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại)."
+   }
+  ],
+  "phase": null,
+  "phaseExtra": [],
+  "blocks": 139
+ },
+ {
+  "id": "P5",
+  "label": "Lớp 8, mùa thi, học cả sáng T7, giai đoạn tạm thời",
+  "weekStatus": "CAN_BO_ME_CHON",
+  "statuses": [
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "OK"
+  ],
+  "floorsOk": true,
+  "balance": "UNKNOWN (app default [MĐ] chưa thẩm định)",
+  "deterministic": true,
+  "avgMs": 2.606,
+  "checkDayK": 6,
+  "checkDayKRelaxed": 0,
+  "extra": 0,
+  "byKey": {
+   "an_xa": 6
+  },
+  "tradeoffs": [
+   {
+    "day": "T2",
+    "kind": "bua_xa",
+    "a": 375,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (12:00) cách 345′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T3",
+    "kind": "bua_xa",
+    "a": 375,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (12:00) cách 345′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T4",
+    "kind": "bua_xa",
+    "a": 375,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (12:00) cách 345′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T5",
+    "kind": "bua_xa",
+    "a": 375,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (12:00) cách 345′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T6",
+    "kind": "bua_xa",
+    "a": 375,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (12:00) cách 345′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T7",
+    "kind": "bua_xa",
+    "a": 375,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (06:15) đến Ăn trưa (12:00) cách 345′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   }
+  ],
+  "notes": [
+   {
+    "rule": "G7/D4",
+    "t": "T2: giờ tắt đèn lùi 15′."
+   },
+   {
+    "rule": "C2",
+    "t": "T2: phục hồi 20′."
+   },
+   {
+    "rule": "G7",
+    "t": "T2: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại)."
+   },
+   {
+    "rule": "G7/D4",
+    "t": "T4: giờ tắt đèn lùi 15′."
+   },
+   {
+    "rule": "C2",
+    "t": "T4: phục hồi 20′."
+   },
+   {
+    "rule": "G7",
+    "t": "T4: có học thêm tối, cần hỏi bố mẹ có muốn bớt học ở nhà không (câu hỏi hội thoại)."
+   }
+  ],
+  "phase": {
+   "status": "TU_CHOI",
+   "findings": [
+    {
+     "rule": "P6-OD-01/P5-R2",
+     "k": "khoang_trong_7",
+     "t": "Chỉ có 4 ngày trống giữa \"on_thi\" trước đó (kết thúc 2026-11-25) và giai đoạn mới; cần ≥7. Sớm nhất được bắt đầu: 2026-12-03.",
+     "block": true
+    }
+   ],
+   "reviews": [],
+   "date_convention": "v1: YYYY-MM-DD, Asia/Ho_Chi_Minh, inclusive both ends"
+  },
+  "phaseExtra": [
+   {
+    "label": "Đổi mục đích để nối dài (thi đấu) sát sau ôn thi",
+    "res": {
+     "status": "TU_CHOI",
+     "findings": [
+      {
+       "rule": "P6-OD-01",
+       "k": "vuot_60_ngay",
+       "t": "Nới \"tong_gio_hoc\" liên tục 83 ngày (2026-10-20 → 2027-01-10) > 60 ngày, kể cả khi đổi mục đích.",
+       "block": true
+      }
+     ],
+     "reviews": [
+      "2026-12-10",
+      "2026-12-24",
+      "2027-01-07"
+     ],
+     "date_convention": "v1: YYYY-MM-DD, Asia/Ho_Chi_Minh, inclusive both ends"
+    }
+   },
+   {
+    "label": "Xin nới giờ ngủ",
+    "res": {
+     "status": "TU_CHOI",
+     "findings": [
+      {
+       "rule": "J4/OD-02",
+       "k": "noi_khong_hop_le",
+       "t": "Không được nới \"ngu\" (protected_hard, không có đường tắt kể cả khẩn cấp)",
+       "block": true
+      }
+     ],
+     "reviews": [],
+     "date_convention": "v1: YYYY-MM-DD, Asia/Ho_Chi_Minh, inclusive both ends"
+    }
+   },
+   {
+    "label": "Con đề xuất, bắt đầu sau 8 ngày trống",
+    "res": {
+     "status": "CHO_BO_ME_XAC_NHAN",
+     "findings": [
+      {
+       "rule": "J5",
+       "k": "cho_xac_nhan",
+       "t": "Đề xuất từ con: chờ bố mẹ xác nhận, chưa áp vào lịch.",
+       "block": false
+      }
+     ],
+     "reviews": [],
+     "date_convention": "v1: YYYY-MM-DD, Asia/Ho_Chi_Minh, inclusive both ends"
+    }
+   }
+  ],
+  "blocks": 181
+ },
+ {
+  "id": "P6",
+  "label": "Lớp 4, quá tải (không khả thi)",
+  "weekStatus": "XUNG_DOT",
+  "statuses": [
+   "XUNG_DOT",
+   "XUNG_DOT",
+   "XUNG_DOT",
+   "XUNG_DOT",
+   "XUNG_DOT",
+   "CAN_BO_ME_CHON",
+   "OK"
+  ],
+  "floorsOk": true,
+  "balance": "UNKNOWN (app default [MĐ] chưa thẩm định)",
+  "deterministic": true,
+  "avgMs": 7.629,
+  "checkDayK": 0,
+  "checkDayKRelaxed": 0,
+  "extra": 0,
+  "byKey": {},
+  "tradeoffs": [
+   {
+    "day": "T2",
+    "act_id": "d2",
+    "kind": "act_bed",
+    "rule": "C1/D4",
+    "t": "\"Karate\" kết thúc 21:00, sát hoặc sau giờ tắt đèn 20:45 (lùi tối đa 30′ vẫn không đủ giờ ngủ).",
+    "options": [
+     "Dời \"Karate\" sớm hơn hoặc sang ngày khác",
+     "Bỏ buổi này (bố mẹ chọn)",
+     "Không có phương án cắt giờ ngủ dưới 9 giờ (C1, không nới)"
+    ]
+   },
+   {
+    "day": "T2",
+    "kind": "khong_xep_duoc",
+    "rule": "C/A1",
+    "t": "Với mọi hoạt động đã đăng ký, ngày này không giữ được đủ: phục hồi ≥15′ sau giờ học, ăn tối, vệ sinh và giờ ngủ ≥ 9 giờ.",
+    "options": [
+     "Bỏ hoặc dời \"Tiếng Anh\" ngày T2 (học ở nhà còn 75′)"
+    ],
+    "act_id": "d1"
+   },
+   {
+    "day": "T3",
+    "kind": "khong_xep_duoc",
+    "rule": "C/A1",
+    "t": "Với mọi hoạt động đã đăng ký, ngày này không giữ được đủ: phục hồi ≥15′ sau giờ học, ăn tối, vệ sinh và giờ ngủ ≥ 9 giờ.",
+    "options": [
+     "Bỏ hoặc dời \"Tiếng Anh\" ngày T3 (học ở nhà còn 75′)"
+    ],
+    "act_id": "d1"
+   },
+   {
+    "day": "T4",
+    "act_id": "d2",
+    "kind": "act_bed",
+    "rule": "C1/D4",
+    "t": "\"Karate\" kết thúc 21:00, sát hoặc sau giờ tắt đèn 20:45 (lùi tối đa 30′ vẫn không đủ giờ ngủ).",
+    "options": [
+     "Dời \"Karate\" sớm hơn hoặc sang ngày khác",
+     "Bỏ buổi này (bố mẹ chọn)",
+     "Không có phương án cắt giờ ngủ dưới 9 giờ (C1, không nới)"
+    ]
+   },
+   {
+    "day": "T4",
+    "kind": "khong_xep_duoc",
+    "rule": "C/A1",
+    "t": "Với mọi hoạt động đã đăng ký, ngày này không giữ được đủ: phục hồi ≥15′ sau giờ học, ăn tối, vệ sinh và giờ ngủ ≥ 9 giờ.",
+    "options": [
+     "Bỏ hoặc dời \"Tiếng Anh\" ngày T4 (học ở nhà còn 75′)"
+    ],
+    "act_id": "d1"
+   },
+   {
+    "day": "T5",
+    "kind": "khong_xep_duoc",
+    "rule": "C/A1",
+    "t": "Với mọi hoạt động đã đăng ký, ngày này không giữ được đủ: phục hồi ≥15′ sau giờ học, ăn tối, vệ sinh và giờ ngủ ≥ 9 giờ.",
+    "options": [
+     "Bỏ hoặc dời \"Tiếng Anh\" ngày T5 (học ở nhà còn 75′)"
+    ],
+    "act_id": "d1"
+   },
+   {
+    "day": "T6",
+    "kind": "khong_xep_duoc",
+    "rule": "C/A1",
+    "t": "Với mọi hoạt động đã đăng ký, ngày này không giữ được đủ: phục hồi ≥15′ sau giờ học, ăn tối, vệ sinh và giờ ngủ ≥ 9 giờ.",
+    "options": [
+     "Bỏ hoặc dời \"Tiếng Anh\" ngày T6 (học ở nhà còn 90′)"
+    ],
+    "act_id": "d1"
+   },
+   {
+    "day": "T7",
+    "act_id": "d4",
+    "kind": "trung_gio",
+    "rule": "E1/OD-02",
+    "t": "\"Vẽ\" 10:30–12:00 (cả đi lại 10:20–12:10) trùng giờ trường hoặc hoạt động khác.",
+    "options": [
+     "Bố mẹ đổi giờ hoặc ngày của \"Vẽ\"",
+     "Bỏ một trong hai hoạt động trùng (bố mẹ chọn)"
+    ]
+   }
+  ],
+  "notes": [
+   {
+    "rule": "D4",
+    "t": "CN: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′)."
+   }
+  ],
+  "phase": null,
+  "phaseExtra": [],
+  "blocks": 144
+ },
+ {
+  "id": "P7",
+  "label": "Lớp 4, cuối tuần dày hoạt động",
+  "weekStatus": "OK",
+  "statuses": [
+   "OK",
+   "OK",
+   "OK",
+   "OK",
+   "OK",
+   "OK",
+   "OK"
+  ],
+  "floorsOk": true,
+  "balance": "UNKNOWN (app default [MĐ] chưa thẩm định)",
+  "deterministic": true,
+  "avgMs": 0.293,
+  "checkDayK": 0,
+  "checkDayKRelaxed": 0,
+  "extra": 0,
+  "byKey": {},
+  "tradeoffs": [],
+  "notes": [
+   {
+    "rule": "D4",
+    "t": "CN: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′)."
+   }
+  ],
+  "phase": null,
+  "phaseExtra": [],
+  "blocks": 144
+ },
+ {
+  "id": "P8",
+  "label": "Lớp 7, đi lại 60′ mỗi chiều, bán trú",
+  "weekStatus": "CAN_BO_ME_CHON",
+  "statuses": [
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "CAN_BO_ME_CHON",
+   "OK",
+   "DIEU_CHINH_TRONG_DUNG_SAI"
+  ],
+  "floorsOk": true,
+  "balance": "UNKNOWN (app default [MĐ] chưa thẩm định)",
+  "deterministic": true,
+  "avgMs": 1.714,
+  "checkDayK": 10,
+  "checkDayKRelaxed": 0,
+  "extra": 0,
+  "byKey": {
+   "an_xa": 10
+  },
+  "tradeoffs": [
+   {
+    "day": "T2",
+    "kind": "bua_xa",
+    "a": 330,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (05:30) đến Ăn trưa, ngủ trưa ở trường (11:00) cách 330′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T2",
+    "kind": "bua_xa",
+    "a": 660,
+    "rule": "H2",
+    "t": "Từ Ăn trưa, ngủ trưa ở trường (11:00) đến Ăn nhẹ và chơi tự do (phục hồi) (17:40) cách 400′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T3",
+    "kind": "bua_xa",
+    "a": 330,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (05:30) đến Ăn trưa, ngủ trưa ở trường (11:00) cách 330′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T3",
+    "kind": "bua_xa",
+    "a": 660,
+    "rule": "H2",
+    "t": "Từ Ăn trưa, ngủ trưa ở trường (11:00) đến Ăn nhẹ và chơi tự do (phục hồi) (17:40) cách 400′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T4",
+    "kind": "bua_xa",
+    "a": 330,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (05:30) đến Ăn trưa, ngủ trưa ở trường (11:00) cách 330′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T4",
+    "kind": "bua_xa",
+    "a": 660,
+    "rule": "H2",
+    "t": "Từ Ăn trưa, ngủ trưa ở trường (11:00) đến Ăn nhẹ và chơi tự do (phục hồi) (17:40) cách 400′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T5",
+    "kind": "bua_xa",
+    "a": 330,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (05:30) đến Ăn trưa, ngủ trưa ở trường (11:00) cách 330′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T5",
+    "kind": "bua_xa",
+    "a": 660,
+    "rule": "H2",
+    "t": "Từ Ăn trưa, ngủ trưa ở trường (11:00) đến Ăn nhẹ và chơi tự do (phục hồi) (17:40) cách 400′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T6",
+    "kind": "bua_xa",
+    "a": 330,
+    "rule": "H2",
+    "t": "Từ Vệ sinh, ăn sáng, thay đồ (05:30) đến Ăn trưa, ngủ trưa ở trường (11:00) cách 330′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   },
+   {
+    "day": "T6",
+    "kind": "bua_xa",
+    "a": 660,
+    "rule": "H2",
+    "t": "Từ Ăn trưa, ngủ trưa ở trường (11:00) đến Ăn nhẹ và chơi tự do (phục hồi) (17:40) cách 400′ (mốc 300′) mà con không ở nhà để ăn phụ.",
+    "options": [
+     "Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về",
+     "Hỏi trường có bữa phụ không, cho Pal biết giờ",
+     "Giữ như hiện tại (bố mẹ xác nhận một lần)"
+    ]
+   }
+  ],
+  "notes": [
+   {
+    "rule": "G2",
+    "t": "T2: buổi sáng không đủ 15′ cho vận động."
+   },
+   {
+    "rule": "C6",
+    "t": "T2: màn hình còn 0′ (tối đa bố mẹ chọn 60′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "D4",
+    "t": "T2: học ở nhà 40′ (quỹ 70′, trong ±30′)."
+   },
+   {
+    "rule": "G7/D4",
+    "t": "T2: giờ tắt đèn lùi 15′."
+   },
+   {
+    "rule": "C2",
+    "t": "T2: phục hồi 20′."
+   },
+   {
+    "rule": "G2",
+    "t": "T3: buổi sáng không đủ 15′ cho vận động."
+   },
+   {
+    "rule": "C6",
+    "t": "T3: màn hình còn 0′ (tối đa bố mẹ chọn 60′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "D4",
+    "t": "T3: học ở nhà 40′ (quỹ 70′, trong ±30′)."
+   },
+   {
+    "rule": "G7/D4",
+    "t": "T3: giờ tắt đèn lùi 15′."
+   },
+   {
+    "rule": "C2",
+    "t": "T3: phục hồi 20′."
+   },
+   {
+    "rule": "G2",
+    "t": "T4: buổi sáng không đủ 15′ cho vận động."
+   },
+   {
+    "rule": "C6",
+    "t": "T4: màn hình còn 0′ (tối đa bố mẹ chọn 60′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "D4",
+    "t": "T4: học ở nhà 40′ (quỹ 70′, trong ±30′)."
+   },
+   {
+    "rule": "G7/D4",
+    "t": "T4: giờ tắt đèn lùi 15′."
+   },
+   {
+    "rule": "C2",
+    "t": "T4: phục hồi 20′."
+   },
+   {
+    "rule": "G2",
+    "t": "T5: buổi sáng không đủ 15′ cho vận động."
+   },
+   {
+    "rule": "C6",
+    "t": "T5: màn hình còn 0′ (tối đa bố mẹ chọn 60′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "D4",
+    "t": "T5: học ở nhà 40′ (quỹ 70′, trong ±30′)."
+   },
+   {
+    "rule": "G7/D4",
+    "t": "T5: giờ tắt đèn lùi 15′."
+   },
+   {
+    "rule": "C2",
+    "t": "T5: phục hồi 20′."
+   },
+   {
+    "rule": "G2",
+    "t": "T6: buổi sáng không đủ 15′ cho vận động."
+   },
+   {
+    "rule": "C6",
+    "t": "T6: màn hình còn 5′ (tối đa bố mẹ chọn 60′) vì phải tắt trước giờ ngủ 60′."
+   },
+   {
+    "rule": "D4",
+    "t": "T6: học ở nhà 40′ (quỹ 70′, trong ±30′)."
+   },
+   {
+    "rule": "C2",
+    "t": "T6: phục hồi 20′."
+   },
+   {
+    "rule": "D4",
+    "t": "T7: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′)."
+   },
+   {
+    "rule": "D4",
+    "t": "CN: mỗi khối bữa ở nhà và vệ sinh tối bớt 5′ để khớp quỹ sinh_hoat 120′ (±30′)."
+   },
+   {
+    "rule": "G7/D4",
+    "t": "CN: giờ tắt đèn lùi 30′."
+   },
+   {
+    "rule": "C2",
+    "t": "CN: phục hồi 20′."
+   }
+  ],
+  "phase": null,
+  "phaseExtra": [],
+  "blocks": 117
+ }
+]

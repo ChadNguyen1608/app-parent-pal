@@ -1,0 +1,82 @@
+{
+ "MORNING": {
+  "v": 30,
+  "src": "D (ngưỡng sinh_hoat: 'sáng 30′') [MĐ]"
+ },
+ "DINNER": {
+  "v": 30,
+  "src": "D (ngưỡng sinh_hoat: 'ăn tối 30′') [MĐ]"
+ },
+ "LUNCH_HOME": {
+  "v": 30,
+  "src": "áp mốc ăn tối 30′ của D [MĐ]"
+ },
+ "HYGIENE": {
+  "v": 30,
+  "src": "D (ngưỡng sinh_hoat: 'tắm và vệ sinh tối 30′') [MĐ]"
+ },
+ "READ": {
+  "v": 15,
+  "src": "G4 đọc sách 15′ [MĐ]"
+ },
+ "CHECKIN": {
+  "v": 10,
+  "src": "G3 khối 10′ [MĐ]"
+ },
+ "PACK": {
+  "v": 10,
+  "src": "G6 (≥10′ cho soạn cặp) [MĐ]"
+ },
+ "REC_DEFAULT": {
+  "v": 30,
+  "src": "C2/G3 20–30′ (cận trên) [NC NT-01, thời lượng MĐ]"
+ },
+ "REC_MID": {
+  "v": 20,
+  "src": "C2/G3 20–30′ (cận dưới)"
+ },
+ "REC_FLOOR": {
+  "v": 15,
+  "src": "C2 tối thiểu 15′, không nới (J4)"
+ },
+ "BREAK": {
+  "v": 5,
+  "src": "C3 3–5′ ∩ F4 5–10′ [NL NT-09, MĐ]"
+ },
+ "MEAL_TO_CAO": {
+  "v": 15,
+  "src": "H1 15–20′ (cận dưới) [MĐ]"
+ },
+ "SPORT_TO_BED": {
+  "v": 60,
+  "src": "C5 [NC NT-05]"
+ },
+ "SCREEN_TO_BED": {
+  "v": 60,
+  "src": "C6 [NC NT-06]"
+ },
+ "BED_SHIFT_MAX": {
+  "v": 30,
+  "src": "G7 lùi tối đa 15–30′; D4 ngủ không thấp hơn quỹ quá 30′ [MĐ]"
+ },
+ "SOFT": {
+  "v": 30,
+  "src": "D4 ±30′ [MĐ]"
+ },
+ "MOTION_MIN": {
+  "v": 15,
+  "src": "G2 15–25′ [MĐ]"
+ },
+ "MOTION_MAX": {
+  "v": 25,
+  "src": "G2 15–25′ [MĐ]"
+ },
+ "LUNCH_ASSUME": {
+  "v": 675,
+  "src": "H2 giả định ăn trưa 11:15"
+ },
+ "MIN_CHUNK": {
+  "v": 20,
+  "src": "F4 cận dưới của lớp 1–3 (20′), dùng làm phiên ngắn nhất [MĐ]"
+ }
+}
