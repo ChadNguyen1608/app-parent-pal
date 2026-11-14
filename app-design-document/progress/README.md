@@ -2,6 +2,15 @@
 
 Xem [trạng thái 12 bước](PHASE_STATUS.md) và [mục lục tài liệu chính](../DOCUMENT_INDEX.md).
 
+## Hồ sơ L4 và đánh giá sơ bộ 3.3
+
+Các file đã merge trong [PR #17](https://github.com/ChadNguyen1608/app-parent-pal/pull/17) vẫn ở [thư mục nguồn](../../documents/app-design-document/). Các manifest và hồ sơ kiểm chứng có thể tiếp tục tham chiếu đường dẫn hiện có.
+
+- [Mục lục quyết định của chủ sản phẩm cho L4](../../documents/app-design-document/Feature_3_2_L4_Owner_Decision_Register_INDEX.md)
+- [Tiêu chuẩn capability L4 đã duyệt](../../documents/app-design-document/Feature_3_2_L4_Capability_Standard_APPROVED.md)
+- [Manifest baseline chức năng L4](../../documents/app-design-document/Feature_3_2_L4_Functional_Baseline_Frozen_Manifest_20261114_REVIEW.md)
+- [Registry đánh giá sơ bộ 106 L3](../../documents/app-design-document/Feature_3_3_Initial_106_L3_Assessment_Registry_REVIEW.md)
+
 ## Independent Review
 
 Chủ sản phẩm xác nhận trong cuộc trò chuyện ngày 14/11/2026.
