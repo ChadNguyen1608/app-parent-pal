@@ -29,3 +29,10 @@ No approved decision log, canonical Blueprint or final L4 status changes. P5/P6/
 ## Current detailed design amendment
 
 [Detailed group 01: linking](Feature_3_2_L4_Detailed_Review_Group_01_Linking_and_Membership_REVIEW.md) and [Detailed group 02: Pal responses](Feature_3_2_L4_Detailed_Review_Group_02_Pal_Response_REVIEW.md) applies to this checkpoint and supersedes conflicting earlier candidate clauses and oracles. Earlier text remains source history where superseded.
+
+
+## 2026-11-14 — Explicit oracle supersession (FR-07)
+
+**IR-T01A historical oracle is SUPERSEDED**, and **MUST NOT be used for new automated test generation**. Its unconditional DENY after unlink was inconsistent with Owner's later approved new-household re-pairing policy. Replacement source is [FR-01 approved decision](Feature_3_2_L4_FR01_Parent_PIN_Unlink_and_Repairing_Owner_Decision_APPROVED.md): **FR01-T05** same-household fresh re-pair may be eligible, **FR01-T06** different-household adult with pairing ID but lacking verified child-specific authority -> DENY/no protected binding, and **FR01-T07** different-household pairing with separately verified child-specific authority after effective PIN-protected unlink -> potentially ALLOW if all current gates pass. Active A binding always blocks direct A→B transfer. Parent App unlink notice applies; data/Journal grants never migrate. **IR-T01B stays VALID**: household member invitation alone cannot bind or grant authority to a child.
+
+The earlier IR-T01A text above remains an immutable historical quote of an earlier reviewer finding, not current product behavior; tools must respect this explicit status change. Proposed replacement tests have not run.
