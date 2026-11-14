@@ -1,0 +1,12 @@
+BẮT ĐƯỢC bỏ khối phục hồi → phuc_hoi  ["phuc_hoi","x_phuc_hoi15"]
+BẮT ĐƯỢC học trước giờ đi học → truoc_gio_hoc  ["truoc_gio_hoc","x_bo_bua"]
+BẮT ĐƯỢC hai khối cao liền → cao_lien  ["cao_lien","x_nghi_giua","x_bo_bua","x_quy_sinh_hoat"]
+BẮT ĐƯỢC tắt đèn muộn → ngu  ["ngu","x_quy_ngu","x_ngu_san"]
+BẮT ĐƯỢC bỏ bữa phụ ở trường → an_xa  ["phuc_hoi","an_xa","x_phuc_hoi15"]
+BẮT ĐƯỢC học vượt quỹ → tong_gio_hoc  ["tong_gio_hoc","x_phien","x_bo_bua","x_quy_hoc_nha","x_quy_sinh_hoat"]
+BẮT ĐƯỢC tập mạnh sát giờ ngủ → tap_muon  ["tap_muon","x_bo_bua","x_quy_sinh_hoat"]
+BỎ LỌT   tập mạnh KẾT THÚC SAU giờ tắt đèn → tap_muon (giới hạn của checkDayK)  ["x_bo_bua","x_quy_sinh_hoat"]
+BẮT ĐƯỢC màn hình sát giờ ngủ → x_man_hinh_ngu  ["x_man_hinh_ngu","x_quy_sinh_hoat"]
+BẮT ĐƯỢC phiên học quá dài → x_phien  ["tong_gio_hoc","x_phien","x_bo_bua","x_quy_hoc_nha","x_quy_sinh_hoat"]
+BẮT ĐƯỢC bỏ ăn tối → x_bo_bua  ["x_bo_bua"]
+baseline T2: [] | bắt được 10/11
