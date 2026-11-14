@@ -53,3 +53,8 @@ A0–A1 use verified caregiver interaction where applicable. A2 may participate 
 | D08-T11 | B23-T04, B24-T01 | Mandatory conflict or disclosure evidence is unknown. No dispatch and no transaction success claim. |
 
 Open evidence: merchant/processor event ordering and reconciliation guarantees, applicable purchase and disclosure policies, budget enforcement and approver authority where not yet specified. No new Owner decision needed to continue design. No runtime or independent review executed.
+
+
+## 2026-11-14 Owner gate overlay — OD-02
+
+[Owner-approved OD-02](Feature_3_2_L4_OD02_OD05_Owner_Decision_Log_APPROVED.md) excludes sponsored listings, offers, rankings and purchase entry-points from **all minor-facing A0–A4 (under 18) views in initial release**. Prior provisional wording allowing minor-facing sponsored content with only disclosure is superseded. Parent/verified-adult surfaces still require current access, suitable disclosures and commercial/legal authorization. Enforce recipient and content sponsorship filters at release, cache, paging and AI response boundaries. Cases OD02-T01..03 proposed and not independently verified.
