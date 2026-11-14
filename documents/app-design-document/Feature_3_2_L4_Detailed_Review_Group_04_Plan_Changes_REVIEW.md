@@ -37,3 +37,8 @@ A0 and A1 caregiver-mediated where verified; A2 guided task/draft where authoriz
 | D04-T10 | Older plan-scope lock reminder runs after policy change | No implicit unlock or plan edit; reminders obey current scoped authority. |
 
 Runtime proof of commit/outbox atomicity, authority fencing and clock behavior remains open. P5/P6/B01 evidence gaps remain open. Next: learning evidence and report disclosure, with source provenance and no conflation of parent confirmation with teacher verification.
+
+
+## 2026-11-14 Owner gate overlay — OD-04 v3.1 source inclusion
+
+[OD-04 approved log](Feature_3_2_L4_OD02_OD05_Owner_Decision_Log_APPROVED.md) authorizes adding [B01 v3.1 Addendum](Feature_3_2_L4_B01_Specification_Remediation_v3_1_Addendum_REVIEW.md) exact blob `3c398a3c5e26136609ee2c2d29843a66a7a7e97f` to the [supplemental pinned reviewer manifest](Feature_3_2_L4_20261114_Owner_Finding_Remediation_Supplemental_Manifest_REVIEW.md). Its proposed authority and state fencing rules apply to Plan/CR/Approval Routing interfaces where consistent with approved Owner decisions. If clauses conflict, treat as a finding, not an implicit override. Independent v3.1 and FR-08 focused verification remain outstanding. Source pin is not acceptance or an executed test; run OD04-T01 with source-aware regression.
