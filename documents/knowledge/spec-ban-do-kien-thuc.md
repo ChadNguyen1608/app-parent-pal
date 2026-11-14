@@ -1,9 +1,10 @@
 # Parent-Pal: Bản đồ bộ kiến thức (tiền mang thai → 24 tuổi)
 
-Bản v5.21 — 15/11/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có nội dung nháp cho 0–6, 6–11, 11–15 và 15–18 tuổi (chờ chuyên gia duyệt).
+Bản v5.23 — 15/11/2026. Trạng thái: **đã chốt quy tắc cấu trúc**; đã có nội dung nháp cho 0–6, 6–11, 11–15 và 15–18 tuổi (chờ chuyên gia duyệt).
 
 Lịch sử thay đổi:
-- **v5.21 (15/11):** theo quyết định của chủ sản phẩm (OD-05, D-05 trong `app-design-document/progress/Owner_Decision_Log_20261115.md`): thu hẹp quy tắc "khi kho chưa có thông tin" (§1.1). Chỉ câu hỏi giáo dục, đào tạo (kể cả trường, trung tâm học) được tra mạng; thủ tục, cơ sở dịch vụ, giá chờ chính sách riêng.
+- **v5.23 (15/11):** theo quyết định của chủ sản phẩm (OD-05, D-05 trong `app-design-document/progress/Owner_Decision_Log_20261115.md`): thu hẹp quy tắc "khi kho chưa có thông tin" (§1.1). Chỉ câu hỏi giáo dục, đào tạo (kể cả trường, trung tâm học) được tra mạng; thủ tục, cơ sở dịch vụ, giá chờ chính sách riêng.
+- **v5.21, v5.22 (7/11, 11/11):** kỹ năng mềm. Hai bản này hiện chỉ có trong bản sao ở project Parent-Pal trên claude.ai, chưa đưa vào repo; số v5.21 đã dùng ở đó, nên bản 15/11 đánh số v5.23.
 - **v2:** trục dọc là độ tuổi; các mảng kiến thức ("làn") chạy theo trục đó.
 - **v3:** mở rộng trục tuổi: năm đầu đời vào giai đoạn 0–6 tuổi; thêm giai đoạn 18–24 tuổi.
 - **v4:** thay 9 làn bằng khung 4 tầng: 3 cấp + lớp nền → 16 nhóm → chủ đề con → mẩu kiến thức.
