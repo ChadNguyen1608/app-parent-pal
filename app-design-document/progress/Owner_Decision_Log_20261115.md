@@ -54,4 +54,30 @@ Nguồn câu hỏi:
 
 - Câu hỏi UF-Q05, Q06, Q08..Q13 của User Flow: chưa có quyết định, giữ nhánh mặc định có nhãn.
 - Câu hỏi B-1, B-2, B-11 của spike (khoảng nghỉ 3–5′ hay 5–10′, "bớt học ở nhà" hay "bỏ ôn bài", nhận diện khối): xử lý trong Business Logic; nếu cần chủ sản phẩm chọn thì hỏi lại.
-- Chọn MVP: chưa quyết.
+- Chọn MVP: đã chọn ở lượt 2 (D-16).
+
+## 6. Lượt 2, ngày 15/11/2026
+
+Trả lời của chủ sản phẩm cho các câu hỏi gộp từ User Flow đợt 2, phương án MVP và Business Logic (PR #23), và các câu làm rõ sau đó. Chủ sản phẩm trả lời "theo đề xuất" cho các mục dưới đây, trừ chỗ ghi khác.
+
+| Mã | Câu hỏi | Quyết định |
+|---|---|---|
+| D-14 | Có sửa `prototype/index.html` theo quyết định mới không? | **Không.** Giữ nguyên làm mốc cũ; ghi danh sách khác biệt trong `prototype/README.md` |
+| D-15 | Có sửa spec chuẩn và skill cho khớp D-02, D-03, D-06, D-09, D-10 không? | **Có.** Sửa `documents/pal/spec-quy-tac-lap-lich.md`, `spec-quy-thoi-gian-va-tab-cua-con.md`, CLAUDE.md, rồi skill `lap-lich-sinh-hoat-tre` |
+| D-16 | Chọn phương án MVP nào? | **PA-3**: A-lite E1 (phụ huynh điền biểu mẫu, thuật toán xếp lịch, không AI, lịch đồng bộ sang app của con), rồi lên Plan A có Pal. Thực địa của PA-1 chạy trước hoặc song song. Chủ sản phẩm đã được giải thích E1 có thuật toán xếp lịch, không phải "phụ huynh nhập gì hiện nấy" |
+| D-17 | Chi tiền cho luật sư, thực địa, chuyên gia thẩm định? | **Chưa**, vì đang test nội bộ |
+| D-18 | Ngoại lệ D-01 có áp cho A-lite E1 không; có phải xong FR-01 trước khi thử không? | **Có** cho cả hai |
+| D-19 | Chế độ con tự sửa lịch (`CHILD_DIRECTED`) trong A-lite E1 | **Ẩn** |
+| D-20 | Mong muốn của con khi chưa có AI | Mẫu cố định, giao module F04-G06-M01, ghi thành change request L3 |
+| D-21 | Báo phụ huynh về xu hướng mệt | **Chỉ tổng hợp trong báo cáo cuối tuần**, không báo lẻ tẻ. Không cần ngưỡng. Thay phần "ngưỡng" trong D-03 |
+| D-22 | Mời, gỡ thành viên gia đình (F01-G02-M02) | Đưa vào A-lite ở **mức tối thiểu** |
+| D-23 | Bốn thông số lập lịch | Nghỉ giữa hai phiên học **≥5 phút**; ngày học thêm buổi tối thì hỏi bố mẹ một lần có bớt học ở nhà không, không tự bỏ (theo G7); học thêm ngay sau giờ trường vẫn cần **≥15 phút** phục hồi trước; mỗi bữa chính **≥20 phút**. Nhãn "mặc định chưa kiểm chứng" |
+| D-24 | Hết giai đoạn tạm thời | Về bản mới nhất của hồ sơ chuẩn, không mang phần nới; vẫn tự về khi lịch đang khóa; máy ngoại tuyến thì về đúng ngày |
+| D-25 | Lịch có thông số chưa kiểm chứng có được lưu không? | **Được**, nếu không phạm sàn cứng; luôn hiện nhãn "chưa kiểm chứng" |
+| D-26 | Nút "Con cần giúp đỡ" trên app của con | **Phương án (b):** mặc định không ghi lại, không tự báo gia đình (người gây hại có thể ở trong nhà; khớp REM-HRW). Con được tự chọn gửi "Con cần nói chuyện" tới người lớn con chọn. Chuyên gia duyệt câu chữ |
+| D-27 | Phụ huynh không dùng app | Người quản lý chính không dùng app **một tháng** thì đóng băng tài khoản, gửi thông báo, chờ phụ huynh xác nhận mở lại; tài khoản của con liên kết cũng đóng băng theo. **Không đóng băng** nếu người lớn khác trong gia đình vẫn dùng (chỉ nhắc người quản lý chính). Khi đóng băng, **giữ nguyên dữ liệu**; thời hạn giữ chờ luật sư |
+| D-28 | Phụ huynh rút đồng ý | **Rút phần nào thì chỉ tắt tính năng đó** (ví dụ rút đồng ý ghi mệt thì tắt nút báo mệt, lịch vẫn chạy). Rút toàn bộ thì ngừng thu và tiến tới xóa. Thời hạn xóa chờ luật sư |
+| D-30 | Con nói về tự hại hoặc bấm nút "Con cần giúp đỡ" thì có báo bố mẹ không? | **Không tự ý báo.** App **gợi ý con báo bố mẹ**, có nút gửi sẵn; con không muốn báo bố mẹ thì có thể chọn người lớn khác con tin. Chỉ gửi khi con bấm. Bổ sung cho D-26 |
+| D-29 | Câu hỏi pháp lý mới | Thêm vào `progress/Legal_Question_Pack.md`: rút đồng ý từng phần, thời hạn xóa, đóng băng tài khoản và giữ dữ liệu |
+
+Còn mở: có đưa phần kỹ năng mềm (v5.21, v5.22 của bản đồ kiến thức, hiện chỉ có trong project trên claude.ai) vào repo không.

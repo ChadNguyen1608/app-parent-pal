@@ -27,8 +27,8 @@ Thanh dưới có 3 tab:
 | Thứ tự trong ngày | Pal | Nghỉ phục hồi trước khi học, không có hai khối tải cao liền nhau, chia phiên học theo độ tập trung, khoảng cách bữa, khối nhẹ trước giờ ngủ. Pal tự sửa lỗi thứ tự, không hỏi lại phụ huynh |
 
 3. **Màu cảnh báo chỉ hiện ở bảng quỹ thời gian.** Lịch chi tiết không có màu. Cảnh báo là **một dòng chữ có biểu tượng, nằm ngay dưới ô nhập**, gồm số hiện tại, mốc tham khảo và nguồn. Mốc chưa có nguồn thì ghi "mặc định của Pal". Không dùng hộp thoại bật lên.
-4. **Trần mềm:** dòng cảnh báo đỏ có nút "Giữ mức này". Khi bố mẹ bấm, ô vẫn màu đỏ, dòng chữ đổi thành "bố mẹ đã xác nhận", và Pal không nhắc lại.
-5. **Tín hiệu mới từ con không tính là nhắc lại.** Ví dụ: con báo "Rất mệt" nhiều ngày liền, báo đói, than không có thời gian chơi. Pal báo bố mẹ theo **xu hướng**, không chép nguyên văn lời con, kèm một đề xuất cụ thể.
+4. **Trần mềm:** dòng cảnh báo đỏ có nút "Giữ mức này" (trừ ô Ngủ: không có nút, lịch luôn xếp ngủ ≥ mức tối thiểu; D-02). Khi bố mẹ bấm, ô vẫn màu đỏ, dòng chữ đổi thành "bố mẹ đã xác nhận", và Pal không nhắc lại.
+5. **Tín hiệu mới từ con không tính là nhắc lại.** Ví dụ: con báo "Rất mệt" nhiều ngày liền, báo đói, than không có thời gian chơi. Pal báo bố mẹ theo **xu hướng**, không chép nguyên văn lời con, kèm một đề xuất cụ thể. Riêng mệt: chỉ tổng hợp trong báo cáo cuối tuần, không báo lẻ tẻ (D-03; quy tắc L2).
 
 ## 2. Quỹ thời gian: 6 nhóm
 
@@ -74,11 +74,11 @@ Xem bảng ngưỡng ở mục D của `spec-quy-tac-lap-lich.md`. Màu xét the
 
 - **Áp dụng khi:** bố mẹ nêu một lý do có thời hạn, như ôn thi, chỉ định của bác sĩ, hồi phục sau ốm, thi đấu.
 - **Quy trình:**
-  1. Xác nhận thời hạn. Nếu dài hơn 6 tuần thì cứ 2 tuần xem lại một lần.
+  1. Xác nhận thời hạn, **tối đa 60 ngày** (D-09). Nếu dài hơn 6 tuần thì cứ 2 tuần xem lại một lần.
   2. Cảnh báo nhẹ một lần.
   3. Lập bộ quy tắc tạm thời, ghi rõ những kiểm tra được nới.
   4. Lưu lại lịch cũ.
-  5. Khi hết hạn, báo bố mẹ kèm ba lựa chọn: quay về lịch cũ, nhờ Pal sắp xếp lại, hoặc giữ lịch hiện tại.
+  5. Khi hết hạn, **tự về lịch trước giai đoạn** và báo bố mẹ (D-09; quy tắc J6).
 - **Sàn cố định không bao giờ được nới.**
 - **Ăn uống, giảm cân:** chỉ làm theo chỉ định cụ thể của bác sĩ. Pal không tự đặt số calo hay mục tiêu cân nặng, và không nói về cân nặng với con.
 - **Đề xuất từ con:** giai đoạn ở trạng thái "chờ bố mẹ xác nhận" và chưa áp vào lịch.
@@ -97,7 +97,7 @@ Xem bảng ngưỡng ở mục D của `spec-quy-tac-lap-lich.md`. Màu xét the
   - Tự động: hiện chữ "Tự ghi nhận".
   - Bố mẹ xác nhận: hiện chữ "Chờ bố mẹ".
   - Không cần xác nhận: không có nút.
-- **Hỏi thăm sau giờ học:** Ổn / Hơi mệt / Rất mệt. Nếu con chọn "Rất mệt": kéo dài thời gian nghỉ, bỏ phần học theo định hướng của bố mẹ, chỉ giữ bài cô giao.
+- **Hỏi thăm sau giờ học:** Ổn / Hơi mệt / Rất mệt. Nếu con chọn "Rất mệt": **app không tự đổi lịch** (D-10). App hỏi con có muốn nhắn bố mẹ không; muốn đổi thì đi qua đề xuất (hoặc mong muốn) có điền sẵn gợi ý giảm tải (quy tắc G3).
 - **🍎 Con thấy đói** (đầu tab): ghi giờ con báo. Lần báo đầu trong ngày được gửi vào hàng đề xuất cho bố mẹ, kèm bữa gần nhất và bữa tiếp theo. Với con, app chỉ nhắc uống nước hoặc chờ bữa sắp tới.
 - **Thời tiết ở khối Soạn cặp:** "Ngày mai trời thế nào?" với 4 lựa chọn ☀️ / 🌧 / 🧥 / 🌤. Chọn xong hiện đồ cần mang; sáng hôm sau khối thay đồ nhắc lại.
 - Con **xem được quỹ thời gian** (không sửa) và có nút "Con muốn đề xuất". Đề xuất và báo đói vào hàng chờ ở màn Lên kế hoạch.

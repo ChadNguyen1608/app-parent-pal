@@ -9,7 +9,7 @@ Repo này chứa **tài liệu** của Parent-Pal (thư mục `documents/`) và 
 - Mỗi bước một nhánh, một PR. Không đẩy thẳng lên `main`.
 - Repo công khai: không commit khóa, `.env`, `google-services.json`, khóa ký, dữ liệu thật của trẻ.
 - Khóa Claude API chỉ nằm trong secret của Supabase; app gọi qua Edge Function `pal-chat`, có ẩn danh và lớp an toàn chạy trước.
-- `prototype/index.html` là hành vi chuẩn để chuyển sang app; giữ nguyên, không xóa.
+- `prototype/index.html` là hành vi chuẩn để chuyển sang app; giữ nguyên, không xóa. Từ 15/11/2026, chỗ nào bản thử khác `documents/pal/spec-quy-tac-lap-lich.md` thì theo spec (danh sách ở `prototype/README.md`).
 - Tạo tài khoản, dự án dịch vụ hay phát sinh chi phí: hỏi chủ sản phẩm trước.
 - Ghi kết quả test trên máy thật vào `documents/app/ref-nhat-ky-test.md`.
 
@@ -27,7 +27,7 @@ App đồng hành nuôi con cho phụ huynh trẻ ở Việt Nam. Trung tâm là
 - **Trí nhớ 4 lớp:** hồ sơ, dòng thời gian, việc đang theo dõi để Pal hỏi lại, về chính phụ huynh.
 - **Hai phạm vi:** riêng (chỉ người kể thấy) và cả nhà. Cảm xúc của phụ huynh mặc định là riêng. Không đưa dữ liệu riêng của người này cho người lớn khác.
 - **Minh bạch:** mọi thứ Pal nhớ phải hiện cho phụ huynh thấy và sửa, xóa, đổi phạm vi được.
-- **Lớp an toàn chạy trước AI.** Tình huống khẩn chỉ đưa thông tin hỗ trợ (111 bảo vệ trẻ em, 113 công an, 115 cấp cứu).
+- **Lớp an toàn chạy trước AI.** Tình huống khẩn chỉ đưa thông tin hỗ trợ. Với người lớn: 111 bảo vệ trẻ em, 113 công an, 115 cấp cứu. Với trẻ: "nói với người lớn con tin", có thể kèm 111 (OD-03, D-06).
 - Không gửi tên con, trường, địa chỉ ra API hay công cụ tìm kiếm nước ngoài khi chưa ẩn danh.
 - Có nhiều con mà phụ huynh không nêu tên: **hỏi lại**, không đoán.
 
@@ -47,7 +47,7 @@ Mục lục và quy ước đặt tên: `documents/README.md`.
 | `documents/knowledge/ref-muc-quan-tam-tim-kiem.md` | Mức quan tâm tìm kiếm các phương pháp (Google Trends), thứ tự ưu tiên |
 | `documents/knowledge/procedures/` | Thủ tục hành chính, xếp theo lĩnh vực (không theo tuổi); gồm các chương trình, chính sách hỗ trợ của Nhà nước cho trẻ và gia đình (tiêm chủng mở rộng, bảo hiểm y tế, học phí, hỗ trợ học tập, trợ cấp, bảo vệ trẻ em) |
 | `documents/pal/guide-cach-pal-tra-loi.md` | Cách Pal trả lời câu hỏi lập kế hoạch |
-| `documents/pal/spec-quy-tac-lap-lich.md` | **Quy tắc lập lịch của Pal, nguồn chuẩn.** Đổi quy tắc thì sửa ở đây trước, rồi mới sửa prompt trong `prototype/index.html` và skill `lap-lich-sinh-hoat-tre` |
+| `documents/pal/spec-quy-tac-lap-lich.md` | **Quy tắc lập lịch của Pal, nguồn chuẩn.** Đổi quy tắc thì sửa ở đây trước, rồi mới sửa skill `lap-lich-sinh-hoat-tre` và mã app. Bản thử `prototype/index.html` giữ nguyên từ 15/11/2026 |
 | `documents/pal/spec-quy-thoi-gian-va-tab-cua-con.md` | Đặc tả quỹ thời gian, hoạt động cố định, giai đoạn tạm thời, tab của con |
 | `documents/pal/ref-tai-va-phuc-hoi-trong-ngay.md` | Căn cứ về thứ tự hoạt động, tải và phục hồi (NT-01 đến NT-09) |
 | `prototype/` | Bản thử "Pal – Lập lịch cho con" (`index.html`) |

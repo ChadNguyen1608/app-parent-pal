@@ -208,10 +208,30 @@ Mỗi câu hỏi có bốn phần: (a) bối cảnh xử lý, (b) câu hỏi c�
 - **(c) Vì sao quan trọng:** dùng để kiểm Package D và chặn lệch mục đích (PA-REG-6).
 - **(d) Định dạng:** danh mục điều cấm hoặc điều kiện, kèm điều khoản.
 
+### LQ-14. Rút đồng ý từng phần (D-28)
+
+- **(a) Bối cảnh:** chủ sản phẩm chốt hướng "rút phần nào thì chỉ tắt tính năng đó". Ví dụ phụ huynh rút đồng ý ghi việc con báo mệt thì app tắt nút báo mệt, lịch vẫn chạy. Rút toàn bộ thì app ngừng thu và tiến tới xóa.
+- **(b) Câu hỏi:**
+  1. Cách rút từng phần như trên có đúng luật không? Có cần tách đồng ý theo từng mục đích ngay từ đầu không?
+  2. Sau khi rút, dữ liệu cũ của phần đã rút phải xóa trong bao lâu? Có được giữ bản đã ẩn danh để thống kê không?
+  3. Trẻ ở độ tuổi nào thì phải hỏi thêm ý kiến của chính trẻ khi rút hay cho lại đồng ý?
+- **(c) Vì sao quan trọng:** quyết định luồng G6, G7 của User Flow 4.2 và cấu trúc lưu dữ liệu theo mục đích.
+- **(d) Định dạng:** CÓ/KHÔNG cho từng câu, thời hạn cụ thể, điều khoản.
+
+### LQ-15. Đóng băng tài khoản khi phụ huynh không dùng app (D-27)
+
+- **(a) Bối cảnh:** người quản lý chính không dùng app một tháng thì tài khoản và tài khoản liên kết của con đóng băng, có thông báo, chờ phụ huynh xác nhận mở lại. Không đóng băng nếu người lớn khác trong gia đình vẫn dùng. Khi đóng băng, dữ liệu giữ nguyên.
+- **(b) Câu hỏi:**
+  1. Giữ dữ liệu của trẻ khi tài khoản đóng băng được tối đa bao lâu? Hết hạn thì phải xóa hay chỉ cần ẩn?
+  2. Có phải báo trước bao lâu trước khi đóng băng hay xóa không, báo qua kênh nào?
+  3. Việc ngừng app của con (trẻ đang dùng lịch) khi phụ huynh không dùng có rủi ro pháp lý nào không?
+- **(c) Vì sao quan trọng:** luồng G9, G10 của User Flow 4.2; thời hạn lưu là một phần của cổng H4.
+- **(d) Định dạng:** thời hạn cụ thể, điều khoản.
+
 ## 3. Thứ tự ưu tiên đề xuất cho luật sư
 
 1. LQ-01, LQ-02, LQ-11: căn cứ xử lý và đồng ý. Gỡ cổng dữ liệu thật và pilot.
-2. LQ-04: thời hạn xóa (H4, cổng chặn phát hành).
+2. LQ-04, LQ-14, LQ-15: thời hạn xóa, rút đồng ý, đóng băng (H4, cổng chặn phát hành).
 3. LQ-08, LQ-05: chuyển ra nước ngoài và DPIA.
 4. LQ-06, LQ-07, LQ-09, LQ-10: các loại dữ liệu nhạy cảm và luồng an toàn.
 5. LQ-03, LQ-12, LQ-13.
