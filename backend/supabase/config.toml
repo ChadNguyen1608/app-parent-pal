@@ -1,0 +1,50 @@
+# Cấu hình Supabase CLI cục bộ, tối thiểu (T0.2). Chạy từ thư mục backend/ :  supabase start
+# (cần Docker; không dùng được trong sandbox). Chưa liên kết dự án đám mây nào (LQ-08 chưa chốt).
+# Chưa kiểm thử bằng CLI thật trong sandbox; xem backend/supabase/README.md.
+project_id = "parent-pal-nac1"
+
+[api]
+enabled = true
+port = 54321
+# private KHÔNG nằm trong danh sách này (Architecture §6.1): không mở qua PostgREST.
+schemas = ["public", "graphql_public", "app"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17   # mã chỉ dùng SQL chuẩn, thử trên PG 16; chỉnh khớp dự án đám mây khi có (LQ-08)
+
+[db.migrations]
+enabled = true
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed/*.sql"]
+
+[realtime]
+enabled = false
+
+[studio]
+enabled = false
+
+[inbucket]
+enabled = false
+
+[storage]
+enabled = false
+
+[edge_runtime]
+enabled = false
+
+[analytics]
+enabled = false
+
+[auth]
+enabled = true
+site_url = "http://127.0.0.1:3000"
+jwt_expiry = 3600
+enable_signup = true
+# Máy con đăng nhập ẩn danh (Architecture / D-46b còn chờ chủ sản phẩm; giả định ẩn danh).
+enable_anonymous_sign_ins = true
