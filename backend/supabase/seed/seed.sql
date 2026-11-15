@@ -48,3 +48,11 @@ insert into private.checkin_responses (child_id, local_date, choice, day_feature
   ('00000000-0000-4000-8000-000000000301', '2025-10-02', 'hoi_met', '{hoc_them_toi,the_thao}',   '2025-10-02 20:20+07', '10000000-0000-4000-8000-000000000004'),
   ('00000000-0000-4000-8000-000000000301', '2025-10-03', 'bo_qua',  '{}',                        '2025-10-03 20:05+07', '10000000-0000-4000-8000-000000000005'),
   ('00000000-0000-4000-8000-000000000301', '2025-10-04', 'on',      '{}',                        '2025-10-04 20:00+07', '10000000-0000-4000-8000-000000000006');
+
+-- T1.1: lịch sử mode của bé Na (chị Hoa đổi UNSET -> CHILD_EXECUTED) và một lời mời giả (tính năng mời đang tắt).
+insert into app.mode_history (child_id, old_mode, new_mode, changed_by) values
+  ('00000000-0000-4000-8000-000000000301', 'UNSET', 'CHILD_EXECUTED', '00000000-0000-4000-8000-000000000201');
+
+insert into app.invitations (household_id, invited_by, role, code_hmac, expires_at) values
+  ('00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-000000000201', 'OBSERVER',
+   'seed-fake-invite-hmac-0001', now() + interval '72 hours');
