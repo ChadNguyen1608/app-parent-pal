@@ -9,7 +9,7 @@ type VariantInfo = {
   name: string;
   slug: string;
   scheme: string;
-  /** ĐỀ XUẤT, chưa chốt: đổi được trước khi phát hành, sau đó không đổi được nữa. */
+  /** Đã chốt (D-51, 16/11/2026). Không đổi sau khi phát cho người thử. */
   applicationId: string;
   iconBackground: string;
   /** Màn đo nhắc giờ (src/lab) chỉ bật ở bản nội bộ. */
@@ -21,7 +21,7 @@ export const VARIANTS: Record<Variant, VariantInfo> = {
     name: 'Parent-Pal Phụ huynh',
     slug: 'parent-pal-parent',
     scheme: 'parentpal-parent',
-    applicationId: 'vn.parentpal.parent',
+    applicationId: 'vn.parentbestpal.parent',
     iconBackground: '#E6F4FE',
     lab: true,
   },
@@ -29,7 +29,7 @@ export const VARIANTS: Record<Variant, VariantInfo> = {
     name: 'Parent-Pal Con',
     slug: 'parent-pal-child',
     scheme: 'parentpal-child',
-    applicationId: 'vn.parentpal.child',
+    applicationId: 'vn.parentbestpal.child',
     iconBackground: '#FFF3D6',
     lab: true,
   },

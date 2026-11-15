@@ -8,7 +8,7 @@ Cài bằng APK nội bộ, người thử tự tải (D-48); không đưa APK v
 | | parent | child |
 |---|---|---|
 | Tên app | Parent-Pal Phụ huynh | Parent-Pal Con |
-| applicationId (ĐỀ XUẤT, chưa chốt) | `vn.parentpal.parent` | `vn.parentpal.child` |
+| applicationId (đã chốt D-51) | `vn.parentbestpal.parent` | `vn.parentbestpal.child` |
 | Tab | Lịch tuần, Lên kế hoạch, Tuần qua, Gia đình | Hôm nay, Tuần của con, Của con |
 | Thanh trên | (chưa có) | nút "Con cần giúp đỡ" mở màn lời tĩnh + gọi 111, không gửi tin (D-43) |
 
