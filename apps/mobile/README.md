@@ -114,13 +114,23 @@ Chưa có migration cho `pair_*`, `pin_set`, `unlink_device` ở `main`. Client 
 - PIN 6 số (`PIN_LENGTH`, Tech Spec T-03, đề xuất nội bộ). `pin_set` không nhận PIN cũ nên PA-14 "đổi PIN" chưa hỏi PIN cũ.
 - Máy con biết `child_id` của mình qua `pair_accept` hoặc đọc `app.device_bindings` (`state = 'HIEU_LUC'`, `device_user_id` = chính nó), dùng cho `unlink_device`.
 
+### Đăng nhập bằng link trong thư (D-59)
+
+Trong lúc phát triển, thư dùng máy chủ thư mặc định của Supabase và chưa sửa được mẫu, nên thư có thể chỉ có link, không có mã 6 số. PA-01 hỗ trợ cả hai: nhập mã 6 số nếu thư có mã, hoặc bấm link trên máy đang cài app.
+
+- Scheme deep link (đã đổi trong `app.config.ts`): `parentbestpal-parent` và `parentbestpal-child` (trước là `parentpal-*`). Link gửi đi là `parentbestpal-parent://auth-callback` (tạo bằng `Linking.createURL('auth-callback')`, truyền vào `signInWithOtp` qua `options.emailRedirectTo`). Trong Expo Go/dev client, URL có dạng `exp://.../--/auth-callback`; cũng phải được thêm vào danh sách cho phép khi thử kiểu đó.
+- Cách hoàn tất phiên (supabase-js 2.119): client đặt `flowType: 'pkce'` nên link về `...?code=...` và app gọi `exchangeCodeForSession(code)`; token không nằm trên URL. Chọn PKCE vì mẫu thư mặc định không có `token_hash` (cách `verifyOtp({ token_hash, type })`, vẫn được xử lý nếu sau này mẫu thư sửa được). PKCE cần mở link trên đúng máy đã xin link (mã xác minh lưu trong AsyncStorage); mở trên máy khác sẽ báo lỗi, người dùng xin link mới.
+- Bắt URL: `src/state/app.tsx` (`Linking.getInitialURL` và sự kiện `url`) rồi `parseAuthLink` (`src/data/auth-link.ts`, có test). Mỗi URL chỉ xử lý một lần. Link hết hạn hoặc sai hiện lỗi tiếng Việt ở PA-01. Route `src/app/auth-callback.tsx` chỉ chuyển về `/` để router không báo lỗi.
+- Việc của chủ sản phẩm: thêm `parentbestpal-parent://auth-callback` vào Supabase, Authentication, URL Configuration, Redirect URLs (thêm cả URL `exp://...` nếu thử bằng dev client qua Expo). Chưa thêm thì Supabase bỏ qua `emailRedirectTo` và dẫn về Site URL.
+- Mock: `parentbestpal-parent://auth-callback?code=mock-link` (sau khi xin mã) đăng nhập được.
+
 ## Còn lại của T1.7
 
 Cần làm trên dự án Supabase (chủ sản phẩm hoặc người có quyền; task này không đụng đám mây):
 
 1. Bật schema `app` trong Settings → API → Exposed schemas (để `supabase.schema('app')` chạy).
 2. Bật Authentication → Sign In / Providers → Anonymous sign-ins (máy con).
-3. Bật Email provider, sửa mẫu thư "Magic Link / Confirm signup" thêm `{{ .Token }}` để gửi mã 6 số (xem docs Supabase: Passwordless email logins). Mặc định thư chỉ có liên kết. Độ dài OTP mặc định 6 số, khớp `OTP_LENGTH`. Dùng SMTP riêng cho gửi thật: dịch vụ mặc định giới hạn rất thấp số thư mỗi giờ.
+3. Bật Email provider. Khi sửa được mẫu thư: sửa mẫu "Magic Link / Confirm signup" thêm `{{ .Token }}` để gửi mã 6 số (xem docs Supabase: Passwordless email logins). Mặc định thư chỉ có liên kết. Độ dài OTP mặc định 6 số, khớp `OTP_LENGTH`. Dùng SMTP riêng cho gửi thật: dịch vụ mặc định giới hạn rất thấp số thư mỗi giờ.
 4. Khớp chữ ký thật của `pair_*`, `pin_set`, `unlink_device` khi T1.5, T1.6 vào `main` (mục trên).
 5. Chưa chạy trên máy thật hay giả lập Android: chỉ kiểm `tsc`, `expo config` hai biến thể, `expo export --platform android` (bundle được, cả hai biến thể) và test node. Cần thử tay: chuyển màn tự động khi đổi giai đoạn (`Stack.Protected`), bàn phím, đọc màn hình.
 6. Chưa làm: PA-02 (đồng ý), PA-37 (không vào được tài khoản; với OTP có nút "Gửi lại mã"), PA-15 (thông báo ghép/hủy), PA-38 danh sách nhiều phiên, đổi PIN hỏi PIN cũ, CA-15 (xin quyền thông báo), CA-20, PA-03 đầy đủ. Câu chữ CA-16 bám IA 4.6, chờ chủ sản phẩm duyệt.

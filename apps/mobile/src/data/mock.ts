@@ -2,7 +2,7 @@
 // Bật bằng EXPO_PUBLIC_API_MOCK=1. Dữ liệu mất khi đóng app. Chỉ dùng tên giả.
 //
 // Quy ước của bản giả lập (khác thật ở chỗ hai app là hai tiến trình riêng nên không thấy nhau):
-//  - Mã OTP đúng luôn là 123456.
+//  - Mã OTP đúng luôn là 123456. Link thư giả lập: <scheme>://auth-callback?code=mock-link.
 //  - Parent App: mã ghép đúng luôn là 123456 (mã khác: NOT_FOUND). PIN mặc định của hộ là 123456 cho tới khi đặt.
 //  - Child App: lần gọi pair_accept đầu trả WAITING, từ lần thứ hai trả PAIRED (giả vờ bố mẹ vừa nhập mã).
 import { toApiError } from './errors.ts';
@@ -10,6 +10,7 @@ import type { AcceptResult, Api, Child, ChildInput, Home, PairCode, SessionInfo 
 import { checkPin } from './validate.ts';
 
 export const MOCK_OTP = '123456';
+export const MOCK_LINK_CODE = 'mock-link'; // ?code=mock-link trong link giả lập
 export const MOCK_PAIR_CODE = '123456';
 export const MOCK_MAX_PIN_TRIES = 5;
 
@@ -84,6 +85,16 @@ export function createMockApi(opts: MockOptions = {}): Api {
         }
         pendingEmail = null;
         const s = { userId: 'mock-parent', email: email.trim().toLowerCase(), isAnonymous: false };
+        setSession(s);
+        return s;
+      },
+      async completeFromLink(link) {
+        await pause();
+        if (link.kind !== 'code' || link.code !== MOCK_LINK_CODE) {
+          throw toApiError({ code: 'otp_expired', message: 'link hết hạn' });
+        }
+        const s = { userId: 'mock-parent', email: pendingEmail ?? 'link@example.com', isAnonymous: false };
+        pendingEmail = null;
         setSession(s);
         return s;
       },

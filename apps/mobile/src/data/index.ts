@@ -27,6 +27,8 @@ export function getApi(): Api | null {
         autoRefreshToken: true,
         persistSession: true,
         detectSessionInUrl: false,
+        // PKCE: link trong thư trả về ?code=..., không để token trên URL. Đổi bằng exchangeCodeForSession.
+        flowType: 'pkce',
       },
     });
     // Chỉ tự làm mới token khi app ở nền trước.

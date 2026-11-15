@@ -1,8 +1,11 @@
 // Trạng thái dùng chung: api, phiên đăng nhập, hộ (phụ huynh) hoặc giai đoạn ghép (máy con).
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import * as Linking from 'expo-linking';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
 import { getApi } from '../data';
+import { parseAuthLink } from '../data/auth-link';
+import { errorMessage } from '../data/errors';
 import type { Api, Home, SessionInfo } from '../data/types';
 import { APP_VARIANT } from '../variant';
 
@@ -19,6 +22,9 @@ type Ctx = {
   home: Home;
   refreshHome: () => Promise<void>;
   signOut: () => Promise<void>;
+  /** Lỗi khi hoàn tất đăng nhập từ link trong thư (D-59), hiện ở PA-01. */
+  linkError: string | null;
+  clearLinkError: () => void;
   // máy con
   childStage: ChildStage;
   childId: string | null;
@@ -52,6 +58,29 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
   const [childStage, setChildStage] = useState<ChildStage>('loading');
 
   const isParent = APP_VARIANT === 'parent';
+  const [linkError, setLinkError] = useState<string | null>(null);
+  const handledUrl = useRef<string | null>(null);
+
+  // Link đăng nhập trong thư mở app (D-59): hoàn tất phiên. Chỉ app phụ huynh.
+  useEffect(() => {
+    if (!isParent) return;
+    let alive = true;
+    const handle = (url: string | null) => {
+      const link = parseAuthLink(url);
+      if (!link || !url || handledUrl.current === url) return;
+      handledUrl.current = url; // mã trong link chỉ dùng được một lần
+      setLinkError(null);
+      api.auth.completeFromLink(link).catch((e) => {
+        if (alive) setLinkError(`Liên kết đăng nhập không dùng được. ${errorMessage(e)} Bạn xin liên kết hoặc mã mới nhé.`);
+      });
+    };
+    void Linking.getInitialURL().then(handle);
+    const sub = Linking.addEventListener('url', (ev) => handle(ev.url));
+    return () => {
+      alive = false;
+      sub.remove();
+    };
+  }, [api, isParent]);
 
   // Khởi động: đọc phiên đã lưu và theo dõi thay đổi.
   useEffect(() => {
@@ -152,6 +181,8 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
         await api.auth.signOut();
         setSession(null);
       },
+      linkError,
+      clearLinkError: () => setLinkError(null),
       childStage,
       childId,
       onPaired: (id) => {
@@ -171,7 +202,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
         setChildStage('unpaired');
       },
     }),
-    [api, session, parentStage, home, refreshHome, childStage, childId],
+    [api, session, parentStage, home, refreshHome, linkError, childStage, childId],
   );
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;

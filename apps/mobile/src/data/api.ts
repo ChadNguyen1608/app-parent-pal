@@ -59,12 +59,22 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
         const { data } = client.auth.onAuthStateChange((_event, s) => cb(toSessionInfo(s)));
         return () => data.subscription.unsubscribe();
       },
-      async sendEmailOtp(email) {
+      async sendEmailOtp(email, redirectTo) {
         // shouldCreateUser: true để người mới đăng ký bằng đúng luồng này (PA-01 gộp đăng ký và đăng nhập).
-        await authCall(() => client.auth.signInWithOtp({ email: email.trim(), options: { shouldCreateUser: true } }));
+        await authCall(() => client.auth.signInWithOtp({ email: email.trim(), options: { shouldCreateUser: true, ...(redirectTo ? { emailRedirectTo: redirectTo } : {}) } }));
       },
       async verifyEmailOtp(email, token) {
         const data = await authCall(() => client.auth.verifyOtp({ email: email.trim(), token: token.trim(), type: 'email' }));
+        return needSession(toSessionInfo(data.session));
+      },
+      async completeFromLink(link) {
+        if (link.kind === 'error') {
+          throw toApiError({ code: 'otp_expired', message: 'link' });
+        }
+        const data =
+          link.kind === 'code'
+            ? await authCall(() => client.auth.exchangeCodeForSession(link.code))
+            : await authCall(() => client.auth.verifyOtp({ token_hash: link.tokenHash, type: link.type === 'magiclink' ? 'magiclink' : 'email' }));
         return needSession(toSessionInfo(data.session));
       },
       async signInAnonymously() {

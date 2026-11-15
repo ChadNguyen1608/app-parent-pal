@@ -114,3 +114,19 @@ test('đăng nhập email OTP dùng type email', async () => {
   assert.deepEqual(raw.auth.lastOtp, { email: 'a@b.vn', token: '123456', type: 'email' });
   assert.deepEqual(s, { userId: 'u1', email: 'a@b.vn', isAnonymous: false });
 });
+
+test('emailRedirectTo được truyền; link đổi phiên bằng exchangeCodeForSession hoặc verifyOtp token_hash', async () => {
+  const { client, raw } = fakeClient({});
+  const session = { user: { id: 'u2', email: 'c@d.vn', is_anonymous: false } };
+  const auth = raw.auth as Record<string, unknown>;
+  const seen: unknown[] = [];
+  auth.exchangeCodeForSession = async (c: string) => (seen.push(c), { data: { session }, error: null });
+  const api = createSupabaseApi(client);
+  await api.auth.sendEmailOtp('a@b.vn', 'parentbestpal-parent://auth-callback');
+  assert.deepEqual(raw.auth.lastOtp, { email: 'a@b.vn', options: { shouldCreateUser: true, emailRedirectTo: 'parentbestpal-parent://auth-callback' } });
+  assert.equal((await api.auth.completeFromLink({ kind: 'code', code: 'c1' })).userId, 'u2');
+  assert.deepEqual(seen, ['c1']);
+  await api.auth.completeFromLink({ kind: 'token_hash', tokenHash: 'h', type: 'email' });
+  assert.deepEqual(raw.auth.lastOtp, { token_hash: 'h', type: 'email' });
+  await assert.rejects(api.auth.completeFromLink({ kind: 'error', errorCode: 'otp_expired' }), (e: unknown) => e instanceof ApiError && e.code === 'OTP_INVALID');
+});

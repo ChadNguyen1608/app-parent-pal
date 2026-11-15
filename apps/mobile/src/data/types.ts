@@ -1,6 +1,8 @@
 // Kiểu dữ liệu và giao diện của lớp gọi máy chủ (T1.7). Tên hàm khớp RPC schema `app`.
 // Chữ ký các RPC ghép máy/PIN đang làm ở nhánh khác (T1.5, T1.6): xem README mục "Giả định về RPC".
 
+import type { AuthLink } from './auth-link.ts';
+
 export type SessionInfo = { userId: string; email: string | null; isAnonymous: boolean };
 
 export type PairState = 'NONE' | 'PENDING' | 'PAIRED';
@@ -38,7 +40,10 @@ export interface Api {
     getSession(): Promise<SessionInfo | null>;
     onChange(cb: (s: SessionInfo | null) => void): () => void;
     /** D-49: gửi mã 6 số về email, không mật khẩu. */
-    sendEmailOtp(email: string): Promise<void>;
+    /** redirectTo: URL deep link của app để thư có link (magic link) mở lại đúng app. */
+    sendEmailOtp(email: string, redirectTo?: string): Promise<void>;
+    /** Hoàn tất đăng nhập từ link trong thư (D-59). */
+    completeFromLink(link: AuthLink): Promise<SessionInfo>;
     verifyEmailOtp(email: string, token: string): Promise<SessionInfo>;
     signInAnonymously(): Promise<SessionInfo>;
     signOut(): Promise<void>;

@@ -1,6 +1,8 @@
+import * as Linking from 'expo-linking';
 import { useState } from 'react';
 import { View } from 'react-native';
 
+import { AUTH_CALLBACK_PATH } from '@/data/auth-link';
 import { OTP_LENGTH, checkEmail, checkOtp } from '@/data/validate';
 import { useApp } from '@/state/app';
 import { Btn, Field, H1, Notice, P, Screen } from '@/ui/kit';
@@ -8,7 +10,7 @@ import { useAction } from '@/ui/useAction';
 
 // PA-01 Đăng ký / Đăng nhập (D-49): email nhận mã 6 số, không mật khẩu. Người mới và người cũ dùng cùng một luồng.
 export default function DangNhap() {
-  const { api } = useApp();
+  const { api, linkError, clearLinkError } = useApp();
   const [step, setStep] = useState<'email' | 'otp'>('email');
   const [email, setEmail] = useState('');
   const [token, setToken] = useState('');
@@ -21,10 +23,11 @@ export default function DangNhap() {
     const bad = checkEmail(email);
     setFieldError(bad);
     if (bad) return;
-    const ok = await send.run(() => api.auth.sendEmailOtp(email));
+    clearLinkError();
+    const ok = await send.run(() => api.auth.sendEmailOtp(email, Linking.createURL(AUTH_CALLBACK_PATH)));
     if (ok) {
       setToken('');
-      setSentNote(`Mình đã gửi mã ${OTP_LENGTH} số tới ${email.trim()}. Nếu chưa thấy, bạn xem cả mục thư rác.`);
+      setSentNote(`Mình đã gửi mã ${OTP_LENGTH} số tới ${email.trim()}. Thư có thể có mã hoặc có liên kết: có mã thì nhập mã dưới đây, có liên kết thì bấm vào liên kết trên máy này. Nếu chưa thấy, bạn xem cả mục thư rác.`);
       setStep('otp');
     }
   }
@@ -42,6 +45,7 @@ export default function DangNhap() {
   return (
     <Screen>
       <H1>Chào bạn</H1>
+      {linkError ? <Notice>{linkError}</Notice> : null}
       {step === 'email' ? (
         <>
           <P>Parent-Pal giúp bố mẹ sắp lịch sinh hoạt cho con. Bạn đăng ký hoặc đăng nhập bằng email, không cần mật khẩu.</P>
