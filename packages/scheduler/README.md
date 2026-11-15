@@ -41,7 +41,7 @@ Quy tắc nguồn: `documents/pal/spec-quy-tac-lap-lich.md`; nghiệp vụ: Busi
 | `rules-v2.test.ts` | TC-D02-1..5 | D-02, C1, D6, D4 | AC-01, 02, 03 |
 | | TC-D08-1 | D-08 (PR-01..PR-21) | |
 | | TC-D09-1..14 | D-09, J2, J4, J5, J6, OD-02, B01-PS-OD-04 | AC-12..17 |
-| | TC-D10-1..7, TC-D03-1 | D-10, OD-A7, D-03 (hồi quy của `trend` cũ) | |
+| | TC-D10-1..7 | D-10, OD-A7 | |
 | | TC-B1-1, 2 | B-1, C3, F4 (nghỉ ≥5′) | AC-05 |
 | | TC-B2-1 | B-2, G7 | AC-07 |
 | | TC-DET-1 | Tất định | AC-06 |
@@ -58,12 +58,12 @@ Quy tắc nguồn: `documents/pal/spec-quy-tac-lap-lich.md`; nghiệp vụ: Busi
 - **B-11 `kind`**: bộ xếp gán `kind` cho mọi khối; bộ kiểm đọc `kind`, `the_thao`, `man_hinh`. Regex tiếng Việt chỉ còn trong `inferLegacyKind()` cho lịch cũ không có `kind`. Test chứng minh cùng kết quả khi bỏ `kind` ở 8 hồ sơ.
 - **B-11c**: `tap_muon` bắt cả buổi tập kết thúc sau giờ tắt đèn (spike bỏ lọt). Thử đột biến 12/12 (spike 11/12). Lỗi của ca đột biến spike: khối "Tắt đèn" bị chính hàm `put` xóa khi giờ dời; đã sửa ca (đặt cả `bat_dau` và `ket_thuc`).
 - **Bảng `kind` mở rộng so với BL §2.2**: tách `bua_nha` thành `an_trua` và `an_toi` (bộ kiểm C7 cần biết có ăn tối), thêm `an_sang`; `bua_phu` dùng cả ở trường và ở nhà.
-- **D-37**: thêm `trendByDayType`, `dayTypesOfDate`. `trend()` cũ giữ để TC-D03-1 (hồi quy) còn chạy.
+- **D-37**: thêm `trendByDayType`, `dayTypesOfDate`. `trend()` cũ (theo thứ, có ngưỡng) và TC-D03-1 đã bỏ vì D-21, D-37 thay BR-133 phần "theo thứ" và BR-135; còn 31 test TC từ spike.
 - Golden so sánh giờ, tên, tải, nhóm, màn hình; không so `ghi_chu` và `kind` (trường mới). Golden khớp 8/8 ngay từ lần port đầu: không có khác biệt về giờ hay tên khối.
 
 ## Việc còn lại
 
-1. **Xóa `trend()` cũ** và TC-D03-1 khi chủ sản phẩm xác nhận bỏ BR-133 (phần "theo thứ") và BR-135 (D-37 đã thay). Chưa xóa vì task yêu cầu giữ nguyên 32 test.
+1. ~~Xóa `trend()` cũ~~: đã làm (D-37).
 2. **Loại ngày (D-37)**: tập thẻ `DAY_TYPES` và mốc "buổi tối" từ 17:00 (`EVENING_FROM_MIN`) là mặc định tôi chọn, nhãn chưa kiểm chứng; cần chủ sản phẩm chốt danh sách loại ngày cho báo cáo tuần (BR-NTF-059).
 3. **Phân loại hoạt động đầu vào** (`scheduler.ts`, nhánh `Học thêm:` / `Năng khiếu:`) vẫn dùng regex `STUDY` trên tên hoạt động khi `loai` không phải `the_thao`/`hoc_them`. Nên chuyển sang dùng `loai` bắt buộc (E6) khi có form nhập.
 4. `inferLegacyKind` chỉ xấp xỉ regex cũ; chưa có dữ liệu PROTO thật để đối chiếu ngoài 8 hồ sơ.

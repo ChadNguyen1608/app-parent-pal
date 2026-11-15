@@ -131,12 +131,7 @@ test("TC-D10-6 Lịch tuần giống hệt trước và sau khi con báo Rất m
   const before = JSON.stringify(scheduleWeek(base).plan); FT.onCheckin({ choice: "rat_met", mode: "CHILD_DIRECTED", date: "2027-01-05", day: "T3" });
   assert.equal(JSON.stringify(scheduleWeek(base).plan), before);
 });
-test("TC-D03-1 Xu hướng 14 ngày: ngoài cửa sổ bị loại; ngưỡng chưa chốt → không gửi; không có chữ của con", () => {
-  const recs = [{ choice: "rat_met", date: "2027-01-01", day: "T6" }, { choice: "rat_met", date: "2027-01-12", day: "T3" }, { choice: "rat_met", date: "2027-01-14", day: "T5" }, { choice: "on", date: "2027-01-13", day: "T4" }];
-  const tr = FT.trend(recs, "2027-01-15", { T3: ["hoc_them_toi"], T5: ["hoc_them_toi"] });
-  assert.equal(tr.count, 2); assert.equal(tr.by_schedule_feature.hoc_them_toi, 2); assert.equal(tr.notify_parent, false); assert.equal(tr.status, "NGUONG_CHUA_CHOT");
-  assert.ok(!JSON.stringify(tr).includes("text"));
-});
+// TC-D03-1 (trend theo thứ, ngưỡng) đã bỏ theo D-21, D-37; thay bằng test/trend-d37.test.ts.
 test("TC-D10-7 Lựa chọn không hợp lệ bị từ chối", () => { assert.equal(FT.onCheckin({ choice: "buon" }).ok, false); });
 
 // ---------- B-1 / B-2 (mặc định fail-safe) ----------

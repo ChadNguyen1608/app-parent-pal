@@ -97,7 +97,7 @@ const RULES: Rule[] = [
   R("D-02", "hard", "yes", "OD 15/11", "validator", "Ô Ngủ không có 'Giữ mức này'; ngủ không được giữ dưới mức tối thiểu", "budgetBoard().ngu.giu_muc=false; confirmKeep('ngu') → từ chối"),
   R("D-09", "hard", "yes", "OD 15/11", "phase", "Giai đoạn tạm thời tối đa 60 ngày; hết hạn tự về hồ sơ lịch trước giai đoạn", "validatePhase(): >60 → TU_CHOI; tickPhases(): HET_HAN → active = ho_so_truoc"),
   R("D-10", "hard", "yes", "OD 15/11", "fatigue", "'Rất mệt' không tự đổi lịch; đổi phải qua đề xuất/mong muốn theo chế độ", "onCheckin() không có quyền ghi lịch; schedule_changed luôn false"),
-  R("D-03", "n/a", "partly", "OD 15/11", "fatigue", "Báo bố mẹ xu hướng mệt liên quan đến lịch, không báo cảm xúc; con được biết", "trend(): đếm theo thứ/đặc điểm lịch; ngưỡng UNKNOWN → chưa gửi"),
+  R("D-03", "n/a", "partly", "OD 15/11", "fatigue", "Báo bố mẹ xu hướng mệt liên quan đến lịch, không báo cảm xúc; con được biết", "trendByDayType(): gộp theo loại ngày, từ 1 lần, chỉ trong báo cáo tuần (D-21, D-37)"),
   R("D-11", "n/a", "yes", "OD 15/11", "none", "Con phải có máy; không có thì chỉ lập lịch phía phụ huynh", "Cờ child_device=false: không đặt nhắc trên máy con, không có hỏi thăm/Xong của con"),
   R("D-08", "n/a", "yes", "OD 15/11", "scheduler", "Thông số dùng params.json của spike, nhãn mặc định chưa kiểm chứng", "PARAMS[k].status = mac_dinh_chua_kiem_chung"),
   R("P6-OD-01", "hard", "yes", "OD", "phase", "Nới cùng constraint liên tục tối đa 60 ngày (kể cả đổi purpose); ≥7 ngày trống giữa ngoại lệ tương tự"),
