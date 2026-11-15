@@ -34,8 +34,15 @@ export function parseGrade(text: string): { grade: number | null; error: string 
 
 export function checkPin(pin: string, confirm?: string): string | null {
   if (!new RegExp(`^\\d{${PIN_LENGTH}}$`).test(pin)) return `PIN gồm ${PIN_LENGTH} số.`;
+  // Chỉ kiểm "dễ đoán" khi ĐẶT PIN mới (có ô nhập lại). Khi nhập PIN để hủy kết nối thì không chặn ở máy.
+  if (confirm !== undefined && isEasyPin(pin)) return 'PIN quá dễ đoán. Hãy chọn PIN khác.';
   if (confirm !== undefined && confirm !== pin) return 'Hai lần nhập PIN chưa giống nhau.';
   return null;
+}
+
+/** Giống private.pin_check_format ở máy chủ (migration T1.5): cùng một số, hoặc dãy tăng/giảm dần liên tiếp. */
+export function isEasyPin(pin: string): boolean {
+  return /^(.)\1+$/.test(pin) || '01234567890123456789'.includes(pin) || '98765432109876543210'.includes(pin);
 }
 
 export function checkPairCode(code: string): string | null {
