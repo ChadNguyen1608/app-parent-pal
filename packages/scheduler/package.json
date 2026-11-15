@@ -1,1 +1,10 @@
-{ "name": "@parent-pal/scheduler", "private": true, "type": "module", "version": "0.0.0" }
+{
+  "name": "@parent-pal/scheduler",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "node --experimental-strip-types --test \"test/**/*.test.ts\""
+  }
+}
