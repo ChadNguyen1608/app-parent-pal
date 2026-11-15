@@ -1,12 +1,13 @@
 // Lớp gọi máy chủ Supabase: RPC schema `app` + Supabase Auth. Mọi lỗi ra ngoài là ApiError (tiếng Việt).
-// Chữ ký RPC family_create, child_create, touch_active đã có/được dự kiến ở backend T1.x;
-// pair_*, pin_set, unlink_device đang làm ở nhánh khác (T1.5/T1.6): xem README "Giả định về RPC".
+// Tên hàm và tham số khớp migration ở backend/supabase/migrations (test/contract.test.ts kiểm lại mỗi lần chạy test).
+// Hàm có đường thất bại cần đếm trả HTTP 200 {"ok": false, ...}: dùng rpcOk, không bao giờ coi thiếu "ok" là thành công.
 import type { Session, SupabaseClient } from '@supabase/supabase-js';
 
-import { toApiError, type ErrorContext } from './errors.ts';
-import type { AcceptResult, Api, Child, ChildInput, Home, PairCode, PairState, SessionInfo } from './types.ts';
+import { ApiError, FALLBACK_MESSAGES, apiErrorFromFailure, toApiError } from './errors.ts';
+import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmState, PairState, SessionInfo } from './types.ts';
 
-const TOUCH_MIN_INTERVAL_MS = 60 * 60 * 1000; // Architecture 12.1: tối đa 1 lần/giờ
+// touch_active_min_interval_minutes = 60 (private.params, chưa chốt): máy chủ bỏ qua lần gọi sớm hơn, client không gọi thừa.
+const TOUCH_MIN_INTERVAL_MS = 60 * 60 * 1000;
 
 function toSessionInfo(s: Session | null | undefined): SessionInfo | null {
   if (!s) return null;
@@ -16,20 +17,29 @@ function toSessionInfo(s: Session | null | undefined): SessionInfo | null {
 type Obj = Record<string, unknown>;
 const asObj = (v: unknown): Obj => (typeof v === 'object' && v !== null ? (v as Obj) : {});
 const asStr = (v: unknown): string | null => (typeof v === 'string' && v !== '' ? v : null);
+const asInt = (v: unknown): number | null => (typeof v === 'number' && Number.isInteger(v) ? v : null);
 
 export function createSupabaseApi(client: SupabaseClient, now: () => number = () => Date.now()): Api {
   const db = () => client.schema('app');
   let lastTouch: number | null = null;
 
-  async function rpc(fn: string, args: Obj | undefined, ctx?: ErrorContext): Promise<unknown> {
+  async function rpc(fn: string, args: Obj | undefined): Promise<unknown> {
     let res: { data: unknown; error: unknown };
     try {
       res = await db().rpc(fn, args);
     } catch (e) {
-      throw toApiError(e, ctx);
+      throw toApiError(e);
     }
-    if (res.error) throw toApiError(res.error, ctx);
+    if (res.error) throw toApiError(res.error);
     return res.data;
+  }
+
+  /** RPC có "ok": ok=true trả nguyên đối tượng; ok=false ném lỗi trong payload; thiếu ok là phản hồi sai hợp đồng (từ chối). */
+  async function rpcOk(fn: string, args: Obj | undefined): Promise<Obj> {
+    const o = asObj(await rpc(fn, args));
+    if (o.ok === true) return o;
+    if (o.ok === false) throw apiErrorFromFailure(o, now());
+    throw new ApiError('UNKNOWN', FALLBACK_MESSAGES.UNKNOWN);
   }
 
   async function authCall<R extends { data: unknown; error: unknown }>(run: () => PromiseLike<R>): Promise<R['data']> {
@@ -64,6 +74,7 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
         await authCall(() => client.auth.signInWithOtp({ email: email.trim(), options: { shouldCreateUser: true, ...(redirectTo ? { emailRedirectTo: redirectTo } : {}) } }));
       },
       async verifyEmailOtp(email, token) {
+        lastTouch = null;
         const data = await authCall(() => client.auth.verifyOtp({ email: email.trim(), token: token.trim(), type: 'email' }));
         return needSession(toSessionInfo(data.session));
       },
@@ -71,6 +82,7 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
         if (link.kind === 'error') {
           throw toApiError({ code: 'otp_expired', message: 'link' });
         }
+        lastTouch = null;
         const data =
           link.kind === 'code'
             ? await authCall(() => client.auth.exchangeCodeForSession(link.code))
@@ -82,6 +94,7 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
         return needSession(toSessionInfo(data.session));
       },
       async signOut() {
+        lastTouch = null;
         await authCall(async () => ({ data: null, error: (await client.auth.signOut()).error }));
       },
     },
@@ -132,14 +145,15 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       const o = asObj(await rpc('family_create', { p_call_name: callName.trim() }));
       const householdId = asStr(o.household_id);
       if (!householdId) throw toApiError(new Error('family_create: thiếu household_id'));
-      return { householdId };
+      return { householdId, replay: o.replay === true };
     },
 
     async touchActive() {
       const t = now();
-      if (lastTouch !== null && t - lastTouch < TOUCH_MIN_INTERVAL_MS) return;
-      await rpc('touch_active', undefined);
-      lastTouch = t;
+      if (lastTouch !== null && t - lastTouch < TOUCH_MIN_INTERVAL_MS) return { touched: false };
+      const o = asObj(await rpc('touch_active', undefined));
+      lastTouch = t; // máy chủ bỏ qua (touched=false) cũng nghĩa là vừa có hoạt động gần đây: không hỏi lại trong giờ này
+      return { touched: o.touched === true };
     },
 
     async childCreate(input: ChildInput) {
@@ -158,12 +172,16 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       return { childId };
     },
 
-    async pairConfirm(childId, code) {
-      await rpc('pair_confirm', { p_child: childId, p_code: code.trim() }, 'pair');
+    async pairConfirm(childId, code, pin) {
+      // p_pin chỉ gửi khi có (lần ghép đầu); gửi null cũng được nhưng bỏ hẳn khóa cho rõ.
+      const o = await rpcOk('pair_confirm', { p_child: childId, p_code: code.trim(), ...(pin !== undefined ? { p_pin: pin } : {}) });
+      const state = o.state === 'CHO_XAC_MINH' ? 'CHO_XAC_MINH' : o.state === 'CHO_XAC_NHAN_MAY_CON' ? 'CHO_XAC_NHAN_MAY_CON' : null;
+      if (!state) throw toApiError(new Error('pair_confirm: state lạ'));
+      return { state: state as PairConfirmState, epoch: asInt(o.epoch) ?? 0, pinSet: o.pin_set === true };
     },
 
     async pinSet(pin) {
-      await rpc('pin_set', { p_pin: pin });
+      await rpcOk('pin_set', { p_pin: pin });
     },
 
     async pairCodeCreate(): Promise<PairCode> {
@@ -173,33 +191,41 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       return { code, expiresAt: asStr(o.expires_at) };
     },
 
-    async pairAccept(): Promise<AcceptResult> {
-      try {
-        const o = asObj(await rpc('pair_accept', undefined));
-        const childId = asStr(o.child_id);
-        return childId ? { status: 'PAIRED', childId } : { status: 'WAITING' };
-      } catch (e) {
-        // Bố mẹ chưa nhập mã: máy chủ chưa có liên kết chờ xác nhận cho máy này.
-        if (toApiError(e).code === 'NOT_FOUND') return { status: 'WAITING' };
-        throw e;
-      }
+    async pairPending() {
+      const o = asObj(await rpc('pair_pending', undefined));
+      if (o.pending !== true) return { pending: false as const };
+      return { pending: true as const, adultCallName: asStr(o.adult_call_name) ?? 'bố mẹ', expiresAt: asStr(o.expires_at) };
+    },
+
+    async pairAccept(): Promise<Binding> {
+      const o = await rpcOk('pair_accept', undefined);
+      const childId = asStr(o.child_id);
+      const epoch = asInt(o.epoch);
+      if (!childId || epoch === null) throw toApiError(new Error('pair_accept: thiếu child_id hoặc epoch'));
+      return { childId, epoch };
+    },
+
+    async pairDecline() {
+      await rpcOk('pair_decline', undefined);
     },
 
     async getMyBinding() {
       const me = needSession(toSessionInfo((await authCall(() => client.auth.getSession())).session));
       const r = await db()
         .from('device_bindings')
-        .select('child_id')
+        .select('child_id, epoch')
         .eq('device_user_id', me.userId)
         .eq('state', 'HIEU_LUC')
         .maybeSingle();
       if (r.error) throw toApiError(r.error);
-      const childId = r.data ? asStr(asObj(r.data).child_id) : null;
-      return childId ? { childId } : null;
+      const o = asObj(r.data);
+      const childId = asStr(o.child_id);
+      const epoch = asInt(o.epoch);
+      return childId && epoch !== null ? { childId, epoch } : null;
     },
 
-    async unlinkDevice(childId, pin) {
-      await rpc('unlink_device', { p_child: childId, p_pin: pin }, 'pin');
+    async unlinkDevice(childId, pin, bindingEpoch) {
+      await rpcOk('unlink_device', { p_child: childId, p_pin: pin, ...(bindingEpoch !== undefined ? { p_binding_epoch: bindingEpoch } : {}) });
     },
   };
 }

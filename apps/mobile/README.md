@@ -102,17 +102,38 @@ Dữ liệu nằm trong bộ nhớ, mất khi đóng app. Hai app là hai tiến
 - `mock.ts`: bản giả lập có kiểm đầu vào giống máy chủ (tên, lớp 1-9, tuổi 0-18, cần lớp hoặc tuổi, PIN 6 số, khóa sau 5 lần sai PIN, FROZEN khi bật `frozen`).
 - `index.ts`: chọn bản thật/giả theo `src/config.ts` (duy nhất file này import module native).
 
-Test: `npm test` trong `apps/mobile` (26 test: ánh xạ lỗi, kiểm đầu vào, mock, RPC với client giả). Lệnh `npm test` ở gốc repo cũng chạy các test này.
+Test: `npm test` trong `apps/mobile` (43 test: ánh xạ lỗi, kiểm đầu vào, mock, RPC với client giả, hợp đồng với migration SQL). Lệnh `npm test` ở gốc repo cũng chạy các test này.
 
-### Giả định về RPC (chờ khớp với T1.5, T1.6)
+### Hợp đồng RPC
 
-Chưa có migration cho `pair_*`, `pin_set`, `unlink_device` ở `main`. Client đang giả định, đổi ở `src/data/api.ts` nếu khác:
+Khớp migration `20261115140000` (T1.2), `150000` (T1.5), `160000` (T1.6) và `120000` (T1.3) ở `backend/supabase/`. Nguồn chuẩn là SQL; `test/contract.test.ts` đọc SQL và kiểm mọi lời gọi trong `src/data/api.ts` (tên hàm, tên tham số, tham số bắt buộc, quyền EXECUTE cho `authenticated`, trường kết quả, chuỗi nhận diện lỗi). Backend đổi chữ ký thì test này đỏ trước khi app lệch.
 
-- `family_create` trả `{ household_id }`; `child_create` trả `{ child_id, ... }` (đã đúng với `child_json` ở T1.3).
-- `pair_code_create()` trả `{ code, expires_at }`, mã 6 số (`PAIR_CODE_LENGTH`); hạn mã trong tài liệu là `UNKNOWN` (Tech Spec T-03 đề xuất 10 phút), client chỉ dùng `expires_at` nếu có, không tự hứa thời hạn.
-- `pair_accept()` trả `{ child_id }` khi bố mẹ đã nhập mã đúng; trả `NOT_FOUND` khi chưa có liên kết chờ xác nhận (client coi là "đang chờ"). Nếu máy chủ trả trạng thái khác, sửa hàm `pairAccept`.
-- PIN 6 số (`PIN_LENGTH`, Tech Spec T-03, đề xuất nội bộ). `pin_set` không nhận PIN cũ nên PA-14 "đổi PIN" chưa hỏi PIN cũ.
-- Máy con biết `child_id` của mình qua `pair_accept` hoặc đọc `app.device_bindings` (`state = 'HIEU_LUC'`, `device_user_id` = chính nó), dùng cho `unlink_device`.
+| Hàm | Client gửi | Client đọc |
+|---|---|---|
+| `family_create` | `p_call_name` | `household_id`, `replay` |
+| `touch_active` | không | `touched` |
+| `child_create` | `p_household`, `p_call_name`, `p_grade`, `p_age_years`, `p_has_device`, `p_idempotency_key` | `child_id` |
+| `pair_code_create` (máy con) | không | `code`, `expires_at` |
+| `pair_confirm` (QL) | `p_child`, `p_code`, `p_pin` (chỉ lần ghép đầu) | `ok`, `state`, `epoch`, `pin_set` |
+| `pair_pending` (máy con) | không | `pending`, `adult_call_name`, `expires_at` |
+| `pair_accept` (máy con) | không | `ok`, `child_id`, `epoch` |
+| `pair_decline` (máy con) | không | `ok` |
+| `pin_set` (QL) | `p_pin` | `ok` |
+| `unlink_device` | `p_child`, `p_pin`, `p_binding_epoch` (máy con bắt buộc) | `ok` |
+
+**Hai kiểu lỗi.** (1) Lỗi raise: `error.message` là mã (`FORBIDDEN`, `FROZEN`, `VALIDATION`, `NOT_FOUND`, `CONFLICT_REV`, `RATE_LIMITED`...), `hint` là lời Việt, `details` là quy tắc. (2) Thất bại cần đếm trả HTTP 200 `{"ok": false, "error": {code, rule, message_vi, attempts_left?, locked_until?}}`: `pair_confirm` (mã sai, mọi lý do liên quan tới mã), `unlink_device` (PIN sai), `pair_accept` (quá hạn). `rpcOk` trong `api.ts` đổi `ok:false` thành `ApiError`; **thiếu `ok` cũng bị từ chối** (không bao giờ coi là thành công, nhất là `unlink_device`). Chỗ gọi chỉ cần try/catch.
+
+**Hiện lỗi PIN và khóa bằng lời, không popup.** `pinWrongMessage` (`errors.ts`): "PIN chưa đúng. Bạn còn N lần thử." hoặc, khi đã khóa, "...tạm khóa... thử lại sau khoảng X phút" (làm tròn lên). `ApiError.attemptsLeft` và `.lockedUntil` giữ số liệu thô. PIN đang khóa khi gọi lại là `RATE_LIMITED` (raise) với lời của máy chủ. Mã sai ở `pair_confirm` luôn là một câu chung "Mã không đúng hoặc đã hết hạn." (AC-FAM-11); vượt ngưỡng thì `RATE_LIMITED`.
+
+**PA-13 và PIN lần đầu.** Client không có cách hỏi "đã có PIN chưa" (bảng `private.parent_pins` không mở API). PA-13 gửi `pair_confirm` không PIN; máy chủ kiểm PIN trước khi tính mã nên trả `VALIDATION` rule `FR-01` "Cần đặt Parent PIN khi ghép lần đầu." mà không tốn lần thử mã. Khi đó màn hiện ô đặt PIN (nhập hai lần) và gửi lại cùng mã kèm `p_pin`. Nếu PIN đã có mà gửi PIN thì máy chủ báo "Đã có PIN" và màn ẩn ô PIN. Nhận diện bằng rule và tiền tố hint (`PIN_REQUIRED_*` trong `validate.ts`, test hợp đồng kiểm các chuỗi này còn trong SQL). PA-14 vẫn dùng `pin_set` để đặt trước hoặc đổi (không PIN cũ).
+
+**Máy con (CA-02).** Sau khi có mã, thăm dò `pair_pending` mỗi 4 giây (không còn coi `NOT_FOUND` là đang chờ). Có yêu cầu thì hiện "Kết nối với [tên]? Đồng ý / Không": Đồng ý gọi `pair_accept` (quá hạn: lời "Yêu cầu ghép đã hết hạn. Hãy tạo mã mới." rồi tự lấy mã mới), Không gọi `pair_decline` rồi lấy mã mới. `epoch` từ `pair_accept` (và đọc lại từ `device_bindings.epoch` khi mở app) lưu ở `useApp().bindingEpoch`; CA-12 gửi nó vào `unlink_device`. `CONFLICT_REV` (liên kết đã đổi): CA-12 hiện nút "Tải lại thông tin kết nối" gọi `refreshBinding` (không còn liên kết thì về CA-01).
+
+**`pair_confirm` trả `CHO_XAC_MINH`** (máy từng ghép ở hộ khác): máy con không thấy yêu cầu và không có quyền gì (AC-FAM-16). PA-13 báo "cần xác minh thêm, chưa kết nối ngay"; nấc 1 chưa có đường xác minh tiếp.
+
+**`touch_active`.** Gọi khi người lớn mở app và mỗi lần app trở lại nền trước (chỉ khi đã có hộ), client giới hạn 1 lần/giờ như `touch_active_min_interval_minutes = 60` (tham số chưa chốt `CHUA_CHOT`). Máy con không gọi (máy chủ trả `FORBIDDEN`).
+
+**Chưa có trong hợp đồng (Edge Function sau này):** hủy phiên ẩn danh của máy con và xóa token đẩy sau `unlink_device`, thông báo cho QL. Sau `unlink_device` thành công, máy con tự đăng xuất cục bộ.
 
 ### Đăng nhập bằng link trong thư (D-59)
 
@@ -131,6 +152,6 @@ Cần làm trên dự án Supabase (chủ sản phẩm hoặc người có quy�
 1. Bật schema `app` trong Settings → API → Exposed schemas (để `supabase.schema('app')` chạy).
 2. Bật Authentication → Sign In / Providers → Anonymous sign-ins (máy con).
 3. Bật Email provider. Khi sửa được mẫu thư: sửa mẫu "Magic Link / Confirm signup" thêm `{{ .Token }}` để gửi mã 6 số (xem docs Supabase: Passwordless email logins). Mặc định thư chỉ có liên kết. Độ dài OTP mặc định 6 số, khớp `OTP_LENGTH`. Dùng SMTP riêng cho gửi thật: dịch vụ mặc định giới hạn rất thấp số thư mỗi giờ.
-4. Khớp chữ ký thật của `pair_*`, `pin_set`, `unlink_device` khi T1.5, T1.6 vào `main` (mục trên).
+4. Hợp đồng RPC đã khớp migration T1.2, T1.5, T1.6 (mục "Hợp đồng RPC"); nhớ áp các migration này lên dự án đám mây khi chủ sản phẩm cho phép (task này không áp).
 5. Chưa chạy trên máy thật hay giả lập Android: chỉ kiểm `tsc`, `expo config` hai biến thể, `expo export --platform android` (bundle được, cả hai biến thể) và test node. Cần thử tay: chuyển màn tự động khi đổi giai đoạn (`Stack.Protected`), bàn phím, đọc màn hình.
 6. Chưa làm: PA-02 (đồng ý), PA-37 (không vào được tài khoản; với OTP có nút "Gửi lại mã"), PA-15 (thông báo ghép/hủy), PA-38 danh sách nhiều phiên, đổi PIN hỏi PIN cũ, CA-15 (xin quyền thông báo), CA-20, PA-03 đầy đủ. Câu chữ CA-16 bám IA 4.6, chờ chủ sản phẩm duyệt.

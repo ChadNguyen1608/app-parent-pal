@@ -1,7 +1,7 @@
 // Kiểm đầu vào phía máy trước khi gọi RPC (máy chủ vẫn kiểm lại). Trả lời tiếng Việt hoặc null nếu hợp lệ.
 
 export const PIN_LENGTH = 6; // Tech Spec T-03 (đề xuất nội bộ)
-export const PAIR_CODE_LENGTH = 6; // giả định, xem README
+export const PAIR_CODE_LENGTH = 6; // pair_code_create: lpad(..., 6), khớp migration T1.5
 export const OTP_LENGTH = 6;
 
 export function checkEmail(email: string): string | null {
@@ -41,3 +41,11 @@ export function checkPin(pin: string, confirm?: string): string | null {
 export function checkPairCode(code: string): string | null {
   return new RegExp(`^\\d{${PAIR_CODE_LENGTH}}$`).test(code.trim()) ? null : `Mã gồm ${PAIR_CODE_LENGTH} số.`;
 }
+
+/**
+ * pair_confirm báo "chưa có PIN" bằng VALIDATION, rule FR-01, hint bắt đầu bằng chữ này (không có cờ riêng ở máy chủ).
+ * test/contract.test.ts kiểm các chuỗi này còn nằm trong migration.
+ */
+export const PIN_REQUIRED_RULE = 'FR-01';
+export const PIN_REQUIRED_HINT = 'Cần đặt Parent PIN';
+export const PIN_EXISTS_HINT = 'Đã có PIN';

@@ -1,11 +1,13 @@
 import { useCallback, useRef, useState } from 'react';
 
-import { errorMessage, type ErrorContext } from '../data/errors';
+import { errorMessage, toApiError, type ApiError } from '../data/errors';
 
 /** Chạy một việc bất đồng bộ, giữ trạng thái đang làm và lời lỗi tiếng Việt. Chặn bấm đúp. */
-export function useAction(ctx?: ErrorContext) {
+export function useAction() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** Lỗi gốc (để màn xử lý riêng theo mã, ví dụ CONFLICT_REV). */
+  const [failure, setFailure] = useState<ApiError | null>(null);
   const running = useRef(false);
   const run = useCallback(
     async (fn: () => Promise<void>): Promise<boolean> => {
@@ -13,18 +15,20 @@ export function useAction(ctx?: ErrorContext) {
       running.current = true;
       setBusy(true);
       setError(null);
+      setFailure(null);
       try {
         await fn();
         return true;
       } catch (e) {
-        setError(errorMessage(e, ctx));
+        setError(errorMessage(e));
+        setFailure(toApiError(e));
         return false;
       } finally {
         running.current = false;
         setBusy(false);
       }
     },
-    [ctx],
+    [],
   );
-  return { busy, error, setError, run };
+  return { busy, error, failure, setError, run };
 }

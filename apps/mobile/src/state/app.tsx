@@ -1,12 +1,13 @@
 // Trạng thái dùng chung: api, phiên đăng nhập, hộ (phụ huynh) hoặc giai đoạn ghép (máy con).
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Linking from 'expo-linking';
+import { AppState } from 'react-native';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
 import { getApi } from '../data';
 import { parseAuthLink } from '../data/auth-link';
 import { errorMessage } from '../data/errors';
-import type { Api, Home, SessionInfo } from '../data/types';
+import type { Api, Binding, Home, SessionInfo } from '../data/types';
 import { APP_VARIANT } from '../variant';
 
 /** Phụ huynh: loading → out (PA-01) → needHome (tạo hộ, con) → ready. */
@@ -28,7 +29,11 @@ type Ctx = {
   // máy con
   childStage: ChildStage;
   childId: string | null;
-  onPaired: (childId: string) => void;
+  /** binding_epoch của liên kết hiện hành (nhận từ pair_accept); unlink_device phải gửi kèm. */
+  bindingEpoch: number | null;
+  onPaired: (b: Binding) => void;
+  /** Đọc lại liên kết từ máy chủ (sau CONFLICT_REV). Trả false nếu liên kết không còn (đã về màn chưa ghép). */
+  refreshBinding: () => Promise<boolean>;
   acknowledgeJustPaired: () => void;
   acknowledgeIntro: () => Promise<void>;
   onUnlinked: () => Promise<void>;
@@ -55,6 +60,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
   const [home, setHome] = useState<Home>(null);
   const [homeLoaded, setHomeLoaded] = useState(false);
   const [childId, setChildId] = useState<string | null>(null);
+  const [bindingEpoch, setBindingEpoch] = useState<number | null>(null);
   const [childStage, setChildStage] = useState<ChildStage>('loading');
 
   const isParent = APP_VARIANT === 'parent';
@@ -118,7 +124,6 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
         if (!alive) return;
         setHome(h);
         setHomeLoaded(true);
-        if (h) void api.touchActive().catch(() => undefined);
       })
       .catch(() => {
         // Không nạp được hộ (mạng, quyền): coi như chưa có hộ để không treo; người dùng thử lại ở bước sau.
@@ -129,12 +134,26 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
     };
   }, [api, parentSession?.userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Người lớn mở app (lúc nạp hộ xong và mỗi lần app trở lại nền trước) thì báo "đang hoạt động" (BR-FAM-050).
+  // Chỉ thao tác có chủ đích của người lớn; client tự giới hạn 1 lần/giờ. Máy con không gọi hàm này.
+  const touchEligible = Boolean(parentSession && home);
+  useEffect(() => {
+    if (!touchEligible) return;
+    const touch = () => void api.touchActive().catch(() => undefined);
+    touch();
+    const sub = AppState.addEventListener('change', (st) => {
+      if (st === 'active') touch();
+    });
+    return () => sub.remove();
+  }, [api, touchEligible]);
+
   // Máy con: có phiên ẩn danh thì hỏi máy chủ đã ghép chưa.
   const childSession = !isParent && session ? session : null;
   useEffect(() => {
     if (isParent || !booted) return;
     if (!childSession) {
       setChildId(null);
+      setBindingEpoch(null);
       setChildStage('unpaired');
       return;
     }
@@ -145,10 +164,12 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
         if (!alive) return;
         if (!b) {
           setChildId(null);
+          setBindingEpoch(null);
           setChildStage('unpaired');
           return;
         }
         setChildId(b.childId);
+        setBindingEpoch(b.epoch);
         const seen = (await AsyncStorage.getItem(INTRO_KEY)) === '1';
         if (alive) setChildStage((cur) => (cur === 'justPaired' ? cur : seen ? 'ready' : 'intro'));
       } catch {
@@ -185,9 +206,23 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       clearLinkError: () => setLinkError(null),
       childStage,
       childId,
-      onPaired: (id) => {
-        setChildId(id);
+      bindingEpoch,
+      onPaired: (b) => {
+        setChildId(b.childId);
+        setBindingEpoch(b.epoch);
         setChildStage('justPaired');
+      },
+      refreshBinding: async () => {
+        const b = await api.getMyBinding();
+        if (!b) {
+          setChildId(null);
+          setBindingEpoch(null);
+          setChildStage('unpaired');
+          return false;
+        }
+        setChildId(b.childId);
+        setBindingEpoch(b.epoch);
+        return true;
       },
       acknowledgeJustPaired: () => setChildStage('intro'),
       acknowledgeIntro: async () => {
@@ -199,10 +234,11 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
         await api.auth.signOut().catch(() => undefined);
         setSession(null);
         setChildId(null);
+        setBindingEpoch(null);
         setChildStage('unpaired');
       },
     }),
-    [api, session, parentStage, home, refreshHome, linkError, childStage, childId],
+    [api, session, parentStage, home, refreshHome, linkError, childStage, childId, bindingEpoch],
   );
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;

@@ -1,13 +1,21 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
-import { PAIR_CODE_LENGTH, checkPairCode } from '@/data/validate';
+import type { ApiError } from '@/data/errors';
+import type { PairConfirmResult } from '@/data/types';
+import { PAIR_CODE_LENGTH, PIN_EXISTS_HINT, PIN_LENGTH, PIN_REQUIRED_HINT, PIN_REQUIRED_RULE, checkPairCode, checkPin } from '@/data/validate';
 import { useApp } from '@/state/app';
 import { Btn, Choice, Field, H1, Notice, P, Screen } from '@/ui/kit';
 import { useAction } from '@/ui/useAction';
 
-// PA-13 Ghép máy của con: chọn con, nhập mã hiện trên máy con. Mã sai hoặc hết hạn: một câu chung (AC-FAM-11).
+const isPinRequired = (e: ApiError | null) => e?.code === 'VALIDATION' && e.rule === PIN_REQUIRED_RULE && e.userMessage.startsWith(PIN_REQUIRED_HINT);
+const isPinExists = (e: ApiError | null) => e?.code === 'VALIDATION' && e.rule === PIN_REQUIRED_RULE && e.userMessage.startsWith(PIN_EXISTS_HINT);
+
+// PA-13 Ghép máy của con: chọn con, nhập mã hiện trên máy con.
+// Lần ghép đầu của người quản lý phải kèm PIN (pair_confirm p_pin). App chưa biết đã có PIN hay chưa, nên gửi không PIN trước;
+// máy chủ báo "Cần đặt Parent PIN" (kiểm trước khi tính mã, không tốn lần thử) thì hiện ô đặt PIN rồi gửi lại cùng mã.
+// Mã sai hoặc hết hạn: một câu chung (AC-FAM-11), máy chủ tự đếm và khóa.
 export default function GhepMay() {
   const router = useRouter();
   const { childId: paramId } = useLocalSearchParams<{ childId?: string }>();
@@ -15,18 +23,58 @@ export default function GhepMay() {
   const options = (home?.children ?? []).filter((c) => c.hasDevice && c.pairState !== 'PAIRED');
   const [childId, setChildId] = useState<string | null>(paramId ?? (options.length === 1 ? options[0].id : null));
   const [code, setCode] = useState('');
+  const [needPin, setNeedPin] = useState(false);
+  const [pin, setPin] = useState('');
+  const [again, setAgain] = useState('');
   const [fieldError, setFieldError] = useState<string | null>(null);
-  const act = useAction('pair');
+  const [pinError, setPinError] = useState<string | null>(null);
+  const [result, setResult] = useState<PairConfirmResult | null>(null);
+  const act = useAction();
 
   async function submit() {
     const bad = !childId ? 'Bạn chọn con cần ghép máy nhé.' : checkPairCode(code);
     setFieldError(bad);
-    if (bad || !childId) return;
+    const badPin = needPin ? checkPin(pin, again) : null;
+    setPinError(badPin);
+    if (bad || badPin || !childId) return;
+    let r: PairConfirmResult | null = null;
     const ok = await act.run(async () => {
-      await api.pairConfirm(childId, code);
+      r = await api.pairConfirm(childId, code, needPin ? pin : undefined);
       await refreshHome().catch(() => undefined);
     });
-    if (ok) router.replace({ pathname: '/(parent)/dat-pin', params: { childId, afterPair: '1' } });
+    if (ok && r) {
+      setPin('');
+      setAgain('');
+      setResult(r);
+    }
+  }
+
+  // Sau khi báo lỗi: hiện hoặc ẩn ô PIN theo lời máy chủ (không đoán).
+  const failure = act.failure;
+  useEffect(() => {
+    if (isPinRequired(failure)) setNeedPin(true);
+    else if (isPinExists(failure)) {
+      setNeedPin(false);
+      setPin('');
+      setAgain('');
+    }
+  }, [failure]);
+
+  if (result) {
+    return (
+      <Screen>
+        <H1>Đã nhập mã đúng</H1>
+        {result.state === 'CHO_XAC_NHAN_MAY_CON' ? (
+          <>
+            <P>Máy của con sẽ hỏi "Kết nối với bạn?". Con chạm "Đồng ý" trên máy là xong. Nếu con chạm "Không" thì chưa kết nối.</P>
+            {result.pinSet ? <P>Mã PIN của bố mẹ đã được lưu. Mình không hiện lại mã PIN, bạn nhớ giúp mình nhé.</P> : null}
+          </>
+        ) : (
+          <Notice kind="info">Máy này từng ghép với gia đình khác nên cần xác minh thêm, chưa kết nối ngay. Mình chưa cho máy này xem gì cho tới khi xác minh xong.</Notice>
+        )}
+        <Btn label="Xong" onPress={() => router.replace('/(parent)/(tabs)/gia-dinh')} />
+      </Screen>
+    );
   }
 
   if (options.length === 0) {
@@ -59,7 +107,14 @@ export default function GhepMay() {
         maxLength={PAIR_CODE_LENGTH}
         error={fieldError}
       />
-      {act.error ? <Notice>{act.error}</Notice> : null}
+      {needPin ? (
+        <>
+          <Notice kind="info">Đây là lần ghép đầu của bạn, nên cần đặt mã PIN. PIN giúp con không tự hủy kết nối máy, bạn không chia sẻ cho con.</Notice>
+          <Field label={`Đặt PIN (${PIN_LENGTH} số)`} value={pin} onChangeText={(t) => { setPin(t.replace(/\D/g, '').slice(0, PIN_LENGTH)); setPinError(null); }} keyboardType="number-pad" secureTextEntry maxLength={PIN_LENGTH} />
+          <Field label="Nhập lại PIN" value={again} onChangeText={(t) => { setAgain(t.replace(/\D/g, '').slice(0, PIN_LENGTH)); setPinError(null); }} keyboardType="number-pad" secureTextEntry maxLength={PIN_LENGTH} error={pinError} />
+        </>
+      ) : null}
+      {act.error && !isPinRequired(failure) ? <Notice>{act.error}</Notice> : null}
       <Btn label="Ghép máy" onPress={submit} busy={act.busy} />
     </Screen>
   );

@@ -1,5 +1,6 @@
 // Kiểu dữ liệu và giao diện của lớp gọi máy chủ (T1.7). Tên hàm khớp RPC schema `app`.
-// Chữ ký các RPC ghép máy/PIN đang làm ở nhánh khác (T1.5, T1.6): xem README mục "Giả định về RPC".
+// Khớp hợp đồng RPC thật ở backend/supabase/migrations (T1.2, T1.5, T1.6): xem README mục "Hợp đồng RPC".
+// Hàm có {"ok": false} (pair_confirm, pair_accept, unlink_device) ném ApiError, nên chỗ gọi chỉ cần try/catch.
 
 import type { AuthLink } from './auth-link.ts';
 
@@ -31,8 +32,15 @@ export type ChildInput = {
 
 export type PairCode = { code: string; expiresAt: string | null };
 
-/** WAITING: bố mẹ chưa nhập mã. PAIRED: đã ghép, kèm child_id của máy này. */
-export type AcceptResult = { status: 'WAITING' } | { status: 'PAIRED'; childId: string };
+/** CHO_XAC_NHAN_MAY_CON: máy con sẽ hỏi "Kết nối với ...?". CHO_XAC_MINH: máy từng ghép ở hộ khác, chưa có quyền gì (AC-FAM-16). */
+export type PairConfirmState = 'CHO_XAC_NHAN_MAY_CON' | 'CHO_XAC_MINH';
+export type PairConfirmResult = { state: PairConfirmState; epoch: number; pinSet: boolean };
+
+/** Yêu cầu ghép đang chờ máy con bấm Đồng ý / Không. */
+export type PairPending = { pending: false } | { pending: true; adultCallName: string; expiresAt: string | null };
+
+/** Liên kết hiệu lực của máy con. epoch phải gửi lại khi hủy (FR01-T09). */
+export type Binding = { childId: string; epoch: number };
 
 export interface Api {
   readonly kind: 'mock' | 'supabase';
@@ -50,15 +58,22 @@ export interface Api {
   };
   // Người lớn
   getHome(): Promise<Home>;
-  familyCreate(callName: string): Promise<{ householdId: string }>;
-  touchActive(): Promise<void>;
+  familyCreate(callName: string): Promise<{ householdId: string; replay: boolean }>;
+  /** Gọi khi người lớn mở app. Client tự giới hạn tối đa 1 lần/giờ như máy chủ. Trả touched=false nếu không gọi hoặc máy chủ bỏ qua. */
+  touchActive(): Promise<{ touched: boolean }>;
   childCreate(input: ChildInput): Promise<{ childId: string }>;
-  pairConfirm(childId: string, code: string): Promise<void>;
+  /** pin: bắt buộc ở lần ghép đầu của QL (đặt PIN cùng lúc), không gửi các lần sau. */
+  pairConfirm(childId: string, code: string, pin?: string): Promise<PairConfirmResult>;
   pinSet(pin: string): Promise<void>;
   // Máy con
   pairCodeCreate(): Promise<PairCode>;
-  pairAccept(): Promise<AcceptResult>;
-  /** child_id của máy này nếu đã ghép (đọc binding hiệu lực), để nhớ qua lần mở app sau. */
-  getMyBinding(): Promise<{ childId: string } | null>;
-  unlinkDevice(childId: string, pin: string): Promise<void>;
+  pairPending(): Promise<PairPending>;
+  /** Bấm Đồng ý. epoch là binding_epoch phải lưu để hủy sau này. */
+  pairAccept(): Promise<Binding>;
+  /** Bấm Không. */
+  pairDecline(): Promise<void>;
+  /** Liên kết hiệu lực của máy này (đọc device_bindings), để nhớ qua lần mở app sau. */
+  getMyBinding(): Promise<Binding | null>;
+  /** bindingEpoch: máy con bắt buộc gửi; QL có thể bỏ. */
+  unlinkDevice(childId: string, pin: string, bindingEpoch?: number): Promise<void>;
 }

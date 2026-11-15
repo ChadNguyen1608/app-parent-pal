@@ -3,21 +3,26 @@
 //
 // Quy ước của bản giả lập (khác thật ở chỗ hai app là hai tiến trình riêng nên không thấy nhau):
 //  - Mã OTP đúng luôn là 123456. Link thư giả lập: <scheme>://auth-callback?code=mock-link.
-//  - Parent App: mã ghép đúng luôn là 123456 (mã khác: NOT_FOUND). PIN mặc định của hộ là 123456 cho tới khi đặt.
-//  - Child App: lần gọi pair_accept đầu trả WAITING, từ lần thứ hai trả PAIRED (giả vờ bố mẹ vừa nhập mã).
-import { toApiError } from './errors.ts';
-import type { AcceptResult, Api, Child, ChildInput, Home, PairCode, SessionInfo } from './types.ts';
+//  - Parent App: mã ghép đúng luôn là 123456. Lần ghép đầu phải kèm PIN (như pair_confirm thật); mã sai thì ném NOT_FOUND
+//    (thật: ok=false) và 5 lần sai liên tiếp thì RATE_LIMITED.
+//  - Child App: pair_pending trả pending=false `acceptAfter` lần đầu, rồi pending=true ("Kết nối với chị Lan?", giả vờ bố mẹ
+//    vừa nhập mã); pair_accept chỉ đúng khi đang pending. PIN hủy kết nối: PIN đã đặt, mặc định 123456.
+import { apiErrorFromFailure, toApiError } from './errors.ts';
+import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmResult, PairPending, SessionInfo } from './types.ts';
 import { checkPin } from './validate.ts';
 
 export const MOCK_OTP = '123456';
 export const MOCK_LINK_CODE = 'mock-link'; // ?code=mock-link trong link giả lập
 export const MOCK_PAIR_CODE = '123456';
 export const MOCK_MAX_PIN_TRIES = 5;
+export const MOCK_MAX_CODE_FAILS = 5;
+export const MOCK_LOCK_MINUTES = 15;
+export const MOCK_ADULT_NAME = 'chị Lan';
 
 export type MockOptions = {
   /** Giả lập hộ bị đóng băng: mọi hàm ghi trả FROZEN. */
   frozen?: boolean;
-  /** Số lần pair_accept trả WAITING trước khi PAIRED (mặc định 1). */
+  /** Số lần pair_pending trả pending=false trước khi có yêu cầu chờ (mặc định 1). */
   acceptAfter?: number;
   /** Độ trễ giả (ms) để thấy trạng thái đang xử lý. Test đặt 0. */
   latencyMs?: number;
@@ -40,9 +45,13 @@ export function createMockApi(opts: MockOptions = {}): Api {
   const children: Child[] = [];
   let pin: string | null = null;
   let pinTries = 0;
+  let pinLockedUntil: number | null = null;
+  let codeFails = 0;
   let codesIssued = 0;
-  let acceptCalls = 0;
-  let boundChildId: string | null = null;
+  let pendingCalls = 0;
+  let pendingShown = false;
+  let epochSeq = 1;
+  let bound: Binding | null = null;
   const seenKeys = new Map<string, string>();
   let seq = 0;
 
@@ -123,12 +132,14 @@ export function createMockApi(opts: MockOptions = {}): Api {
       const name = callName.trim();
       if (name === '') fail('VALIDATION', 'BR-001', 'Cần tên gọi của bạn.');
       if (name.length > 40) fail('VALIDATION', 'BR-001', 'Tên gọi tối đa 40 ký tự.');
+      const replay = household !== null;
       if (!household) household = { id: id('hh'), memberCallName: name };
-      return { householdId: household.id };
+      return { householdId: household.id, replay };
     },
 
     async touchActive() {
       needLogin();
+      return { touched: true };
     },
 
     async childCreate(input: ChildInput) {
@@ -150,65 +161,118 @@ export function createMockApi(opts: MockOptions = {}): Api {
       return { childId };
     },
 
-    async pairConfirm(childId, code) {
+    async pairConfirm(childId, code, pinIn): Promise<PairConfirmResult> {
       writable();
       await pause();
       const child = children.find((c) => c.id === childId);
       if (!child) fail('NOT_FOUND', 'CHILD', 'Không tìm thấy hồ sơ con.');
-      if (!child.hasDevice) fail('VALIDATION', 'BR-FAM-DEV', 'Con chưa có máy riêng.');
-      if (code.trim() !== MOCK_PAIR_CODE) fail('NOT_FOUND', 'BR-FAM-031', 'Mã không đúng hoặc đã hết hạn.');
-      child.pairState = 'PAIRED';
+      if (codeFails >= MOCK_MAX_CODE_FAILS) fail('RATE_LIMITED', 'BR-FAM-031', 'Đã thử quá nhiều lần. Hãy thử lại sau ít phút.');
+      if (!child.hasDevice) fail('VALIDATION', 'BR-FAM-037', 'Con chưa có máy riêng. Chưa ghép được.');
+      if (pin === null && pinIn === undefined) fail('VALIDATION', 'FR-01', 'Cần đặt Parent PIN khi ghép lần đầu.');
+      if (pin !== null && pinIn !== undefined) fail('VALIDATION', 'FR-01', 'Đã có PIN. Muốn đổi PIN, hãy dùng chức năng đổi PIN.');
+      if (pinIn !== undefined) {
+        const bad = checkPin(pinIn);
+        if (bad) fail('VALIDATION', 'FR-01', bad);
+      }
+      if (code.trim() !== MOCK_PAIR_CODE) {
+        codeFails += 1;
+        throw apiErrorFromFailure({ ok: false, error: { code: 'NOT_FOUND', rule: 'BR-FAM-031', message_vi: 'Mã không đúng hoặc đã hết hạn.' } }, now());
+      }
+      if (pinIn !== undefined) pin = pinIn;
+      codeFails = 0;
+      child.pairState = 'PENDING';
+      return { state: 'CHO_XAC_NHAN_MAY_CON', epoch: 1, pinSet: pinIn !== undefined };
     },
 
     async pinSet(p) {
       writable();
       await pause();
       const bad = checkPin(p);
-      if (bad) fail('VALIDATION', 'BR-FAM-PIN', bad);
+      if (bad) fail('VALIDATION', 'FR-01', bad);
       pin = p;
       pinTries = 0;
+      pinLockedUntil = null;
     },
 
     async pairCodeCreate(): Promise<PairCode> {
       needLogin();
       await pause();
       codesIssued += 1;
-      acceptCalls = 0;
+      pendingCalls = 0;
+      pendingShown = false;
       const code = codesIssued === 1 ? MOCK_PAIR_CODE : String(Math.floor(100000 + Math.random() * 900000));
       return { code, expiresAt: new Date(now() + 10 * 60_000).toISOString() };
     },
 
-    async pairAccept(): Promise<AcceptResult> {
+    async pairPending(): Promise<PairPending> {
       needLogin();
       await pause();
-      if (codesIssued === 0) fail('NOT_FOUND', 'BR-FAM-030', 'Chưa có mã ghép.');
-      acceptCalls += 1;
-      if (acceptCalls <= acceptAfter) return { status: 'WAITING' };
-      boundChildId = 'mock-child-1';
-      return { status: 'PAIRED', childId: boundChildId };
+      if (codesIssued === 0 || bound) return { pending: false };
+      if (!pendingShown) {
+        pendingCalls += 1;
+        if (pendingCalls <= acceptAfter) return { pending: false };
+        pendingShown = true;
+      }
+      return { pending: true, adultCallName: household?.memberCallName ?? MOCK_ADULT_NAME, expiresAt: new Date(now() + 5 * 60_000).toISOString() };
+    },
+
+    async pairAccept(): Promise<Binding> {
+      needLogin();
+      await pause();
+      if (!pendingShown) fail('NOT_FOUND', 'AD-11', 'Không có yêu cầu ghép nào đang chờ.');
+      epochSeq += 1;
+      pendingShown = false;
+      bound = { childId: 'mock-child-1', epoch: epochSeq };
+      return { ...bound };
+    },
+
+    async pairDecline() {
+      needLogin();
+      await pause();
+      pendingShown = false;
+      codesIssued = 0; // mã đã dùng, máy con phải lấy mã mới
     },
 
     async getMyBinding() {
       needLogin();
-      return boundChildId ? { childId: boundChildId } : null;
+      return bound ? { ...bound } : null;
     },
 
-    async unlinkDevice(childId, p) {
-      needLogin();
+    async unlinkDevice(childId, p, bindingEpoch) {
+      const me = needLogin();
       await pause();
-      if (opts.frozen) fail('FROZEN', 'BR-FAM-FROZEN', 'Gia đình đang tạm dừng app.');
       const bad = checkPin(p);
-      if (bad) fail('VALIDATION', 'BR-FAM-PIN', bad);
-      if (pinTries >= MOCK_MAX_PIN_TRIES) fail('FORBIDDEN', 'PR-FAM-05', 'Đã nhập sai nhiều lần. Bạn thử lại sau nhé.');
+      if (bad) fail('VALIDATION', 'FR-01', bad);
+      if (!bound || bound.childId !== childId) fail('NOT_FOUND', '', 'Không có liên kết nào để hủy.');
+      if (me.isAnonymous && bindingEpoch === undefined) fail('VALIDATION', 'FR01-T09', 'Thiếu epoch của liên kết.');
+      if (bindingEpoch !== undefined && bindingEpoch !== bound.epoch) fail('CONFLICT_REV', 'FR01-T09', 'Liên kết đã thay đổi. Hãy tải lại.');
+      const t = now();
+      if (pinLockedUntil !== null && pinLockedUntil > t) fail('RATE_LIMITED', 'PR-FAM-05', 'PIN đang tạm khóa. Hãy thử lại sau.');
       if (p !== (pin ?? MOCK_PAIR_CODE)) {
         pinTries += 1;
-        fail('FORBIDDEN', 'BR-FAM-034', 'PIN chưa đúng.');
+        if (pinTries >= MOCK_MAX_PIN_TRIES) {
+          pinTries = 0;
+          pinLockedUntil = t + MOCK_LOCK_MINUTES * 60_000;
+        }
+        throw apiErrorFromFailure(
+          {
+            ok: false,
+            error: {
+              code: 'FORBIDDEN',
+              rule: 'FR01-T02',
+              message_vi: 'PIN chưa đúng.',
+              attempts_left: pinLockedUntil !== null ? 0 : MOCK_MAX_PIN_TRIES - pinTries,
+              locked_until: pinLockedUntil !== null ? new Date(pinLockedUntil).toISOString() : null,
+            },
+          },
+          t,
+        );
       }
-      if (boundChildId !== childId) fail('NOT_FOUND', 'BR-FAM-034', 'Máy này chưa ghép.');
-      boundChildId = null;
+      bound = null;
       pinTries = 0;
+      pinLockedUntil = null;
       codesIssued = 0;
+      pendingShown = false;
     },
   };
 }
-
