@@ -107,8 +107,13 @@ Câu hỏi gộp từ danh sách module nấc 1, IA 6.1, Business Logic 11.2–1
 | D-48 | Kênh cài app (D-46a) | **Nội bộ, bằng file APK; người thử tự tải APK về cài** (phương án K1). Không qua Google Play. Link tải phải riêng tư (không đặt APK trong repo công khai hay bản phát hành công khai trên GitHub); kênh lưu link chốt khi có bản build đầu |
 | D-49 | Cách phụ huynh đăng nhập (D-46b) | **Email nhận mã một lần (OTP)**, không mật khẩu |
 | D-50 | Dùng lại mã `mobile/` (D-46c) | **Tái dùng chọn lọc (M2):** mã mới ở `apps/`, `packages/`, `backend/`; giữ nguyên `mobile/`, `supabase/`; chỉ lấy cấu hình Expo, công cụ đo nhắc giờ, kiểu `Block`/`Plan`, kỹ thuật RLS; không lấy GPS, ảnh, ghi âm, Pal chat, mã gia đình |
+| D-51 | Mã định danh app (applicationId) | **`vn.parentbestpal.parent`** và **`vn.parentbestpal.child`** (16/11/2026). Không đổi sau khi phát cho người thử |
+| D-52 | Báo cáo tuần có đếm lần con bấm "Bỏ qua" không | **Không đếm**; chỉ đếm Ổn / Hơi mệt / Rất mệt |
+| D-53 | Người lớn thứ hai thấy con khi nào | Khi người quản lý chính đã cấp bất kỳ quyền xem nào đang hiệu lực (chỉ xem, D-35) |
+| D-54 | Nơi đặt máy chủ (LQ-08) và chi phí | **Supabase vùng Singapore (`ap-southeast-1`)**, gói **Pro khoảng 25 USD** cho tháng thử; kèm 6 biện pháp giảm rủi ro của Kiến trúc 12.1 §13.4. Cổng pháp lý LQ-08 vẫn mở, không coi là PASS. Thay một phần D-17 (cho phép khoản này) |
+| D-55 | Ai code chính | **Claude** (qua Claude Code) code chính, chủ sản phẩm duyệt PR; làm đến khi hết credit thì dừng |
 | D-46 | Kênh cài app, cách đăng nhập, dùng lại mã `mobile/` (testkit Q6, MQ-10) | Quyết ở bước **kiến trúc hệ thống** |
 
-Còn mở (15/11): nơi đặt máy chủ (LQ-08; đề xuất Supabase Singapore + 6 biện pháp), chi phí gói Supabase Pro khoảng 25 USD cho tháng thử, người code chính và số giờ mỗi tuần.
+Đã chốt 16/11: D-51..D-55. Còn mở: danh sách loại ngày trong báo cáo tuần và mốc "buổi tối".
 
 Còn mở: có đưa phần kỹ năng mềm (v5.21, v5.22 của bản đồ kiến thức, hiện chỉ có trong project trên claude.ai) vào repo không. Chủ sản phẩm: **chưa đưa vào** (15/11/2026).
