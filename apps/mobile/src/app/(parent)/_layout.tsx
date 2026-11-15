@@ -1,16 +1,34 @@
-import { Redirect, Tabs } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 
+import { useApp } from '@/state/app';
+import { Center, P } from '@/ui/kit';
 import { APP_VARIANT } from '@/variant';
 
-// 4 tab theo IA 6.1 mục 3.2 (nhãn đề xuất).
+// Cổng theo trạng thái: chưa đăng nhập chỉ thấy PA-01; chưa có hộ/con chỉ thấy bước bắt đầu; xong mới vào khung chính.
 export default function ParentLayout() {
+  const { parentStage } = useApp();
   if (APP_VARIANT !== 'parent') return <Redirect href="/" />;
+  if (parentStage === 'loading') {
+    return (
+      <Center>
+        <P muted>Đang mở...</P>
+      </Center>
+    );
+  }
   return (
-    <Tabs>
-      <Tabs.Screen name="lich-tuan" options={{ title: 'Lịch tuần' }} />
-      <Tabs.Screen name="len-ke-hoach" options={{ title: 'Lên kế hoạch' }} />
-      <Tabs.Screen name="tuan-qua" options={{ title: 'Tuần qua' }} />
-      <Tabs.Screen name="gia-dinh" options={{ title: 'Gia đình' }} />
-    </Tabs>
+    <Stack>
+      <Stack.Protected guard={parentStage === 'out'}>
+        <Stack.Screen name="dang-nhap" options={{ title: 'Đăng nhập', headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={parentStage === 'needHome'}>
+        <Stack.Screen name="bat-dau" options={{ title: 'Bắt đầu' }} />
+      </Stack.Protected>
+      <Stack.Protected guard={parentStage === 'ready'}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="ghep-may" options={{ title: 'Ghép máy của con' }} />
+        <Stack.Screen name="dat-pin" options={{ title: 'Mã PIN của bố mẹ' }} />
+        <Stack.Screen name="phien" options={{ title: 'Phiên đăng nhập' }} />
+      </Stack.Protected>
+    </Stack>
   );
 }

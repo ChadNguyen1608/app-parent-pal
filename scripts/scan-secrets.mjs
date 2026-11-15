@@ -6,7 +6,7 @@ import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
 const FORBIDDEN_FILES = [
-  /(^|\/)\.env(\.|$)/,
+  /(^|\/)\.env(\.(?!example$)|$)/, // .env.example (không giá trị thật) được phép
   /(^|\/)google-services\.json$/,
   /(^|\/)GoogleService-Info\.plist$/,
   /-adminsdk-.*\.json$/,

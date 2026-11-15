@@ -1,0 +1,209 @@
+// Trạng thái dùng chung: api, phiên đăng nhập, hộ (phụ huynh) hoặc giai đoạn ghép (máy con).
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Linking from 'expo-linking';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+
+import { getApi } from '../data';
+import { parseAuthLink } from '../data/auth-link';
+import { errorMessage } from '../data/errors';
+import type { Api, Home, SessionInfo } from '../data/types';
+import { APP_VARIANT } from '../variant';
+
+/** Phụ huynh: loading → out (PA-01) → needHome (tạo hộ, con) → ready. */
+export type ParentStage = 'loading' | 'out' | 'needHome' | 'ready';
+/** Máy con: loading → unpaired (CA-01, CA-02) → justPaired (CA-03) → intro (CA-16) → ready. */
+export type ChildStage = 'loading' | 'unpaired' | 'justPaired' | 'intro' | 'ready';
+
+type Ctx = {
+  api: Api;
+  session: SessionInfo | null;
+  // phụ huynh
+  parentStage: ParentStage;
+  home: Home;
+  refreshHome: () => Promise<void>;
+  signOut: () => Promise<void>;
+  /** Lỗi khi hoàn tất đăng nhập từ link trong thư (D-59), hiện ở PA-01. */
+  linkError: string | null;
+  clearLinkError: () => void;
+  // máy con
+  childStage: ChildStage;
+  childId: string | null;
+  onPaired: (childId: string) => void;
+  acknowledgeJustPaired: () => void;
+  acknowledgeIntro: () => Promise<void>;
+  onUnlinked: () => Promise<void>;
+};
+
+const AppCtx = createContext<Ctx | null>(null);
+const INTRO_KEY = 'pp.child.ca16_seen';
+
+export function useApp(): Ctx {
+  const c = useContext(AppCtx);
+  if (!c) throw new Error('useApp ngoài AppProvider');
+  return c;
+}
+
+export function AppProvider({ children }: { children: ReactNode }) {
+  const api = getApi();
+  if (!api) return <>{children}</>; // màn gốc đã báo thiếu cấu hình
+  return <Inner api={api}>{children}</Inner>;
+}
+
+function Inner({ api, children }: { api: Api; children: ReactNode }) {
+  const [session, setSession] = useState<SessionInfo | null>(null);
+  const [booted, setBooted] = useState(false);
+  const [home, setHome] = useState<Home>(null);
+  const [homeLoaded, setHomeLoaded] = useState(false);
+  const [childId, setChildId] = useState<string | null>(null);
+  const [childStage, setChildStage] = useState<ChildStage>('loading');
+
+  const isParent = APP_VARIANT === 'parent';
+  const [linkError, setLinkError] = useState<string | null>(null);
+  const handledUrl = useRef<string | null>(null);
+
+  // Link đăng nhập trong thư mở app (D-59): hoàn tất phiên. Chỉ app phụ huynh.
+  useEffect(() => {
+    if (!isParent) return;
+    let alive = true;
+    const handle = (url: string | null) => {
+      const link = parseAuthLink(url);
+      if (!link || !url || handledUrl.current === url) return;
+      handledUrl.current = url; // mã trong link chỉ dùng được một lần
+      setLinkError(null);
+      api.auth.completeFromLink(link).catch((e) => {
+        if (alive) setLinkError(`Liên kết đăng nhập không dùng được. ${errorMessage(e)} Bạn xin liên kết hoặc mã mới nhé.`);
+      });
+    };
+    void Linking.getInitialURL().then(handle);
+    const sub = Linking.addEventListener('url', (ev) => handle(ev.url));
+    return () => {
+      alive = false;
+      sub.remove();
+    };
+  }, [api, isParent]);
+
+  // Khởi động: đọc phiên đã lưu và theo dõi thay đổi.
+  useEffect(() => {
+    let alive = true;
+    api.auth
+      .getSession()
+      .then((s) => alive && setSession(s))
+      .catch(() => alive && setSession(null))
+      .finally(() => alive && setBooted(true));
+    const off = api.auth.onChange((s) => alive && setSession(s));
+    return () => {
+      alive = false;
+      off();
+    };
+  }, [api]);
+
+  const refreshHome = useCallback(async () => {
+    const h = await api.getHome();
+    setHome(h);
+    setHomeLoaded(true);
+  }, [api]);
+
+  // Phụ huynh: có phiên (không ẩn danh) thì nạp hộ và báo "đang hoạt động".
+  const parentSession = isParent && session && !session.isAnonymous ? session : null;
+  useEffect(() => {
+    if (!parentSession) {
+      setHome(null);
+      setHomeLoaded(false);
+      return;
+    }
+    let alive = true;
+    api
+      .getHome()
+      .then((h) => {
+        if (!alive) return;
+        setHome(h);
+        setHomeLoaded(true);
+        if (h) void api.touchActive().catch(() => undefined);
+      })
+      .catch(() => {
+        // Không nạp được hộ (mạng, quyền): coi như chưa có hộ để không treo; người dùng thử lại ở bước sau.
+        if (alive) setHomeLoaded(true);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [api, parentSession?.userId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Máy con: có phiên ẩn danh thì hỏi máy chủ đã ghép chưa.
+  const childSession = !isParent && session ? session : null;
+  useEffect(() => {
+    if (isParent || !booted) return;
+    if (!childSession) {
+      setChildId(null);
+      setChildStage('unpaired');
+      return;
+    }
+    let alive = true;
+    (async () => {
+      try {
+        const b = await api.getMyBinding();
+        if (!alive) return;
+        if (!b) {
+          setChildId(null);
+          setChildStage('unpaired');
+          return;
+        }
+        setChildId(b.childId);
+        const seen = (await AsyncStorage.getItem(INTRO_KEY)) === '1';
+        if (alive) setChildStage((cur) => (cur === 'justPaired' ? cur : seen ? 'ready' : 'intro'));
+      } catch {
+        if (alive) setChildStage('unpaired');
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [api, isParent, booted, childSession?.userId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const parentStage: ParentStage = !booted
+    ? 'loading'
+    : !parentSession
+      ? 'out'
+      : !homeLoaded
+        ? 'loading'
+        : home && home.children.length > 0
+          ? 'ready'
+          : 'needHome';
+
+  const value = useMemo<Ctx>(
+    () => ({
+      api,
+      session,
+      parentStage,
+      home,
+      refreshHome,
+      signOut: async () => {
+        await api.auth.signOut();
+        setSession(null);
+      },
+      linkError,
+      clearLinkError: () => setLinkError(null),
+      childStage,
+      childId,
+      onPaired: (id) => {
+        setChildId(id);
+        setChildStage('justPaired');
+      },
+      acknowledgeJustPaired: () => setChildStage('intro'),
+      acknowledgeIntro: async () => {
+        await AsyncStorage.setItem(INTRO_KEY, '1').catch(() => undefined);
+        setChildStage('ready');
+      },
+      onUnlinked: async () => {
+        await AsyncStorage.removeItem(INTRO_KEY).catch(() => undefined);
+        await api.auth.signOut().catch(() => undefined);
+        setSession(null);
+        setChildId(null);
+        setChildStage('unpaired');
+      },
+    }),
+    [api, session, parentStage, home, refreshHome, linkError, childStage, childId],
+  );
+
+  return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;
+}

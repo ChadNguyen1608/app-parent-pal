@@ -4,7 +4,7 @@
   "description": "Parent-Pal nấc 1 (A-lite E1). Mã mới ở apps/, packages/, backend/. mobile/ và supabase/ là mã Plan A cũ, giữ để tham khảo (D-31, D-50).",
   "engines": { "node": ">=22.6" },
   "scripts": {
-    "test": "node --experimental-strip-types --test \"packages/*/test/**/*.test.ts\"",
+    "test": "node --experimental-strip-types --test \"packages/*/test/**/*.test.ts\" \"apps/mobile/test/**/*.test.ts\"",
     "test:tz": "TZ=UTC npm test && TZ=Asia/Ho_Chi_Minh npm test",
     "scan-secrets": "node scripts/scan-secrets.mjs"
   }

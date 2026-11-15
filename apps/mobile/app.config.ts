@@ -20,7 +20,7 @@ export const VARIANTS: Record<Variant, VariantInfo> = {
   parent: {
     name: 'Parent-Pal Phụ huynh',
     slug: 'parent-pal-parent',
-    scheme: 'parentpal-parent',
+    scheme: 'parentbestpal-parent',
     applicationId: 'vn.parentbestpal.parent',
     iconBackground: '#E6F4FE',
     lab: true,
@@ -28,7 +28,7 @@ export const VARIANTS: Record<Variant, VariantInfo> = {
   child: {
     name: 'Parent-Pal Con',
     slug: 'parent-pal-child',
-    scheme: 'parentpal-child',
+    scheme: 'parentbestpal-child',
     applicationId: 'vn.parentbestpal.child',
     iconBackground: '#FFF3D6',
     lab: true,
