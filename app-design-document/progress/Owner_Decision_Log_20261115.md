@@ -112,6 +112,7 @@ Câu hỏi gộp từ danh sách module nấc 1, IA 6.1, Business Logic 11.2–1
 | D-53 | Người lớn thứ hai thấy con khi nào | Khi người quản lý chính đã cấp bất kỳ quyền xem nào đang hiệu lực (chỉ xem, D-35) |
 | D-54 | Nơi đặt máy chủ (LQ-08) và chi phí | **Supabase vùng Singapore (`ap-southeast-1`)**, gói **Pro khoảng 25 USD** cho tháng thử; kèm 6 biện pháp giảm rủi ro của Kiến trúc 12.1 §13.4. Cổng pháp lý LQ-08 vẫn mở, không coi là PASS. Thay một phần D-17 (cho phép khoản này) |
 | D-55 | Ai code chính | **Claude** (qua Claude Code) code chính, chủ sản phẩm duyệt PR; làm đến khi hết credit thì dừng |
+| D-56 | Dự án Supabase dùng cho nấc 1 (sửa D-54) | Chủ sản phẩm tạo lại dự án trống **`parent-best-pal`** (ref `roadpnpkjwjgfgottiwx`) ở vùng **Tokyo `ap-northeast-1`** (16/11/2026); không chọn được Singapore. Dự án cũ ở Seoul (có hàm `pal-chat` của Plan A) đã bị xóa. Dùng **gói miễn phí** khi phát triển với dữ liệu giả; **phải nâng lên Pro trước khi thử với gia đình thật** (cổng mới: gói miễn phí tự tạm dừng sau 7 ngày, không sao lưu). LQ-08 vẫn mở. Đề xuất chủ sản phẩm thu hồi khóa Claude API từng đặt trong dự án cũ |
 | D-46 | Kênh cài app, cách đăng nhập, dùng lại mã `mobile/` (testkit Q6, MQ-10) | Quyết ở bước **kiến trúc hệ thống** |
 
 Đã chốt 16/11: D-51..D-55. Còn mở: danh sách loại ngày trong báo cáo tuần và mốc "buổi tối".
