@@ -110,7 +110,7 @@
       }
     },
     "invitations": {
-      "spec": "§2.1, §2.7: chỉ QL của hộ đọc; ghi chưa có (tính năng tắt, T1.8)",
+      "spec": "§2.1, §2.7: chỉ QL của hộ đọc; ghi chưa có (member_invite trả FEATURE_OFF, cờ invites_enabled=0, T1.8)",
       "select": {
         "QL": 1,
         "NL": 0,
@@ -143,37 +143,18 @@
   },
   "app_functions": {
     "_doc": "Hàm trong schema app và vai được EXECUTE (ngoài service_role). Hàm không có trong danh sách này làm RLS-GEN-04 thất bại. Hàm trigger không cấp cho ai.",
-    "is_member": [
-      "authenticated"
-    ],
-    "is_primary_member": [
-      "authenticated"
-    ],
-    "is_primary": [
-      "authenticated"
-    ],
-    "is_self_member": [
-      "authenticated"
-    ],
-    "has_grant": [
-      "authenticated"
-    ],
-    "is_bound_device": [
-      "authenticated"
-    ],
-    "household_frozen": [
-      "authenticated"
-    ],
+    "is_primary_member": [],
+    "is_primary": [],
+    "has_grant": [],
+    "is_bound_device": [],
+    "household_frozen": [],
     "weekly_report": [
       "authenticated"
     ],
+    "member_invite": [
+      "authenticated"
+    ],
     "tg_binding_requires_device": [],
-    "can": [
-      "authenticated"
-    ],
-    "can_household": [
-      "authenticated"
-    ],
     "access_state": [],
     "household_access_state": [],
     "reject_child": [],
@@ -223,6 +204,21 @@
     ],
     "is_anonymous_caller": [],
     "pin_verify": []
+  },
+  "app_internal_functions": {
+    "_doc": "Hàm phụ trợ của chính sách RLS, nằm schema app_internal (không mở API, T1.8-b). Vai được EXECUTE (ngoài service_role). Chính sách chạy với quyền người gọi nên authenticated cần EXECUTE; anon không có gì. Hàm mới phải khai ở đây.",
+    "can": [
+      "authenticated"
+    ],
+    "can_household": [
+      "authenticated"
+    ],
+    "is_member": [
+      "authenticated"
+    ],
+    "is_self_member": [
+      "authenticated"
+    ]
   },
   "private_readers": {
     "_doc": "Chỉ các hàm này được nhắc tới private.checkin_responses trong thân hàm (RLS-D38-02).",

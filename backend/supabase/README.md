@@ -6,10 +6,10 @@ Nơi đặt dự án đám mây chưa chốt (LQ-08); chưa tạo dự án nào.
 | Thư mục / file | Nội dung |
 |---|---|
 | `config.toml` | Cấu hình Supabase CLI cục bộ, tối thiểu. `private` không nằm trong `[api] schemas` |
-| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set`. `…140000` T1.2: `family_create`, `touch_active`, `private.params`. `…150000` T1.5: ghép máy (`pair_*`), Parent PIN (`pin_set`, `pin_verify` nội bộ), `access_state` thêm `child.pair` và claim epoch, `RATE_LIMITED`. `…160000` T1.6: `unlink_device` |
+| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set`. `…140000` T1.2: `family_create`, `touch_active`, `private.params`. `…150000` T1.5: ghép máy (`pair_*`), Parent PIN (`pin_set`, `pin_verify` nội bộ), `access_state` thêm `child.pair` và claim epoch, `RATE_LIMITED`. `…160000` T1.6: `unlink_device`. `…170000` T1.8: `member_invite` (khung, cờ `invites_enabled=0`, luôn `FEATURE_OFF`). `…180000` hàm phụ trợ RLS (`can`, `can_household`, `is_member`, `is_self_member`) chuyển sang schema `app_internal` không mở API; 5 hàm không còn dùng thu hồi EXECUTE |
 | `seed/` | Dữ liệu giả (chị Hoa, anh Minh, bé Na, bé Bin, cô Lan, bé Su). **Không dữ liệu thật của trẻ** |
 | `tests/stub/` | `supabase-stub.sql`: vai `anon`/`authenticated`/`service_role`, schema `auth`, `auth.uid()`/`auth.jwt()`, `pgcrypto` ở schema `extensions`, `vault.decrypted_secrets` với khóa GIẢ chỉ để test. **Chỉ dùng cho test trên Postgres thuần, không nằm trong migrations** |
-| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `pair.test.mjs` (FN-FAM, FN-PAIR, FN-PIN, FR01-T01..T10, RLS-EPOCH), `policy-matrix.json`, `mutations/` |
+| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `pair.test.mjs` (FN-FAM, FN-PAIR, FN-PIN, FR01-T01..T10, RLS-EPOCH), `member.test.mjs` (MEM-INV, MEM-NL), `policy-matrix.json`, `mutations/` |
 | `functions/` | Edge Function (task sau) |
 
 ## Chạy test RLS
@@ -20,7 +20,7 @@ Hai chế độ, cùng một bộ test (`tests/rls/rls.test.mjs`, đọc `RLS_DB
 
 ```bash
 scripts/db-test.sh                  # initdb vào /tmp, cổng tự chọn, nạp stub + migrations + seed, chạy test, dọn dẹp
-scripts/db-test.sh --prove-negative # thêm: áp 36 đột biến và xác nhận test THẤT BẠI đúng mã
+scripts/db-test.sh --prove-negative # thêm: áp 43 đột biến và xác nhận test THẤT BẠI đúng mã
 ```
 
 Chạy bằng root thì script tự hạ quyền initdb/postgres xuống user `postgres`.
@@ -43,6 +43,7 @@ Test không nằm trong `npm test` gốc (cần Postgres). Gõ tay: `RLS_DB_URL=
 |---|---|
 | RLS-GEN-01 | Mọi bảng `app` bật RLS và có dòng trong `policy-matrix.json` (cả chiều ngược lại) |
 | RLS-GEN-02 | `anon`/`authenticated` không đọc được `private.*`; không chính sách; RLS bật |
+| RLS-GEN-05 | Hàm phụ trợ của chính sách nằm ở `app_internal` (không có trong `[api] schemas`), mọi chính sách chỉ gọi hàm ở đó, EXECUTE đúng danh sách `app_internal_functions`, PUBLIC không có gì |
 | RLS-GEN-03/04 | `anon` không có quyền gì; không ai ghi trực tiếp; hàm `app.*` là security definer, `search_path` rỗng, EXECUTE đúng danh sách |
 | RLS-ROLE | Số dòng mỗi bảng baseline × vai (QL, NL, Con đã ghép, Con chưa ghép, hộ khác, anon) và ghi trực tiếp bị từ chối |
 | RLS-SCHEMA | Ràng buộc: một PRIMARY mỗi hộ, không `CHILD_DIRECTED`, con không máy không ghép, mã ghép dùng một lần... |
@@ -207,3 +208,41 @@ Chọn cách đơn giản, an toàn: **nguồn chân lý là dòng `device_bindi
 - Vận hành: không bật `log_statement` hoặc `log_parameter_max_length` cho các hàm có tham số PIN/mã; Edge Function bọc ngoài không được log thân yêu cầu.
 - Hủy phiên khi máy ngoại tuyến (AC-FAM-14): ngoại tuyến thì không có lời gọi nào tới máy chủ nên liên kết vẫn `HIEU_LUC`; phía máy khách chỉ xóa liên kết khi nhận `ok=true`.
 - Các cổng khác của FR-01 chưa phủ ở đây: FR01-T11 (người lớn 18+ tự quản, ngoài phạm vi lớp 1-9, BR-FAM-007), phương pháp xác minh mở `CHO_XAC_MINH` (`UNKNOWN`, LQ-03), FR01-T07 (xác minh độc lập) chỉ kiểm được rằng không có đường tự nâng quyền.
+
+
+## Hàm trong schema app và schema app_internal
+
+- `app` nằm trong `[api] schemas`: mọi hàm có EXECUTE cho `authenticated` đều là RPC công khai (`/rest/v1/rpc/...`). Chỉ để hàm **nghiệp vụ** ở đây (`family_create`, `touch_active`, `child_*`, `mode_set`, `pair_*`, `pin_set`, `unlink_device`, `weekly_report`, `member_invite`).
+- Hàm phụ trợ mà chính sách RLS gọi thì phải có EXECUTE cho `authenticated` (chính sách chạy với quyền người gọi), nên đặt ở `app_internal`: **không** thêm vào `[api] schemas`, và trên dự án đám mây phải để `app_internal` ngoài mục Exposed schemas. Thêm hàm phụ trợ mới: đặt vào `app_internal`, khai trong `app_internal_functions` của `policy-matrix.json`.
+- Hàm `app.*` gọi hàm phụ trợ phải dùng tên có schema (`app_internal.is_member`). `ALTER FUNCTION ... SET SCHEMA` giữ chính sách theo OID nhưng không sửa văn bản thân hàm khác; migration `…180000` có chốt chặn kiểm điều này.
+- Edge Function (service_role) gọi `app_internal.can(...)`; `service_role` có USAGE trên `app_internal`.
+
+## Đồng bộ lịch sử migration
+
+Trên dự án đám mây `parent-best-pal` (`roadpnpkjwjgfgottiwx`), bảng lịch sử migration ghi version theo **giờ áp** (do công cụ áp migration đặt), còn file trong repo đặt version theo thứ tự soạn. Tên khớp, version lệch. Nếu không sửa, `supabase db push` sẽ coi 7 file trong repo là chưa áp và thử áp lại (lỗi vì bảng đã có). Đối chiếu (đọc từ `list_migrations`, 15/11/2026; chưa chạy gì lên đám mây):
+
+| Tên | Version trong repo | Version trên đám mây |
+|---|---|---|
+| baseline_gia_dinh_ghep_may_d38 | 20261115100000 | 20261115190609 |
+| t1_1_purposes_mode_history_invitations_can | 20261115110000 | 20261115190652 |
+| t1_3_ham_ho_so_con | 20261115120000 | 20261115190730 |
+| t1_4_mode_set | 20261115130000 | 20261115190733 |
+| t1_2_family_create_touch_active | 20261115140000 | 20261115201355 |
+| t1_5_ghep_may_pin | 20261115150000 | 20261115204341 |
+| t1_6_unlink_device | 20261115160000 | 20261115204404 |
+
+Hai migration mới của PR này (`…170000_t1_8_member_invite_cong_tat`, `…180000_ham_phu_tro_rls_sang_app_internal`) **chưa có** trên đám mây.
+
+Cách đồng bộ (chạy một lần, từ máy có Supabase CLI đã `supabase link --project-ref roadpnpkjwjgfgottiwx`; chỉ sửa bảng lịch sử, không đổi lược đồ):
+
+```bash
+cd backend
+# 1) Gỡ 7 version giờ-áp khỏi lịch sử
+supabase migration repair --status reverted 20261115190609 20261115190652 20261115190730 20261115190733 20261115201355 20261115204341 20261115204404
+# 2) Ghi 7 version của repo là đã áp
+supabase migration repair --status applied 20261115100000 20261115110000 20261115120000 20261115130000 20261115140000 20261115150000 20261115160000
+# 3) Kiểm: cột Local và Remote phải khớp từng dòng; hai file …170000, …180000 chỉ có Local
+supabase migration list
+```
+
+Chỉ sau khi chủ sản phẩm đồng ý áp lên đám mây mới chạy `supabase db push` (áp `…170000` và `…180000`). Từ nay nên áp bằng `db push` để version đám mây trùng version file, không áp bằng công cụ tạo version theo giờ. Lệnh `repair` đổi bảng `supabase_migrations.schema_migrations`, nên cần chủ sản phẩm duyệt trước khi chạy (quy tắc: không áp gì lên đám mây từ nhánh code).

@@ -592,7 +592,7 @@ describe('FR01-T: hủy liên kết, PIN, epoch (T1.6; FR-01; AC-FAM-13..15; c�
       select app.pair_code_create()->>'code' as code \\gset
       ${as(HK)} select app.pair_confirm('${SU}', :'code', '${PIN2}');
       ${as(DEV_NA)} select count(*) from app.children; select count(*) from app.device_bindings;
-      select app.can('${U.DEV_NA}', 'child.view', '${SU}', null), app.can('${U.DEV_NA}', 'child.view', '${NA}', null);
+      select app_internal.can('${U.DEV_NA}', 'child.view', '${SU}', null), app_internal.can('${U.DEV_NA}', 'child.view', '${NA}', null);
       ${as(HK)} select count(*) from app.children where id = '${NA}'; select count(*) from app.grants;`,
       { setup: PIN_NA + `delete from app.device_bindings where device_user_id='${U.DEV_SU}';` });
     const conf = J(r, 1);
@@ -620,7 +620,7 @@ describe('FR01-T: hủy liên kết, PIN, epoch (T1.6; FR-01; AC-FAM-13..15; c�
     const after = run(DEV_NA, `${replay} ${adm(`select state || ':' || epoch from app.device_bindings where child_id='${NA}' and state='HIEU_LUC'`)}`, { setup: PIN_NA });
     assert.equal(after.rows[after.rows.length - 1], 'HIEU_LUC:4');
     // (c) máy ngoại tuyến "tự coi đã hủy": máy chủ chưa nhận thì máy vẫn đọc được và liên kết vẫn HIEU_LUC
-    const off = run(DEV_NA, `select count(*) from app.children; select app.can('${U.DEV_NA}','child.view','${NA}',null); ${stateNa}`, { setup: PIN_NA });
+    const off = run(DEV_NA, `select count(*) from app.children; select app_internal.can('${U.DEV_NA}','child.view','${NA}',null); ${stateNa}`, { setup: PIN_NA });
     assert.equal(off.rows[0], '1');
     assert.equal(off.rows[1], 't');
     assert.equal(off.rows[2], 'HIEU_LUC:1');
@@ -636,10 +636,10 @@ describe('FR01-T: hủy liên kết, PIN, epoch (T1.6; FR-01; AC-FAM-13..15; c�
 
   it('RLS-EPOCH-01: token cũ mất quyền đọc ngay khi hủy; sau ghép lại, claim binding_epoch cũ không còn đọc được, claim đúng hoặc không claim thì đọc', () => {
     const cycle = `${unlink(DEV_NA)}
-      select count(*), app.can('${U.DEV_NA}','child.view','${NA}',null) from app.children;
+      select count(*), app_internal.can('${U.DEV_NA}','child.view','${NA}',null) from app.children;
       select app.pair_code_create()->>'code' as code \\gset
       ${as(QL)} select app.pair_confirm('${NA}', :'code'); ${as(DEV_NA)} select app.pair_accept();`;
-    const withClaim = (extra) => `${as(dev(U.DEV_NA, extra))} select count(*) || ':' || app.can('${U.DEV_NA}','child.view','${NA}',null) from app.children;`;
+    const withClaim = (extra) => `${as(dev(U.DEV_NA, extra))} select count(*) || ':' || app_internal.can('${U.DEV_NA}','child.view','${NA}',null) from app.children;`;
     const r = run(DEV_NA, `${cycle} ${withClaim({})} ${withClaim({ binding_epoch: 1 })} ${withClaim({ binding_epoch: 2 })} ${withClaim({ binding_epoch: 4 })} ${withClaim({ binding_epoch: 'x' })}`, { setup: PIN_NA });
     assert.equal(r.rows[1], '0|f', 'ngay sau hủy: token cũ không đọc');
     const n = r.rows.length;
