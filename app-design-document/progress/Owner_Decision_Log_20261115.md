@@ -80,4 +80,7 @@ Trả lời của chủ sản phẩm cho các câu hỏi gộp từ User Flow đ
 | D-30 | Con nói về tự hại hoặc bấm nút "Con cần giúp đỡ" thì có báo bố mẹ không? | **Không tự ý báo.** App **gợi ý con báo bố mẹ**, có nút gửi sẵn; con không muốn báo bố mẹ thì có thể chọn người lớn khác con tin. Chỉ gửi khi con bấm. Bổ sung cho D-26 |
 | D-29 | Câu hỏi pháp lý mới | Thêm vào `progress/Legal_Question_Pack.md`: rút đồng ý từng phần, thời hạn xóa, đóng băng tài khoản và giữ dữ liệu |
 
-Còn mở: có đưa phần kỹ năng mềm (v5.21, v5.22 của bản đồ kiến thức, hiện chỉ có trong project trên claude.ai) vào repo không.
+| D-31 | Plan A (app Expo cho 5 tính năng trong `mobile/`, `supabase/`) | **Dừng Plan A**, dồn sức cho nấc 1 (A-lite E1). Mã hiện có giữ nguyên trong repo để tham khảo, không dựng tiếp. Spec `documents/app/spec-phuong-an-a-app-android.md` chuyển trạng thái tạm dừng |
+| D-32 | Agent phụ | Dùng mô hình Sonnet 5.5 cho các agent phụ |
+
+Còn mở: có đưa phần kỹ năng mềm (v5.21, v5.22 của bản đồ kiến thức, hiện chỉ có trong project trên claude.ai) vào repo không. Chủ sản phẩm: **chưa đưa vào** (15/11/2026).

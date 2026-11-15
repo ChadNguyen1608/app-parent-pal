@@ -2,9 +2,11 @@
 
 Repo này chứa **tài liệu** của Parent-Pal (thư mục `documents/`) và **bản thử lập lịch** dạng một trang HTML chạy trên artifact claude.ai (thư mục `prototype/`, xem `prototype/README.md`). Code bản thử Expo cũ đã được gỡ ngày 28/10/2026; muốn xem hoặc khôi phục, dùng lịch sử git (commit `9abc286` là bản cuối còn code).
 
-## Dựng app Android (phương án A, chốt 04/11/2026)
+## Dựng app
 
-Đang dựng app Expo thử nghiệm cho 5 tính năng: nhắc giờ, vùng GPS, ghi âm, chụp ảnh, thông báo đẩy. **Đọc `documents/app/spec-phuong-an-a-app-android.md` trước khi viết mã.** File đó ghi công nghệ đã chốt, cấu trúc thư mục (`mobile/`, `supabase/`), ràng buộc bắt buộc, các bước và điều kiện đạt.
+**Phương án A (app Expo cho 5 tính năng: nhắc giờ, vùng GPS, ghi âm, chụp ảnh, thông báo đẩy) tạm dừng từ 15/11/2026** (D-31). Mã trong `mobile/`, `supabase/` giữ để tham khảo, không dựng tiếp. Spec cũ: `documents/app/spec-phuong-an-a-app-android.md`.
+
+Đang làm **nấc 1 của MVP (A-lite E1)**: phụ huynh điền biểu mẫu, thuật toán xếp lịch (không AI), lịch đồng bộ sang app của con (D-16). Tài liệu thiết kế ở `app-design-document/` (mục lục `app-design-document/DOCUMENT_INDEX.md`); quyết định ở `app-design-document/progress/Owner_Decision_Log_20261115.md`.
 
 - Mỗi bước một nhánh, một PR. Không đẩy thẳng lên `main`.
 - Repo công khai: không commit khóa, `.env`, `google-services.json`, khóa ký, dữ liệu thật của trẻ.

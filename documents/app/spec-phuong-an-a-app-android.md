@@ -1,6 +1,6 @@
 # Phương án A: app Android thử nghiệm (đặc tả để dựng)
 
-- **Trạng thái:** đã chốt ngày 04/11/2026 (chủ sản phẩm). Người soạn: AI (Claude).
+- **Trạng thái:** **tạm dừng từ 15/11/2026** (D-31, `app-design-document/progress/Owner_Decision_Log_20261115.md`): dồn sức cho nấc 1 của MVP (A-lite E1). Trước đó đã chốt ngày 04/11/2026 (chủ sản phẩm). Người soạn: AI (Claude).
 - **Người dựng:** Claude Code, làm việc cùng chủ sản phẩm.
 - **Tài liệu gốc:** "Parent-Pal – Phương án triển khai app Android thử nghiệm" (Claude Docs). File này là bản rút gọn để dựng; khi hai bản khác nhau, hỏi chủ sản phẩm.
 
