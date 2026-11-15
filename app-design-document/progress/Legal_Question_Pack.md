@@ -228,6 +228,13 @@ Mỗi câu hỏi có bốn phần: (a) bối cảnh xử lý, (b) câu hỏi c�
 - **(c) Vì sao quan trọng:** luồng G9, G10 của User Flow 4.2; thời hạn lưu là một phần của cổng H4.
 - **(d) Định dạng:** thời hạn cụ thể, điều khoản.
 
+### LQ-16. Con báo "không khỏe" (D-58)
+
+- **(a) Bối cảnh:** con bấm "Con thấy không khỏe", app gửi thông báo tức thì cho bố mẹ và lưu loại sự kiện cùng thời điểm, không lưu triệu chứng. Dữ liệu dùng để bố mẹ biết ngay và để xét riêng trong báo cáo quy luật mệt.
+- **(b) Câu hỏi:** dữ liệu này có bị coi là dữ liệu sức khỏe (dữ liệu nhạy cảm) không? Nếu có thì cần đồng ý riêng, thời hạn lưu và biện pháp gì?
+- **(c) Vì sao quan trọng:** nếu là dữ liệu nhạy cảm, tính năng chỉ được bật khi có đồng ý riêng (mục đích thứ 8) và có thể phải lưu ngắn hơn.
+- **(d) Định dạng:** CÓ/KHÔNG, điều khoản, thời hạn.
+
 ## 3. Thứ tự ưu tiên đề xuất cho luật sư
 
 1. LQ-01, LQ-02, LQ-11: căn cứ xử lý và đồng ý. Gỡ cổng dữ liệu thật và pilot.
