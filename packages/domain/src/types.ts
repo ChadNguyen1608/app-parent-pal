@@ -9,10 +9,11 @@ export const isWeekend = (d: string): boolean => d === 'T7' || d === 'CN';
 export type Tai = 'cao' | 'vua' | 'thap' | 'phuc_hoi';
 export type Nhom = 'truong' | 'hoc_them' | 'hoc_nha' | 'choi_nghi' | 'sinh_hoat' | 'ngu';
 
-/** Kiểu khối có cấu trúc (Business Logic 11.1 §2.2, B-11). Bộ kiểm dùng `kind`, không đoán từ tên khối. */
+/** Kiểu khối có cấu trúc (Business Logic 11.1 §2.2, B-11). Bộ kiểm dùng `kind`, không đoán từ tên khối.
+ *  Khác bảng §2.2: `bua_nha` tách thành `an_trua`/`an_toi` (bộ kiểm C7 cần biết có ăn tối); `an_sang` thêm mới (khối sáng). `bua_phu` dùng cả ở trường và ở nhà. */
 export const BLOCK_KINDS = [
-  'truong', 'di_lai', 'bua_truong', 'hoat_dong', 'ghi_viec_hoi_tham', 'phuc_hoi', 'hoc_nha', 'soan_cap',
-  'bua_nha', 'bua_phu', 'van_dong_sang', 've_sinh_toi', 'doc_nhat_ky', 'man_hinh', 'choi_tu_do', 'nghi_ngan',
+  'truong', 'di_lai', 'bua_truong', 'bua_phu', 'hoat_dong', 'ghi_viec_hoi_tham', 'phuc_hoi', 'hoc_nha', 'soan_cap',
+  'an_sang', 'an_trua', 'an_toi', 'van_dong_sang', 've_sinh_toi', 'doc_nhat_ky', 'man_hinh', 'choi_tu_do', 'nghi_ngan',
   'tat_den', 'ghi_chu_phuong_an',
 ] as const;
 export type BlockKind = (typeof BLOCK_KINDS)[number];

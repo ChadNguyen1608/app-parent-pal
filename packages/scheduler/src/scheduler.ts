@@ -86,12 +86,11 @@ function weekAnchors(prof: any, budget: any) {
 function blk(s: number, e: number, khoi: string, o: any = {}): any {
   return Object.assign({ s, e, khoi, viec: [], xac_nhan: "Con bấm Xong", tai: "thap", nhom: "sinh_hoat", the_thao: false, man_hinh: false, trang_thai: "binh_thuong", ghi_chu: "" }, o);
 }
-const MAIN_MEAL = /(ăn sáng|ăn trưa|ăn tối)/i;
 const SNACK = PARAMS.SNACK.v; // B-7: thời lượng khối, không phải giới hạn
 // cùng logic nhận diện bữa với checkDayK (index.html 615–617)
 function mealEvents(B: any[], school: any) {
-  const ML = /(ăn sáng|ăn trưa|ăn tối|bữa|ăn nhẹ|ăn phụ|^ăn )/i, ev = [];
-  B.forEach(b => { if (ML.test(b.khoi) || (b.viec || []).some(v => /(ăn nhẹ|bữa phụ|ăn phụ|ăn sáng|ăn tối)/i.test(v))) ev.push({ t: b.s, n: b.khoi }); });
+  const ev: { t: number; n: string }[] = [];
+  B.forEach(b => { if (V.isMealEvent(b)) ev.push({ t: b.s, n: b.khoi }); });
   if (school && toMin(school.start) <= 660 && toMin(school.end) >= 720 && !ev.some(x => x.t >= 600 && x.t <= 780)) ev.push({ t: 675, n: "bữa trưa ở trường (giả định 11h15)" });
   return ev.sort((a, b) => a.t - b.t);
 }
@@ -100,7 +99,7 @@ function buildDay(prof: any, d: string, A: any, prm: any) {
   const cut = prm.cut || 0; // phút bớt cho mỗi khối bữa ở nhà và vệ sinh để khớp quỹ sinh_hoat (D4)
   const DUR = { MORNING: p("MORNING") - cut, DINNER: p("DINNER") - cut, LUNCH_HOME: p("LUNCH_HOME") - cut, HYGIENE: p("HYGIENE") - cut };
   const grade = prof.grade, school = prof.school[d], commute = prof.commute || 0;
-  const di = DAYS.indexOf(d), nextD = DAYS[(di + 1) % 7];
+  const di = (DAYS as readonly string[]).indexOf(d), nextD = DAYS[(di + 1) % 7];
   const wake = A.wake[d], bed = A.bed[d] + prm.shift, tailStart = bed - DUR.HYGIENE - p("READ");
   const B = [], fails = [], notes = [], tradeoffs = [];
   const free = (s, e) => s >= wake && e <= bed && s < e && B.every(b => b.e <= s || b.s >= e);
@@ -114,28 +113,28 @@ function buildDay(prof: any, d: string, A: any, prm: any) {
     let t = wake;
     if (avail >= DUR.MORNING + p("MOTION_MIN")) {
       const mv = Math.min(p("MOTION_MAX"), avail - DUR.MORNING);
-      add(blk(t, t + mv, "Dậy, vận động buổi sáng", { viec: ["Khởi động", "Phần chính nhẹ (trong nhà nếu mưa)", "Giãn cơ"], tai: "vua", nhom: "choi_nghi", ghi_chu: grade <= 6 ? "Dưới 12 tuổi đạp xe ngoài đường cần người lớn đi cùng, đội mũ bảo hiểm (G2)." : "" }));
+      add(blk(t, t + mv, "Dậy, vận động buổi sáng", { kind: "van_dong_sang", viec: ["Khởi động", "Phần chính nhẹ (trong nhà nếu mưa)", "Giãn cơ"], tai: "vua", nhom: "choi_nghi", ghi_chu: grade <= 6 ? "Dưới 12 tuổi đạp xe ngoài đường cần người lớn đi cùng, đội mũ bảo hiểm (G2)." : "" }));
       t += mv;
     } else notes.push({ rule: "G2", t: d + ": buổi sáng không đủ " + p("MOTION_MIN") + "′ cho vận động." });
     // ăn sáng sát giờ đi để rút ngắn khoảng cách tới bữa trưa (H2)
-    add(blk(leave - DUR.MORNING, leave, "Vệ sinh, ăn sáng, thay đồ", { viec: ["Đánh răng, rửa mặt", "Ăn sáng (không màn hình)", "Thay đồng phục"] }));
+    add(blk(leave - DUR.MORNING, leave, "Vệ sinh, ăn sáng, thay đồ", { kind: "an_sang", viec: ["Đánh răng, rửa mặt", "Ăn sáng (không màn hình)", "Thay đồng phục"] }));
     morningEnd = leave;
-    if (commute) add(blk(leave, st, "Đi học", { tai: "thap", nhom: "truong", xac_nhan: "Tự động" }));
+    if (commute) add(blk(leave, st, "Đi học", { kind: "di_lai", tai: "thap", nhom: "truong", xac_nhan: "Tự động" }));
     // tách khối trường theo bữa ở trường (H2: bữa ở trường được tính)
     const cuts = [];
-    if (school.lunch) cuts.push({ s: toMin(school.lunch), e: toMin(school.pmStart || hhmm(toMin(school.lunch) + p("LUNCH_HOME"))), k: school.pmStart ? "Ăn trưa, ngủ trưa ở trường" : "Ăn trưa ở trường" });
-    if (school.snack) cuts.push({ s: toMin(school.snack), e: toMin(school.snack) + (school.snackDur || 15), k: "Bữa phụ ở trường" });
+    if (school.lunch) cuts.push({ s: toMin(school.lunch), e: toMin(school.pmStart || hhmm(toMin(school.lunch) + p("LUNCH_HOME"))), k: school.pmStart ? "Ăn trưa, ngủ trưa ở trường" : "Ăn trưa ở trường", kind: "bua_truong" });
+    if (school.snack) cuts.push({ s: toMin(school.snack), e: toMin(school.snack) + (school.snackDur || 15), k: "Bữa phụ ở trường", kind: "bua_phu" });
     cuts.sort((a, b) => a.s - b.s);
     let cur = st, seg = 0;
-    for (const c of cuts) { if (c.s > cur) add(blk(cur, c.s, seg++ ? "Học ở trường (chiều)" : "Học ở trường", { tai: "cao", nhom: "truong", xac_nhan: "Không cần" })); add(blk(c.s, c.e, c.k, { tai: "thap", nhom: "truong", xac_nhan: "Không cần" })); cur = c.e; }
-    if (en > cur) add(blk(cur, en, seg ? "Học ở trường (chiều)" : "Học ở trường", { tai: "cao", nhom: "truong", xac_nhan: "Không cần" }));
-    if (commute) add(blk(en, en + commute, "Về nhà", { tai: "thap", nhom: "truong", xac_nhan: "Tự động" }));
+    for (const c of cuts) { if (c.s > cur) add(blk(cur, c.s, seg++ ? "Học ở trường (chiều)" : "Học ở trường", { kind: "truong", tai: "cao", nhom: "truong", xac_nhan: "Không cần" })); add(blk(c.s, c.e, c.k, { kind: c.kind, tai: "thap", nhom: "truong", xac_nhan: "Không cần" })); cur = c.e; }
+    if (en > cur) add(blk(cur, en, seg ? "Học ở trường (chiều)" : "Học ở trường", { kind: "truong", tai: "cao", nhom: "truong", xac_nhan: "Không cần" }));
+    if (commute) add(blk(en, en + commute, "Về nhà", { kind: "di_lai", tai: "thap", nhom: "truong", xac_nhan: "Tự động" }));
   } else {
     let t = wake;
     const firstFixed = Math.min(...(prof.activities || []).filter(a => a.thu.includes(d)).map(a => toMin(a.bat_dau) - Math.round((a.di_lai || 0) / 2)), 9999);
     const room = firstFixed - wake;
-    if (room >= DUR.MORNING + p("MOTION_MIN")) { const mv = Math.min(p("MOTION_MAX"), room - DUR.MORNING); add(blk(t, t + mv, "Dậy, vận động buổi sáng", { viec: ["Khởi động", "Phần chính nhẹ", "Giãn cơ"], tai: "vua", nhom: "choi_nghi" })); t += mv; }
-    add(blk(t, t + DUR.MORNING, "Vệ sinh, ăn sáng", { viec: ["Đánh răng, rửa mặt", "Ăn sáng (không màn hình)"] }));
+    if (room >= DUR.MORNING + p("MOTION_MIN")) { const mv = Math.min(p("MOTION_MAX"), room - DUR.MORNING); add(blk(t, t + mv, "Dậy, vận động buổi sáng", { kind: "van_dong_sang", viec: ["Khởi động", "Phần chính nhẹ", "Giãn cơ"], tai: "vua", nhom: "choi_nghi" })); t += mv; }
+    add(blk(t, t + DUR.MORNING, "Vệ sinh, ăn sáng", { kind: "an_sang", viec: ["Đánh răng, rửa mặt", "Ăn sáng (không màn hình)"] }));
     morningEnd = t + DUR.MORNING;
   }
 
@@ -144,7 +143,7 @@ function buildDay(prof: any, d: string, A: any, prm: any) {
     const h = Math.round((a.di_lai || 0) / 2), s = toMin(a.bat_dau) - h, e = toMin(a.ket_thuc) + h;
     let name = a.ten + " (gồm đi lại)";
     if (a.loai === "the_thao") name = "Tập thể thao: " + name; else if (V.STUDY.test(name) || a.loai === "hoc_them") name = "Học thêm: " + name; else name = "Năng khiếu: " + name;
-    const o = { tai: "cao", nhom: "hoc_them", the_thao: a.loai === "the_thao", xac_nhan: "Tự động", act_id: a.id, act_start: a.bat_dau, act_end: a.ket_thuc, viec: ["Mang túi đồ đã soạn từ tối hôm trước"] };
+    const o = { kind: "hoat_dong", tai: "cao", nhom: "hoc_them", the_thao: a.loai === "the_thao", xac_nhan: "Tự động", act_id: a.id, act_start: a.bat_dau, act_end: a.ket_thuc, viec: ["Mang túi đồ đã soạn từ tối hôm trước"] };
     if (e > tailStart || toMin(a.ket_thuc) > bed) { fails.push({ k: "act_bed", act: a }); continue; }
     if (a.loai === "the_thao" && toMin(a.ket_thuc) > bed - p("SPORT_TO_BED")) { fails.push({ k: "sport_bed", act: a }); continue; }
     if (!free(s, e)) { tradeoffs.push({ day: d, act_id: a.id, kind: "trung_gio", rule: "E1/OD-02", t: "\"" + a.ten + "\" " + a.bat_dau + "–" + a.ket_thuc + " (cả đi lại " + hhmm(s) + "–" + hhmm(e) + ") trùng giờ trường hoặc hoạt động khác.", options: ["Bố mẹ đổi giờ hoặc ngày của \"" + a.ten + "\"", "Bỏ một trong hai hoạt động trùng (bố mẹ chọn)"] }); continue; }
@@ -153,32 +152,32 @@ function buildDay(prof: any, d: string, A: any, prm: any) {
 
   // 3. về nhà: ghi việc + hỏi thăm (G3), rồi phục hồi (C2) trước mọi việc học
   let flexLo = morningEnd, recEnd = null;
-  const placeMeal = (pref, name, dur) => {
-    for (let s = pref; s + dur <= tailStart; s += 5) if (free(s, s + dur)) return add(blk(s, s + dur, name, { viec: ["Không màn hình khi ăn", "Nghỉ 5–10′ sau ăn (H1)"], xac_nhan: "Không cần" }));
+  const placeMeal = (pref: number, name: string, dur: number, kind: string) => {
+    for (let s = pref; s + dur <= tailStart; s += 5) if (free(s, s + dur)) return add(blk(s, s + dur, name, { kind, viec: ["Không màn hình khi ăn", "Nghỉ 5–10′ sau ăn (H1)"], xac_nhan: "Không cần" }));
     fails.push({ k: "meal", name }); return null;
   };
   // học 1 buổi sáng, không ăn trưa ở trường: ăn trưa ngay khi về (bữa không thay phục hồi, H1)
   const lunchAtSchool = school && school.lunch;
   const schoolCoversLunch = school && toMin(school.start) <= 660 && toMin(school.end) >= 720;
   if (!lunchAtSchool) {
-    if (!schoolCoversLunch) { const pref = Math.max(toMin(prof.meals.lunch || "11:15"), school ? toMin(school.end) + commute : 0); placeMeal(pref, "Ăn trưa", DUR.LUNCH_HOME); }
+    if (!schoolCoversLunch) { const pref = Math.max(toMin(prof.meals.lunch || "11:15"), school ? toMin(school.end) + commute : 0); placeMeal(pref, "Ăn trưa", DUR.LUNCH_HOME, "an_trua"); }
     else notes.push({ rule: "H2", t: d + ": chưa biết giờ ăn trưa ở trường, giả định 11:15." });
   }
   if (school) {
     const arrive = toMin(school.end) + commute;
     const evening = (prof.activities || []).some(a => a.thu.includes(d) && toMin(a.ket_thuc) > toMin(prof.meals.dinner));
-    const justAte = B.some(b => MAIN_MEAL.test(b.khoi) && b.e <= arrive + 60 && b.s >= arrive - 60);
+    const justAte = B.some(b => V.isMainMeal(b) && b.e <= arrive + 60 && b.s >= arrive - 60);
     const recViec = [...(justAte ? [] : [evening ? "Bữa phụ chắc (có học thêm tối, G7)" : "Ăn nhẹ (trái cây, sữa, khoai…)"]), "Chơi tự do do con chọn, không màn hình"];
     // D-10 (15/11/2026, thắng G3): "Rất mệt" KHÔNG tự đổi lịch. Muốn đổi, con đi qua bước đề xuất theo chế độ (xem fatigue.js).
     const recNote = "Con chọn 'Rất mệt' thì lịch không tự đổi (D-10). Con có thể gửi mong muốn hoặc đề xuất cho bố mẹ, tùy chế độ.";
     let t = arrive, placed = false;
     // thử ngay khi về, nếu không thì sau hoạt động gần nhất
-    const starts = [arrive, ...B.filter(b => b.s >= arrive && (b.nhom === "hoc_them" || MAIN_MEAL.test(b.khoi))).map(b => b.e)].sort((a, b) => a - b);
+    const starts = [arrive, ...B.filter(b => b.s >= arrive && (b.nhom === "hoc_them" || V.isMainMeal(b))).map(b => b.e)].sort((a, b) => a - b);
     for (const s0 of starts) {
       for (const rec of [prm.rec, p("REC_FLOOR")].filter((x, i, arr) => arr.indexOf(x) === i)) {
         if (free(s0, s0 + p("CHECKIN") + rec)) {
-          add(blk(s0, s0 + p("CHECKIN"), "Ghi lại việc được giao, hỏi thăm", { viec: ["Chụp sổ liên lạc hoặc kể cho Pal", "Con chọn: Ổn / Hơi mệt / Rất mệt"], xac_nhan: "Ảnh" }));
-          add(blk(s0 + p("CHECKIN"), s0 + p("CHECKIN") + rec, "Ăn nhẹ và chơi tự do (phục hồi)", { viec: recViec, tai: "phuc_hoi", nhom: "choi_nghi", xac_nhan: "Không cần", ghi_chu: recNote }));
+          add(blk(s0, s0 + p("CHECKIN"), "Ghi lại việc được giao, hỏi thăm", { kind: "ghi_viec_hoi_tham", viec: ["Chụp sổ liên lạc hoặc kể cho Pal", "Con chọn: Ổn / Hơi mệt / Rất mệt"], xac_nhan: "Ảnh" }));
+          add(blk(s0 + p("CHECKIN"), s0 + p("CHECKIN") + rec, "Ăn nhẹ và chơi tự do (phục hồi)", { kind: "phuc_hoi", viec: recViec, tai: "phuc_hoi", nhom: "choi_nghi", xac_nhan: "Không cần", ghi_chu: recNote }));
           if (rec < prm.rec) notes.push({ rule: "C2", t: d + ": phục hồi rút còn " + rec + "′ vì hoạt động ngay sau giờ về." });
           recEnd = s0 + p("CHECKIN") + rec; placed = true; break;
         }
@@ -190,14 +189,14 @@ function buildDay(prof: any, d: string, A: any, prm: any) {
   }
 
   // 4. bữa ở nhà (C7 không bỏ bữa; H2)
-  placeMeal(Math.max(toMin(prof.meals.dinner), flexLo), "Ăn tối cùng gia đình", DUR.DINNER);
+  placeMeal(Math.max(toMin(prof.meals.dinner), flexLo), "Ăn tối cùng gia đình", DUR.DINNER, "an_toi");
 
   // 5. đuôi buổi tối (G4, F3): vệ sinh → đọc 15′ + nhật ký → tắt đèn
   if (free(tailStart, bed)) {
-    add(blk(tailStart, tailStart + DUR.HYGIENE, "Vệ sinh buổi tối", { viec: ["Tắm, đánh răng", "Thiết bị để ngoài phòng ngủ (C6)"] }));
-    add(blk(bed - p("READ"), bed, "Đọc sách và viết nhật ký trên giường", { viec: ["Đọc sách giấy 15′", "Nhật ký 2–3 câu"], ghi_chu: "" }));
+    add(blk(tailStart, tailStart + DUR.HYGIENE, "Vệ sinh buổi tối", { kind: "ve_sinh_toi", viec: ["Tắm, đánh răng", "Thiết bị để ngoài phòng ngủ (C6)"] }));
+    add(blk(bed - p("READ"), bed, "Đọc sách và viết nhật ký trên giường", { kind: "doc_nhat_ky", viec: ["Đọc sách giấy 15′", "Nhật ký 2–3 câu"], ghi_chu: "" }));
   } else fails.push({ k: "tail" });
-  add(blk(bed, bed, "Tắt đèn, ngủ", { nhom: "ngu", tai: "phuc_hoi", xac_nhan: "Không cần" }));
+  add(blk(bed, bed, "Tắt đèn, ngủ", { kind: "tat_den", nhom: "ngu", tai: "phuc_hoi", xac_nhan: "Không cần" }));
 
   // 7b. khoảng cách bữa (H2) + bữa phụ cách bữa chính kế tiếp 1–2 giờ (H3)
   const lim = (prof.age || 9) <= 6 ? 240 : 300;
@@ -210,7 +209,7 @@ function buildDay(prof: any, d: string, A: any, prm: any) {
       const pref = b - 90; // giữa khoảng 1–2 giờ trước bữa chính kế tiếp (H3)
       const cands = []; for (let s = lo; s <= hi; s += 5) if (free(s, s + SNACK)) cands.push(s);
       cands.sort((x, y) => Math.abs(x - pref) - Math.abs(y - pref));
-      if (cands.length) { add(blk(cands[0], cands[0] + SNACK, "Bữa phụ nhỏ", { viec: ["Trái cây, sữa, sữa chua, khoai hoặc ngô (chú ý dị ứng)"], xac_nhan: "Không cần" })); fixed = true; break; }
+      if (cands.length) { add(blk(cands[0], cands[0] + SNACK, "Bữa phụ nhỏ", { kind: "bua_phu", viec: ["Trái cây, sữa, sữa chua, khoai hoặc ngô (chú ý dị ứng)"], xac_nhan: "Không cần" })); fixed = true; break; }
       if (!tradeoffs.some(t => t.kind === "bua_xa" && t.a === a)) tradeoffs.push({ day: d, kind: "bua_xa", a, rule: "H2", t: "Từ " + ev[i - 1].n + " (" + hhmm(a) + ") đến " + ev[i].n + " (" + hhmm(b) + ") cách " + (b - a) + "′ (mốc " + lim + "′) mà con không ở nhà để ăn phụ.", options: ["Cho con mang bữa phụ nhỏ ăn giờ ra chơi hoặc trên đường về", "Hỏi trường có bữa phụ không, cho Pal biết giờ", "Giữ như hiện tại (bố mẹ xác nhận một lần)"] });
     }
     if (!fixed) break;
@@ -227,7 +226,7 @@ function buildDay(prof: any, d: string, A: any, prm: any) {
       const tai = grade >= 6 && idx === 0 ? "cao" : "vua";
       // độ trống cần trước khối
       const prev = adjBefore(s); let need = 0;
-      if (prev) { if (prev.tai === "cao" || prev.study) need = p("BREAK"); if (MAIN_MEAL.test(prev.khoi) && tai === "cao") need = Math.max(need, p("MEAL_TO_CAO")); }
+      if (prev) { if (prev.tai === "cao" || prev.study) need = p("BREAK"); if (V.isMainMeal(prev) && tai === "cao") need = Math.max(need, p("MEAL_TO_CAO")); }
       if (prev && s - prev.e < need) continue;
       // độ dài vừa với chỗ trống
       let e = s; while (e < s + Math.min(sMax, remaining) && free(s, e + 5) && e + 5 <= tailStart) e += 5;
@@ -235,7 +234,7 @@ function buildDay(prof: any, d: string, A: any, prm: any) {
       const size = e - s;
       if (size >= Math.min(p("MIN_CHUNK"), remaining) && size > 0) {
         const name = idx === 0 ? (isWE(d) ? "Học bài mới hoặc phần khó (buổi sáng cuối tuần)" : "Ôn bài, làm việc cô giao") : "Học tiếp theo định hướng bố mẹ";
-        add(blk(s, e, name, { viec: ["Việc ngắn, dễ (khoảng 5′)", "Việc cần tập trung nhất", "Việc nhẹ để kết thúc"], tai, nhom: "hoc_nha", study: true, xac_nhan: grade <= 5 ? "Ảnh" : "Con bấm Xong", ghi_chu: grade <= 5 && prof.twoSessions ? "Tiểu học 2 buổi/ngày: ôn nhẹ (G10)." : "" }));
+        add(blk(s, e, name, { kind: "hoc_nha", viec: ["Việc ngắn, dễ (khoảng 5′)", "Việc cần tập trung nhất", "Việc nhẹ để kết thúc"], tai, nhom: "hoc_nha", study: true, xac_nhan: grade <= 5 ? "Ảnh" : "Con bấm Xong", ghi_chu: grade <= 5 && prof.twoSessions ? "Tiểu học 2 buổi/ngày: ôn nhẹ (G10)." : "" }));
         remaining -= size; idx++; lastStudyEnd = e; placed = true; break;
       }
     }
@@ -248,7 +247,7 @@ function buildDay(prof: any, d: string, A: any, prm: any) {
     const from = lastStudyEnd !== null ? lastStudyEnd : flexLo;
     let ok = false;
     for (let s = from; s + p("PACK") <= tailStart; s += 5) if (free(s, s + p("PACK"))) {
-      add(blk(s, s + p("PACK"), d === "CN" ? "Soạn cặp và đồ cho thứ Hai" : "Soạn cặp theo thời khóa biểu ngày mai", { viec: ["Xem sổ việc", "Ngày mai trời thế nào? Nắng / Mưa / Lạnh / Bình thường (I4)", "Túi đồ lớp ngoài giờ nếu có"], tai: "vua" }));
+      add(blk(s, s + p("PACK"), d === "CN" ? "Soạn cặp và đồ cho thứ Hai" : "Soạn cặp theo thời khóa biểu ngày mai", { viec: ["Xem sổ việc", "Ngày mai trời thế nào? Nắng / Mưa / Lạnh / Bình thường (I4)", "Túi đồ lớp ngoài giờ nếu có"], kind: "soan_cap", tai: "vua" }));
       ok = true; break;
     }
     if (!ok) fails.push({ k: "pack" });
@@ -256,17 +255,17 @@ function buildDay(prof: any, d: string, A: any, prm: any) {
 
   // 8. màn hình giải trí (C6, F5): sau học, kết thúc ≥60′ trước tắt đèn
   if (prm.screen > 0) {
-    const from = Math.max(...B.filter(b => b.study || /soạn/i.test(b.khoi)).map(b => b.e), flexLo);
+    const from = Math.max(...B.filter(b => b.study || b.kind === "soan_cap").map(b => b.e), flexLo);
     const lim = bed - p("SCREEN_TO_BED");
     let best = null;
     for (let s = from; s < lim; s += 5) {
       if (!free(s, s + 5)) continue;
       let e = s; while (e < s + prm.screen && e + 5 <= lim && free(s, e + 5)) e += 5;
-      const prev = adjBefore(s); if (prev && MAIN_MEAL.test(prev.khoi) && prev.e === s) { /* không dính sát bữa */ }
+      const prev = adjBefore(s); if (prev && V.isMainMeal(prev) && prev.e === s) { /* không dính sát bữa */ }
       if (!best || e - s > best.e - best.s) best = { s, e };
       if (best.e - best.s >= prm.screen) break;
     }
-    if (best && best.e - best.s >= 5) add(blk(best.s, best.e, "Màn hình giải trí (tivi, máy tính bảng)", { tai: "thap", nhom: "choi_nghi", man_hinh: true, xac_nhan: "Không cần", ghi_chu: "Kết thúc trước tắt đèn ≥60′ (C6)." }));
+    if (best && best.e - best.s >= 5) add(blk(best.s, best.e, "Màn hình giải trí (tivi, máy tính bảng)", { kind: "man_hinh", tai: "thap", nhom: "choi_nghi", man_hinh: true, xac_nhan: "Không cần", ghi_chu: "Kết thúc trước tắt đèn ≥60′ (C6)." }));
     const got = best ? best.e - best.s : 0;
     if (got < prm.screen) notes.push({ rule: "C6", t: d + ": màn hình còn " + got + "′ (tối đa bố mẹ chọn " + prm.screen + "′) vì phải tắt trước giờ ngủ 60′." });
   }
@@ -281,7 +280,7 @@ function buildDay(prof: any, d: string, A: any, prm: any) {
   gaps.forEach(g => {
     const len = g[1] - g[0];
     const name = len <= 10 ? "Nghỉ ngắn: đứng dậy, uống nước" : (isWE(d) && g === longest ? "Vận động vui dài, chơi ngoài trời (con chọn)" : "Chơi tự do (con chọn)");
-    add(blk(g[0], g[1], name, { tai: "phuc_hoi", nhom: "choi_nghi", xac_nhan: "Không cần" }));
+    add(blk(g[0], g[1], name, { kind: len <= 10 ? "nghi_ngan" : "choi_tu_do", tai: "phuc_hoi", nhom: "choi_nghi", xac_nhan: "Không cần" }));
   });
 
   return { blocks: B, fails, notes, tradeoffs, bed };
@@ -324,7 +323,7 @@ function scheduleWeek(prof: any): any {
       for (let k = 0; k < 4; k++) {
         const sh = chosen.r.blocks.filter(b => b.nhom === "sinh_hoat").reduce((n, b) => n + b.e - b.s, 0);
         const over = sh - (budget[c].sinh_hoat + p("SOFT")); if (over <= 0) break;
-        const n = chosen.r.blocks.filter(b => /(ăn sáng|ăn trưa|ăn tối|vệ sinh buổi tối)/i.test(b.khoi)).length || 1;
+        const n = chosen.r.blocks.filter(b => b.kind === "an_sang" || b.kind === "an_trua" || b.kind === "an_toi" || b.kind === "ve_sinh_toi").length || 1;
         const prm2 = Object.assign({}, chosen.prm, { cut: (chosen.prm.cut || 0) + Math.ceil(over / n / 5) * 5 });
         const prof2 = Object.assign({}, prof, { activities: (prof.activities || []).filter(a => !excluded.has(a.id + d)) });
         const r2 = buildDay(prof2, d, A, prm2); if (r2.fails.length) break;
@@ -365,7 +364,7 @@ function scheduleWeek(prof: any): any {
       if (alts.length) {
         const x = alts[0]; x.r.tradeoffs.forEach(t => tradeoffs.push(t));
         plan.ngay[d] = toOut(x.r.blocks).map(b => Object.assign(b, { ghi_chu: (b.ghi_chu ? b.ghi_chu + " " : "") })); 
-        plan.ngay[d].unshift({ bat_dau: hhmm(A.wake[d]), ket_thuc: hhmm(A.wake[d]), khoi: "Phương án đề xuất, chờ bố mẹ chọn", viec: [], xac_nhan: "Bố mẹ xác nhận", tai: "thap", nhom: "sinh_hoat", the_thao: false, man_hinh: false, trang_thai: "binh_thuong", ghi_chu: "Chưa xếp \"" + x.a.ten + "\": xem đánh đổi." });
+        plan.ngay[d].unshift({ bat_dau: hhmm(A.wake[d]), ket_thuc: hhmm(A.wake[d]), khoi: "Phương án đề xuất, chờ bố mẹ chọn", kind: "ghi_chu_phuong_an", viec: [], xac_nhan: "Bố mẹ xác nhận", tai: "thap", nhom: "sinh_hoat", the_thao: false, man_hinh: false, trang_thai: "binh_thuong", ghi_chu: "Chưa xếp \"" + x.a.ten + "\": xem đánh đổi." });
         plan.ngay[d].sort((a, b) => a.bat_dau.localeCompare(b.bat_dau));
         days[d] = { status, attempts, params: x.prm, proposal: true };
       } else { plan.ngay[d] = []; days[d] = { status, attempts, fails: first.fails }; }
@@ -396,7 +395,7 @@ function scheduleWeek(prof: any): any {
 
 function toOut(B: any[]) {
   return B.map(b => {
-    const o = { bat_dau: hhmm(b.s), ket_thuc: hhmm(b.e), khoi: b.khoi, viec: b.viec, xac_nhan: b.xac_nhan, tai: b.tai, nhom: b.nhom, the_thao: b.the_thao, man_hinh: b.man_hinh, trang_thai: b.trang_thai, ghi_chu: b.ghi_chu };
+    const o: any = { bat_dau: hhmm(b.s), ket_thuc: hhmm(b.e), khoi: b.khoi, kind: b.kind, viec: b.viec, xac_nhan: b.xac_nhan, tai: b.tai, nhom: b.nhom, the_thao: b.the_thao, man_hinh: b.man_hinh, trang_thai: b.trang_thai, ghi_chu: b.ghi_chu };
     if (b.act_id) { o.act_id = b.act_id; o.act_start = b.act_start; o.act_end = b.act_end; }
     return o;
   });

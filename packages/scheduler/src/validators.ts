@@ -1,7 +1,7 @@
-// Port thuần (không phụ thuộc DOM, không phụ thuộc S) của bộ kiểm tra trong prototype/index.html
-// dòng 577–634 (checkDayK), 708–743 (groupOf, fixedDay, actualDay), 751–774 (restRange, judge).
-// Regex và ngưỡng giữ nguyên 1:1. Phần "EXTRA" ở cuối là kiểm tra bổ sung của spike cho các quy tắc
-// mà checkDayK không bao phủ.
+// Port của bộ kiểm tra trong prototype/index.html dòng 577–634 (checkDayK), 708–743 (groupOf, fixedDay, actualDay),
+// 751–774 (restRange, judge). Ngưỡng giữ nguyên 1:1. Phần "EXTRA" ở cuối là kiểm tra bổ sung của spike.
+// B-11 (Business Logic 11.1 §2.2): bộ kiểm đọc trường `kind` của khối, KHÔNG đoán từ tên tiếng Việt.
+// Regex chỉ còn trong inferLegacyKind(), dùng khi nhập lịch cũ (PROTO) không có `kind`.
 // người soạn: AI, chưa kiểm chứng độc lập.
 
 import { DAYS, toMin as toMinN } from "../../domain/src/index.ts";
@@ -13,22 +13,62 @@ const STUDY = /(ôn|học|bài|toán|tiếng việt|tiếng anh|từ vựng|đ�
 const NOT_HOME = /(ở trường|đi học|tại trường|trung tâm|học thêm|tan học|về nhà|đồng phục|soạn cặp|chuẩn bị)/i;
 const SPORT = /(tập|thi đấu|bóng|bơi|võ|chạy|đạp xe|thể thao|gym)/i;
 const BED = /(tắt đèn|đi ngủ|^ngủ)/i;
-const MEAL = /(ăn sáng|ăn trưa|ăn tối|bữa|ăn nhẹ|^ăn )/i;
 const SOFT = 30;
 const BREAK_MIN = 5; // B-1 fail-safe, khớp PARAMS.BREAK
 
-const isStudy = b => (b.tai === "cao" || b.tai === "vua") && STUDY.test(b.khoi + " " + (b.viec || []).join(" ")) && !NOT_HOME.test(b.khoi);
-const isSchool = b => /(ở trường|tại trường|học ở trường)/i.test(b.khoi) && (b.e - b.s) >= 150;
+// ---- Kiểu khối (B-11) ----
+const MEAL_KINDS = ["an_sang", "an_trua", "an_toi", "bua_truong", "bua_phu", "phuc_hoi"]; // khối có ăn (phục hồi luôn kèm ăn nhẹ/bữa phụ)
+const MAIN_MEAL_KINDS = ["an_sang", "an_trua", "an_toi", "bua_truong"];
+/** Bữa chính: sáng, trưa (nhà hoặc trường), tối. */
+const isMainMeal = (b: any): boolean => MAIN_MEAL_KINDS.includes(b.kind);
+/** Khối có ăn, tính vào khoảng cách giữa các lần ăn (H2). */
+const isMealEvent = (b: any): boolean => MEAL_KINDS.includes(b.kind);
+const BED_KIND = "tat_den";
+
+/** Chỉ cho lịch cũ không có `kind` (PROTO, dữ liệu nhập). Xấp xỉ các regex của bộ kiểm cũ; lịch do bộ xếp tạo luôn có kind. */
+function inferLegacyKind(b: any, dur: number): string {
+  const k = String(b.khoi || ""), all = k + " " + (b.viec || []).join(" ");
+  if (BED.test(k)) return "tat_den";
+  if (/ăn sáng/i.test(k)) return "an_sang";
+  if (/ăn trưa/i.test(k)) return /(ở trường|tại trường)/i.test(k) ? "bua_truong" : "an_trua";
+  if (/ăn tối/i.test(k)) return "an_toi";
+  if (/(ở trường|tại trường|học ở trường)/i.test(k) && dur >= 150) return "truong";
+  if (/(đi học|về nhà|tan học)/i.test(k)) return "di_lai";
+  if (/(ăn nhẹ và chơi|phục hồi)/i.test(k)) return "phuc_hoi";
+  if (/(bữa|ăn nhẹ|ăn phụ|^ăn )/i.test(k)) return "bua_phu";
+  if (/soạn cặp/i.test(k)) return "soan_cap";
+  if (/vệ sinh/i.test(k)) return "ve_sinh_toi";
+  if (b.man_hinh || /(tivi|ti vi|điện thoại|game|màn hình|ipad)/i.test(k)) return "man_hinh";
+  if (/(trung tâm|học thêm|gia sư|lớp bơi|lớp vẽ|lớp đàn|câu lạc bộ|clb|võ|taekwondo|karate|múa|đi học tiếng anh)/i.test(all) || ((b.tai === "cao") && SPORT.test(k))) return "hoat_dong";
+  if (STUDY.test(all) && !NOT_HOME.test(k)) return "hoc_nha";
+  if (/(vận động|dậy)/i.test(k)) return "van_dong_sang";
+  if (/nghỉ/i.test(k)) return "nghi_ngan";
+  return "choi_tu_do";
+}
+/** Gắn kind (suy từ tên nếu thiếu), the_thao và man_hinh cho một khối đã có s, e. */
+function normalizeBlock(b: any): any {
+  const dur = (b.e ?? 0) - (b.s ?? 0);
+  const legacy = b.kind === undefined || b.kind === null;
+  const kind = legacy ? inferLegacyKind(b, dur) : b.kind;
+  return Object.assign({}, b, {
+    kind,
+    the_thao: !!b.the_thao || (legacy && kind === "hoat_dong" && b.tai === "cao" && SPORT.test(String(b.khoi || ""))),
+    man_hinh: !!b.man_hinh || kind === "man_hinh",
+  });
+}
+
+const isStudy = (b: any): boolean => (b.tai === "cao" || b.tai === "vua") && b.kind === "hoc_nha";
+const isSchool = (b: any): boolean => b.kind === "truong" && (b.e - b.s) >= 150;
 
 function sleepNeed(age) { return (age || 9) <= 12 ? 540 : 480; }
 
-function makeCtx({ plan, age, grade, budget, activities, relaxed }) {
+function makeCtx({ plan, age, grade, budget, activities, relaxed }: { plan: any; age: any; grade: any; budget: any; activities?: any; relaxed?: any }) {
   return { plan, age, grade, budget, activities: activities || [], relaxed: new Set(relaxed || []) };
 }
 function effDayRaw(ctx, d) { return ctx.plan.ngoai_le && ctx.plan.ngoai_le[d] ? ctx.plan.ngoai_le[d].khoi : (ctx.plan.ngay[d] || []); }
 function liveBlocks(ctx, d) {
   return effDayRaw(ctx, d).filter(b => b.trang_thai !== "huy" && toMin(b.bat_dau) !== null)
-    .map(b => Object.assign({}, b, { s: toMin(b.bat_dau), e: toMin(b.ket_thuc) ?? toMin(b.bat_dau) }))
+    .map(b => normalizeBlock(Object.assign({}, b, { s: toMin(b.bat_dau), e: toMin(b.ket_thuc) ?? toMin(b.bat_dau) })))
     .sort((a, b) => a.s - b.s);
 }
 
@@ -51,14 +91,14 @@ function checkDayK(ctx, d) {
     const total = B.filter(isStudy).reduce((n, b) => n + Math.max(0, b.e - b.s), 0);
     if (total > lim + SOFT) push("Tổng giờ học ở nhà khoảng " + total + " phút, vượt quỹ " + lim + " phút (±" + SOFT + ").", "tong_gio_hoc");
   }
-  { const ev = []; const ML = /(ăn sáng|ăn trưa|ăn tối|bữa|ăn nhẹ|ăn phụ|^ăn )/i;
-    B.forEach(b => { if (ML.test(b.khoi) || (b.viec || []).some(v => /(ăn nhẹ|bữa phụ|ăn phụ|ăn sáng|ăn tối)/i.test(v))) ev.push({ t: b.s, n: b.khoi }); });
+  { const ev: any[] = [];
+    B.forEach(b => { if (isMealEvent(b)) ev.push({ t: b.s, n: b.khoi }); });
     if (school && school.s <= 660 && school.e >= 720 && !ev.some(x => x.t >= 600 && x.t <= 780)) ev.push({ t: 675, n: "bữa trưa ở trường (giả định 11h15)" });
     ev.sort((a, b) => a.t - b.t);
     const lim = (ctx.age || 9) <= 6 ? 240 : 300;
     for (let i = 1; i < ev.length; i++) { const gap = ev[i].t - ev[i - 1].t; if (gap > lim) push("Từ " + ev[i - 1].n + " đến " + ev[i].n + " cách khoảng " + fmtMin(gap) + " không có gì ăn.", "an_xa"); }
   }
-  const bed = [...B].reverse().find(b => BED.test(b.khoi));
+  const bed = [...B].reverse().find(b => b.kind === BED_KIND);
   const nd = DAYS[(DAYS.indexOf(d) + 1) % 7], NB = liveBlocks(ctx, nd);
   const age = ctx.age;
   if (bed && NB.length && age) {
@@ -66,7 +106,8 @@ function checkDayK(ctx, d) {
     const need = age <= 12 ? 540 : 480;
     if (sleep < need) push("Từ tắt đèn " + bed.bat_dau + " đến dậy " + NB[0].bat_dau + " hôm sau chỉ " + fmtMin(sleep) + ", dưới " + (need / 60) + " giờ.", "ngu");
   }
-  if (bed) { B.filter(b => b.tai === "cao" && SPORT.test(b.khoi) && bed.s - b.e < 60 && b.e <= bed.s).forEach(b => push("\"" + b.khoi + "\" kết thúc chưa tới 1 giờ trước giờ tắt đèn.", "tap_muon")); }
+  // B-11c: buổi tập mạnh kết thúc sát hoặc SAU giờ tắt đèn cũng bị bắt (bản cũ chỉ xét b.e <= bed.s)
+  if (bed) { B.filter(b => b.tai === "cao" && b.the_thao && b.s < bed.s && bed.s - b.e < 60).forEach(b => push("\"" + b.khoi + "\" kết thúc chưa tới 1 giờ trước giờ tắt đèn.", "tap_muon")); }
   return W;
 }
 function checkDay(ctx, d) { return checkDayK(ctx, d).filter(w => !ctx.relaxed.has(w.k)); }
@@ -74,15 +115,16 @@ function checkDay(ctx, d) { return checkDayK(ctx, d).filter(w => !ctx.relaxed.ha
 // ---- groupOf / fixedDay / actualDay (index.html 709–743) ----
 function groupOf(b) {
   if (b.nhom && ["truong", "hoc_them", "hoc_nha", "choi_nghi", "sinh_hoat", "ngu"].includes(b.nhom)) return b.nhom;
-  const t = b.khoi + " " + (b.viec || []).join(" ");
-  if (BED.test(b.khoi)) return "ngu";
-  if (isSchool(b) || /(đi học|về nhà|tan học)/i.test(b.khoi)) return "truong";
-  if (/(trung tâm|học thêm|gia sư|lớp bơi|lớp vẽ|lớp đàn|câu lạc bộ|clb|võ|taekwondo|karate|múa|đi học tiếng anh)/i.test(t)) return "hoc_them";
-  if (b.tai === "phuc_hoi") return "choi_nghi";
-  if (isStudy(b)) return "hoc_nha";
-  if (/(ăn|bữa|vệ sinh|tắm|đánh răng|thay đồ|soạn cặp|dậy|nhật ký|đọc sách|đọc truyện)/i.test(t)) return "sinh_hoat";
-  if (b.tai === "cao" || b.tai === "vua") return "hoc_nha";
-  return "choi_nghi";
+  // khối không có `nhom` (nhập cũ): suy từ kind
+  switch (b.kind) {
+    case "tat_den": return "ngu";
+    case "truong": case "di_lai": case "bua_truong": return "truong";
+    case "hoat_dong": return "hoc_them";
+    case "hoc_nha": return (b.tai === "cao" || b.tai === "vua") ? "hoc_nha" : "choi_nghi";
+    case "phuc_hoi": case "choi_tu_do": case "nghi_ngan": case "man_hinh": case "van_dong_sang": return "choi_nghi";
+    case "ghi_chu_phuong_an": return "sinh_hoat";
+    default: return "sinh_hoat";
+  }
 }
 function actDur(a) { const x = toMin(a.bat_dau), y = toMin(a.ket_thuc); return x !== null && y !== null && y > x ? y - x : 0; }
 function fixedDay(ctx, d) {
@@ -97,12 +139,12 @@ function actualDay(ctx, d) {
   let last = null;
   B.forEach(b => {
     const g = groupOf(b), dur = Math.max(0, b.e - b.s);
-    if (g !== "ngu") { R[g] += dur; if (g === "sinh_hoat" && MEAL.test(b.khoi)) R.choi_nghi += Math.round(dur / 2); }
-    if (b.man_hinh || /(tivi|ti vi|điện thoại|game|màn hình|ipad)/i.test(b.khoi)) R.man_hinh += dur;
+    if (g !== "ngu") { R[g] += dur; if (g === "sinh_hoat" && isMealEvent(b)) R.choi_nghi += Math.round(dur / 2); }
+    if (b.man_hinh) R.man_hinh += dur;
     if (last !== null && b.s > last && g !== "ngu") R.choi_nghi += b.s - last;
     last = Math.max(last || 0, b.e);
   });
-  const bed = [...B].reverse().find(b => BED.test(b.khoi));
+  const bed = [...B].reverse().find(b => b.kind === BED_KIND);
   const nb = liveBlocks(ctx, DAYS[(DAYS.indexOf(d) + 1) % 7]);
   if (bed && nb.length) { let sl = nb[0].s + 1440 - bed.s; if (sl > 1440) sl -= 1440; R.ngu = sl; }
   return R;
@@ -169,7 +211,7 @@ function sessionMax(grade) { return grade <= 3 ? 30 : grade <= 5 ? 40 : 45; }
 function extraChecks(ctx, d, meta) {
   const W = [], B = liveBlocks(ctx, d); if (!B.length) return W;
   const push = (k, rule, t) => W.push({ k, rule, t });
-  const real = B.filter(b => !BED.test(b.khoi));
+  const real = B.filter(b => b.kind !== BED_KIND);
   // overlap
   for (let i = 1; i < real.length; i++) if (real[i].s < real[i - 1].e) push("x_chong", "—", "Chồng giờ: \"" + real[i - 1].khoi + "\" và \"" + real[i].khoi + "\"");
   // F4 phiên học
@@ -183,10 +225,10 @@ function extraChecks(ctx, d, meta) {
     const lastSchool = [...B].filter(b => groupOf(b) === "truong").pop();
     const after = B.filter(b => b.s >= lastSchool.e);
     const fs = after.find(b => isStudy(b) && groupOf(b) === "hoc_nha");
-    if (fs) { const rec = after.filter(b => b.tai === "phuc_hoi" && b.s < fs.s && /phục hồi/i.test(b.khoi)).reduce((n, b) => n + b.e - b.s, 0); if (rec < 15) push("x_phuc_hoi15", "C2", "Phục hồi sau giờ học " + rec + "′ < 15′"); }
+    if (fs) { const rec = after.filter(b => b.tai === "phuc_hoi" && b.s < fs.s && b.kind === "phuc_hoi").reduce((n, b) => n + b.e - b.s, 0); if (rec < 15) push("x_phuc_hoi15", "C2", "Phục hồi sau giờ học " + rec + "′ < 15′"); }
   }
   // C6 / F5 màn hình
-  const bed = [...B].reverse().find(b => BED.test(b.khoi));
+  const bed = [...B].reverse().find(b => b.kind === BED_KIND);
   B.filter(b => b.man_hinh).forEach(b => {
     if (bed && bed.s - b.e < 60) push("x_man_hinh_ngu", "C6", "Màn hình kết thúc " + (bed.s - b.e) + "′ trước tắt đèn");
     const nxt = B.find(x => x.s >= b.e && x.s - b.e < 5 && x !== b);
@@ -195,12 +237,11 @@ function extraChecks(ctx, d, meta) {
   // F3 khối cuối trước ngủ là thấp
   if (bed) { const lastB = real.filter(b => b.e <= bed.s).pop(); if (lastB && lastB.tai !== "thap") push("x_cuoi_thap", "F3", "Khối cuối trước ngủ \"" + lastB.khoi + "\" tải " + lastB.tai); }
   // H1 tải cao cách bữa chính ≥15′
-  const meals = B.filter(b => /(ăn trưa|ăn tối|ăn sáng)/i.test(b.khoi));
+  const meals = B.filter(isMainMeal);
   B.filter(b => b.tai === "cao" && groupOf(b) === "hoc_nha").forEach(b => { meals.forEach(m => { if (b.s >= m.e && b.s - m.e < 15) push("x_bua_cao", "H1", "\"" + b.khoi + "\" chỉ cách bữa " + (b.s - m.e) + "′"); }); });
   // C7 không bỏ bữa: phải có ăn sáng + (ăn trưa hoặc bữa trường) + ăn tối
-  const txt = B.map(b => b.khoi).join(" | ");
-  if (!/ăn sáng/i.test(txt)) push("x_bo_bua", "C7", "Thiếu ăn sáng");
-  if (!/ăn tối/i.test(txt)) push("x_bo_bua", "C7", "Thiếu ăn tối");
+  if (!B.some(b => b.kind === "an_sang")) push("x_bo_bua", "C7", "Thiếu ăn sáng");
+  if (!B.some(b => b.kind === "an_toi")) push("x_bo_bua", "C7", "Thiếu ăn tối");
   // Hoạt động cố định không bị bỏ âm thầm
   (ctx.activities || []).filter(a => a.thu.includes(d)).forEach(a => {
     const placed = B.some(b => b.act_id === a.id && b.act_start === a.bat_dau && b.act_end === a.ket_thuc);
@@ -219,4 +260,4 @@ function extraChecks(ctx, d, meta) {
   return W;
 }
 
-export { keepAllowed, confirmKeep, BREAK_MIN, isStudy, isSchool, groupOf, liveBlocks, makeCtx, checkDayK, checkDay, actualDay, fixedDay, restRange, judge, budgetBoard, extraChecks, sessionMax, sleepNeed, STUDY, NOT_HOME, SPORT, DAYS, toMin };
+export { isMainMeal, isMealEvent, inferLegacyKind, normalizeBlock, keepAllowed, confirmKeep, BREAK_MIN, isStudy, isSchool, groupOf, liveBlocks, makeCtx, checkDayK, checkDay, actualDay, fixedDay, restRange, judge, budgetBoard, extraChecks, sessionMax, sleepNeed, STUDY, NOT_HOME, SPORT, DAYS, toMin };
