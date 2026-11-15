@@ -32,6 +32,20 @@ Nguồn nhập bước 1–2 là các bản Markdown xuất đã lưu trên máy
 - [4.1 Vòng lập lịch (đợt 1)](04_User_Flow/User_Flow_04_1_Scheduling_Loop.md) — nháp AI, cập nhật 15/11/2026 theo sổ quyết định: F1–F5, 40 màn hình.
 - [4.2 Các luồng còn lại (đợt 2)](04_User_Flow/User_Flow_04_2_Remaining_Flows.md) — nháp AI 15/11/2026: 10 luồng đầy đủ, 8 luồng khung; tổng 56 màn hình.
 
+## 6. Information Architecture
+
+- [6.1 Kiến trúc thông tin nấc 1](06_Information_Architecture/IA_06_1_Information_Architecture.md) — nháp AI 15/11/2026: app phụ huynh 38 màn, app của con 20 màn; điều hướng, trạng thái đặc biệt, ma trận dữ liệu.
+
+## 7. Wireframe
+
+- Canvas "Parent-Pal nấc 1 – Wireframe và prototype" trên claude.ai (riêng tư của chủ sản phẩm): 39 màn, bấm thử được. Luồng đã duyệt (D-47).
+
+## 12–15. Kiến trúc, Tech Spec, kế hoạch dev
+
+- [12.1 Kiến trúc hệ thống nấc 1](12_System_Architecture/Architecture_12_1_System_Architecture.md) — nháp AI; 4 lựa chọn chờ chủ sản phẩm (D-46a/b/c, LQ-08).
+- [13.1 Tech Spec nấc 1](13_Tech_Spec/Tech_Spec_13_1_MVP_Step1.md) — mô hình dữ liệu, RLS, API, test.
+- [15.1 Kế hoạch dev nấc 1](15_Dev_Planning/Dev_Plan_15_1_MVP_Step1.md) — đợt 0–6, cổng G-1..G-11, việc của chủ sản phẩm OW-01..10.
+
 ## Hồ sơ hỗ trợ (progress)
 
 - [Chấm điểm 3.3 và tự kiểm toán](progress/phase-3-scoring/README.md) — REVIEW, MVP chưa chọn.
@@ -41,5 +55,10 @@ Nguồn nhập bước 1–2 là các bản Markdown xuất đã lưu trên máy
 - [Sổ quyết định 15/11/2026](progress/Owner_Decision_Log_20261115.md)
 - [Phương án MVP để chủ sản phẩm chọn](progress/MVP_Options_for_Owner_Decision.md) — chưa chọn.
 - [Business Logic 11.1: lập lịch E1 (nháp)](progress/Business_Logic_11_1_Scheduling_E1_DRAFT.md) — 112 quy tắc BR.
+- [Business Logic 11.2: gia đình và quyền truy cập (nháp)](progress/Business_Logic_11_2_Family_and_Access_DRAFT.md) — 78 quy tắc.
+- [Business Logic 11.3: đồng ý và dữ liệu (nháp)](progress/Business_Logic_11_3_Consent_and_Data_DRAFT.md) — 77 quy tắc.
+- [Business Logic 11.4: thông báo, báo cáo, an toàn (nháp)](progress/Business_Logic_11_4_Notifications_Reports_Safety_DRAFT.md) — 77 quy tắc.
+- [Danh sách module nấc 1 (A-lite E1)](progress/MVP_Step1_Module_List.md) — 30 module, 2 đề xuất thêm.
+- [Bộ tài liệu thử nghiệm nội bộ](progress/internal-test-kit/Test_Kit_00_README.md) — mẫu trống, chưa được luật sư xem; không lưu dữ liệu thật trong repo.
 
 [Tiến độ và trạng thái bàn giao](progress/PHASE_STATUS.md)

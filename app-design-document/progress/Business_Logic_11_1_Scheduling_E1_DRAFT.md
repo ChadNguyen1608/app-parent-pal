@@ -1,5 +1,7 @@
 # 11.1 – BUSINESS LOGIC: CÁC MODULE LẬP LỊCH CỦA A-LITE E1
 
+> **Cập nhật lượt 3 (15/11/2026):** BR-135 (ngưỡng gửi xu hướng) **hết hiệu lực**: không cần ngưỡng, xu hướng mệt chỉ tổng hợp trong báo cáo tuần (D-21). BR-133: bỏ phần đếm "theo thứ", chỉ gộp theo đặc điểm lịch (D-37).
+
 - **Ngày:** 15/11/2026.
 - **Phạm vi:** bộ xếp lịch tuần xác định (E1, không gọi AI) và các module đi cùng nó trong A-lite E1 (OD-A2 chọn E1 trước).
 - **Bản chất:** bản nháp đặc tả nghiệp vụ. Không phải spec chuẩn, không sửa `spec-quy-tac-lap-lich.md` (QT). Chỗ nào khác QT thì ghi ở §11 để sửa QT trước theo quy trình đổi quy tắc.

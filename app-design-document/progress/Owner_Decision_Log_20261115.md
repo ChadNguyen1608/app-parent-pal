@@ -83,4 +83,38 @@ Trả lời của chủ sản phẩm cho các câu hỏi gộp từ User Flow đ
 | D-31 | Plan A (app Expo cho 5 tính năng trong `mobile/`, `supabase/`) | **Dừng Plan A**, dồn sức cho nấc 1 (A-lite E1). Mã hiện có giữ nguyên trong repo để tham khảo, không dựng tiếp. Spec `documents/app/spec-phuong-an-a-app-android.md` chuyển trạng thái tạm dừng |
 | D-32 | Agent phụ | Dùng mô hình Sonnet 5.5 cho các agent phụ |
 
+
+## 7. Lượt 3, ngày 15/11/2026
+
+Câu hỏi gộp từ danh sách module nấc 1, IA 6.1, Business Logic 11.2–11.4 và bộ test nội bộ (PR #27). Chủ sản phẩm trả lời "theo đề xuất" cho tất cả.
+
+| Mã | Câu hỏi | Quyết định |
+|---|---|---|
+| D-33 | Thêm F04-G06-M02 và F07-G01-M01 vào nấc 1 (MQ-01, MQ-02) | **Thêm.** Nấc 1 có 32 module. F07-G01-M01 không kiểm bằng từ khóa |
+| D-34 | Chuyển người quản lý chính (MQ-04) | **Hoãn khỏi nấc 1.** Đợt thử: mỗi gia đình một người quản lý |
+| D-35 | Người lớn thứ hai (Q-FAM-05, 06) | Chỉ **xem**, không sửa, không duyệt. Đợt thử nội bộ chưa mời người lớn thứ hai |
+| D-36 | Khóa lịch trong nấc 1 (Q-FAM-08) | **Có**, khóa và mở thủ công đơn giản |
+| D-37 | Cách tổng hợp mệt trong báo cáo tuần (MQ-05, Q-NTF-01, 02) | Gộp **theo loại ngày** (đặc điểm lịch, ví dụ "ngày có học thêm buổi tối"), không theo thứ; hiện từ 1 lần. Thay BR-133 (phần "theo thứ") và BR-135 của BL 11.1 |
+| D-38 | Bố mẹ xem hoặc xuất lựa chọn hỏi thăm từng ngày (UF-Q18, Q-CON-04) | **Không** |
+| D-39 | Mong muốn con gửi qua mẫu "mệt" (Q-NTF-03, 04) | Bố mẹ thấy (con chủ động gửi); thông báo đẩy trung tính; con được báo "bố mẹ đã xem"; mong muốn không hết hạn |
+| D-40 | Giờ yên lặng, giờ gửi báo cáo tuần (Q-NTF-05) | Không nhắc trong **khối ngủ** của lịch con; báo cáo tuần gửi **tối Chủ Nhật 20:00**. Nhãn `đề xuất nội bộ`, chỉnh sau đợt thử |
+| D-41 | Định nghĩa đóng băng (MQ-08, Q-FAM-01..03, 09) | 30 ngày không có thao tác có chủ đích của người lớn trên app phụ huynh. App của con chỉ xem lịch đã tải, không nhận lịch mới, không gửi mong muốn, có dòng "Nhờ bố mẹ mở app". Trong lúc đóng băng, giai đoạn tạm thời vẫn tự về khi hết hạn. Chỉ người quản lý chính mở lại được. Bổ sung D-27; thay UF 04.2 G4-X2, G10-X1 ở phần "con vẫn dùng lịch" khi đóng băng |
+| D-42 | Danh mục mục đích đồng ý (MQ-07, Q-CON-01..03, 06) | 7 mục đích theo BL 11.3 §2.2; mục tùy chọn không chọn sẵn. Rút một mục: ẩn ngay dữ liệu cũ của mục đó, đồng ý lại không tự hiện lại. Rút toàn bộ: xác nhận 2 lần rồi tạo yêu cầu xóa. Thay UF 04.2 G6 bước 4 |
+| D-43 | Nút "Con cần giúp đỡ" khi chưa có người duyệt câu chữ (MQ-09, Q-NTF-06, 07) | Đợt thử: **chỉ lời tĩnh và số 111**, kèm gợi ý con nói với bố mẹ; **chưa bật chức năng gửi tin**. Song song tìm người có chuyên môn bảo vệ trẻ em xem giúp miễn phí. Khi bật gửi: cho con nhắn cả người lớn ngoài app (qua bảng chia sẻ của máy); bản ghi giao tin tạm, xóa khi giao xong |
+| D-44 | Điều kiện thử nội bộ (testkit Q1, Q2, Q4, Q7, Q9; Q-CON-07) | Nơi lưu: thư mục mã hóa trên máy của chủ sản phẩm, tối đa 2 người mở. Xóa dữ liệu **7 ngày** sau ngày kết thúc; gia đình rút giữa chừng thì xóa ngay. Phiếu ký và nhật ký xóa giữ đến khi có ý kiến luật sư. Xin trẻ đồng ý ở mọi tuổi. Không quà, không thù lao |
+| D-45 | Viết lại D-01 cho nấc 1 (MQ-06) | Ngoại lệ thử nội bộ áp cho **tính năng nấc 1** (lịch, thời khóa biểu, đánh dấu Xong, hỏi thăm mệt, mong muốn của con, báo cáo tuần). Điều kiện: phiếu đồng ý của bố mẹ, trẻ được giải thích và đồng ý; tối đa 3 gia đình; có ngày kết thúc; chỉ thu dữ liệu tối thiểu theo các mục đích đã đồng ý; không GPS, ảnh, ghi âm; FR-01 xong trước (D-18); lưu và xóa theo D-44; không đưa lên repo công khai; không dùng cho mục đích khác. Cổng pháp lý vẫn mở |
+| D-47 | Wireframe nấc 1 (canvas "Parent-Pal nấc 1 – Wireframe và prototype" trên claude.ai) | Chủ sản phẩm duyệt luồng wireframe cho MVP và yêu cầu triển khai bước tiếp; duyệt 7 màn mới của app trẻ (CA-07, 09, 10, 11, 12, 17, 20). Màn mới của app phụ huynh chờ góp ý |
+| D-48 | Kênh cài app (D-46a) | **Nội bộ, bằng file APK; người thử tự tải APK về cài** (phương án K1). Không qua Google Play. Link tải phải riêng tư (không đặt APK trong repo công khai hay bản phát hành công khai trên GitHub); kênh lưu link chốt khi có bản build đầu |
+| D-49 | Cách phụ huynh đăng nhập (D-46b) | **Email nhận mã một lần (OTP)**, không mật khẩu |
+| D-50 | Dùng lại mã `mobile/` (D-46c) | **Tái dùng chọn lọc (M2):** mã mới ở `apps/`, `packages/`, `backend/`; giữ nguyên `mobile/`, `supabase/`; chỉ lấy cấu hình Expo, công cụ đo nhắc giờ, kiểu `Block`/`Plan`, kỹ thuật RLS; không lấy GPS, ảnh, ghi âm, Pal chat, mã gia đình |
+| D-51 | Mã định danh app (applicationId) | **`vn.parentbestpal.parent`** và **`vn.parentbestpal.child`** (16/11/2026). Không đổi sau khi phát cho người thử |
+| D-52 | Báo cáo tuần có đếm lần con bấm "Bỏ qua" không | **Không đếm**; chỉ đếm Ổn / Hơi mệt / Rất mệt |
+| D-53 | Người lớn thứ hai thấy con khi nào | Khi người quản lý chính đã cấp bất kỳ quyền xem nào đang hiệu lực (chỉ xem, D-35) |
+| D-54 | Nơi đặt máy chủ (LQ-08) và chi phí | **Supabase vùng Singapore (`ap-southeast-1`)**, gói **Pro khoảng 25 USD** cho tháng thử; kèm 6 biện pháp giảm rủi ro của Kiến trúc 12.1 §13.4. Cổng pháp lý LQ-08 vẫn mở, không coi là PASS. Thay một phần D-17 (cho phép khoản này) |
+| D-55 | Ai code chính | **Claude** (qua Claude Code) code chính, chủ sản phẩm duyệt PR; làm đến khi hết credit thì dừng |
+| D-56 | Dự án Supabase dùng cho nấc 1 (sửa D-54) | Chủ sản phẩm tạo lại dự án trống **`parent-best-pal`** (ref `roadpnpkjwjgfgottiwx`) ở vùng **Tokyo `ap-northeast-1`** (16/11/2026); không chọn được Singapore. Dự án cũ ở Seoul (có hàm `pal-chat` của Plan A) đã bị xóa. Dùng **gói miễn phí** khi phát triển với dữ liệu giả; **phải nâng lên Pro trước khi thử với gia đình thật** (cổng mới: gói miễn phí tự tạm dừng sau 7 ngày, không sao lưu). LQ-08 vẫn mở. Đề xuất chủ sản phẩm thu hồi khóa Claude API từng đặt trong dự án cũ |
+| D-46 | Kênh cài app, cách đăng nhập, dùng lại mã `mobile/` (testkit Q6, MQ-10) | Quyết ở bước **kiến trúc hệ thống** |
+
+Đã chốt 16/11: D-51..D-55. Còn mở: danh sách loại ngày trong báo cáo tuần và mốc "buổi tối".
+
 Còn mở: có đưa phần kỹ năng mềm (v5.21, v5.22 của bản đồ kiến thức, hiện chỉ có trong project trên claude.ai) vào repo không. Chủ sản phẩm: **chưa đưa vào** (15/11/2026).
