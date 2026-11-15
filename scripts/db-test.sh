@@ -13,7 +13,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SB="$ROOT/backend/supabase"
-TEST_FILE="$SB/tests/rls/rls.test.mjs"
+TEST_FILES=("$SB/tests/rls/rls.test.mjs" "$SB/tests/rls/fn.test.mjs")
 MODE=sandbox; RESET=0; PROVE=0
 for a in "$@"; do
   case "$a" in
@@ -29,7 +29,7 @@ done
 if [ "$MODE" = supabase ]; then
   if [ "$RESET" = 1 ]; then (cd "$ROOT/backend" && supabase db reset); fi
   export RLS_DB_URL="${RLS_DB_URL:-postgresql://postgres:postgres@127.0.0.1:54322/postgres}"
-  exec node --test "$TEST_FILE"
+  exec node --test "${TEST_FILES[@]}"
 fi
 
 # ------------------------------------------------------------------ chế độ Postgres thuần
@@ -73,7 +73,7 @@ for f in "$SB"/seed/*.sql; do echo "seed: $(basename "$f")"; psqlf tpl -1 -f "$f
 
 run_tests() { # $1 = tên CSDL, $2... = tham số thêm cho node
   local db="$1"; shift
-  RLS_DB_URL="$(url "$db")" node --test "$@" "$TEST_FILE"
+  RLS_DB_URL="$(url "$db")" node --test "$@" "${TEST_FILES[@]}"
 }
 
 if [ "$PROVE" = 0 ]; then

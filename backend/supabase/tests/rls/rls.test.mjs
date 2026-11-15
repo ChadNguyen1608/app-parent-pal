@@ -121,7 +121,7 @@ describe('RLS-ROLE: đọc theo vai trên bảng baseline (mặc định từ ch
       it(`RLS-ROLE ${table} / ${who}: ghi trực tiếp (insert, update, delete) bị từ chối`, () => {
         for (const sql of [
           `insert into app.${table} default values`,
-          `update app.${table} set id = id`,
+          `update app.${table} set ${def.pk || 'id'} = ${def.pk || 'id'}`,
           `delete from app.${table}`,
         ]) {
           const r = run(ACTORS[who], sql);

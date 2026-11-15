@@ -1,54 +1,195 @@
 {
   "_doc": "Ma trận chính sách kỳ vọng (Tech Spec §2.7, §6.2; Architecture §6). Mỗi bảng trong schema app PHẢI có dòng ở đây (RLS-GEN-01). select = số dòng mỗi vai thấy được trên dữ liệu seed, hoặc 'denied' (lỗi 42501). Ghi trực tiếp (insert/update/delete) bị từ chối với mọi vai không phải hệ thống: ghi đi qua hàm hoặc service_role. Id lấy từ backend/supabase/seed/seed.sql (tên giả).",
   "actors": {
-    "QL":            { "role": "authenticated", "sub": "00000000-0000-4000-8000-0000000000a1", "_note": "chị Hoa, quản lý hộ 1" },
-    "NL":            { "role": "authenticated", "sub": "00000000-0000-4000-8000-0000000000a2", "_note": "anh Minh, người lớn khác hộ 1, chỉ có grant xem bé Na" },
-    "CON":           { "role": "authenticated", "sub": "00000000-0000-4000-8000-0000000000a3", "_note": "máy bé Na đã ghép (HIEU_LUC)" },
-    "CON_CHUA_GHEP": { "role": "authenticated", "sub": "00000000-0000-4000-8000-0000000000a5", "_note": "máy bé Su, binding còn CHO_XAC_NHAN_MAY_CON" },
-    "HO_KHAC":       { "role": "authenticated", "sub": "00000000-0000-4000-8000-0000000000a4", "_note": "cô Lan, QL hộ 2" },
-    "ANON":          { "role": "anon" }
+    "QL": {
+      "role": "authenticated",
+      "sub": "00000000-0000-4000-8000-0000000000a1",
+      "_note": "chị Hoa, quản lý hộ 1"
+    },
+    "NL": {
+      "role": "authenticated",
+      "sub": "00000000-0000-4000-8000-0000000000a2",
+      "_note": "anh Minh, người lớn khác hộ 1, chỉ có grant xem bé Na"
+    },
+    "CON": {
+      "role": "authenticated",
+      "sub": "00000000-0000-4000-8000-0000000000a3",
+      "_note": "máy bé Na đã ghép (HIEU_LUC)"
+    },
+    "CON_CHUA_GHEP": {
+      "role": "authenticated",
+      "sub": "00000000-0000-4000-8000-0000000000a5",
+      "_note": "máy bé Su, binding còn CHO_XAC_NHAN_MAY_CON"
+    },
+    "HO_KHAC": {
+      "role": "authenticated",
+      "sub": "00000000-0000-4000-8000-0000000000a4",
+      "_note": "cô Lan, QL hộ 2"
+    },
+    "ANON": {
+      "role": "anon"
+    }
   },
   "app": {
     "households": {
       "spec": "§2.7 dòng households/members",
-      "select": { "QL": 1, "NL": 1, "CON": 0, "CON_CHUA_GHEP": 0, "HO_KHAC": 1, "ANON": "denied" }
+      "select": {
+        "QL": 1,
+        "NL": 1,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 1,
+        "ANON": "denied"
+      }
     },
     "members": {
       "spec": "§2.7",
-      "select": { "QL": 2, "NL": 2, "CON": 0, "CON_CHUA_GHEP": 0, "HO_KHAC": 1, "ANON": "denied" }
+      "select": {
+        "QL": 2,
+        "NL": 2,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 1,
+        "ANON": "denied"
+      }
     },
     "children": {
       "spec": "§2.7 dòng children: QL đọc; NL đọc nếu grant; con đọc hàng của mình",
-      "select": { "QL": 2, "NL": 1, "CON": 1, "CON_CHUA_GHEP": 0, "HO_KHAC": 1, "ANON": "denied" }
+      "select": {
+        "QL": 2,
+        "NL": 1,
+        "CON": 1,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 1,
+        "ANON": "denied"
+      }
     },
     "grants": {
       "spec": "§2.7 dòng grants: QL đọc; NL đọc phần của mình; con không",
-      "select": { "QL": 1, "NL": 1, "CON": 0, "CON_CHUA_GHEP": 0, "HO_KHAC": 0, "ANON": "denied" }
+      "select": {
+        "QL": 1,
+        "NL": 1,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      }
     },
     "device_bindings": {
       "spec": "§2.7 dòng device_bindings: QL đọc (con của hộ); con đọc hàng của mình khi HIEU_LUC",
-      "select": { "QL": 1, "NL": 0, "CON": 1, "CON_CHUA_GHEP": 0, "HO_KHAC": 1, "ANON": "denied" }
+      "select": {
+        "QL": 1,
+        "NL": 0,
+        "CON": 1,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 1,
+        "ANON": "denied"
+      }
+    },
+    "purposes": {
+      "spec": "§2.2, §2.7: bảng tham chiếu, mọi người đăng nhập đọc 7 mục đích",
+      "pk": "code",
+      "select": {
+        "QL": 7,
+        "NL": 7,
+        "CON": 7,
+        "CON_CHUA_GHEP": 7,
+        "HO_KHAC": 7,
+        "ANON": "denied"
+      }
+    },
+    "mode_history": {
+      "spec": "§2.1: chỉ QL của hộ đọc (child.admin_read)",
+      "select": {
+        "QL": 1,
+        "NL": 0,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      }
+    },
+    "invitations": {
+      "spec": "§2.1, §2.7: chỉ QL của hộ đọc; ghi chưa có (tính năng tắt, T1.8)",
+      "select": {
+        "QL": 1,
+        "NL": 0,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      }
     }
   },
   "private": {
-    "pairing_codes":     { "spec": "§2.1, §2.7: không vai nào đọc; chỉ service_role" },
-    "checkin_responses": { "spec": "§2.5, D-38: không vai người lớn/con đọc trực tiếp" },
-    "child_settings":    { "spec": "§2.5, BR-CON-034" }
+    "pairing_codes": {
+      "spec": "§2.1, §2.7: không vai nào đọc; chỉ service_role"
+    },
+    "checkin_responses": {
+      "spec": "§2.5, D-38: không vai người lớn/con đọc trực tiếp"
+    },
+    "child_settings": {
+      "spec": "§2.5, BR-CON-034"
+    }
   },
   "app_functions": {
     "_doc": "Hàm trong schema app và vai được EXECUTE (ngoài service_role). Hàm không có trong danh sách này làm RLS-GEN-04 thất bại. Hàm trigger không cấp cho ai.",
-    "is_member":          ["authenticated"],
-    "is_primary_member":  ["authenticated"],
-    "is_primary":         ["authenticated"],
-    "is_self_member":     ["authenticated"],
-    "has_grant":          ["authenticated"],
-    "is_bound_device":    ["authenticated"],
-    "household_frozen":   ["authenticated"],
-    "weekly_report":      ["authenticated"],
-    "tg_binding_requires_device": []
+    "is_member": [
+      "authenticated"
+    ],
+    "is_primary_member": [
+      "authenticated"
+    ],
+    "is_primary": [
+      "authenticated"
+    ],
+    "is_self_member": [
+      "authenticated"
+    ],
+    "has_grant": [
+      "authenticated"
+    ],
+    "is_bound_device": [
+      "authenticated"
+    ],
+    "household_frozen": [
+      "authenticated"
+    ],
+    "weekly_report": [
+      "authenticated"
+    ],
+    "tg_binding_requires_device": [],
+    "can": [
+      "authenticated"
+    ],
+    "can_household": [
+      "authenticated"
+    ],
+    "access_state": [],
+    "household_access_state": [],
+    "reject_child": [],
+    "reject_household": [],
+    "fail": [],
+    "tg_append_only": [],
+    "check_child_fields": [],
+    "child_json": [],
+    "child_create": [
+      "authenticated"
+    ],
+    "child_update": [
+      "authenticated"
+    ],
+    "child_delete": [
+      "authenticated"
+    ],
+    "mode_set": [
+      "authenticated"
+    ]
   },
   "private_readers": {
     "_doc": "Chỉ các hàm này được nhắc tới private.checkin_responses trong thân hàm (RLS-D38-02).",
-    "functions": ["app.weekly_report"]
+    "functions": [
+      "app.weekly_report"
+    ]
   }
 }
