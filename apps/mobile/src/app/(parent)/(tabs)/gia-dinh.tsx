@@ -1,7 +1,52 @@
-import { Placeholder } from '@/ui/Placeholder';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+
+import type { Child } from '@/data/types';
+import { useApp } from '@/state/app';
+import { Btn, H1, P, Screen } from '@/ui/kit';
 import { LabLink } from '@/ui/LabLink';
-export default function Screen() {
+
+function pairText(c: Child): string {
+  if (!c.hasDevice) return 'Chưa có máy riêng';
+  if (c.pairState === 'PAIRED') return 'Đã ghép máy';
+  if (c.pairState === 'PENDING') return 'Đang chờ máy của con xác nhận';
+  return 'Chưa ghép máy';
+}
+
+// PA-03 rút gọn: thẻ từng con + lối vào PA-13 (ghép máy), PA-14 (PIN), PA-38 (phiên đăng nhập).
+export default function GiaDinh() {
+  const router = useRouter();
+  const { home, refreshHome } = useApp();
+  useFocusEffect(
+    useCallback(() => {
+      void refreshHome().catch(() => undefined);
+    }, [refreshHome]),
+  );
   return (
-    <Placeholder title="Gia đình" note="Giữ chỗ (hồ sơ con, ghép máy, thành viên, hỗ trợ khẩn cấp). Chưa có nội dung."><LabLink /></Placeholder>
+    <Screen>
+      <H1>Gia đình</H1>
+      {home?.children.map((c) => (
+        <View key={c.id} style={s.card}>
+          <Text style={s.name}>{c.callName}</Text>
+          <P muted>
+            {c.grade ? `Lớp ${c.grade}` : c.ageYears !== null ? `${c.ageYears} tuổi` : ''}
+            {' · '}
+            {pairText(c)}
+          </P>
+          {c.hasDevice && c.pairState !== 'PAIRED' ? (
+            <Btn label="Ghép máy của con" kind="secondary" onPress={() => router.push({ pathname: '/(parent)/ghep-may', params: { childId: c.id } })} />
+          ) : null}
+        </View>
+      ))}
+      <Btn label="Đặt hoặc đổi mã PIN" kind="secondary" onPress={() => router.push('/(parent)/dat-pin')} />
+      <Btn label="Phiên đăng nhập" kind="secondary" onPress={() => router.push('/(parent)/phien')} />
+      <LabLink />
+    </Screen>
   );
 }
+
+const s = StyleSheet.create({
+  card: { borderWidth: 1, borderColor: '#C9CED6', borderRadius: 12, padding: 14, gap: 8 },
+  name: { fontSize: 20, fontWeight: '700' },
+});
