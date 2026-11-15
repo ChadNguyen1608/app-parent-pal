@@ -36,6 +36,16 @@ Nguồn nhập bước 1–2 là các bản Markdown xuất đã lưu trên máy
 
 - [6.1 Kiến trúc thông tin nấc 1](06_Information_Architecture/IA_06_1_Information_Architecture.md) — nháp AI 15/11/2026: app phụ huynh 38 màn, app của con 20 màn; điều hướng, trạng thái đặc biệt, ma trận dữ liệu.
 
+## 7. Wireframe
+
+- Canvas "Parent-Pal nấc 1 – Wireframe và prototype" trên claude.ai (riêng tư của chủ sản phẩm): 39 màn, bấm thử được. Luồng đã duyệt (D-47).
+
+## 12–15. Kiến trúc, Tech Spec, kế hoạch dev
+
+- [12.1 Kiến trúc hệ thống nấc 1](12_System_Architecture/Architecture_12_1_System_Architecture.md) — nháp AI; 4 lựa chọn chờ chủ sản phẩm (D-46a/b/c, LQ-08).
+- [13.1 Tech Spec nấc 1](13_Tech_Spec/Tech_Spec_13_1_MVP_Step1.md) — mô hình dữ liệu, RLS, API, test.
+- [15.1 Kế hoạch dev nấc 1](15_Dev_Planning/Dev_Plan_15_1_MVP_Step1.md) — đợt 0–6, cổng G-1..G-11, việc của chủ sản phẩm OW-01..10.
+
 ## Hồ sơ hỗ trợ (progress)
 
 - [Chấm điểm 3.3 và tự kiểm toán](progress/phase-3-scoring/README.md) — REVIEW, MVP chưa chọn.
