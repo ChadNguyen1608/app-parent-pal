@@ -7,7 +7,9 @@ insert into auth.users (id, aud, role, email, is_anonymous) values
   ('00000000-0000-4000-8000-0000000000a2', 'authenticated', 'authenticated', 'minh@example.test', false),  -- NL hộ 1
   ('00000000-0000-4000-8000-0000000000a3', 'authenticated', 'authenticated', null,                true),   -- máy bé Na (đã ghép)
   ('00000000-0000-4000-8000-0000000000a4', 'authenticated', 'authenticated', 'lan@example.test',  false),  -- QL hộ 2
-  ('00000000-0000-4000-8000-0000000000a5', 'authenticated', 'authenticated', null,                true)    -- máy bé Su (chờ ghép)
+  ('00000000-0000-4000-8000-0000000000a5', 'authenticated', 'authenticated', null,                true),   -- máy bé Su (chờ ghép)
+  ('00000000-0000-4000-8000-0000000000a6', 'authenticated', 'authenticated', 'mai@example.test',  false),  -- người lớn mới, chưa thuộc hộ nào (T1.2)
+  ('00000000-0000-4000-8000-0000000000a7', 'authenticated', 'authenticated', null,                true)    -- máy con mới, chưa ghép, chưa có mã (T1.5)
 on conflict (id) do nothing;
 
 insert into app.households (id, label, data_class) values

@@ -80,3 +80,20 @@ begin
     create publication supabase_realtime;
   end if;
 end $$;
+
+-- pgcrypto nằm ở schema `extensions` như trên Supabase (migration T1.5 cũng `create extension if not exists`).
+create extension if not exists pgcrypto with schema extensions;
+
+-- Supabase Vault tối thiểu: chỉ có vault.decrypted_secrets (name, decrypted_secret). Schema vault KHÔNG cấp cho
+-- anon/authenticated (Supabase cũng vậy). GIÁ TRỊ DƯỚI ĐÂY CHỈ DÙNG CHO TEST, không phải khóa thật.
+create schema if not exists vault;
+create table vault.decrypted_secrets (
+  id               uuid primary key default gen_random_uuid(),
+  name             text unique,
+  decrypted_secret text
+);
+insert into vault.decrypted_secrets (name, decrypted_secret) values
+  ('pairing_secret', 'TEST-ONLY-pairing-secret-not-a-real-key-0001'),
+  ('pin_pepper',     'TEST-ONLY-pin-pepper-not-a-real-key-0002');
+revoke all on schema vault from public, anon, authenticated;
+revoke all on vault.decrypted_secrets from public, anon, authenticated;

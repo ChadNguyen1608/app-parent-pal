@@ -16,6 +16,7 @@ google-services.json
 GoogleService-Info.plist
 .env
 .env.*
+!.env.example
 
 # Kết quả chạy test tự động
 mobile/test-reports/
