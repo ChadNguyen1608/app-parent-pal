@@ -1,5 +1,7 @@
 # 04.2 – USER FLOW: CÁC LUỒNG CÒN LẠI (ĐỢT 2)
 
+> **Cập nhật lượt 3 (15/11/2026):** khi đóng băng (D-27, D-41), app của con chỉ xem lịch đã tải, không nhận lịch mới, không gửi mong muốn; điều này thay phần "con vẫn dùng lịch / gửi đề xuất" ở G4-X2, G10-X1 trong trường hợp đóng băng. Rút đồng ý theo D-42 thay G6 bước 4. Chuyển người quản lý chính hoãn khỏi nấc 1 (D-34). Nút "Con cần giúp đỡ" trong đợt thử chỉ có lời tĩnh và 111, chưa gửi tin (D-43).
+
 **Product Blueprint – Bước 4: User Flow**
 **Người soạn:** AI, chưa kiểm chứng độc lập · **Trạng thái:** nháp chờ duyệt · **Bản:** 15/11/2026
 **Đi kèm:** `User_Flow_04_1_Scheduling_Loop.md` bản 15/11 (đợt 1: F1–F5, 40 màn PA-01..PA-24, CA-01..CA-15).
@@ -168,7 +170,7 @@ Số màn mới: Parent App **PA-25..PA-38** (14 màn), Child App **CA-16..CA-17
 | 1 | PA-08 | Chọn con (nếu nhiều con) | Không đoán (CLAUDE) |
 | 2 | (hệ thống) | — | Kiểm quyền và mục đích trước khi đọc (F01-G04-M01, F07-G06-M01; CRG CAP-2). Chỉ đọc nguồn được phép, tối thiểu (03.4 §7) |
 | 3 | PA-21 Tóm tắt tuần | Xem | F06-G02-M01 tổng hợp từ nhật ký sự kiện (F06-G01-M01): việc đã xong theo ngày (✓ và giờ), ngày có ngoại lệ, giai đoạn tạm thời. Ngày ốm, nghỉ, ngày đã giảm tải không tính là chưa xong (F06-G02-M02; QT K4). Ghi rõ đây là **tự báo cáo**, không phải tiến bộ năng lực (03.4 §6.4) |
-| 4 | PA-21 mục "Xu hướng" | Xem | Chỉ hiện khi F06-G04-M01 phát hiện xu hướng trong cửa sổ 2 tuần (QT L2) và **đã có ngưỡng được duyệt**; chưa có ngưỡng → không hiện (UF-Q20). Nội dung: xu hướng mệt **liên quan lịch** (ví dụ "con hay báo mệt vào ngày có học thêm buổi tối"), một câu hỏi về bối cảnh, một đề xuất cụ thể; không cảm xúc, không nguyên văn, không kết luận nguyên nhân (D-03; TAB §1.5) |
+| 4 | PA-21 mục "Xu hướng" | Xem | Chỉ hiện khi F06-G04-M01 phát hiện xu hướng trong cửa sổ 2 tuần (QT L2) **không cần ngưỡng**, hiện từ 1 lần, gộp theo loại ngày (D-21, D-37). Nội dung: xu hướng mệt **liên quan lịch** (ví dụ "con hay báo mệt vào ngày có học thêm buổi tối"), một câu hỏi về bối cảnh, một đề xuất cụ thể; không cảm xúc, không nguyên văn, không kết luận nguyên nhân (D-03; TAB §1.5) |
 | 5 | PA-21 | Bấm "Xem lịch sử thay đổi" | PA-25 Lịch sử thay đổi lịch (F04-G06-M02): ai lưu, khi nào, lý do, phiên bản. Không lộ nội dung riêng tư (B01C-OD-07) |
 | 6 | PA-21 | Bấm "Điều chỉnh" | Chọn: sửa quỹ, lịch mẫu (F2); tạo giai đoạn tạm thời (F5-A); đổi chỉ tuần này (F5-C); xem hàng chờ con đề xuất (PA-16) |
 | 7 | CA-13 Tuần của con | Con xem | Chỉ việc của con, dấu ✓ con đã bấm, ngày nghỉ không bị tính thiếu; không điểm, không so sánh (TAB §4). Con thấy mình đã chọn gì ở hỏi thăm (dữ liệu của con) · `đề xuất nội bộ` |
@@ -204,7 +206,7 @@ flowchart TD
   C -- "Không đủ quyền" --> C1["Chỉ phần được cấp / từ chối"]
   C -- Đạt --> D["PA-21 Việc đã xong theo ngày; ngày ốm/nghỉ không tính thiếu; nhãn tự báo cáo"]
   D --> E{"Có xu hướng mệt liên quan lịch?"}
-  E -- "Chưa có ngưỡng duyệt" --> E0["Không hiện (UF-Q20)"]
+  E -- "Chưa có lần mệt nào trong tuần" --> E0["Không hiện mục xu hướng (D-37)"]
   E -- "Có, đủ điều kiện" --> E1["Xu hướng + 1 câu hỏi bối cảnh + 1 đề xuất; không cảm xúc, không nguyên văn"]
   E -- Không --> F
   E0 --> F
@@ -930,9 +932,9 @@ UF-Q14..UF-Q25 phát sinh khi cập nhật đợt 1 (chi tiết ở 04.1 §8.2),
 | UF-Q15 | A-lite E1: Child App không có ô chữ tự do? | F4, F5-B | Không có | Đồng ý (tránh FR-03, khớp SG-10) |
 | UF-Q16 | Trường sức khỏe khi chưa có purpose ID | F1, G7 | Ẩn khi dùng dữ liệu thật | Đồng ý; bổ sung purpose vào danh mục trước pilot |
 | UF-Q17 | Dùng chung máy phụ huynh làm máy con? | F3 | Không | Đồng ý (giữ ranh giới quyền) |
-| UF-Q18 | Phụ huynh có xem lựa chọn hỏi thăm từng ngày không? | F4, G1 | Không, chỉ xu hướng | Đồng ý (khớp D-03 "không báo cảm xúc") |
+| UF-Q18 | Phụ huynh có xem lựa chọn hỏi thăm từng ngày không? | F4, G1 | Không, chỉ xu hướng | **Đã quyết: không** (D-38) |
 | UF-Q19 | "Rất mệt" ở `CHILD_DIRECTED` mở CR hay cho sửa trong phạm vi? | F4 | Mở CR | Mở CR (đúng chữ D-10) |
-| UF-Q20 | Ngưỡng số ngày mệt trong 2 tuần để báo | F4, G1 | `UNKNOWN` → không báo | Owner chọn một số tạm, gắn "mặc định chưa kiểm chứng" như D-08, để thử pilot |
+| UF-Q20 | Ngưỡng số ngày mệt trong 2 tuần để báo | F4, G1 | `UNKNOWN` → không báo | **Đã quyết:** không cần ngưỡng; tổng hợp trong báo cáo tuần, theo loại ngày, hiện từ 1 lần (D-21, D-37) |
 | UF-Q21 | Khôi phục tự động khi hết giai đoạn: ngoại tuyến, `LOCK` | F5-A, G2 | Quy tắc tạm ngừng đúng ngày; khôi phục không bị khóa chặn | Đồng ý; ghi vào Business Logic |
 | UF-Q22 | Báo xu hướng mệt trong giai đoạn tạm thời? | F5-A | Có | Có (tín hiệu mới, TAB §1.5) |
 | UF-Q23 | A-lite E1 có bật `CHILD_DIRECTED`? | F5-B, G5 | Ẩn | Ẩn trong E1, ghi rõ cho người dùng (CRG C-01 phương án 1) |
