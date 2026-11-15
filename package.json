@@ -1,0 +1,10 @@
+{
+  "name": "parent-pal",
+  "private": true,
+  "description": "Parent-Pal nấc 1 (A-lite E1). Mã mới ở apps/, packages/, backend/. mobile/ và supabase/ là mã Plan A cũ, giữ để tham khảo (D-31, D-50).",
+  "engines": { "node": ">=22.6" },
+  "scripts": {
+    "test": "node --experimental-strip-types --test \"packages/*/test/**/*.test.ts\"",
+    "scan-secrets": "node scripts/scan-secrets.mjs"
+  }
+}

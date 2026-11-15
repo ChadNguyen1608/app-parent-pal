@@ -20,3 +20,11 @@ GoogleService-Info.plist
 # Kết quả chạy test tự động
 mobile/test-reports/
 *.apk
+
+# Nấc 1 (A-lite E1)
+node_modules/
+*.aab
+*.keystore
+*.jks
+backend/supabase/.temp/
+backend/supabase/.branches/
