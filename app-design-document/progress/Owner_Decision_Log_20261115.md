@@ -104,6 +104,11 @@ Câu hỏi gộp từ danh sách module nấc 1, IA 6.1, Business Logic 11.2–1
 | D-44 | Điều kiện thử nội bộ (testkit Q1, Q2, Q4, Q7, Q9; Q-CON-07) | Nơi lưu: thư mục mã hóa trên máy của chủ sản phẩm, tối đa 2 người mở. Xóa dữ liệu **7 ngày** sau ngày kết thúc; gia đình rút giữa chừng thì xóa ngay. Phiếu ký và nhật ký xóa giữ đến khi có ý kiến luật sư. Xin trẻ đồng ý ở mọi tuổi. Không quà, không thù lao |
 | D-45 | Viết lại D-01 cho nấc 1 (MQ-06) | Ngoại lệ thử nội bộ áp cho **tính năng nấc 1** (lịch, thời khóa biểu, đánh dấu Xong, hỏi thăm mệt, mong muốn của con, báo cáo tuần). Điều kiện: phiếu đồng ý của bố mẹ, trẻ được giải thích và đồng ý; tối đa 3 gia đình; có ngày kết thúc; chỉ thu dữ liệu tối thiểu theo các mục đích đã đồng ý; không GPS, ảnh, ghi âm; FR-01 xong trước (D-18); lưu và xóa theo D-44; không đưa lên repo công khai; không dùng cho mục đích khác. Cổng pháp lý vẫn mở |
 | D-47 | Wireframe nấc 1 (canvas "Parent-Pal nấc 1 – Wireframe và prototype" trên claude.ai) | Chủ sản phẩm duyệt luồng wireframe cho MVP và yêu cầu triển khai bước tiếp; duyệt 7 màn mới của app trẻ (CA-07, 09, 10, 11, 12, 17, 20). Màn mới của app phụ huynh chờ góp ý |
+| D-48 | Kênh cài app (D-46a) | **Nội bộ, bằng file APK; người thử tự tải APK về cài** (phương án K1). Không qua Google Play. Link tải phải riêng tư (không đặt APK trong repo công khai hay bản phát hành công khai trên GitHub); kênh lưu link chốt khi có bản build đầu |
+| D-49 | Cách phụ huynh đăng nhập (D-46b) | **Email nhận mã một lần (OTP)**, không mật khẩu |
+| D-50 | Dùng lại mã `mobile/` (D-46c) | **Tái dùng chọn lọc (M2):** mã mới ở `apps/`, `packages/`, `backend/`; giữ nguyên `mobile/`, `supabase/`; chỉ lấy cấu hình Expo, công cụ đo nhắc giờ, kiểu `Block`/`Plan`, kỹ thuật RLS; không lấy GPS, ảnh, ghi âm, Pal chat, mã gia đình |
 | D-46 | Kênh cài app, cách đăng nhập, dùng lại mã `mobile/` (testkit Q6, MQ-10) | Quyết ở bước **kiến trúc hệ thống** |
+
+Còn mở (15/11): nơi đặt máy chủ (LQ-08; đề xuất Supabase Singapore + 6 biện pháp), chi phí gói Supabase Pro khoảng 25 USD cho tháng thử, người code chính và số giờ mỗi tuần.
 
 Còn mở: có đưa phần kỹ năng mềm (v5.21, v5.22 của bản đồ kiến thức, hiện chỉ có trong project trên claude.ai) vào repo không. Chủ sản phẩm: **chưa đưa vào** (15/11/2026).
