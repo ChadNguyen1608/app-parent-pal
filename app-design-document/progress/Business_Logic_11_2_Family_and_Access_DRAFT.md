@@ -1,5 +1,7 @@
 # 11.2 – BUSINESS LOGIC: GIA ĐÌNH, THÀNH VIÊN VÀ QUYỀN TRUY CẬP CỦA A-LITE E1
 
+> **Cập nhật lượt 3 (15/11/2026):** các câu hỏi Q-FAM, Q-CON, Q-NTF đã được chủ sản phẩm trả lời theo đề xuất; xem sổ quyết định mục 7 (D-33..D-46). Chỗ nào file này khác sổ quyết định thì theo sổ.
+
 - **Ngày:** 15/11/2026.
 - **Phạm vi:** gia đình, vai trò, mời và gỡ thành viên tối thiểu (D-22), ghép máy con và Parent PIN (FR-01), đổi người quản lý chính (D-07), chế độ tự chủ (D-19), đóng băng tài khoản khi không dùng (D-27), khôi phục tài khoản, rời gia đình, xóa hồ sơ con.
 - **Bản chất:** bản nháp đặc tả nghiệp vụ, đi cùng `Business_Logic_11_1_Scheduling_E1_DRAFT.md` (gọi tắt **BL 11.1**). Không phải spec chuẩn. Không sửa nguồn chuẩn. Chỗ nào khác nguồn thì ghi ở §11 để sửa nguồn trước.

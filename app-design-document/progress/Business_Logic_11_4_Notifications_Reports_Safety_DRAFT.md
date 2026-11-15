@@ -1,5 +1,7 @@
 # 11.4 – BUSINESS LOGIC: NHẮC GIỜ, THÔNG BÁO, BÁO CÁO TUẦN, MONG MUỐN VÀ AN TOÀN CỦA A-LITE E1
 
+> **Cập nhật lượt 3 (15/11/2026):** các câu hỏi Q-FAM, Q-CON, Q-NTF đã được chủ sản phẩm trả lời theo đề xuất; xem sổ quyết định mục 7 (D-33..D-46). Chỗ nào file này khác sổ quyết định thì theo sổ.
+
 - **Ngày:** 15/11/2026.
 - **Phạm vi:** nhắc giờ theo khối; thông báo cho phụ huynh và cho con; báo cáo tuần (gồm xu hướng mệt liên quan lịch, số ngày đánh dấu Xong); giờ yên lặng; mong muốn của con qua mẫu cố định và vòng xem của bố mẹ; nút "Con cần giúp đỡ"; lời an toàn theo người nhận.
 - **Bản chất:** bản nháp đặc tả nghiệp vụ, đi cùng `Business_Logic_11_1_Scheduling_E1_DRAFT.md` (**BL 11.1**), `Business_Logic_11_2_Family_and_Access_DRAFT.md` (**BL 11.2**), `Business_Logic_11_3_Consent_and_Data_DRAFT.md` (**BL 11.3**). Không phải spec chuẩn. Chỗ nào khác nguồn thì ghi ở §11.

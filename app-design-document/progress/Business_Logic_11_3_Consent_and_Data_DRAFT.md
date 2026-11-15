@@ -1,5 +1,7 @@
 # 11.3 – BUSINESS LOGIC: ĐỒNG Ý, DỮ LIỆU VÀ QUYỀN RIÊNG CỦA A-LITE E1
 
+> **Cập nhật lượt 3 (15/11/2026):** các câu hỏi Q-FAM, Q-CON, Q-NTF đã được chủ sản phẩm trả lời theo đề xuất; xem sổ quyết định mục 7 (D-33..D-46). Chỗ nào file này khác sổ quyết định thì theo sổ.
+
 - **Ngày:** 15/11/2026.
 - **Phạm vi:** đồng ý (consent) theo mục đích; rút đồng ý từng phần và toàn bộ (D-28); xem, sửa, xóa, xuất dữ liệu; thời hạn giữ và xóa (mô hình hóa như tham số chưa chốt); quyền riêng của con (bố mẹ thấy gì); ngoại lệ thử nội bộ D-01.
 - **Bản chất:** bản nháp đặc tả nghiệp vụ, đi cùng `Business_Logic_11_1_Scheduling_E1_DRAFT.md` (**BL 11.1**) và `Business_Logic_11_2_Family_and_Access_DRAFT.md` (**BL 11.2**). Không phải spec chuẩn, **không phải ý kiến pháp lý**. Chỗ nào khác nguồn thì ghi ở §11.

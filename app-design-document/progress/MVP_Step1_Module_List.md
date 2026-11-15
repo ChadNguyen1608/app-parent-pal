@@ -1,5 +1,7 @@
 # Danh sách module nấc 1 (A-lite E1), bản chốt theo quyết định 15/11/2026
 
+> **Cập nhật lượt 3 (15/11/2026):** chủ sản phẩm duyệt MQ-01, MQ-02 (nấc 1 = **32 module**, D-33); hoãn chuyển người quản lý chính (D-34); các câu MQ-03..MQ-10 theo đề xuất, xem sổ quyết định mục 7 (D-33..D-46).
+
 **Bước:** Product Blueprint, chuẩn bị Kiến trúc thông tin (IA) và System Design cho nấc 1
 **Người soạn:** AI, chưa kiểm chứng độc lập · **Trạng thái:** nháp chờ duyệt · **Bản:** 15/11/2026
 **Đi kèm:** `IA_06_1_Information_Architecture.md` (cùng thư mục)

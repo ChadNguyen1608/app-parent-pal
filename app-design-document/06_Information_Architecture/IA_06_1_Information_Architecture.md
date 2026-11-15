@@ -1,5 +1,7 @@
 # IA 06.1 – Kiến trúc thông tin của nấc 1 (A-lite E1): App phụ huynh và App của con
 
+> **Cập nhật lượt 3 (15/11/2026):** áp D-33..D-46 (sổ quyết định mục 7). Đáng chú ý: người lớn thứ hai chỉ xem (D-35); khóa lịch có trong nấc 1 (D-36); trạng thái đóng băng của app con theo D-41; màn "Con cần giúp đỡ" chỉ có lời tĩnh và 111 trong đợt thử (D-43); màn chuyển người quản lý chính hoãn (D-34).
+
 **Bước:** Product Blueprint, sau Bước 4 (User Flow), trước thiết kế giao diện
 **Người soạn:** AI, chưa kiểm chứng độc lập · **Trạng thái:** nháp chờ duyệt · **Bản:** 15/11/2026
 **Đi kèm:** `MVP_Step1_Module_List.md` (cùng thư mục; mã `MQ-xx` ở dưới là câu hỏi mở của file đó)

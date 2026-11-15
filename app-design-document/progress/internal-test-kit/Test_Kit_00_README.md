@@ -1,5 +1,7 @@
 # Bộ tài liệu thử nghiệm nội bộ với gia đình quen (A-lite E1): đọc trước
 
+> **Cập nhật lượt 3 (15/11/2026):** điều kiện ngoại lệ thử nội bộ đã viết lại cho nấc 1 (D-45). Câu hỏi Q1, Q2, Q4, Q7, Q9 đã quyết (D-44): lưu trong thư mục mã hóa trên máy chủ sản phẩm (tối đa 2 người), xóa 7 ngày sau kết thúc, rút giữa chừng xóa ngay, giữ phiếu ký và nhật ký xóa đến khi có ý kiến luật sư, xin trẻ đồng ý mọi tuổi, không quà. Q8: không mời người lớn thứ hai (D-35). Q10: tìm người xem giúp miễn phí (D-43). Q6 để bước kiến trúc (D-46). Nút "Con cần giúp đỡ" trong đợt thử chỉ có lời tĩnh và 111.
+
 > **Chưa được luật sư xem; không thay ý kiến pháp lý.** Đây là bản nháp do AI soạn. Không file nào trong bộ này là văn bản pháp lý. Cổng pháp lý H4 và FR-03 **vẫn mở, không PASS**. Bộ này chỉ giúp chủ sản phẩm chạy thử có kiểm soát trong ngoại lệ D-01.
 
 - **Ngày soạn:** 15/11/2026.
