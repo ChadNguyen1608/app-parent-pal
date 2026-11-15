@@ -228,6 +228,10 @@ Mỗi câu hỏi có bốn phần: (a) bối cảnh xử lý, (b) câu hỏi c�
 - **(c) Vì sao quan trọng:** luồng G9, G10 của User Flow 4.2; thời hạn lưu là một phần của cổng H4.
 - **(d) Định dạng:** thời hạn cụ thể, điều khoản.
 
+### Bổ sung cho LQ-08 (16/11/2026)
+
+Luồng dữ liệu ra nước ngoài hiện gồm: CSDL và hàm ở Supabase vùng Tokyo (D-56), đẩy thông báo qua Firebase Cloud Messaging (Google), và gửi email đăng nhập qua Resend (D-59). Cần ý kiến cho cả ba bên.
+
 ## 3. Thứ tự ưu tiên đề xuất cho luật sư
 
 1. LQ-01, LQ-02, LQ-11: căn cứ xử lý và đồng ý. Gỡ cổng dữ liệu thật và pilot.

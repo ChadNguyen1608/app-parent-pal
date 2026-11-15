@@ -206,3 +206,12 @@ Tổng cỡ `ước tính`: không cộng thành số tuần cam kết vì số 
 ---
 
 người soạn: AI, chưa kiểm chứng độc lập; trạng thái: nháp chờ duyệt
+
+
+## Cổng bổ sung (16/11/2026)
+
+| Mã | Cổng trước khi thử với gia đình thật | Nguồn |
+|---|---|---|
+| G-12 | Nâng dự án Supabase lên gói Pro (tránh tự tạm dừng sau 7 ngày, có sao lưu) | D-56 |
+| G-13 | SMTP riêng qua Resend đã cấu hình; mẫu thư hiện mã 6 số; gửi thử tới email ngoài nhóm thành công | D-59 |
+| G-14 | Phiếu đồng ý ghi đủ các bên ngoài nước: Supabase (Tokyo), Firebase Cloud Messaging, Resend | D-56, D-59, LQ-08 |
