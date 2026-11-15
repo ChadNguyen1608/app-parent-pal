@@ -1,0 +1,1127 @@
+{
+ "id": "P1",
+ "label": "Lớp 1, bán trú, quỹ mặc định",
+ "day_status": {
+  "T2": "OK",
+  "T3": "OK",
+  "T4": "OK",
+  "T5": "OK",
+  "T6": "OK",
+  "T7": "OK",
+  "CN": "OK"
+ },
+ "n_tradeoffs": 0,
+ "n_questions": 0,
+ "days": {
+  "T2": [
+   {
+    "bat_dau": "06:15",
+    "ket_thuc": "06:40",
+    "khoi": "Dậy, vận động buổi sáng",
+    "tai": "vua",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "06:40",
+    "ket_thuc": "06:45",
+    "khoi": "Nghỉ ngắn: đứng dậy, uống nước",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "06:45",
+    "ket_thuc": "07:15",
+    "khoi": "Vệ sinh, ăn sáng, thay đồ",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:15",
+    "ket_thuc": "07:30",
+    "khoi": "Đi học",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:30",
+    "ket_thuc": "10:45",
+    "khoi": "Học ở trường",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "10:45",
+    "ket_thuc": "13:30",
+    "khoi": "Ăn trưa, ngủ trưa ở trường",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "13:30",
+    "ket_thuc": "14:30",
+    "khoi": "Học ở trường (chiều)",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "14:30",
+    "ket_thuc": "14:45",
+    "khoi": "Bữa phụ ở trường",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "14:45",
+    "ket_thuc": "16:30",
+    "khoi": "Học ở trường (chiều)",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:30",
+    "ket_thuc": "16:45",
+    "khoi": "Về nhà",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:45",
+    "ket_thuc": "16:55",
+    "khoi": "Ghi lại việc được giao, hỏi thăm",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:55",
+    "ket_thuc": "17:25",
+    "khoi": "Ăn nhẹ và chơi tự do (phục hồi)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:25",
+    "ket_thuc": "17:35",
+    "khoi": "Ôn bài, làm việc cô giao",
+    "tai": "vua",
+    "nhom": "hoc_nha",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:35",
+    "ket_thuc": "17:45",
+    "khoi": "Soạn cặp theo thời khóa biểu ngày mai",
+    "tai": "vua",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:45",
+    "ket_thuc": "18:15",
+    "khoi": "Màn hình giải trí (tivi, máy tính bảng)",
+    "tai": "thap",
+    "nhom": "choi_nghi",
+    "man_hinh": true
+   },
+   {
+    "bat_dau": "18:15",
+    "ket_thuc": "18:30",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "18:30",
+    "ket_thuc": "19:00",
+    "khoi": "Ăn tối cùng gia đình",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "19:00",
+    "ket_thuc": "20:00",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:00",
+    "ket_thuc": "20:30",
+    "khoi": "Vệ sinh buổi tối",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:30",
+    "ket_thuc": "20:45",
+    "khoi": "Đọc sách và viết nhật ký trên giường",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:45",
+    "ket_thuc": "20:45",
+    "khoi": "Tắt đèn, ngủ",
+    "tai": "phuc_hoi",
+    "nhom": "ngu",
+    "man_hinh": false
+   }
+  ],
+  "T3": [
+   {
+    "bat_dau": "06:15",
+    "ket_thuc": "06:40",
+    "khoi": "Dậy, vận động buổi sáng",
+    "tai": "vua",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "06:40",
+    "ket_thuc": "06:45",
+    "khoi": "Nghỉ ngắn: đứng dậy, uống nước",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "06:45",
+    "ket_thuc": "07:15",
+    "khoi": "Vệ sinh, ăn sáng, thay đồ",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:15",
+    "ket_thuc": "07:30",
+    "khoi": "Đi học",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:30",
+    "ket_thuc": "10:45",
+    "khoi": "Học ở trường",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "10:45",
+    "ket_thuc": "13:30",
+    "khoi": "Ăn trưa, ngủ trưa ở trường",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "13:30",
+    "ket_thuc": "14:30",
+    "khoi": "Học ở trường (chiều)",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "14:30",
+    "ket_thuc": "14:45",
+    "khoi": "Bữa phụ ở trường",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "14:45",
+    "ket_thuc": "16:30",
+    "khoi": "Học ở trường (chiều)",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:30",
+    "ket_thuc": "16:45",
+    "khoi": "Về nhà",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:45",
+    "ket_thuc": "16:55",
+    "khoi": "Ghi lại việc được giao, hỏi thăm",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:55",
+    "ket_thuc": "17:25",
+    "khoi": "Ăn nhẹ và chơi tự do (phục hồi)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:25",
+    "ket_thuc": "17:35",
+    "khoi": "Ôn bài, làm việc cô giao",
+    "tai": "vua",
+    "nhom": "hoc_nha",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:35",
+    "ket_thuc": "17:45",
+    "khoi": "Soạn cặp theo thời khóa biểu ngày mai",
+    "tai": "vua",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:45",
+    "ket_thuc": "18:15",
+    "khoi": "Màn hình giải trí (tivi, máy tính bảng)",
+    "tai": "thap",
+    "nhom": "choi_nghi",
+    "man_hinh": true
+   },
+   {
+    "bat_dau": "18:15",
+    "ket_thuc": "18:30",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "18:30",
+    "ket_thuc": "19:00",
+    "khoi": "Ăn tối cùng gia đình",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "19:00",
+    "ket_thuc": "20:00",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:00",
+    "ket_thuc": "20:30",
+    "khoi": "Vệ sinh buổi tối",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:30",
+    "ket_thuc": "20:45",
+    "khoi": "Đọc sách và viết nhật ký trên giường",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:45",
+    "ket_thuc": "20:45",
+    "khoi": "Tắt đèn, ngủ",
+    "tai": "phuc_hoi",
+    "nhom": "ngu",
+    "man_hinh": false
+   }
+  ],
+  "T4": [
+   {
+    "bat_dau": "06:15",
+    "ket_thuc": "06:40",
+    "khoi": "Dậy, vận động buổi sáng",
+    "tai": "vua",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "06:40",
+    "ket_thuc": "06:45",
+    "khoi": "Nghỉ ngắn: đứng dậy, uống nước",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "06:45",
+    "ket_thuc": "07:15",
+    "khoi": "Vệ sinh, ăn sáng, thay đồ",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:15",
+    "ket_thuc": "07:30",
+    "khoi": "Đi học",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:30",
+    "ket_thuc": "10:45",
+    "khoi": "Học ở trường",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "10:45",
+    "ket_thuc": "13:30",
+    "khoi": "Ăn trưa, ngủ trưa ở trường",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "13:30",
+    "ket_thuc": "14:30",
+    "khoi": "Học ở trường (chiều)",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "14:30",
+    "ket_thuc": "14:45",
+    "khoi": "Bữa phụ ở trường",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "14:45",
+    "ket_thuc": "16:30",
+    "khoi": "Học ở trường (chiều)",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:30",
+    "ket_thuc": "16:45",
+    "khoi": "Về nhà",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:45",
+    "ket_thuc": "16:55",
+    "khoi": "Ghi lại việc được giao, hỏi thăm",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:55",
+    "ket_thuc": "17:25",
+    "khoi": "Ăn nhẹ và chơi tự do (phục hồi)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:25",
+    "ket_thuc": "17:35",
+    "khoi": "Ôn bài, làm việc cô giao",
+    "tai": "vua",
+    "nhom": "hoc_nha",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:35",
+    "ket_thuc": "17:45",
+    "khoi": "Soạn cặp theo thời khóa biểu ngày mai",
+    "tai": "vua",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:45",
+    "ket_thuc": "18:15",
+    "khoi": "Màn hình giải trí (tivi, máy tính bảng)",
+    "tai": "thap",
+    "nhom": "choi_nghi",
+    "man_hinh": true
+   },
+   {
+    "bat_dau": "18:15",
+    "ket_thuc": "18:30",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "18:30",
+    "ket_thuc": "19:00",
+    "khoi": "Ăn tối cùng gia đình",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "19:00",
+    "ket_thuc": "20:00",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:00",
+    "ket_thuc": "20:30",
+    "khoi": "Vệ sinh buổi tối",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:30",
+    "ket_thuc": "20:45",
+    "khoi": "Đọc sách và viết nhật ký trên giường",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:45",
+    "ket_thuc": "20:45",
+    "khoi": "Tắt đèn, ngủ",
+    "tai": "phuc_hoi",
+    "nhom": "ngu",
+    "man_hinh": false
+   }
+  ],
+  "T5": [
+   {
+    "bat_dau": "06:15",
+    "ket_thuc": "06:40",
+    "khoi": "Dậy, vận động buổi sáng",
+    "tai": "vua",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "06:40",
+    "ket_thuc": "06:45",
+    "khoi": "Nghỉ ngắn: đứng dậy, uống nước",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "06:45",
+    "ket_thuc": "07:15",
+    "khoi": "Vệ sinh, ăn sáng, thay đồ",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:15",
+    "ket_thuc": "07:30",
+    "khoi": "Đi học",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:30",
+    "ket_thuc": "10:45",
+    "khoi": "Học ở trường",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "10:45",
+    "ket_thuc": "13:30",
+    "khoi": "Ăn trưa, ngủ trưa ở trường",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "13:30",
+    "ket_thuc": "14:30",
+    "khoi": "Học ở trường (chiều)",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "14:30",
+    "ket_thuc": "14:45",
+    "khoi": "Bữa phụ ở trường",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "14:45",
+    "ket_thuc": "16:30",
+    "khoi": "Học ở trường (chiều)",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:30",
+    "ket_thuc": "16:45",
+    "khoi": "Về nhà",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:45",
+    "ket_thuc": "16:55",
+    "khoi": "Ghi lại việc được giao, hỏi thăm",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:55",
+    "ket_thuc": "17:25",
+    "khoi": "Ăn nhẹ và chơi tự do (phục hồi)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:25",
+    "ket_thuc": "17:35",
+    "khoi": "Ôn bài, làm việc cô giao",
+    "tai": "vua",
+    "nhom": "hoc_nha",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:35",
+    "ket_thuc": "17:45",
+    "khoi": "Soạn cặp theo thời khóa biểu ngày mai",
+    "tai": "vua",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:45",
+    "ket_thuc": "18:15",
+    "khoi": "Màn hình giải trí (tivi, máy tính bảng)",
+    "tai": "thap",
+    "nhom": "choi_nghi",
+    "man_hinh": true
+   },
+   {
+    "bat_dau": "18:15",
+    "ket_thuc": "18:30",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "18:30",
+    "ket_thuc": "19:00",
+    "khoi": "Ăn tối cùng gia đình",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "19:00",
+    "ket_thuc": "20:00",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:00",
+    "ket_thuc": "20:30",
+    "khoi": "Vệ sinh buổi tối",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:30",
+    "ket_thuc": "20:45",
+    "khoi": "Đọc sách và viết nhật ký trên giường",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:45",
+    "ket_thuc": "20:45",
+    "khoi": "Tắt đèn, ngủ",
+    "tai": "phuc_hoi",
+    "nhom": "ngu",
+    "man_hinh": false
+   }
+  ],
+  "T6": [
+   {
+    "bat_dau": "06:15",
+    "ket_thuc": "06:40",
+    "khoi": "Dậy, vận động buổi sáng",
+    "tai": "vua",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "06:40",
+    "ket_thuc": "06:45",
+    "khoi": "Nghỉ ngắn: đứng dậy, uống nước",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "06:45",
+    "ket_thuc": "07:15",
+    "khoi": "Vệ sinh, ăn sáng, thay đồ",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:15",
+    "ket_thuc": "07:30",
+    "khoi": "Đi học",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:30",
+    "ket_thuc": "10:45",
+    "khoi": "Học ở trường",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "10:45",
+    "ket_thuc": "13:30",
+    "khoi": "Ăn trưa, ngủ trưa ở trường",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "13:30",
+    "ket_thuc": "14:30",
+    "khoi": "Học ở trường (chiều)",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "14:30",
+    "ket_thuc": "14:45",
+    "khoi": "Bữa phụ ở trường",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "14:45",
+    "ket_thuc": "16:30",
+    "khoi": "Học ở trường (chiều)",
+    "tai": "cao",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:30",
+    "ket_thuc": "16:45",
+    "khoi": "Về nhà",
+    "tai": "thap",
+    "nhom": "truong",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:45",
+    "ket_thuc": "16:55",
+    "khoi": "Ghi lại việc được giao, hỏi thăm",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "16:55",
+    "ket_thuc": "17:25",
+    "khoi": "Ăn nhẹ và chơi tự do (phục hồi)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:25",
+    "ket_thuc": "17:35",
+    "khoi": "Ôn bài, làm việc cô giao",
+    "tai": "vua",
+    "nhom": "hoc_nha",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "17:35",
+    "ket_thuc": "18:05",
+    "khoi": "Màn hình giải trí (tivi, máy tính bảng)",
+    "tai": "thap",
+    "nhom": "choi_nghi",
+    "man_hinh": true
+   },
+   {
+    "bat_dau": "18:05",
+    "ket_thuc": "18:30",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "18:30",
+    "ket_thuc": "19:00",
+    "khoi": "Ăn tối cùng gia đình",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "19:00",
+    "ket_thuc": "20:00",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:00",
+    "ket_thuc": "20:30",
+    "khoi": "Vệ sinh buổi tối",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:30",
+    "ket_thuc": "20:45",
+    "khoi": "Đọc sách và viết nhật ký trên giường",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:45",
+    "ket_thuc": "20:45",
+    "khoi": "Tắt đèn, ngủ",
+    "tai": "phuc_hoi",
+    "nhom": "ngu",
+    "man_hinh": false
+   }
+  ],
+  "T7": [
+   {
+    "bat_dau": "06:45",
+    "ket_thuc": "07:10",
+    "khoi": "Dậy, vận động buổi sáng",
+    "tai": "vua",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:10",
+    "ket_thuc": "07:35",
+    "khoi": "Vệ sinh, ăn sáng",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:35",
+    "ket_thuc": "07:45",
+    "khoi": "Học bài mới hoặc phần khó (buổi sáng cuối tuần)",
+    "tai": "vua",
+    "nhom": "hoc_nha",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:45",
+    "ket_thuc": "08:45",
+    "khoi": "Màn hình giải trí (tivi, máy tính bảng)",
+    "tai": "thap",
+    "nhom": "choi_nghi",
+    "man_hinh": true
+   },
+   {
+    "bat_dau": "08:45",
+    "ket_thuc": "09:45",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "09:45",
+    "ket_thuc": "09:55",
+    "khoi": "Bữa phụ nhỏ",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "09:55",
+    "ket_thuc": "11:15",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "11:15",
+    "ket_thuc": "11:40",
+    "khoi": "Ăn trưa",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "11:40",
+    "ket_thuc": "15:15",
+    "khoi": "Vận động vui dài, chơi ngoài trời (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "15:15",
+    "ket_thuc": "15:25",
+    "khoi": "Bữa phụ nhỏ",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "15:25",
+    "ket_thuc": "18:30",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "18:30",
+    "ket_thuc": "18:55",
+    "khoi": "Ăn tối cùng gia đình",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "18:55",
+    "ket_thuc": "20:05",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:05",
+    "ket_thuc": "20:30",
+    "khoi": "Vệ sinh buổi tối",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:30",
+    "ket_thuc": "20:45",
+    "khoi": "Đọc sách và viết nhật ký trên giường",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:45",
+    "ket_thuc": "20:45",
+    "khoi": "Tắt đèn, ngủ",
+    "tai": "phuc_hoi",
+    "nhom": "ngu",
+    "man_hinh": false
+   }
+  ],
+  "CN": [
+   {
+    "bat_dau": "06:45",
+    "ket_thuc": "07:10",
+    "khoi": "Dậy, vận động buổi sáng",
+    "tai": "vua",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:10",
+    "ket_thuc": "07:35",
+    "khoi": "Vệ sinh, ăn sáng",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:35",
+    "ket_thuc": "07:45",
+    "khoi": "Học bài mới hoặc phần khó (buổi sáng cuối tuần)",
+    "tai": "vua",
+    "nhom": "hoc_nha",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:45",
+    "ket_thuc": "07:55",
+    "khoi": "Soạn cặp và đồ cho thứ Hai",
+    "tai": "vua",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "07:55",
+    "ket_thuc": "08:55",
+    "khoi": "Màn hình giải trí (tivi, máy tính bảng)",
+    "tai": "thap",
+    "nhom": "choi_nghi",
+    "man_hinh": true
+   },
+   {
+    "bat_dau": "08:55",
+    "ket_thuc": "09:45",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "09:45",
+    "ket_thuc": "09:55",
+    "khoi": "Bữa phụ nhỏ",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "09:55",
+    "ket_thuc": "11:15",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "11:15",
+    "ket_thuc": "11:40",
+    "khoi": "Ăn trưa",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "11:40",
+    "ket_thuc": "15:15",
+    "khoi": "Vận động vui dài, chơi ngoài trời (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "15:15",
+    "ket_thuc": "15:25",
+    "khoi": "Bữa phụ nhỏ",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "15:25",
+    "ket_thuc": "18:30",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "18:30",
+    "ket_thuc": "18:55",
+    "khoi": "Ăn tối cùng gia đình",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "18:55",
+    "ket_thuc": "19:35",
+    "khoi": "Chơi tự do (con chọn)",
+    "tai": "phuc_hoi",
+    "nhom": "choi_nghi",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "19:35",
+    "ket_thuc": "20:00",
+    "khoi": "Vệ sinh buổi tối",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:00",
+    "ket_thuc": "20:15",
+    "khoi": "Đọc sách và viết nhật ký trên giường",
+    "tai": "thap",
+    "nhom": "sinh_hoat",
+    "man_hinh": false
+   },
+   {
+    "bat_dau": "20:15",
+    "ket_thuc": "20:15",
+    "khoi": "Tắt đèn, ngủ",
+    "tai": "phuc_hoi",
+    "nhom": "ngu",
+    "man_hinh": false
+   }
+  ]
+ }
+}
