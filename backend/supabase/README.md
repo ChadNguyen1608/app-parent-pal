@@ -6,10 +6,10 @@ Nơi đặt dự án đám mây chưa chốt (LQ-08); chưa tạo dự án nào.
 | Thư mục / file | Nội dung |
 |---|---|
 | `config.toml` | Cấu hình Supabase CLI cục bộ, tối thiểu. `private` không nằm trong `[api] schemas` |
-| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set` |
+| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set`. `…140000` T1.2: `family_create`, `touch_active`, `private.params`. `…150000` T1.5: ghép máy (`pair_*`), Parent PIN (`pin_set`, `pin_verify` nội bộ), `access_state` thêm `child.pair` và claim epoch, `RATE_LIMITED`. `…160000` T1.6: `unlink_device` |
 | `seed/` | Dữ liệu giả (chị Hoa, anh Minh, bé Na, bé Bin, cô Lan, bé Su). **Không dữ liệu thật của trẻ** |
-| `tests/stub/` | `supabase-stub.sql`: vai `anon`/`authenticated`/`service_role`, schema `auth`, `auth.uid()`/`auth.jwt()`. **Chỉ dùng cho test trên Postgres thuần, không nằm trong migrations** |
-| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `policy-matrix.json`, `mutations/` |
+| `tests/stub/` | `supabase-stub.sql`: vai `anon`/`authenticated`/`service_role`, schema `auth`, `auth.uid()`/`auth.jwt()`, `pgcrypto` ở schema `extensions`, `vault.decrypted_secrets` với khóa GIẢ chỉ để test. **Chỉ dùng cho test trên Postgres thuần, không nằm trong migrations** |
+| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `pair.test.mjs` (FN-FAM, FN-PAIR, FN-PIN, FR01-T01..T10, RLS-EPOCH), `policy-matrix.json`, `mutations/` |
 | `functions/` | Edge Function (task sau) |
 
 ## Chạy test RLS
@@ -20,7 +20,7 @@ Hai chế độ, cùng một bộ test (`tests/rls/rls.test.mjs`, đọc `RLS_DB
 
 ```bash
 scripts/db-test.sh                  # initdb vào /tmp, cổng tự chọn, nạp stub + migrations + seed, chạy test, dọn dẹp
-scripts/db-test.sh --prove-negative # thêm: áp 18 đột biến và xác nhận test THẤT BẠI đúng mã
+scripts/db-test.sh --prove-negative # thêm: áp 36 đột biến và xác nhận test THẤT BẠI đúng mã
 ```
 
 Chạy bằng root thì script tự hạ quyền initdb/postgres xuống user `postgres`.
@@ -126,3 +126,84 @@ jobs:
 - Đóng băng: NL và máy con không đọc `children` (Tech Spec §2.7 "hộ không DONG_BANG", QL luôn đọc được). Baseline chưa chặn điều này.
 - `child_delete` không đặt `children.state = 'CHO_XOA'`; chỉ `hidden_at`. Việc chuyển trạng thái chờ xóa hẳn để T2.x quyết.
 - AC-CON-15, AC-CON-16 nói về giờ tan học (hồ sơ lịch) và thẻ hoạt động: bảng chưa có (T3.1), nên chưa kiểm được. Test chỉ kiểm mẫu "ẩn, không xóa hẳn" ở hồ sơ con (AC-FAM-27). AC-FAM-18 (vô hiệu CR) chờ `change_requests`.
+
+## T1.2, T1.5, T1.6: đăng nhập, ghép máy, PIN, hủy liên kết
+
+Đăng nhập người lớn bằng email OTP (D-49) là việc của Supabase Auth, không có mã SQL. Máy con đăng nhập ẩn danh (`signInAnonymously`); JWT có claim `is_anonymous`. Hàm nhận diện máy con (`app.is_anonymous_caller`, nội bộ) coi là ẩn danh nếu claim HOẶC cột `auth.users.is_anonymous` nói vậy (fail-closed).
+
+### Danh sách hàm RPC (schema `app`, gọi qua PostgREST `rpc`)
+
+| Hàm | Ai gọi | Việc | Ghi chú |
+|---|---|---|---|
+| `family_create(p_call_name)` | người lớn đã đăng nhập, chưa thuộc hộ | Tạo hộ `GIA_LAP` + thành viên `PRIMARY` | Gọi lại khi đã là QL: trả hộ cũ (`replay`). Máy con: `FORBIDDEN` |
+| `touch_active()` | QL, NL | Cập nhật `last_active_at` (đồng hồ 30 ngày D-41) | Tối đa 1 lần/giờ (`touched=false` nếu sớm hơn). Máy con và người ngoài hộ: `FORBIDDEN`. Không tự mở lại hộ đóng băng |
+| `pair_code_create()` | máy con (ẩn danh) | Mã 6 số, chỉ lưu HMAC, hạn ngắn | Mã mới hủy mã cũ của máy; máy đã `HIEU_LUC` bị từ chối; giới hạn tạo mã mỗi giờ |
+| `pair_confirm(p_child, p_code, p_pin default null)` | QL | Dùng mã, tạo binding `CHO_XAC_NHAN_MAY_CON` | Lần ghép đầu của QL phải kèm `p_pin` (đặt PIN cùng lúc); sau đó không gửi. Máy từng ghép hiệu lực ở hộ KHÁC rồi hủy: binding `CHO_XAC_MINH` (không quyền, AC-FAM-16) |
+| `pair_pending()` | máy con | Xem "Kết nối với [tên]?" | Chỉ yêu cầu `CHO_XAC_NHAN_MAY_CON` còn hạn |
+| `pair_accept()` | máy con | Bấm Đồng ý: `HIEU_LUC`, epoch + 1, xóa mã của máy | Quá hạn: binding `DA_HUY`, trả `ok=false`. Gọi lại: `replay` |
+| `pair_decline()` | máy con | Bấm Không: `DA_HUY` | Idempotent |
+| `pin_set(p_pin)` | QL | Đặt hoặc đổi PIN của mình | Băm `bcrypt(pin ∥ pepper)` bằng pgcrypto. Đổi PIN xóa bộ đếm và khóa |
+| `pin_verify(member, pin)` | KHÔNG AI (nội bộ) | Kiểm PIN, đếm sai, khóa lũy tiến | Chỉ `unlink_device` gọi; không cấp EXECUTE |
+| `unlink_device(p_child, p_pin, p_binding_epoch default null)` | máy con hoặc QL | `DA_HUY`, epoch + 1, cần PIN đúng của QL hiện hành | Idempotent; máy con bắt buộc gửi epoch |
+
+Thêm vào `app.access_state`: hành động `child.pair` (như `child.update`: chỉ QL, đóng băng -> `FROZEN`).
+
+### Hai kiểu trả lỗi (quan trọng cho Edge Function và máy khách)
+
+`RAISE` hủy cả giao dịch, kể cả bộ đếm thử sai. Nên hai đường thất bại CẦN ĐẾM không raise mà trả **HTTP 200** với `{"ok": false, "error": {"code", "rule", "message_vi"}}`:
+
+- `pair_confirm`: mọi lý do liên quan tới mã (sai, hết hạn, đã dùng, sai định dạng, máy đã ghép nơi khác) -> `NOT_FOUND` chung "Mã không đúng hoặc đã hết hạn." (AC-FAM-11).
+- `unlink_device`: PIN sai -> `FORBIDDEN` rule `FR01-T02`, kèm `attempts_left` và `locked_until`. `pair_accept` quá hạn -> `NOT_FOUND` rule `AD-11`.
+
+Mọi lỗi khác dùng `app.fail` (raise, HTTP thật): thêm `RATE_LIMITED` -> `PT429`. Thành công trả `{"ok": true, ...}`. Máy khách và Edge Function phải kiểm `ok`, đừng chỉ dựa mã HTTP.
+
+### Tham số chưa chốt (bảng `private.params`, mọi dòng `CHUA_CHOT`, chờ OW-06 / Q-TS-01)
+
+| Khóa | Mặc định | Nguồn |
+|---|---|---|
+| `pair_code_ttl_minutes` | 10 | PR-FAM-04 `UNKNOWN`; đề xuất nội bộ (Architecture §5.3) |
+| `pair_code_max_attempts` | 5 | Lần mã ĐÚNG bị từ chối (máy đã ghép nơi khác) trước khi khóa mã; đề xuất nội bộ |
+| `pair_code_create_per_hour` | 10 | Số mã một máy được tạo mỗi giờ; đề xuất nội bộ |
+| `pair_confirm_max_fails` / `_window_minutes` / `_lock_minutes` | 5 / 15 / 15 | Architecture §5.3 `[MĐKT]` 5 lần / 15 phút, theo tài khoản và theo hộ |
+| `pair_accept_window_minutes` | 5 | Architecture §5.3 |
+| `pin_length` | 6 | Architecture §5.3 `UNKNOWN`, mặc định 6 chữ số. PIN cùng một số hoặc dãy tăng/giảm bị từ chối (đề xuất nội bộ) |
+| `pin_max_failures` / `pin_lock_minutes` / `pin_lock_max_minutes` | 5 / 15 / 1440 | PR-FAM-05 `UNKNOWN`; khóa nhân đôi mỗi lần, trần 24 giờ |
+| `pin_bcrypt_cost` | 10 | pgcrypto `gen_salt('bf', 10)` |
+| `touch_active_min_interval_minutes` | 60 | Tech Spec bảng nghiệm thu 1 |
+
+Đổi giá trị = `update private.params` (service_role) hoặc migration; không phải sửa hàm.
+
+### Khóa bí mật (KHÔNG commit khóa thật)
+
+`private.secret(name)` tìm theo thứ tự: Supabase Vault (`vault.decrypted_secrets`, cột `name`), rồi cài đặt `app.settings.<name>` (cho CI/sandbox, cài bằng `ALTER DATABASE ... SET`). Thiếu hoặc ngắn hơn 16 ký tự: lỗi `INTERNAL`, không bao giờ chạy với khóa rỗng. Hai tên: `pairing_secret` (HMAC-SHA256 của mã ghép) và `pin_pepper` (nối vào PIN trước khi băm). Giá trị `TEST-ONLY-...` chỉ nằm trong `tests/stub/`. Trên dự án thật: tạo hai secret trong Vault (ưu tiên Vault vì cài đặt cơ sở dữ liệu đọc được bằng `current_setting` từ mọi vai có chạy SQL). Đổi `pin_pepper` làm mọi PIN cũ vô hiệu (phải đặt lại); đổi `pairing_secret` làm mã đang chờ vô hiệu (vô hại, hạn 10 phút).
+
+Lệch so với Architecture §5.3: tài liệu để pepper ở secret của Edge Function (ngoài CSDL). Vì hàm là SQL, pepper nằm trong Vault của chính CSDL: lộ bản sao CSDL không kèm khóa Vault vẫn không dò được PIN, nhưng quản trị viên CSDL có thể đọc cả hai. Muốn tách hẳn thì chuyển băm PIN sang Edge Function (hàm SQL chỉ lưu/đếm).
+
+### Epoch và "token cũ" (RLS-EPOCH)
+
+Chọn cách đơn giản, an toàn: **nguồn chân lý là dòng `device_bindings` trên máy chủ**, không phải token.
+
+- Quyền đọc của máy con chỉ có khi có dòng `HIEU_LUC` của đúng (con, người dùng ẩn danh). `unlink_device` đổi dòng đó sang `DA_HUY` trong cùng giao dịch, nên mọi token cũ mất quyền ngay, không đợi token hết hạn.
+- Epoch của con tăng đơn điệu qua mọi liên kết: binding mới có epoch = lớn nhất từng có + 1 (`pair_confirm`), `pair_accept` +1, `unlink_device` +1. Không bao giờ dùng lại số cũ.
+- Máy con gửi `p_binding_epoch` (epoch nhận từ `pair_accept`) khi hủy; sai epoch -> `CONFLICT_REV`, không hủy gì. Chặn biên nhận hủy cũ phát lại sau khi đã ghép lại (FR01-T09).
+- Tùy chọn: nếu token có claim `binding_epoch` (cần Auth Hook sau này) thì `access_state` chỉ cho đọc khi khớp epoch hiện hành. Claim chỉ THU HẸP quyền, không mở rộng: máy con tự sửa claim chỉ làm hại chính nó. Chưa cần Auth Hook để đạt các test hiện tại.
+- Chưa phủ: bộ chính sách `device_bindings_select` (nhánh "hàng của mình") và `app.is_bound_device` baseline không xét claim epoch; chúng chỉ thấy hàng `HIEU_LUC`, không mở dữ liệu của con.
+
+### Quyết định mặc định (tài liệu thiếu hoặc mơ hồ; báo chủ sản phẩm)
+
+- Hủy liên kết khi hộ đóng băng: **vẫn được** (chỉ thu hẹp quyền, không xóa dữ liệu). `pin_set`, `pair_confirm`, `pair_accept` khi đóng băng: `FROZEN`.
+- `pin_set` không đòi PIN cũ; QL đã đăng nhập đổi được và xóa bộ đếm (quy trình đổi/khôi phục PIN là `UNKNOWN`, BR-FAM-028/071). PIN gắn với `members.id` của QL hiện hành: đổi QL thì PIN của QL cũ không còn đủ (BR-FAM-028).
+- Mã ghép 6 chữ số (yêu cầu của task) chỉ ~20 bit; Architecture ghi 8 ký tự (~40 bit). An toàn dựa vào: hạn ngắn, giới hạn nhập sai theo tài khoản và hộ (vì tra mã theo HMAC, đoán sai không chạm dòng nào nên cột `attempts` chỉ đếm khi mã ĐÚNG bị từ chối), khóa HMAC ngoài bảng, và bước máy con xác nhận. Nên cân nhắc nâng độ dài (đổi hằng số trong `pair_code_create` và định dạng ở `pair_confirm`).
+- Idempotent theo trạng thái, không dùng `idempotency_key` cho `unlink_device`, `pair_accept`, `pair_decline`; `family_create` trả hộ cũ khi người gọi đã là QL.
+- Binding thay thế (yêu cầu mới của cùng con hoặc cùng máy) đặt `DA_HUY` với `revoke_reason = 'THAY_THE'`; từ chối trong lúc chờ: `MAY_CON_TU_CHOI`; quá hạn xác nhận: `HET_HAN_XAC_NHAN`; hủy bằng PIN: `PIN_MAY_CON` (từ máy con) hoặc `PIN_QL`.
+- `CHO_XAC_MINH` được tạo trong một trường hợp duy nhất: máy từng ghép hiệu lực ở hộ khác rồi đã hủy (AC-FAM-16, FR01-T06). Không có hàm nào nâng nó lên `HIEU_LUC`; `pair_accept` chỉ nhận `CHO_XAC_NHAN_MAY_CON`.
+
+### Việc cần Edge Function sau (service_role, gọi sau khi hàm SQL commit)
+
+- `unlink_device`: hủy phiên ẩn danh của máy con (Auth Admin API) và xóa token đẩy (`push_tokens`, T5.x); thông báo tối giản cho QL "Máy của [tên gọi] đã hủy liên kết" có thử lại, không chứa PIN hoặc mã, gửi lỗi không đảo ngược việc hủy (FR01-T04, BR-FAM-038); `audit_log` (T2.5). FR01-T04 chỉ kiểm được phần "biên nhận không chứa PIN/mã"; phần đẩy và thử lại chưa có bảng nào để test.
+- `pair_accept`: thông báo "Đã ghép máy của [tên gọi]" (BR-FAM-038), audit.
+- `pair_code_create`: giới hạn theo IP và CAPTCHA cho đăng nhập ẩn danh (Architecture §5.2); job dọn mã hết hạn (`private.pairing_codes`) và người dùng ẩn danh chưa ghép sau 7 ngày.
+- `family_create`: ghi đồng ý `SELF_DECLARED` (BR-FAM-001, T2.1); đăng nhập thất bại không lộ tài khoản có tồn tại không (BR-FAM-070) do Supabase Auth xử lý.
+- Vận hành: không bật `log_statement` hoặc `log_parameter_max_length` cho các hàm có tham số PIN/mã; Edge Function bọc ngoài không được log thân yêu cầu.
+- Hủy phiên khi máy ngoại tuyến (AC-FAM-14): ngoại tuyến thì không có lời gọi nào tới máy chủ nên liên kết vẫn `HIEU_LUC`; phía máy khách chỉ xóa liên kết khi nhận `ok=true`.
+- Các cổng khác của FR-01 chưa phủ ở đây: FR01-T11 (người lớn 18+ tự quản, ngoài phạm vi lớp 1-9, BR-FAM-007), phương pháp xác minh mở `CHO_XAC_MINH` (`UNKNOWN`, LQ-03), FR01-T07 (xác minh độc lập) chỉ kiểm được rằng không có đường tự nâng quyền.

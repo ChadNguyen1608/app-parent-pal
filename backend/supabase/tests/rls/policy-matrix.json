@@ -130,6 +130,15 @@
     },
     "child_settings": {
       "spec": "§2.5, BR-CON-034"
+    },
+    "params": {
+      "spec": "T1.2: tham số chưa chốt (private.params); không vai nào đọc"
+    },
+    "parent_pins": {
+      "spec": "§2.1, Architecture §5.3: PIN băm + bộ đếm; không vai nào đọc"
+    },
+    "pair_throttle": {
+      "spec": "Architecture §5.3: giới hạn nhập mã ghép theo tài khoản và hộ; không vai nào đọc"
     }
   },
   "app_functions": {
@@ -184,7 +193,36 @@
     ],
     "mode_set": [
       "authenticated"
-    ]
+    ],
+    "family_create": [
+      "authenticated"
+    ],
+    "touch_active": [
+      "authenticated"
+    ],
+    "pin_set": [
+      "authenticated"
+    ],
+    "pair_code_create": [
+      "authenticated"
+    ],
+    "pair_confirm": [
+      "authenticated"
+    ],
+    "pair_pending": [
+      "authenticated"
+    ],
+    "pair_accept": [
+      "authenticated"
+    ],
+    "pair_decline": [
+      "authenticated"
+    ],
+    "unlink_device": [
+      "authenticated"
+    ],
+    "is_anonymous_caller": [],
+    "pin_verify": []
   },
   "private_readers": {
     "_doc": "Chỉ các hàm này được nhắc tới private.checkin_responses trong thân hàm (RLS-D38-02).",

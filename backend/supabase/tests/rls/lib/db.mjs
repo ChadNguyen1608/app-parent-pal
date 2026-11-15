@@ -10,9 +10,12 @@ export const DB_URL = process.env.RLS_DB_URL || '';
  * Trả {ok, rows, code, err}. rows = các dòng đầu ra, cột cách nhau bằng '|'.
  */
 export function run(actor, sql, { setup = '' } = {}) {
-  const claims = JSON.stringify(
-    actor.sub ? { sub: actor.sub, role: actor.role } : { role: actor.role },
-  );
+  // actor.claims: claim thêm (ví dụ { is_anonymous: true } mô phỏng người dùng ẩn danh của Supabase Auth,
+  // hoặc { binding_epoch: 3 } mô phỏng token mang epoch của liên kết).
+  const claims = JSON.stringify({
+    ...(actor.sub ? { sub: actor.sub, role: actor.role } : { role: actor.role }),
+    ...(actor.claims || {}),
+  });
   const script = [
     'begin;',
     setup,
