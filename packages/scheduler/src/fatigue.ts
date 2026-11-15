@@ -6,7 +6,7 @@
 const CHOICES: string[] = ["on", "hoi_met", "rat_met", "bo_qua"];
 const TREND_WINDOW_DAYS = 14;   // QT L2 "xu hướng trong 2 tuần" [SP]
 const TREND_MIN_COUNT: number | null = null;   // UNKNOWN: chưa có nguồn cho ngưỡng số ngày (A-lite SG-16). Chủ sản phẩm chốt; null = chưa gửi báo
-import { dayNumber as dayN } from "../../domain/src/index.ts";
+import { dayNumber as dayN, dayCodeOf, toMin } from "../../domain/src/index.ts";
 
 // Đường đổi lịch dành cho con, theo chế độ hiệu lực (B01-MS-OD-02/04, B01-CR-OD-01, B01-CR §2).
 function changePath(mode: string | undefined, locked?: boolean): any {
@@ -23,7 +23,7 @@ function onCheckin(input: any): any {
   const { choice, mode, date, day, locked } = input;
   if (!CHOICES.includes(choice)) return { ok: false, err: "lua_chon_khong_hop_le" };
   const record = { module: "F04-G05-M01", kind: "hoi_tham_sau_gio_hoc", choice, date, day, schedule_changed: false, rule: "OD-A7/D-10" };
-  const out = { ok: true, record, schedule_changed: false, child_message: "Mình đã ghi lại rồi.", child_actions: [] };
+  const out: any = { ok: true, record, schedule_changed: false, child_message: "Mình đã ghi lại rồi.", child_actions: [] };
   if (choice === "rat_met") {
     const p = changePath(mode, locked);
     out.child_message = "Mình đã ghi lại. Lịch hôm nay chưa đổi. Nếu con muốn đổi, con gửi cho bố mẹ nhé.";
@@ -44,4 +44,39 @@ function trend(records: any[], today: string, dayFeatures: Record<string, string
     notify_parent: notify, status: TREND_MIN_COUNT === null ? "NGUONG_CHUA_CHOT" : (notify ? "GUI_XU_HUONG" : "CHUA_DAT_NGUONG"),
     payload_rule: "Chỉ gửi số lần theo thứ/đặc điểm lịch; không gửi chữ con viết, không gắn nhãn cảm xúc (D-03, QT L2)" };
 }
-export { onCheckin, changePath, trend, TREND_WINDOW_DAYS, TREND_MIN_COUNT, CHOICES };
+
+// ---------- D-37 (15/11/2026): xu hướng mệt gộp THEO LOẠI NGÀY, không theo thứ ----------
+// Thay BR-133 (phần "theo thứ") và BR-135 (ngưỡng): không có ngưỡng, hiện trong báo cáo tuần từ 1 lần (D-21, D-37).
+// Loại ngày = đặc điểm của lịch ngày đó (đọc từ `kind` của khối, B-11), ví dụ "ngày có học thêm buổi tối".
+// `trend()` ở trên giữ nguyên để TC-D03-1 (hồi quy từ spike) còn chạy; mã mới dùng trendByDayType().
+const EVENING_FROM_MIN = 17 * 60; // mặc định chưa kiểm chứng (D-08): hoạt động bắt đầu từ 17:00 tính là buổi tối
+const DAY_TYPES = ["hoc_them_toi", "co_the_thao", "co_hoc_them", "khong_di_hoc", "khong_hoat_dong"];
+
+/** Loại ngày của một ngày trong lịch: danh sách thẻ, một ngày có thể mang nhiều thẻ. Chỉ đọc `kind`, `the_thao`, giờ bắt đầu. */
+function dayTypesOfBlocks(blocks: any[]): string[] {
+  const live = (blocks || []).filter(b => b.trang_thai !== "huy");
+  const acts = live.filter(b => b.kind === "hoat_dong");
+  const t: string[] = [];
+  if (acts.some(b => !b.the_thao && toMin(b.bat_dau) !== null && (toMin(b.bat_dau) as number) >= EVENING_FROM_MIN)) t.push("hoc_them_toi");
+  if (acts.some(b => b.the_thao)) t.push("co_the_thao");
+  if (acts.some(b => !b.the_thao)) t.push("co_hoc_them");
+  if (!live.some(b => b.kind === "truong")) t.push("khong_di_hoc");
+  if (!acts.length) t.push("khong_hoat_dong");
+  return t;
+}
+/** Loại ngày của một NGÀY CỤ THỂ (YYYY-MM-DD) theo lịch tuần `plan`. Thứ chỉ dùng để tra khối của ngày đó, không dùng để gộp. */
+function dayTypesOfDate(plan: any, date: string): string[] {
+  const eff = plan.ngoai_le && plan.ngoai_le[date] ? plan.ngoai_le[date].khoi : (plan.ngay[dayCodeOf(date)] || []);
+  return dayTypesOfBlocks(eff);
+}
+/** records: [{ choice, date }]; today: YYYY-MM-DD (tham số, không đọc đồng hồ); typesOf: ngày -> loại ngày. Không đưa thứ hay chữ của con vào kết quả. */
+function trendByDayType(records: any[], today: string, typesOf: (date: string) => string[]): any {
+  const lo = dayN(today) - TREND_WINDOW_DAYS + 1, hi = dayN(today);
+  const win = records.filter(r => r.choice === "rat_met" && dayN(r.date) >= lo && dayN(r.date) <= hi);
+  const byType: Record<string, number> = {};
+  win.forEach(r => (typesOf(r.date) || []).forEach(f => { byType[f] = (byType[f] || 0) + 1; }));
+  return { window_days: TREND_WINDOW_DAYS, count: win.length, by_day_type: byType, min_count_to_show: 1,
+    show_in_weekly_report: win.length >= 1, status: win.length >= 1 ? "HIEN_TRONG_BAO_CAO_TUAN" : "KHONG_CO", rule: "D-37/D-21",
+    payload_rule: "Chỉ số lần theo loại ngày; không theo thứ, không ngày cụ thể, không chữ của con, không nhãn cảm xúc (D-03, D-37)" };
+}
+export { trendByDayType, dayTypesOfBlocks, dayTypesOfDate, DAY_TYPES, EVENING_FROM_MIN, onCheckin, changePath, trend, TREND_WINDOW_DAYS, TREND_MIN_COUNT, CHOICES };
