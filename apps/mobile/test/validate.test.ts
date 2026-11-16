@@ -23,9 +23,11 @@ test('tên gọi, lớp, PIN, mã ghép', () => {
   assert.ok(parseGrade('0').error);
   assert.ok(parseGrade('10').error);
   assert.ok(parseGrade('a').error);
-  assert.equal(checkPin('123456', '123456'), null);
+  assert.equal(checkPin('482915', '482915'), null);
   assert.ok(checkPin('1234'));
-  assert.ok(checkPin('123456', '654321'));
+  assert.ok(checkPin('482915', '482916'));
+  // PIN dễ đoán bị từ chối giống máy chủ (private.pin_check_format)
+  for (const easy of ['123456', '654321', '111111', '890123', '210987']) assert.ok(checkPin(easy, easy), easy);
   assert.equal(checkPairCode('123456'), null);
   assert.ok(checkPairCode('12'));
 });

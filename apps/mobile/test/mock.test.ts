@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { ApiError } from '../src/data/errors.ts';
-import { MOCK_ADULT_NAME, MOCK_OTP, MOCK_PAIR_CODE, createMockApi } from '../src/data/mock.ts';
+import { MOCK_ADULT_NAME, MOCK_DEFAULT_PIN, MOCK_OTP, MOCK_PAIR_CODE, createMockApi } from '../src/data/mock.ts';
 
 const fast = { latencyMs: 0 };
 
@@ -55,15 +55,16 @@ test('phụ huynh: tạo hộ, tạo con, ghép máy, đặt PIN', async () => {
 
   await rejects(api.pairConfirm(a.childId, MOCK_PAIR_CODE), 'VALIDATION'); // lần đầu bắt buộc kèm PIN
   await rejects(api.pairConfirm(a.childId, MOCK_PAIR_CODE, '12'), 'VALIDATION');
-  await rejects(api.pairConfirm(a.childId, '999999', '654321'), 'NOT_FOUND');
-  const r = await api.pairConfirm(a.childId, MOCK_PAIR_CODE, '654321');
+  await rejects(api.pairConfirm(a.childId, MOCK_PAIR_CODE, '123456'), 'VALIDATION'); // PIN dễ đoán, như máy chủ
+  await rejects(api.pairConfirm(a.childId, '999999', '582914'), 'NOT_FOUND');
+  const r = await api.pairConfirm(a.childId, MOCK_PAIR_CODE, '582914');
   assert.deepEqual(r, { state: 'CHO_XAC_NHAN_MAY_CON', epoch: 1, pinSet: true });
   assert.equal((await api.getHome())?.children[0].pairState, 'PENDING', 'còn chờ máy con bấm Đồng ý');
-  await rejects(api.pairConfirm(a.childId, MOCK_PAIR_CODE, '654321'), 'VALIDATION'); // đã có PIN thì không gửi PIN
+  await rejects(api.pairConfirm(a.childId, MOCK_PAIR_CODE, '582914'), 'VALIDATION'); // đã có PIN thì không gửi PIN
   assert.deepEqual((await api.pairConfirm(a.childId, MOCK_PAIR_CODE)).pinSet, false);
 
   await rejects(api.pinSet('12'), 'VALIDATION');
-  await api.pinSet('654321');
+  await api.pinSet('582914');
 });
 
 test('không ghép được con chưa có máy riêng', async () => {
@@ -72,7 +73,7 @@ test('không ghép được con chưa có máy riêng', async () => {
   await api.auth.verifyEmailOtp('a@b.vn', MOCK_OTP);
   const { householdId } = await api.familyCreate('anh Nam');
   const { childId } = await api.childCreate({ householdId, callName: 'Na', ageYears: 5, hasDevice: false });
-  await rejects(api.pairConfirm(childId, MOCK_PAIR_CODE, '654321'), 'VALIDATION');
+  await rejects(api.pairConfirm(childId, MOCK_PAIR_CODE, '582914'), 'VALIDATION');
 });
 
 test('phụ huynh: 5 lần nhập mã sai thì RATE_LIMITED, mã sai trả lời chung', async () => {
@@ -82,14 +83,14 @@ test('phụ huynh: 5 lần nhập mã sai thì RATE_LIMITED, mã sai trả lời
   const { householdId } = await api.familyCreate('chị Lan');
   const { childId } = await api.childCreate({ householdId, callName: 'Na', grade: 3, hasDevice: true });
   for (let i = 0; i < 5; i++) {
-    await assert.rejects(api.pairConfirm(childId, '000000', '654321'), (e: unknown) => {
+    await assert.rejects(api.pairConfirm(childId, '000000', '582914'), (e: unknown) => {
       assert.ok(e instanceof ApiError);
       assert.equal(e.code, 'NOT_FOUND');
       assert.equal(e.userMessage, 'Mã không đúng hoặc đã hết hạn.');
       return true;
     });
   }
-  await rejects(api.pairConfirm(childId, MOCK_PAIR_CODE, '654321'), 'RATE_LIMITED');
+  await rejects(api.pairConfirm(childId, MOCK_PAIR_CODE, '582914'), 'RATE_LIMITED');
 });
 
 test('hộ đóng băng: hàm ghi trả FROZEN', async () => {
@@ -128,7 +129,7 @@ test('máy con: lấy mã, chờ pair_pending, hỏi Đồng ý/Không, lưu epo
 
   await rejects(api.unlinkDevice(b.childId, '12', b.epoch), 'VALIDATION');
   await rejects(api.unlinkDevice(b.childId, MOCK_PAIR_CODE), 'VALIDATION'); // máy con bắt buộc gửi epoch
-  await rejects(api.unlinkDevice(b.childId, MOCK_PAIR_CODE, b.epoch + 5), 'CONFLICT_REV');
+  await rejects(api.unlinkDevice(b.childId, MOCK_DEFAULT_PIN, b.epoch + 5), 'CONFLICT_REV');
   await assert.rejects(api.unlinkDevice(b.childId, '000000', b.epoch), (e: unknown) => {
     assert.ok(e instanceof ApiError);
     assert.equal(e.code, 'FORBIDDEN');
@@ -136,7 +137,7 @@ test('máy con: lấy mã, chờ pair_pending, hỏi Đồng ý/Không, lưu epo
     assert.match(e.userMessage, /còn 4 lần thử/);
     return true;
   });
-  await api.unlinkDevice(b.childId, MOCK_PAIR_CODE, b.epoch); // PIN mặc định của bản giả lập
+  await api.unlinkDevice(b.childId, MOCK_DEFAULT_PIN, b.epoch); // PIN mặc định của bản giả lập
   assert.equal(await api.getMyBinding(), null);
 });
 
@@ -154,7 +155,7 @@ test('máy con: sai PIN quá số lần thì khóa có thời hạn, PIN đúng 
     assert.match(e.userMessage, /tạm khóa.*15 phút/);
     return true;
   });
-  await rejects(api.unlinkDevice(b.childId, MOCK_PAIR_CODE, b.epoch), 'RATE_LIMITED');
+  await rejects(api.unlinkDevice(b.childId, MOCK_DEFAULT_PIN, b.epoch), 'RATE_LIMITED');
   assert.deepEqual(await api.getMyBinding(), b, 'chưa hủy');
 });
 

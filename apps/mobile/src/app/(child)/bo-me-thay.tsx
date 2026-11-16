@@ -28,8 +28,10 @@ export default function BoMeThay() {
         big
         label="Con hiểu rồi"
         onPress={() => {
-          if (childStage === 'intro') void acknowledgeIntro();
-          else router.back();
+          if (childStage === 'intro') {
+            // Guard của bo-me-thay vẫn mở khi đã 'ready' nên phải tự chuyển sang màn chính.
+            void acknowledgeIntro().then(() => router.replace('/(child)/(tabs)/hom-nay'));
+          } else router.back();
         }}
       />
     </Screen>

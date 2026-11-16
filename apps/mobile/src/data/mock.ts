@@ -6,7 +6,7 @@
 //  - Parent App: mã ghép đúng luôn là 123456. Lần ghép đầu phải kèm PIN (như pair_confirm thật); mã sai thì ném NOT_FOUND
 //    (thật: ok=false) và 5 lần sai liên tiếp thì RATE_LIMITED.
 //  - Child App: pair_pending trả pending=false `acceptAfter` lần đầu, rồi pending=true ("Kết nối với chị Lan?", giả vờ bố mẹ
-//    vừa nhập mã); pair_accept chỉ đúng khi đang pending. PIN hủy kết nối: PIN đã đặt, mặc định 123456.
+//    vừa nhập mã); pair_accept chỉ đúng khi đang pending. PIN hủy kết nối: PIN đã đặt, mặc định MOCK_DEFAULT_PIN (482915; 123456 bị máy chủ từ chối vì dễ đoán).
 import { apiErrorFromFailure, toApiError } from './errors.ts';
 import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmResult, PairPending, SessionInfo } from './types.ts';
 import { checkPin } from './validate.ts';
@@ -14,6 +14,8 @@ import { checkPin } from './validate.ts';
 export const MOCK_OTP = '123456';
 export const MOCK_LINK_CODE = 'mock-link'; // ?code=mock-link trong link giả lập
 export const MOCK_PAIR_CODE = '123456';
+/** PIN mặc định của máy con giả lập khi chưa đặt PIN trong phiên. Không dùng 123456: máy chủ coi là dễ đoán. */
+export const MOCK_DEFAULT_PIN = '482915';
 export const MOCK_MAX_PIN_TRIES = 5;
 export const MOCK_MAX_CODE_FAILS = 5;
 export const MOCK_LOCK_MINUTES = 15;
@@ -171,7 +173,7 @@ export function createMockApi(opts: MockOptions = {}): Api {
       if (pin === null && pinIn === undefined) fail('VALIDATION', 'FR-01', 'Cần đặt Parent PIN khi ghép lần đầu.');
       if (pin !== null && pinIn !== undefined) fail('VALIDATION', 'FR-01', 'Đã có PIN. Muốn đổi PIN, hãy dùng chức năng đổi PIN.');
       if (pinIn !== undefined) {
-        const bad = checkPin(pinIn);
+        const bad = checkPin(pinIn, pinIn); // như pin_check_format: định dạng + dễ đoán
         if (bad) fail('VALIDATION', 'FR-01', bad);
       }
       if (code.trim() !== MOCK_PAIR_CODE) {
@@ -187,7 +189,7 @@ export function createMockApi(opts: MockOptions = {}): Api {
     async pinSet(p) {
       writable();
       await pause();
-      const bad = checkPin(p);
+      const bad = checkPin(p, p);
       if (bad) fail('VALIDATION', 'FR-01', bad);
       pin = p;
       pinTries = 0;
@@ -248,7 +250,7 @@ export function createMockApi(opts: MockOptions = {}): Api {
       if (bindingEpoch !== undefined && bindingEpoch !== bound.epoch) fail('CONFLICT_REV', 'FR01-T09', 'Liên kết đã thay đổi. Hãy tải lại.');
       const t = now();
       if (pinLockedUntil !== null && pinLockedUntil > t) fail('RATE_LIMITED', 'PR-FAM-05', 'PIN đang tạm khóa. Hãy thử lại sau.');
-      if (p !== (pin ?? MOCK_PAIR_CODE)) {
+      if (p !== (pin ?? MOCK_DEFAULT_PIN)) {
         pinTries += 1;
         if (pinTries >= MOCK_MAX_PIN_TRIES) {
           pinTries = 0;
