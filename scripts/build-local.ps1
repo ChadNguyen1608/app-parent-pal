@@ -1,4 +1,4 @@
-# Build APK trên máy (không qua EAS). Dùng:
+﻿# Build APK trên máy (không qua EAS). Dùng:
 #   powershell -File scripts/build-local.ps1                      # build cả app phụ huynh và app con (apps/mobile)
 #   powershell -File scripts/build-local.ps1 -Variant parent      # chỉ app phụ huynh
 #   powershell -File scripts/build-local.ps1 -Variant child       # chỉ app con
@@ -43,12 +43,15 @@ function Build-One([string]$v) {
   # 1. Sao chép (chỉ loại thư mục android ở gốc; không được loại mọi thư mục tên android vì node_modules cần chúng)
   New-Item -ItemType Directory -Force $Work | Out-Null
   robocopy $Src $Work /E /XD "$Src\android" "$Src\.gradle" "$Src\test-reports" /NFL /NDL /NJH /NJS /NP | Out-Null
-  if ($hasKey) {
+  # Chỉ dùng google-services.json nếu có client đúng tên gói của biến thể; file của app cũ (vn.parentpal.app) làm Gradle lỗi.
+  $pkg = if ($v -eq 'none') { 'vn.parentpal.app' } else { "vn.parentbestpal.$v" }
+  $useKey = $hasKey -and ((Get-Content $keyPath -Raw) -match ('"package_name"\s*:\s*"' + [regex]::Escape($pkg) + '"'))
+  if ($useKey) {
     Copy-Item $keyPath "$Work\google-services.json" -Force
     $env:GOOGLE_SERVICES_JSON = "$Work\google-services.json"
   } else {
     Remove-Item Env:GOOGLE_SERVICES_JSON -ErrorAction SilentlyContinue
-    Write-Host 'Không có key\google-services.json: build không có đẩy FCM (nấc 1 chưa cần).'
+    Write-Host "Không có key\google-services.json cho gói ${pkg}: build không có đẩy FCM (nấc 1 chưa cần)."
   }
   if ($v -ne 'none') { $env:APP_VARIANT = $v } else { Remove-Item Env:APP_VARIANT -ErrorAction SilentlyContinue }
 
