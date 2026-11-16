@@ -98,7 +98,7 @@ describe('AUD-02: nội dung - không PIN, mã ghép, token, chữ tự do, lự
   it('AUD-02e: danh mục sự kiện cố định; KHÔNG có sự kiện nào cho nút "Con cần giúp đỡ" hay hỏi thăm (BR-CON-035, D-38)', () => {
     const codes = admin(`select event_code from private.audit_events order by 1`).rows;
     assert.deepEqual(codes, ['binding.paired', 'binding.requested', 'binding.unlinked', 'child.hidden', 'consent.granted',
-      'consent.withdrawn', 'deletion.requested', 'mode.changed']);
+      'consent.withdrawn', 'deletion.requested', 'household.closing', 'household.frozen', 'household.reopened', 'mode.changed']);
     assert.ok(!codes.some((c) => /help|checkin|hoi_tham|safety|talk/i.test(c)));
   });
 });

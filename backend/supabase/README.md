@@ -6,10 +6,10 @@ Nơi đặt dự án đám mây chưa chốt (LQ-08); chưa tạo dự án nào.
 | Thư mục / file | Nội dung |
 |---|---|
 | `config.toml` | Cấu hình Supabase CLI cục bộ, tối thiểu. `private` không nằm trong `[api] schemas` |
-| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set`. `…140000` T1.2: `family_create`, `touch_active`, `private.params`. `…150000` T1.5: ghép máy (`pair_*`), Parent PIN (`pin_set`, `pin_verify` nội bộ), `access_state` thêm `child.pair` và claim epoch, `RATE_LIMITED`. `…160000` T1.6: `unlink_device`. `…170000` T1.8: `member_invite` (khung, cờ `invites_enabled=0`, luôn `FEATURE_OFF`). `…180000` hàm phụ trợ RLS (`can`, `can_household`, `is_member`, `is_self_member`) chuyển sang schema `app_internal` không mở API; 5 hàm không còn dùng thu hồi EXECUTE. `…20261116110000` T2.5: `audit_log` + cơ chế ghi. `…120000` T2.1: mục đích thứ 8, `policy_versions`, `consent_events`, `purpose_state`, `consent_record`, nối `access_state` với đồng ý. `…130000` T2.2: `deletion_requests`, `consent_withdraw_all` hai bước |
+| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set`. `…140000` T1.2: `family_create`, `touch_active`, `private.params`. `…150000` T1.5: ghép máy (`pair_*`), Parent PIN (`pin_set`, `pin_verify` nội bộ), `access_state` thêm `child.pair` và claim epoch, `RATE_LIMITED`. `…160000` T1.6: `unlink_device`. `…170000` T1.8: `member_invite` (khung, cờ `invites_enabled=0`, luôn `FEATURE_OFF`). `…180000` hàm phụ trợ RLS (`can`, `can_household`, `is_member`, `is_self_member`) chuyển sang schema `app_internal` không mở API; 5 hàm không còn dùng thu hồi EXECUTE. `…20261116110000` T2.5: `audit_log` + cơ chế ghi. `…120000` T2.1: mục đích thứ 8, `policy_versions`, `consent_events`, `purpose_state`, `consent_record`, nối `access_state` với đồng ý. `…130000` T2.2: `deletion_requests`, `consent_withdraw_all` hai bước. `…140000` T2.3: đóng băng 30 ngày, `household_reopen`, `deletion_request`, `job_daily`. `…150000` T2.4: `trial_slots`, `purge_household`, `deletion_evidence`, `job_trial_purge`, `export_request` (`BLOCKED_H4`) |
 | `seed/` | Dữ liệu giả (chị Hoa, anh Minh, bé Na, bé Bin, cô Lan, bé Su). **Không dữ liệu thật của trẻ** |
 | `tests/stub/` | `supabase-stub.sql`: vai `anon`/`authenticated`/`service_role`, schema `auth`, `auth.uid()`/`auth.jwt()`, `pgcrypto` ở schema `extensions`, `vault.decrypted_secrets` với khóa GIẢ chỉ để test. **Chỉ dùng cho test trên Postgres thuần, không nằm trong migrations** |
-| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `pair.test.mjs` (FN-FAM, FN-PAIR, FN-PIN, FR01-T01..T10, RLS-EPOCH), `member.test.mjs` (MEM-INV, MEM-NL), `consent.test.mjs` (CON-01..08, 22, CON-D58, CON-WA: T2.1, T2.2), `audit.test.mjs` (AUD-01..06: T2.5), `policy-matrix.json`, `mutations/` |
+| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `pair.test.mjs` (FN-FAM, FN-PAIR, FN-PIN, FR01-T01..T10, RLS-EPOCH), `member.test.mjs` (MEM-INV, MEM-NL), `consent.test.mjs` (CON-01..08, 22, CON-D58, CON-WA: T2.1, T2.2), `audit.test.mjs` (AUD-01..06: T2.5), `lifecycle.test.mjs` (LC-JOB/FROZEN/REOPEN/DEL/SWITCH/CRON: T2.3), `trial.test.mjs` (TRIAL-SLOT/JOB/WD/PURGE/H4/EXP/EVID/FK: T2.4), `policy-matrix.json`, `mutations/` |
 | `functions/` | Edge Function (task sau) |
 
 ## Chạy test RLS
@@ -20,7 +20,8 @@ Hai chế độ, cùng một bộ test (`tests/rls/rls.test.mjs`, đọc `RLS_DB
 
 ```bash
 scripts/db-test.sh                  # initdb vào /tmp, cổng tự chọn, nạp stub + migrations + seed, chạy test, dọn dẹp
-scripts/db-test.sh --prove-negative # thêm: áp 62 đột biến và xác nhận test THẤT BẠI đúng mã
+scripts/db-test.sh --prove-negative # thêm: áp 78 đột biến và xác nhận test THẤT BẠI đúng mã
+scripts/db-test.sh --prove-negative --only m66,m67   # chỉ đột biến có tên bắt đầu bằng mã này (vẫn chạy baseline trước); cả bộ mất hơn 60 phút
 ```
 
 Chạy bằng root thì script tự hạ quyền initdb/postgres xuống user `postgres`.
@@ -282,9 +283,47 @@ Chỉ sau khi chủ sản phẩm đồng ý áp lên đám mây mới chạy `su
 
 1. Mục đích thứ 8 mã `MD-CONBAO` (D-58 không đặt mã), tùy chọn, phụ thuộc MD-DONGBO, `collect_enabled=false` cho tới khi LQ-16 có trả lời; chưa ghi `DONG_Y` được.
 2. Rút mục cha kéo theo `RUT` mục con đang bật; đồng ý lại mục cha KHÔNG tự bật lại mục con.
-3. Hộ đóng băng: ghi đồng ý, rút, rút toàn bộ đều `FROZEN` (BR-FAM-054 "không ẩn thêm"; giống `child.delete`).
+3. Hộ đóng băng: ghi đồng ý, rút, rút toàn bộ đều `FROZEN` (BR-FAM-054 "không ẩn thêm"; giống `child.delete`). Từ T2.3, rút và xóa đổi được bằng `private.params.frozen_allows_withdrawal`.
 4. Rút toàn bộ ẩn luôn hồ sơ con (QL cũng không thấy); `deletion_requests` là nơi QL xem tiến trình. Hoàn tác trong thời gian chờ (BR-FAM-084, `UNKNOWN`) chưa có.
 5. Mã xác nhận bước hai hạn 10 phút (`CHUA_CHOT`), do máy chủ ép (không chỉ cờ `confirm=true`).
 6. Đồng ý của chính người lớn (NL, BR-CON-007): ghi sổ, rút thì thu hồi grant của họ; không đổi `purpose_state`.
 7. Chưa ép "không đồng ý MD-LICH thì không tạo hồ sơ" (BR-CON-001) ở `child_create`; chưa có `CHO_DONG_Y_LAI`; `approval='CHUA_DUYET'` chưa chặn gì ở máy chủ (chặn dữ liệu thật theo `data_class` là T2.4); vô hiệu CR khi rút MD-MONGMUON (AC-CON-04) chờ bảng ở T4.3; `family_create` chưa ghi đồng ý (chưa có con để gắn).
 8. Audit: `pin_set` chưa có sự kiện (đề xuất `pin.set` không kèm PIN nếu muốn dò đổi PIN); PIN sai và `pair_confirm` thất bại (trả HTTP 200, không raise) chưa ghi audit; hạn giữ audit `PR-CON-04` `UNKNOWN`, không có job xóa.
+
+## T2.3, T2.4: đóng băng, mở lại, xóa, hộ thử
+
+### Vòng đời (T2.3)
+
+- `private.job_freeze_idle(p_now)`: hộ HOAT_DONG mà người lớn đang tham gia nào cũng không có thao tác có chủ đích (`members.last_active_at` do `touch_active`; chưa có thì `joined_at`) trong `freeze_idle_days` (30, D-41) thì thành `DONG_BANG` (đúng 30 ngày là đóng băng). Dữ liệu không đổi, không xóa. Nếu chỉ QL quá hạn mà người lớn khác còn dùng: không đóng băng, ghi một dòng nhắc `NHAC_QL` mỗi chu kỳ (`private.lifecycle_notices`, để Edge Function gửi sau). Job, máy con không tính là hoạt động.
+- `private.job_daily(p_now)`: gọi các bước hằng ngày và ghi `app.job_runs` (chỉ `service_role`). Hiện có: đóng băng, kết thúc vị trí thử hết hạn. Bước pha, CR, lời mời, mã ghép hết hạn: chưa làm.
+- `private.register_cron_jobs()`: đăng ký 3 lịch (UTC): `pp_job_daily` `5 17 * * *` (00:05 VN), `pp_job_trial_purge` `0 20 * * *` (03:00 VN), `pp_job_trial_purge_withdrawn` `*/10 * * * *` (hộ rút giữa chừng xóa gần như ngay). Chỉ đăng ký khi extension `pg_cron` đã có; không có thì bỏ qua êm. Sau khi bật pg_cron trên Supabase, gọi lại `select private.register_cron_jobs();`.
+- `app.household_reopen(p_confirm)`: chỉ QL (người lớn khác `FORBIDDEN` BR-FAM-057; máy con bị từ chối), cần `p_confirm = true`, hộ phải đang `DONG_BANG` (CHO_XOA không mở lại, `VALIDATION` BR-CON-086). Đặt lại `last_active_at` của QL để không bị đóng băng lại ngay.
+- `app.deletion_request(p_scope, p_child, p_confirm)`: `HO_SO_CON`, `GIA_DINH`, `NGUOI_LON_ROI`. Gửi lặp trả lại cùng yêu cầu (`accepted_at` là lần đầu). Ẩn ngay, KHÔNG xóa hẳn (`hard_deleted: false`), trạng thái `CHO_QUYET_HAN` không hạn (PR-FAM-05 UNKNOWN).
+- RLS-FROZEN: hộ đóng băng thì mọi hàm ghi trả `FROZEN`, trừ danh sách ngoại lệ khai trong `lifecycle.test.mjs` (test LC-FROZEN-02 bắt hàm mới chưa phân loại).
+
+### Hộ thử, xóa thật (T2.4)
+
+- `app.trial_slots`: tối đa 3 vị trí `DANG_THU` cùng lúc (`trial_max_active`), bắt buộc `end_date` và mã phiếu giấy (`consent_paper_ref`, chỉ mã, không dữ liệu cá nhân), hạn chỉ được rút ngắn. Hàm cho hệ thống: `trial_open`, `trial_close`, `trial_attach` (hộ GIA_LAP thành `THU_NOI_BO_D01`). QL của hộ thử đọc được vị trí của mình.
+- Hết hạn (`job_daily` hoặc `job_trial_purge` chạy bù): vị trí `HET_THU`, hộ `CHO_XOA` (ngừng thu, ghi `FROZEN`). `job_trial_purge` xóa khi hôm nay (giờ VN) >= `end_date + trial_purge_after_days` (7, D-44). Hộ rút toàn bộ hoặc xóa cả gia đình: vị trí `RUT_SOM`, xóa ở lần chạy kế tiếp (<= 10 phút), không chờ hết hạn.
+- `app.purge_household(p_household, p_reason)`: chỉ hệ thống (`service_role`/postgres). Xóa theo thứ tự khóa ngoại, mỗi bảng một lệnh; xóa cả `auth.users` của người lớn và máy con chỉ gắn với hộ này (người dùng còn liên kết hộ khác thì giữ). Ghi `app.deletion_evidence` (chỉ-thêm): mã băm của id hộ, lý do, loại dữ liệu, số dòng theo bảng; không id, tên, email. Dữ liệu ngoài `GIA_LAP`/`THU_NOI_BO_D01` thì `BLOCKED_H4`, không xóa gì.
+- Bảng chỉ-thêm (`audit_log`, `mode_history`, `consent_events`) chặn DELETE; purge ghi một dòng `private.purge_context` (khóa theo mã giao dịch, không vai nào có quyền ghi) rồi `tg_append_only` mới cho DELETE đúng ba bảng đó trong giao dịch ấy.
+- `app.export_request(p_scope, p_child)`: QL, luôn `BLOCKED_H4` (chưa có bản xuất; AC-CON-19, 21 chưa kiểm được).
+- Diễn tập xóa (`TRIAL-PURGE-01`): dựng tập id của hộ bằng đóng bao theo khóa ngoại cộng id `auth.users`, purge, rồi quét MỌI bảng `app`/`private`/`auth.users` tìm id đó; số dòng giảm phải khớp bằng chứng. `TRIAL-FK-01` bắt bảng mới không có đường khóa ngoại tới hộ/con/thành viên/`auth.users` và không được xóa trong `purge_household`.
+
+### Tham số mới (`private.params`)
+
+| Khóa | Giá trị | Trạng thái | Ý nghĩa |
+|---|---|---|---|
+| `freeze_idle_days` | 30 | DA_CHOT (D-41) | ngày không thao tác thì đóng băng |
+| `trial_purge_after_days` | 7 | DA_CHOT (D-44) | ngày sau hạn thử thì xóa |
+| `trial_max_active` | 3 | DA_CHOT | số vị trí thử cùng lúc |
+| `trial_max_days` | 14 | CHUA_CHOT | hạn thử tối đa tính từ hôm mở (PR-CON-09) |
+| `frozen_allows_withdrawal` | 0 | CHUA_CHOT | (a) 0 = rút/xóa khi đóng băng bị `FROZEN`; 1 = cho phép. Đổi bằng một lệnh `update private.params`, không sửa hàm. Đồng ý MỚI, đổi chế độ, ghép máy, PIN vẫn `FROZEN` |
+| `purge_delete_auth_users` | 1 | CHUA_CHOT | 1 = purge xóa luôn `auth.users`; 0 = trả `auth_user_ids` cho Edge Function xóa bằng Admin API |
+
+### Việc còn lại, chưa làm
+
+- Chưa kiểm `DELETE FROM auth.users` từ hàm SQL trên Supabase thật (stub chỉ có bảng tối thiểu). Nếu bị từ chối: đặt `purge_delete_auth_users = 0` và để Edge Function xóa theo `auth_user_ids`.
+- Edge Function gửi thông báo từ `lifecycle_notices`; Edge Function bọc `trial_open/close/attach`, `job-daily`, `job-trial-purge`.
+- Bật `pg_cron` rồi gọi `select private.register_cron_jobs();`. Chưa áp lên đám mây.
+- (b) hoàn tác trong thời gian chờ xóa: không làm (chờ chủ sản phẩm). App phía con (chỉ xem lịch đã tải, không nhận lịch mới, không gửi mong muốn khi đóng băng): làm sau.
