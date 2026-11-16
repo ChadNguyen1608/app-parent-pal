@@ -1,0 +1,47 @@
+# Cập nhật ảnh chuẩn (so ảnh E2E) bằng đúng môi trường CI: gắn nhãn `cap-nhat-anh-chuan` vào PR.
+# Workflow chụp lại ảnh, commit vào nhánh của PR rồi gỡ nhãn. Ảnh chụp trên máy dev lệch font so với CI,
+# nên KHÔNG commit ảnh chuẩn chụp cục bộ; luôn dùng nhãn này.
+# Lưu ý: commit do GITHUB_TOKEN đẩy không tự chạy CI; đẩy thêm một commit (hoặc đóng/mở PR) để chạy lại kiểm tra.
+name: Cập nhật ảnh chuẩn
+
+on:
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    if: github.event.label.name == 'cap-nhat-anh-chuan' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - run: npm ci
+      - run: npm run build:web
+      - run: npx playwright install --with-deps chromium
+      - name: Chụp lại ảnh chuẩn
+        run: npm run test:e2e:update
+      - name: Commit ảnh chuẩn
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add e2e/snapshots
+          if git diff --cached --quiet; then echo "Ảnh chuẩn không đổi"; else git commit -m "Cập nhật ảnh chuẩn E2E từ CI" && git push; fi
+      - name: Gỡ nhãn
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr edit ${{ github.event.pull_request.number }} --remove-label cap-nhat-anh-chuan -R ${{ github.repository }}
