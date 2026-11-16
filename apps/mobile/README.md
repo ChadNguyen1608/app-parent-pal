@@ -171,7 +171,7 @@ Chạy E2E trên máy đã có Chrome: `E2E_CHROME_PATH=/usr/bin/google-chrome n
 
 - Ảnh chuẩn ở `e2e/snapshots/<parent|child>/`, sinh trên Linux và commit vào repo. Ngưỡng: `maxDiffPixelRatio` 1%, `threshold` 0.2 (chống nhiễu răng cưa chữ).
 - **Ảnh chỉ đúng cho nền Linux/CI.** Chạy trên macOS hoặc Windows sẽ lệch font và phông hệ thống, đừng cập nhật ảnh chuẩn từ đó.
-- Khi cố ý đổi giao diện: `npm run build:web && npm run test:e2e:update` (tức `--update-snapshots`), xem lại từng ảnh đổi trong diff rồi commit. CI thất bại sẽ đính kèm báo cáo HTML và ảnh lệch (artifact `mobile-e2e-report`).
+- Khi cố ý đổi giao diện: **gắn nhãn `cap-nhat-anh-chuan` vào PR**. Workflow `update-snapshots.yml` chụp lại ảnh chuẩn trên CI, commit vào nhánh PR rồi gỡ nhãn; xem lại từng ảnh đổi trong diff, rồi đẩy thêm một commit để CI chạy lại. Không commit ảnh chuẩn chụp trên máy dev (lệch font so với CI). `npm run test:e2e:update` chỉ để thử cục bộ. CI thất bại sẽ đính kèm báo cáo HTML và ảnh lệch (artifact `mobile-e2e-report`).
 - Mock ghép máy của con tự đẩy yêu cầu sau khoảng 8 giây, nên mỗi test máy con chạy 10 đến 15 giây.
 
 ### Ghi chú: biểu tượng tab hiện "⏷"
