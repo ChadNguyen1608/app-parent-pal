@@ -9,6 +9,7 @@ Repo này chứa **tài liệu** của Parent-Pal (thư mục `documents/`) và 
 Đang làm **nấc 1 của MVP (A-lite E1)**: phụ huynh điền biểu mẫu, thuật toán xếp lịch (không AI), lịch đồng bộ sang app của con (D-16). Tài liệu thiết kế ở `app-design-document/` (mục lục `app-design-document/DOCUMENT_INDEX.md`); quyết định ở `app-design-document/progress/Owner_Decision_Log_20261115.md`.
 
 - Mỗi bước một nhánh, một PR. Không đẩy thẳng lên `main`.
+- Claude tự merge PR khi CI đạt và đã tự kiểm. PR đụng tới thiết kế sản phẩm (luồng, câu chữ hiển thị, quy tắc nghiệp vụ, dữ liệu thu thập, quyền riêng tư) thì trao đổi với chủ sản phẩm trước khi merge (D-62).
 - Repo công khai: không commit khóa, `.env`, `google-services.json`, khóa ký, dữ liệu thật của trẻ.
 - Khóa Claude API chỉ nằm trong secret của Supabase; app gọi qua Edge Function `pal-chat`, có ẩn danh và lớp an toàn chạy trước.
 - `prototype/index.html` là hành vi chuẩn để chuyển sang app; giữ nguyên, không xóa. Từ 15/11/2026, chỗ nào bản thử khác `documents/pal/spec-quy-tac-lap-lich.md` thì theo spec (danh sách ở `prototype/README.md`).
