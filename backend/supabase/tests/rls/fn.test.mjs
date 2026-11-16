@@ -74,10 +74,12 @@ describe('FN-CAN: điểm quyết định truy cập app.can / can_household', {
     assert.equal(canIs(run(A.QL, `select app_internal.can('${UID.QL}', null, '${NA}', null)`)), false);
     assert.equal(canIs(run(A.QL, `select app_internal.can('${UID.QL}', 'child.view', null, null)`)), false);
     assert.equal(canIs(can('QL', 'child.view', NA, 'MD-KHONG-CO')), false);
-    assert.equal(canIs(can('QL', 'child.view', NA, 'MD-SUCKHOE')), false, 'MD-SUCKHOE không thu');
+    assert.equal(canIs(can('QL', 'child.view', NA, 'MD-CONBAO')), false, 'bé Na chưa đồng ý riêng MD-CONBAO');
+    assert.equal(canIs(can('QL', 'child.view', NA, 'MD-SUCKHOE')), true, 'bé Na đã đồng ý riêng MD-SUCKHOE (seed)');
+    assert.equal(canIs(can('QL', 'child.view', BIN, 'MD-SUCKHOE')), false, 'bé Bin chưa đồng ý MD-SUCKHOE');
     assert.equal(canIs(can('QL', 'child.view', NA, 'MD-LICH')), true);
     assert.equal(canIs(can('NL', 'child.view', NA, 'MD-LICH')), true);
-    assert.equal(canIs(can('NL', 'child.view', NA, 'MD-XONG')), false, 'grant chỉ cho MD-LICH');
+    assert.equal(canIs(can('NL', 'child.view', NA, 'MD-SUCKHOE')), false, 'grant chỉ cho MD-LICH');
     assert.equal(canIs(run(A.QL, `select app_internal.can_household('${UID.QL}', 'child.xxx', '${HH1}')`)), false);
     assert.equal(canIs(run(A.QL, `select app_internal.can_household('${UID.QL}', 'child.create', null)`)), false);
   });
@@ -93,8 +95,11 @@ describe('FN-CAN: điểm quyết định truy cập app.can / can_household', {
     const o = { setup: FREEZE };
     assert.equal(canIs(can('QL', 'child.view', NA, null, 'QL', o)), true);
     assert.equal(canIs(can('QL', 'child.admin_read', NA, null, 'QL', o)), true);
-    for (const a of ['child.update', 'child.delete', 'child.mode_set']) {
+    for (const a of ['child.update', 'child.mode_set']) {
       assert.equal(canIs(can('QL', a, NA, null, 'QL', o)), false, a);
+    }
+    for (const a of ['child.delete', 'child.withdraw']) {   // rút luôn được, kể cả đóng băng (D-64)
+      assert.equal(canIs(can('QL', a, NA, null, 'QL', o)), true, a);
     }
     assert.equal(canIs(can('NL', 'child.view', NA, null, 'NL', o)), false);
     assert.equal(canIs(can('CON', 'child.view', NA, null, 'CON', o)), false);
@@ -135,18 +140,15 @@ describe('FN-CAN: điểm quyết định truy cập app.can / can_household', {
 
 // ================================================================ bảng mới (T1.1)
 describe('FN-TBL: purposes, mode_history, invitations, FK', { skip }, () => {
-  it('FN-TBL-01: 7 mục đích đúng BL 11.3 §2.2; MD-SUCKHOE không thu; chưa duyệt', () => {
-    const r = run(A.QL, `select code || ':' || kind || ':' || collect_enabled || ':' || approval || ':' || array_to_string(depends_on, '+')
-      from app.purposes order by code`);
+  it('FN-TBL-01: 3 mục đích (D-64: MD-LICH lõi gộp; D-66: MD-SUCKHOE thu; D-67: MD-CONBAO thu); không còn cột depends_on; chưa duyệt', () => {
+    const r = run(A.QL, `select code || ':' || kind || ':' || collect_enabled || ':' || approval from app.purposes order by code`);
     assert.deepEqual(r.rows, [
-      'MD-BAOCAO:TUY_CHON:true:CHUA_DUYET:MD-XONG',
-      'MD-DONGBO:TUY_CHON:true:CHUA_DUYET:MD-LICH',
-      'MD-LICH:LOI:true:CHUA_DUYET:',
-      'MD-MET:TUY_CHON:true:CHUA_DUYET:MD-DONGBO',
-      'MD-MONGMUON:TUY_CHON:true:CHUA_DUYET:MD-DONGBO',
-      'MD-SUCKHOE:TUY_CHON:false:CHUA_DUYET:MD-LICH',
-      'MD-XONG:TUY_CHON:true:CHUA_DUYET:MD-DONGBO',
+      'MD-CONBAO:TUY_CHON:true:CHUA_DUYET',
+      'MD-LICH:LOI:true:CHUA_DUYET',
+      'MD-SUCKHOE:TUY_CHON:true:CHUA_DUYET',
     ]);
+    const c = run(A.QL, `select count(*) from information_schema.columns where table_schema='app' and table_name='purposes' and column_name='depends_on'`);
+    assert.equal(c.rows[0], '0');
   });
 
   it('FN-TBL-02: grants.purpose_code có FK tới purposes', () => {
@@ -231,11 +233,11 @@ describe('FN-CHILD: hồ sơ con (T1.3; AC-FAM-20, AC-FAM-27)', { skip }, () => 
     VALIDATION(other, 'idempotency');
   });
 
-  it('FN-CHILD-05: hộ đóng băng -> FROZEN cho QL ở cả ba hàm; người không có vai không biết trạng thái', () => {
+  it('FN-CHILD-05: hộ đóng băng -> FROZEN cho tạo và sửa (xóa hồ sơ vẫn được, D-64); người không có vai không biết trạng thái', () => {
     const o = { setup: FREEZE };
     FROZEN(run(A.QL, `select app.child_create('${HH1}', 'bé Mít', p_grade => 3)`, o));
     FROZEN(run(A.QL, `select app.child_update('${NA}', '{"grade": 4}')`, o));
-    FROZEN(run(A.QL, `select app.child_delete('${NA}', true)`, o));
+    assert.ok(run(A.QL, `select app.child_delete('${NA}', true)`, o).ok, 'xóa hồ sơ luôn được, kể cả đóng băng (D-64)');
     NOT_FOUND(run(A.HO_KHAC, `select app.child_update('${NA}', '{"grade": 4}')`, o));
     NOT_FOUND(run(A.HO_KHAC, `select app.child_create('${HH1}', 'bé Mít', p_grade => 3)`, o));
   });

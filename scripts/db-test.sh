@@ -7,20 +7,25 @@
 #                                         Thêm --reset để chạy `supabase db reset` trước.
 #   scripts/db-test.sh --prove-negative   Chế độ thuần + áp từng đột biến (tests/rls/mutations/*.sql)
 #                                         và xác nhận test THẤT BẠI đúng mã mong đợi.
+#   scripts/db-test.sh --prove-negative --only m66,m67
+#                                         Chỉ áp các đột biến có tên bắt đầu bằng một trong các mã đó (vẫn chạy đối chứng
+#                                         không đột biến trước). Cả bộ mất hơn 60 phút; dùng --only khi thêm đột biến mới.
 # Biến môi trường: PG_BIN (mặc định /usr/lib/postgresql/16/bin), DB_TEST_PORT (mặc định tự chọn),
 #   RLS_DB_URL (chế độ --supabase; mặc định postgresql://postgres:postgres@127.0.0.1:54322/postgres).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SB="$ROOT/backend/supabase"
-TEST_FILES=("$SB/tests/rls/rls.test.mjs" "$SB/tests/rls/fn.test.mjs" "$SB/tests/rls/pair.test.mjs" "$SB/tests/rls/member.test.mjs")
-MODE=sandbox; RESET=0; PROVE=0
-for a in "$@"; do
+TEST_FILES=("$SB/tests/rls/rls.test.mjs" "$SB/tests/rls/fn.test.mjs" "$SB/tests/rls/pair.test.mjs" "$SB/tests/rls/member.test.mjs" "$SB/tests/rls/consent.test.mjs" "$SB/tests/rls/audit.test.mjs" "$SB/tests/rls/lifecycle.test.mjs" "$SB/tests/rls/trial.test.mjs" "$SB/tests/rls/health.test.mjs" "$SB/tests/rls/alerts.test.mjs")
+MODE=sandbox; RESET=0; PROVE=0; ONLY=
+while [ $# -gt 0 ]; do
+  a="$1"; shift
   case "$a" in
     --supabase) MODE=supabase ;;
     --reset) RESET=1 ;;
     --prove-negative) PROVE=1 ;;
-    -h|--help) sed -n '2,13p' "$0"; exit 0 ;;
+    --only) [ $# -gt 0 ] || { echo "--only cần danh sách mã (vd m66,m67)" >&2; exit 2; }; ONLY="$1"; shift ;;
+    -h|--help) sed -n '2,17p' "$0"; exit 0 ;;
     *) echo "Tham số lạ: $a" >&2; exit 2 ;;
   esac
 done
@@ -91,6 +96,13 @@ echo "đạt"
 fail=0
 for m in "$SB"/tests/rls/mutations/*.sql; do
   name="$(basename "$m" .sql)"
+  if [ -n "$ONLY" ]; then
+    pick=0
+    for code in $(echo "$ONLY" | tr ',' ' '); do
+      case "$name" in "$code"|"$code"-*) pick=1 ;; esac
+    done
+    [ "$pick" = 1 ] || continue
+  fi
   expect="$(sed -n 's/^-- expect: *//p' "$m" | head -1)"
   psqlf postgres -c "create database \"$name\" template tpl"
   psqlf "$name" -f "$m" >/dev/null
