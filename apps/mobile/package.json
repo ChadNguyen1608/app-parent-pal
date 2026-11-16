@@ -11,7 +11,11 @@
     "typecheck": "tsc --noEmit",
     "config:parent": "APP_VARIANT=parent expo config --json",
     "config:child": "APP_VARIANT=child expo config --json",
-    "test": "node --experimental-strip-types --test \"test/**/*.test.ts\""
+    "test": "node --experimental-strip-types --test \"test/**/*.test.ts\"",
+    "test:component": "jest",
+    "build:web": "node scripts/build-web.mjs",
+    "test:e2e": "playwright test",
+    "test:e2e:update": "playwright test --update-snapshots"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
@@ -37,8 +41,16 @@
     "react-native-screens": "~4.30.1"
   },
   "devDependencies": {
+    "@expo/metro-runtime": "~58.0.17",
+    "@playwright/test": "^1.65.1",
+    "@testing-library/react-native": "^14.1.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^26.6.6",
     "@types/react": "~19.3.0",
+    "jest": "^30.5.2",
+    "jest-expo": "~58.0.14",
+    "react-native-web": "^0.21.4",
+    "test-renderer": "^1.3.1",
     "typescript": "~6.0.3"
   }
 }

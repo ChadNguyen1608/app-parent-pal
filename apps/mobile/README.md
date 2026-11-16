@@ -155,3 +155,25 @@ Cần làm trên dự án Supabase (chủ sản phẩm hoặc người có quy�
 4. Hợp đồng RPC đã khớp migration T1.2, T1.5, T1.6 (mục "Hợp đồng RPC"); nhớ áp các migration này lên dự án đám mây khi chủ sản phẩm cho phép (task này không áp).
 5. Chưa chạy trên máy thật hay giả lập Android: chỉ kiểm `tsc`, `expo config` hai biến thể, `expo export --platform android` (bundle được, cả hai biến thể) và test node. Cần thử tay: chuyển màn tự động khi đổi giai đoạn (`Stack.Protected`), bàn phím, đọc màn hình.
 6. Chưa làm: PA-02 (đồng ý), PA-37 (không vào được tài khoản; với OTP có nút "Gửi lại mã"), PA-15 (thông báo ghép/hủy), PA-38 danh sách nhiều phiên, đổi PIN hỏi PIN cũ, CA-15 (xin quyền thông báo), CA-20, PA-03 đầy đủ. Câu chữ CA-16 bám IA 4.6, chờ chủ sản phẩm duyệt.
+
+## Test component, E2E và so ảnh (chạy được không cần máy Android)
+
+| Lệnh | Việc |
+|---|---|
+| `npm test` | Test đơn vị lớp dữ liệu (node:test, thư mục `test/`) |
+| `npm run test:component` | jest-expo + @testing-library/react-native, thư mục `component-test/` (`*.spec.tsx`): PA-13 (ô PIN chỉ hiện khi máy chủ đòi), CA-12 (số lần thử, khóa), CA-16 ("Con hiểu rồi" sang Hôm nay, chống tái phát lỗi PR #38), `useAction`. Dùng mock api, không mạng |
+| `npm run build:web` | Xuất bản web hai biến thể, dữ liệu giả (`EXPO_PUBLIC_API_MOCK=1`) ra `.web-build/parent`, `.web-build/child` (bị `.gitignore`). Mỗi biến thể chạy `--clear` vì cache Metro không phân biệt `APP_VARIANT`. Cần `metro.config.js` (thêm `.wasm`) và `react-native-web`, `@expo/metro-runtime` (devDependencies; không ảnh hưởng build Android) |
+| `npm run test:e2e` | Playwright (`@playwright/test`, TypeScript) trong `e2e/`: luồng phụ huynh, luồng máy con, nhánh lỗi, khung 390x844, kèm 13 ảnh so sánh. Tự bật hai máy chủ tĩnh có fallback SPA (`e2e/serve.mjs`, cổng 4101, 4102) |
+
+Chạy E2E trên máy đã có Chrome: `E2E_CHROME_PATH=/usr/bin/google-chrome npm run test:e2e`. Không đặt biến này thì dùng chromium của Playwright (`npx playwright install --with-deps chromium`, như trên CI).
+
+### Ảnh chuẩn (visual)
+
+- Ảnh chuẩn ở `e2e/snapshots/<parent|child>/`, sinh trên Linux và commit vào repo. Ngưỡng: `maxDiffPixelRatio` 1%, `threshold` 0.2 (chống nhiễu răng cưa chữ).
+- **Ảnh chỉ đúng cho nền Linux/CI.** Chạy trên macOS hoặc Windows sẽ lệch font và phông hệ thống, đừng cập nhật ảnh chuẩn từ đó.
+- Khi cố ý đổi giao diện: `npm run build:web && npm run test:e2e:update` (tức `--update-snapshots`), xem lại từng ảnh đổi trong diff rồi commit. CI thất bại sẽ đính kèm báo cáo HTML và ảnh lệch (artifact `mobile-e2e-report`).
+- Mock ghép máy của con tự đẩy yêu cầu sau khoảng 8 giây, nên mỗi test máy con chạy 10 đến 15 giây.
+
+### Ghi chú: biểu tượng tab hiện "⏷"
+
+Không phải lỗi riêng của web. Các tab chưa đặt `tabBarIcon`, nên expo-router vẽ biểu tượng giữ chỗ `MissingIcon` (ký tự "⏷", `node_modules/expo-router/build/react-navigation/elements/MissingIcon.js`) trên mọi nền, kể cả Android. Chọn biểu tượng thật (hoặc ẩn) là việc thiết kế, chưa làm. Test E2E vì vậy so khớp tên tab bằng phần cuối (`/Của con$/`); khi có biểu tượng thật thì cập nhật ảnh chuẩn.

@@ -7,3 +7,6 @@ expo-env.d.ts
 google-services.json
 *.apk
 *.aab
+.web-build/
+e2e-report/
+test-results/

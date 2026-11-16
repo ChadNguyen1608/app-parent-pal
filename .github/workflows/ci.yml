@@ -20,3 +20,39 @@ jobs:
         run: node scripts/scan-secrets.mjs
       - name: Test các package (nấc 1)
         run: npm test
+
+  mobile-e2e:
+    # Test component, E2E và so ảnh cho apps/mobile trên bản web (dữ liệu giả), không cần máy Android.
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - name: Cài package apps/mobile
+        run: npm ci
+      - name: Kiểu (tsc)
+        run: npx tsc --noEmit
+      - name: Test component
+        run: npm run test:component
+      - name: Build web (parent, child)
+        run: npm run build:web
+      - name: Cài chromium cho Playwright
+        run: npx playwright install --with-deps chromium
+      - name: E2E và so ảnh
+        run: npm run test:e2e
+      - name: Tải báo cáo khi thất bại
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-e2e-report
+          path: |
+            apps/mobile/e2e-report
+            apps/mobile/test-results
+          retention-days: 7
