@@ -232,6 +232,13 @@ Mỗi câu hỏi có bốn phần: (a) bối cảnh xử lý, (b) câu hỏi c�
 
 Luồng dữ liệu ra nước ngoài hiện gồm: CSDL và hàm ở Supabase vùng Tokyo (D-56), đẩy thông báo qua Firebase Cloud Messaging (Google), và gửi email đăng nhập qua Resend (D-59). Cần ý kiến cho cả ba bên.
 
+### LQ-16. Con báo "không khỏe" (D-58)
+
+- **(a) Bối cảnh:** con bấm "Con thấy không khỏe", app gửi thông báo tức thì cho bố mẹ và lưu loại sự kiện cùng thời điểm, không lưu triệu chứng. Dữ liệu dùng để bố mẹ biết ngay và để xét riêng trong báo cáo quy luật mệt.
+- **(b) Câu hỏi:** dữ liệu này có bị coi là dữ liệu sức khỏe (dữ liệu nhạy cảm) không? Nếu có thì cần đồng ý riêng, thời hạn lưu và biện pháp gì?
+- **(c) Vì sao quan trọng:** nếu là dữ liệu nhạy cảm, tính năng chỉ được bật khi có đồng ý riêng (mục đích thứ 8) và có thể phải lưu ngắn hơn.
+- **(d) Định dạng:** CÓ/KHÔNG, điều khoản, thời hạn.
+
 ## 3. Thứ tự ưu tiên đề xuất cho luật sư
 
 1. LQ-01, LQ-02, LQ-11: căn cứ xử lý và đồng ý. Gỡ cổng dữ liệu thật và pilot.
