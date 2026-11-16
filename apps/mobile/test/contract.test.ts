@@ -6,7 +6,7 @@ import { dirname, join } from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
-import { createSupabaseApi } from '../src/data/api.ts';
+import { TABLE_READS, createSupabaseApi } from '../src/data/api.ts';
 import { PIN_EXISTS_HINT, PIN_REQUIRED_HINT, PIN_REQUIRED_RULE } from '../src/data/validate.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -84,6 +84,40 @@ const fns = parseFunctions(sql);
 const granted = grantedToAuthenticated(sql);
 
 type Call = { fn: string; args: Record<string, unknown> | undefined };
+type Read = { table: string; columns: string[] };
+
+/** Cột của mọi `create table app.X (...)` (kèm `alter table ... add column`). */
+function parseTables(src: string): Map<string, Set<string>> {
+  const out = new Map<string, Set<string>>();
+  const re = /create\s+table\s+app\.(\w+)\s*\(/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(src))) {
+    let depth = 1;
+    let i = re.lastIndex;
+    while (i < src.length && depth > 0) {
+      if (src[i] === '(') depth++;
+      else if (src[i] === ')') depth--;
+      i++;
+    }
+    const cols = new Set<string>();
+    let cur = '';
+    let d = 0;
+    for (const ch of src.slice(re.lastIndex, i - 1) + ',') {
+      if (ch === '(') d++;
+      if (ch === ')') d--;
+      if (ch === ',' && d === 0) {
+        const w = cur.trim().split(/\s+/)[0];
+        if (w && !/^(primary|unique|check|constraint|foreign)$/i.test(w)) cols.add(w);
+        cur = '';
+      } else cur += ch;
+    }
+    out.set(m[1], cols);
+  }
+  for (const a of src.matchAll(/alter\s+table\s+app\.(\w+)\s+add\s+column\s+(?:if\s+not\s+exists\s+)?(\w+)/gi)) out.get(a[1])?.add(a[2]);
+  return out;
+}
+const tables = parseTables(sql);
+const reads: Read[] = [];
 
 /** Chạy mọi hàm RPC của Api với client giả, trả danh sách lời gọi (cả có và không có tham số tùy chọn). */
 async function driveApi(): Promise<Call[]> {
@@ -99,6 +133,21 @@ async function driveApi(): Promise<Call[]> {
     pair_accept: { ok: true, replay: false, binding_id: 'b', child_id: 'c', epoch: 2 },
     pair_decline: { ok: true, declined: true },
     unlink_device: { ok: true, unlinked: true, replay: false, epoch: 3 },
+    consent_record: { ok: true, changed: true, replay: false, also_withdrawn: [] },
+    consent_withdraw_all: { ok: true, step: 1, confirm_token: 'tok', expires_at: 'x', consequences: {} },
+    household_reopen: { ok: true, changed: true },
+    deletion_request: { ok: true, replay: false, deletion_request_id: 'd', accepted_at: 'x', state: 'CHO_QUYET_HAN', hard_deleted: false },
+    export_request: { ok: true },
+  };
+  /** Truy vấn giả: mọi bộ lọc trả chính nó; await ra danh sách rỗng; maybeSingle ra null. */
+  const query = (table: string, columns: string) => {
+    reads.push({ table, columns: columns.split(',').map((c) => c.trim()) });
+    const q: Record<string, unknown> = {};
+    for (const f of ['eq', 'neq', 'in', 'is', 'order']) q[f] = () => q;
+    const row = table === 'members' ? { household_id: 'h', call_name: 'x', role: 'PRIMARY' } : null;
+    q.maybeSingle = async () => ({ data: row, error: null });
+    q.then = (ok: (v: unknown) => unknown) => ok({ data: [], error: null });
+    return q;
   };
   const client = {
     schema: () => ({
@@ -106,11 +155,7 @@ async function driveApi(): Promise<Call[]> {
         calls.push({ fn, args });
         return { data: canned[fn] ?? null, error: null };
       },
-      from: () => ({
-        select: () => ({
-          eq: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }) }),
-        }),
-      }),
+      from: (table: string) => ({ select: (columns: string) => query(table, columns) }),
     }),
     auth: { getSession: async () => ({ data: { session: { user: { id: 'u', is_anonymous: false } } }, error: null }) },
   };
@@ -128,6 +173,20 @@ async function driveApi(): Promise<Call[]> {
   await api.pairDecline();
   await api.unlinkDevice('c', '246801', 2);
   await api.unlinkDevice('c', '246801');
+  await api.consentRecord({ childId: 'c', purposeCode: 'MD-XONG', event: 'DONG_Y', idempotencyKey: 'k', forSelf: false });
+  await api.consentRecord({ childId: 'c', purposeCode: 'MD-XONG', event: 'RUT' });
+  await api.withdrawAllStart('c');
+  canned.consent_withdraw_all = { ok: true, step: 2, replay: false, deletion_request_id: 'd', accepted_at: 'x', state: 'CHO_QUYET_HAN', hard_deleted: false };
+  await api.withdrawAllConfirm('c', 'tok');
+  await api.householdReopen(true);
+  await api.deletionRequest('HO_SO_CON', 'c');
+  await api.deletionRequest('GIA_DINH');
+  await api.exportRequest('GIA_DINH');
+  await api.getHome();
+  await api.getConsentOverview('c');
+  await api.getMyConsent('c');
+  await api.getMyBinding();
+  await api.getFamilyState();
   return calls;
 }
 
@@ -145,7 +204,7 @@ test('migration có đủ hàm RPC và phân tích được', () => {
 
 test('mỗi lời gọi RPC của api.ts: hàm tồn tại, tham số có thật, đủ tham số bắt buộc, được cấp EXECUTE cho authenticated', async () => {
   const calls = await driveApi();
-  assert.ok(calls.length >= 10);
+  assert.ok(calls.length >= 20);
   for (const c of calls) {
     const f = fns.get(c.fn);
     assert.ok(f, `api.ts gọi app.${c.fn} nhưng migration không có`);
@@ -220,4 +279,51 @@ test('unlink_device: máy con phải gửi epoch, epoch sai là CONFLICT_REV', (
   const body = fns.get('unlink_device')!.body;
   assert.match(body, /v_is_dev and p_binding_epoch is null/);
   assert.match(body, /app\.fail\('CONFLICT_REV'/);
+});
+
+test('migration có hàm đồng ý, rút toàn bộ, mở lại, xóa, xuất với đúng tham số', () => {
+  assert.deepEqual(fns.get('consent_record')!.params.map((p) => p.name), ['p_child', 'p_purpose_code', 'p_event', 'p_policy_version_id', 'p_paper_ref', 'p_idempotency_key', 'p_for_self']);
+  assert.deepEqual(fns.get('consent_withdraw_all')!.params, [{ name: 'p_child', hasDefault: false }, { name: 'p_confirm_token', hasDefault: true }]);
+  assert.deepEqual(fns.get('household_reopen')!.params.map((p) => p.name), ['p_confirm']);
+  assert.deepEqual(fns.get('deletion_request')!.params.map((p) => p.name), ['p_scope', 'p_child', 'p_confirm']);
+  assert.deepEqual(fns.get('export_request')!.params.map((p) => p.name), ['p_scope', 'p_child']);
+});
+
+test('trường kết quả của hàm đồng ý và xóa có trong SQL', () => {
+  const rec = fns.get('consent_record')!.body;
+  for (const f of ['ok', 'changed', 'replay', 'also_withdrawn']) assert.match(rec, new RegExp(`'${f}'`), `consent_record thiếu '${f}'`);
+  const wd = fns.get('consent_withdraw_all')!.body;
+  for (const f of ['step', 'confirm_token', 'expires_at', 'consequences', 'purposes_withdrawn', 'child_hidden', 'device_unlinked', 'deletion_request',
+    'hard_deleted_now', 'can_reconsent', 'deletion_request_id', 'accepted_at', 'hard_deleted']) assert.match(wd, new RegExp(`'${f}'`), `consent_withdraw_all thiếu '${f}'`);
+  const del = fns.get('deletion_request')!.body;
+  for (const f of ['replay', 'deletion_request_id', 'accepted_at', 'state', 'hard_deleted']) assert.match(del, new RegExp(`'${f}'`), `deletion_request thiếu '${f}'`);
+  assert.match(fns.get('household_reopen')!.body, /'changed'/);
+});
+
+test('mã lỗi mới: BLOCKED_H4 và FEATURE_OFF là mã backend (HTTP 403)', () => {
+  assert.match(sql, /when 'BLOCKED_H4'\s+then 'PT403'/);
+  assert.match(sql, /when 'FEATURE_OFF'\s+then 'PT403'/);
+  assert.match(fns.get('export_request')!.body, /app\.fail\('BLOCKED_H4'/);
+  assert.match(fns.get('consent_record')!.body, /app\.fail\('FEATURE_OFF'/);
+  assert.match(fns.get('consent_withdraw_all')!.body, /'D-42'/);
+});
+
+test('mọi cột client đọc (select) có trong migration', async () => {
+  reads.length = 0;
+  await driveApi();
+  assert.ok(reads.length >= 6);
+  const seen = new Set(reads.map((r) => r.table));
+  for (const t of ['members', 'households', 'children', 'device_bindings', 'purposes', 'purpose_state', 'deletion_requests']) assert.ok(seen.has(t), `chưa đọc ${t}`);
+  for (const r of reads) {
+    const cols = tables.get(r.table);
+    assert.ok(cols, `migration không có bảng app.${r.table}`);
+    for (const c of r.columns) assert.ok(cols.has(c), `app.${r.table} không có cột ${c}`);
+  }
+  for (const v of Object.values(TABLE_READS)) assert.ok(v.length > 0);
+});
+
+test('chuỗi trạng thái client dùng có trong check của migration', () => {
+  for (const v of ['HOAT_DONG', 'DONG_BANG', 'CHO_XOA', 'DA_XOA', 'PRIMARY', 'SUPPORTER', 'OBSERVER', 'HO_SO_CON', 'GIA_DINH', 'NGUOI_LON_ROI', 'CHUA_HOI', 'DANG_BAT', 'DA_RUT', 'MD-CONBAO', 'MD-LICH']) {
+    assert.ok(sql.includes(`'${v}'`), `migration không có '${v}'`);
+  }
 });

@@ -1,29 +1,49 @@
 import { useRouter } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
 
+import { errorMessage } from '@/data/errors';
 import { useApp } from '@/state/app';
-import { Btn, H1, P, Screen } from '@/ui/kit';
+import { seenLines, type SeenLine } from '@/ui/ca16-lines';
+import { Btn, H1, Notice, P, Screen } from '@/ui/kit';
 
-// CA-16 Những gì bố mẹ thấy (tối thiểu). Câu chữ bám IA 4.6 / D-03, CHỜ chủ sản phẩm duyệt.
-// Danh sách phải khớp quyền thật; cập nhật khi tính năng thật được bật.
-const LINES = [
-  'Bố mẹ thấy lịch của con.',
-  'Bố mẹ thấy khi con bấm "Xong" và giờ con bấm.',
-  'Bố mẹ thấy con hay mệt vào ngày nào, trong báo cáo cuối tuần. Bố mẹ không thấy con chọn gì từng ngày.',
-  'Bố mẹ thấy mong muốn và đề xuất con gửi.',
-  'Bố mẹ không thấy khi con bấm "Con cần giúp đỡ".',
-];
-
+// CA-16 Những gì bố mẹ thấy. Dòng lấy từ các mục đích đang hiệu lực (khớp quyền thật); câu chữ nguyên từ wireframe.
+// Không tải được thì báo và cho thử lại; nút "Con hiểu rồi" vẫn dùng được (không chặn dùng app, IA 4.6).
 export default function BoMeThay() {
   const router = useRouter();
-  const { childStage, acknowledgeIntro } = useApp();
+  const { api, childId, childStage, acknowledgeIntro } = useApp();
+  const [lines, setLines] = useState<SeenLine[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    if (!childId) return;
+    try {
+      setLines(seenLines(new Set(await api.getMyConsent(childId))));
+      setError(null);
+    } catch (e) {
+      setError(`${errorMessage(e)} Con thử lại nhé.`);
+    }
+  }, [api, childId]);
+  useEffect(() => {
+    void load();
+  }, [load]);
+
   return (
     <Screen big>
       <H1>Những gì bố mẹ thấy</H1>
-      {LINES.map((l) => (
-        <P key={l} big>
-          {l}
-        </P>
+      <P big>Đã kết nối với gia đình.</P>
+      {(lines ?? []).map((l) => (
+        <View key={l.text} style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }} accessible accessibilityLabel={`${l.see ? 'Bố mẹ thấy' : 'Bố mẹ không thấy'}: ${l.text}`}>
+          <Text aria-hidden style={{ fontSize: 20, fontWeight: '700', width: 24, color: l.see ? '#208AEF' : '#C0392B' }}>
+            {l.see ? '✓' : '✗'}
+          </Text>
+          <Text style={{ flex: 1, fontSize: 20, lineHeight: 28 }}>
+            <Text style={{ fontWeight: '700' }}>{l.see ? 'Bố mẹ thấy' : 'Bố mẹ không thấy'}:</Text> {l.text}
+          </Text>
+        </View>
       ))}
+      {error ? <Notice>{error}</Notice> : null}
+      {error ? <Btn big kind="secondary" label="Thử lại" onPress={() => void load()} /> : null}
       <Btn
         big
         label="Con hiểu rồi"

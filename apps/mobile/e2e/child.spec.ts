@@ -64,7 +64,12 @@ test('ghép máy, xem lời chào, vào các tab, hủy kết nối bằng PIN �
   await shot(page, 'ca12-nhap-pin-sai');
 
   await nhapPin(page, '482915');
+  // CA-17: máy từng ghép nay không còn liên kết.
   await expect(page.getByRole('heading', { name: 'Chào con' })).toBeVisible();
+  await expect(page.getByText('Máy này không còn kết nối với gia đình.')).toBeVisible();
+  await shot(page, 'ca17-mat-ket-noi');
+  await page.getByRole('button', { name: 'Lấy mã mới' }).click();
+  await expect(page.getByRole('heading', { name: 'Mã của con' })).toBeVisible();
 });
 
 test('nhánh "Không": con từ chối thì lấy mã mới, chưa kết nối', async ({ page }) => {

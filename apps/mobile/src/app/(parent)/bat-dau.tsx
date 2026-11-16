@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { uuidv4 } from '@/data/uuid';
 import { checkCallName, parseGrade } from '@/data/validate';
 import { useApp } from '@/state/app';
+import { deletionLine } from '@/ui/deletion-status';
 import { Btn, Choice, Field, H1, Notice, P, Screen } from '@/ui/kit';
 import { useAction } from '@/ui/useAction';
 
@@ -71,6 +72,11 @@ export default function BatDau() {
 
   return (
     <Screen>
+      {(home?.openDeletions ?? []).map((d) => (
+        <Notice key={d.id} kind="info">
+          {deletionLine(d)}
+        </Notice>
+      ))}
       <H1>Thêm con</H1>
       <P>Chỉ cần vài thông tin để bắt đầu. Bạn dùng tên gọi ở nhà, không cần họ tên đầy đủ.</P>
       <Field label="Tên gọi của con" value={childName} onChangeText={setChildName} autoCapitalize="words" error={errors.childName} />

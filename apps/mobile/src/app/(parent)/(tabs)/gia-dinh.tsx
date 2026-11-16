@@ -14,7 +14,7 @@ function pairText(c: Child): string {
   return 'Chưa ghép máy';
 }
 
-// PA-03 rút gọn: thẻ từng con + lối vào PA-13 (ghép máy), PA-14 (PIN), PA-38 (phiên đăng nhập).
+// PA-03 rút gọn: thẻ từng con + lối vào PA-13 (ghép máy), PA-14 (PIN), PA-32, PA-33, PA-35, PA-38 (phiên đăng nhập).
 export default function GiaDinh() {
   const router = useRouter();
   const { home, refreshHome } = useApp();
@@ -39,6 +39,9 @@ export default function GiaDinh() {
           ) : null}
         </View>
       ))}
+      <Btn label="Quyền riêng tư và đồng ý" kind="secondary" onPress={() => router.push('/(parent)/quyen-rieng-tu')} />
+      <Btn label="Dữ liệu của gia đình" kind="secondary" onPress={() => router.push('/(parent)/du-lieu')} />
+      <Btn label="Xóa tài khoản và dữ liệu" kind="secondary" onPress={() => router.push('/(parent)/xoa')} />
       <Btn label="Đặt hoặc đổi mã PIN" kind="secondary" onPress={() => router.push('/(parent)/dat-pin')} />
       <Btn label="Phiên đăng nhập" kind="secondary" onPress={() => router.push('/(parent)/phien')} />
       <LabLink />

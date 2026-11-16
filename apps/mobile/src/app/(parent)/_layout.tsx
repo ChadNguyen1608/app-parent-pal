@@ -23,8 +23,21 @@ export default function ParentLayout() {
       <Stack.Protected guard={parentStage === 'needHome'}>
         <Stack.Screen name="bat-dau" options={{ title: 'Bắt đầu' }} />
       </Stack.Protected>
+      <Stack.Protected guard={parentStage === 'needConsent' || parentStage === 'ready'}>
+        <Stack.Screen name="dong-y" options={{ title: 'Đồng ý theo từng tính năng', headerBackVisible: parentStage === 'ready' }} />
+      </Stack.Protected>
+      <Stack.Protected guard={parentStage === 'frozen'}>
+        <Stack.Screen name="tam-khoa" options={{ title: 'Tài khoản tạm khóa', headerBackVisible: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={parentStage === 'closing'}>
+        <Stack.Screen name="dang-xoa" options={{ title: 'Yêu cầu xóa', headerBackVisible: false }} />
+      </Stack.Protected>
       <Stack.Protected guard={parentStage === 'ready'}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="quyen-rieng-tu" options={{ title: 'Quyền riêng tư' }} />
+        <Stack.Screen name="du-lieu" options={{ title: 'Dữ liệu của gia đình' }} />
+        <Stack.Screen name="xuat-du-lieu" options={{ title: 'Xuất dữ liệu' }} />
+        <Stack.Screen name="xoa" options={{ title: 'Xóa tài khoản' }} />
         <Stack.Screen name="ghep-may" options={{ title: 'Ghép máy của con' }} />
         <Stack.Screen name="dat-pin" options={{ title: 'Mã PIN của bố mẹ' }} />
         <Stack.Screen name="phien" options={{ title: 'Phiên đăng nhập' }} />

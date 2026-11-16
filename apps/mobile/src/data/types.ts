@@ -15,10 +15,67 @@ export type Child = {
   ageYears: number | null;
   hasDevice: boolean;
   pairState: PairState;
+  /** MD-LICH (mục lõi) đang bật: chưa có thì chưa được dùng hồ sơ này (PA-02 chặn). */
+  coreConsent: boolean;
 };
 
+export type HouseholdState = 'HOAT_DONG' | 'DONG_BANG' | 'CHO_XOA' | 'DA_XOA';
+/** PRIMARY = người quản lý chính (QL); SUPPORTER, OBSERVER = người lớn khác. */
+export type MemberRole = 'PRIMARY' | 'SUPPORTER' | 'OBSERVER';
+
+export type DeletionScope = 'HO_SO_CON' | 'GIA_DINH' | 'NGUOI_LON_ROI';
+/** Yêu cầu xóa đang mở (chưa bị hủy). Không có hạn xóa hẳn: PR-CON-01 chưa chốt. */
+export type OpenDeletion = { id: string; scope: DeletionScope; childId: string | null; acceptedAt: string | null; state: string };
+
 /** Hộ của người lớn đang đăng nhập; null nếu chưa tạo hộ. */
-export type Home = { householdId: string; memberCallName: string; children: Child[] } | null;
+export type Home = {
+  householdId: string;
+  memberCallName: string;
+  role: MemberRole;
+  householdState: HouseholdState;
+  children: Child[];
+  openDeletions: OpenDeletion[];
+} | null;
+
+// ---- Đồng ý theo mục đích (T2.1), rút toàn bộ (T2.2), đóng băng và xóa (T2.3)
+export type Purpose = { code: string; nameVi: string; dependsOn: string[]; kind: 'LOI' | 'TUY_CHON'; collectEnabled: boolean };
+/** CHUA_HOI = chưa có dòng trong purpose_state. */
+export type PurposeStatus = 'CHUA_HOI' | 'DANG_BAT' | 'DA_RUT';
+export type ConsentOverview = { purposes: Purpose[]; states: Record<string, { state: PurposeStatus; activeSince: string | null }> };
+
+export type ConsentEvent = 'DONG_Y' | 'RUT';
+export type ConsentRecordInput = {
+  childId: string;
+  purposeCode: string;
+  event: ConsentEvent;
+  /** true: đồng ý của chính người lớn đang gọi (không theo con). */
+  forSelf?: boolean;
+  /** Gửi lặp cùng khóa trả kết quả cũ. */
+  idempotencyKey?: string;
+};
+export type ConsentRecordResult = {
+  /** false: đã đúng trạng thái đó từ trước, không ghi sổ. */
+  changed: boolean;
+  replay: boolean;
+  /** Các mục phụ thuộc bị rút theo (chỉ khi rút mục cha). */
+  alsoWithdrawn: string[];
+};
+
+/** Hệ quả của rút toàn bộ do máy chủ tính (bước 1). */
+export type WithdrawConsequences = {
+  purposesWithdrawn: string[];
+  childHidden: boolean;
+  deviceUnlinked: boolean;
+  deletionRequest: boolean;
+  hardDeletedNow: boolean;
+  canReconsent: boolean;
+};
+export type WithdrawStep1 = { confirmToken: string; expiresAt: string | null; consequences: WithdrawConsequences };
+export type WithdrawStep2 = { replay: boolean; deletionRequestId: string | null; acceptedAt: string | null; state: string; hardDeleted: boolean };
+export type DeletionResult = { replay: boolean; scope: DeletionScope; deletionRequestId: string | null; acceptedAt: string | null; state: string; hardDeleted: boolean };
+
+/** Máy con: ACTIVE hoặc FROZEN (gia đình tạm dừng, CA-18). */
+export type FamilyState = 'ACTIVE' | 'FROZEN';
 
 export type ChildInput = {
   householdId: string;
@@ -65,6 +122,20 @@ export interface Api {
   /** pin: bắt buộc ở lần ghép đầu của QL (đặt PIN cùng lúc), không gửi các lần sau. */
   pairConfirm(childId: string, code: string, pin?: string): Promise<PairConfirmResult>;
   pinSet(pin: string): Promise<void>;
+  /** PA-02, PA-32: danh mục mục đích và trạng thái của một con. */
+  getConsentOverview(childId: string): Promise<ConsentOverview>;
+  /** PA-02, PA-32: ghi đồng ý hoặc rút một mục (consent_record). */
+  consentRecord(input: ConsentRecordInput): Promise<ConsentRecordResult>;
+  /** PA-35 lần 1: rút toàn bộ bước 1, máy chủ trả hệ quả và mã xác nhận dùng một lần (consent_withdraw_all). */
+  withdrawAllStart(childId: string): Promise<WithdrawStep1>;
+  /** PA-36 lần 2: rút toàn bộ bước 2, gửi mã của bước 1. */
+  withdrawAllConfirm(childId: string, confirmToken: string): Promise<WithdrawStep2>;
+  /** PA-39: QL mở lại hộ đóng băng. confirm phải true (xác nhận rõ ràng). */
+  householdReopen(confirm: boolean): Promise<{ changed: boolean }>;
+  /** PA-35, PA-36: yêu cầu xóa. Luôn gửi confirm=true (người dùng đã xác nhận lần hai). */
+  deletionRequest(scope: DeletionScope, childId?: string | null): Promise<DeletionResult>;
+  /** PA-34: yêu cầu xuất dữ liệu. Ở bản thử máy chủ luôn trả BLOCKED_H4 (ApiError). */
+  exportRequest(scope: 'GIA_DINH' | 'HO_SO_CON', childId?: string | null): Promise<void>;
   // Máy con
   pairCodeCreate(): Promise<PairCode>;
   pairPending(): Promise<PairPending>;
@@ -74,6 +145,10 @@ export interface Api {
   pairDecline(): Promise<void>;
   /** Liên kết hiệu lực của máy này (đọc device_bindings), để nhớ qua lần mở app sau. */
   getMyBinding(): Promise<Binding | null>;
+  /** CA-16: mã các mục đích đang HIỆU LỰC (bật, được thu, mục cha cũng hiệu lực) mà máy con được xem. */
+  getMyConsent(childId: string): Promise<string[]>;
+  /** CA-18: gia đình có đang tạm dừng không. Chưa đọc được thì coi là ACTIVE (không chặn nhầm). */
+  getFamilyState(): Promise<FamilyState>;
   /** bindingEpoch: máy con bắt buộc gửi; QL có thể bỏ. */
   unlinkDevice(childId: string, pin: string, bindingEpoch?: number): Promise<void>;
 }
