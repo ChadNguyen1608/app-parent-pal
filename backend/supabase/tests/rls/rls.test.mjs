@@ -100,6 +100,43 @@ describe('RLS-GEN', { skip }, () => {
         `app.${name}: vai có EXECUTE = '${execRoles}'`);
     }
   });
+
+  it('RLS-GEN-05: hàm phụ trợ của chính sách nằm ở app_internal (không mở API), EXECUTE đúng danh sách', () => {
+    // (a) config.toml: chỉ public, graphql_public, app được mở qua API; app_internal và private thì không.
+    const toml = readFileSync(new URL('../../config.toml', import.meta.url), 'utf8');
+    const schemas = toml.match(/^\s*schemas\s*=\s*\[([^\]]*)\]/m);
+    assert.ok(schemas, 'config.toml thiếu [api] schemas');
+    for (const bad of ['app_internal', 'private']) {
+      assert.ok(!schemas[1].includes(`"${bad}"`), `${bad} nằm trong [api] schemas (lộ RPC)`);
+    }
+    // (b) quyền schema: anon không gì; authenticated chỉ USAGE (để chính sách giải tên hàm).
+    assert.equal(list(`select has_schema_privilege('anon','app_internal','USAGE')`)[0], 'f');
+    assert.equal(list(`select has_schema_privilege('authenticated','app_internal','USAGE')`)[0], 't');
+    assert.equal(list(`select has_schema_privilege('authenticated','app_internal','CREATE')`)[0], 'f');
+    // (c) không có bảng, view, chuỗi: schema này chỉ chứa hàm.
+    assert.deepEqual(list(`select c.relname from pg_class c join pg_namespace n on n.oid=c.relnamespace
+      where n.nspname='app_internal' and c.relkind in ('r','p','v','m','S','f')`), []);
+    // (d) mỗi hàm: security definer, search_path rỗng, EXECUTE đúng danh sách, PUBLIC không có.
+    const rows = list(`select p.proname, p.prosecdef, coalesce(array_to_string(p.proconfig, ','), ''),
+        (select coalesce(string_agg(r.rolname, ',' order by r.rolname), '') from pg_roles r
+          where r.rolname in ('anon','authenticated') and has_function_privilege(r.rolname, p.oid, 'EXECUTE')),
+        (select count(*) from aclexplode(coalesce(p.proacl, acldefault('f', p.proowner))) a where a.grantee = 0)
+      from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='app_internal' order by 1`);
+    const expected = Object.keys(matrix.app_internal_functions).filter((k) => !k.startsWith('_')).sort();
+    assert.deepEqual(rows.map((r) => r.split('|')[0]).sort(), expected, 'hàm app_internal lệch với policy-matrix.json');
+    for (const row of rows) {
+      const [name, secdef, config, execRoles, publicGrants] = row.split('|');
+      assert.equal(secdef, 't', `app_internal.${name} không phải security definer`);
+      assert.match(config, /search_path=("")?(,|$)/, `app_internal.${name}: search_path (có: ${config})`);
+      assert.equal(execRoles, [...matrix.app_internal_functions[name]].sort().join(','), `app_internal.${name}: vai có EXECUTE = '${execRoles}'`);
+      assert.equal(publicGrants, '0', `app_internal.${name}: PUBLIC có EXECUTE`);
+    }
+    // (e) mọi hàm mà chính sách RLS gọi phải ở app_internal: hàm phụ trợ không được quay lại schema mở API.
+    const inApp = list(`select distinct p.oid::regprocedure from pg_depend d join pg_policy pol on pol.oid=d.objid
+      join pg_proc p on p.oid=d.refobjid join pg_namespace n on n.oid=p.pronamespace
+      where d.classid='pg_policy'::regclass and d.refclassid='pg_proc'::regclass and n.nspname in ('app','private')`);
+    assert.deepEqual(inApp, [], `chính sách gọi hàm ngoài app_internal: ${inApp.join(', ')}`);
+  });
 });
 
 // ---------------------------------------------------------------- RLS-ROLE

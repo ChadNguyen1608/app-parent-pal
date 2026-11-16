@@ -35,7 +35,7 @@ const FROZEN = (r) => rejected(r, 'FROZEN', 'PT423');
 const NO_EXEC = (r) => { assert.equal(r.ok, false); assert.equal(r.code, '42501'); };
 
 const can = (who, action, child, purpose = null, actor = who, opts) =>
-  run(A[who], `select app.can('${UID[actor]}', '${action}', '${child}', ${purpose ? `'${purpose}'` : 'null'})`, opts);
+  run(A[who], `select app_internal.can('${UID[actor]}', '${action}', '${child}', ${purpose ? `'${purpose}'` : 'null'})`, opts);
 const canIs = (r) => { assert.ok(r.ok, r.err); return r.rows[0] === 't'; };
 
 // ================================================================ app.can (T1.1)
@@ -62,24 +62,24 @@ describe('FN-CAN: điểm quyết định truy cập app.can / can_household', {
   it('FN-CAN-02: actor khác người gọi bị từ chối (không dò quyền người khác); service_role được hỏi thay', () => {
     assert.equal(canIs(can('HO_KHAC', 'child.view', NA, null, 'QL')), false);
     assert.equal(canIs(can('NL', 'child.mode_set', NA, null, 'QL')), false);
-    const svc = run({ role: 'service_role' }, `select app.can('${UID.QL}', 'child.update', '${NA}', null)`);
+    const svc = run({ role: 'service_role' }, `select app_internal.can('${UID.QL}', 'child.update', '${NA}', null)`);
     assert.equal(canIs(svc), true);
-    const svc2 = run({ role: 'service_role' }, `select app.can('${UID.NL}', 'child.update', '${NA}', null)`);
+    const svc2 = run({ role: 'service_role' }, `select app_internal.can('${UID.NL}', 'child.update', '${NA}', null)`);
     assert.equal(canIs(svc2), false);
   });
 
   it('FN-CAN-03: fail-closed - hành động lạ, đối số null, mục đích lạ, MD-SUCKHOE; grant theo mục đích', () => {
     assert.equal(canIs(can('QL', 'child.hack', NA)), false);
-    assert.equal(canIs(run(A.QL, `select app.can(null, 'child.view', '${NA}', null)`)), false);
-    assert.equal(canIs(run(A.QL, `select app.can('${UID.QL}', null, '${NA}', null)`)), false);
-    assert.equal(canIs(run(A.QL, `select app.can('${UID.QL}', 'child.view', null, null)`)), false);
+    assert.equal(canIs(run(A.QL, `select app_internal.can(null, 'child.view', '${NA}', null)`)), false);
+    assert.equal(canIs(run(A.QL, `select app_internal.can('${UID.QL}', null, '${NA}', null)`)), false);
+    assert.equal(canIs(run(A.QL, `select app_internal.can('${UID.QL}', 'child.view', null, null)`)), false);
     assert.equal(canIs(can('QL', 'child.view', NA, 'MD-KHONG-CO')), false);
     assert.equal(canIs(can('QL', 'child.view', NA, 'MD-SUCKHOE')), false, 'MD-SUCKHOE không thu');
     assert.equal(canIs(can('QL', 'child.view', NA, 'MD-LICH')), true);
     assert.equal(canIs(can('NL', 'child.view', NA, 'MD-LICH')), true);
     assert.equal(canIs(can('NL', 'child.view', NA, 'MD-XONG')), false, 'grant chỉ cho MD-LICH');
-    assert.equal(canIs(run(A.QL, `select app.can_household('${UID.QL}', 'child.xxx', '${HH1}')`)), false);
-    assert.equal(canIs(run(A.QL, `select app.can_household('${UID.QL}', 'child.create', null)`)), false);
+    assert.equal(canIs(run(A.QL, `select app_internal.can_household('${UID.QL}', 'child.xxx', '${HH1}')`)), false);
+    assert.equal(canIs(run(A.QL, `select app_internal.can_household('${UID.QL}', 'child.create', null)`)), false);
   });
 
   it('FN-CAN-04: grant REVIEW_REQUIRED hoặc THU_HOI coi như không có', () => {
@@ -98,8 +98,8 @@ describe('FN-CAN: điểm quyết định truy cập app.can / can_household', {
     }
     assert.equal(canIs(can('NL', 'child.view', NA, null, 'NL', o)), false);
     assert.equal(canIs(can('CON', 'child.view', NA, null, 'CON', o)), false);
-    assert.equal(canIs(run(A.QL, `select app.can_household('${UID.QL}', 'child.create', '${HH1}')`, o)), false);
-    assert.equal(canIs(run(A.QL, `select app.can_household('${UID.QL}', 'household.admin_read', '${HH1}')`, o)), true);
+    assert.equal(canIs(run(A.QL, `select app_internal.can_household('${UID.QL}', 'child.create', '${HH1}')`, o)), false);
+    assert.equal(canIs(run(A.QL, `select app_internal.can_household('${UID.QL}', 'household.admin_read', '${HH1}')`, o)), true);
   });
 
   it('FN-CAN-06: chính sách children dùng app.can - đóng băng thì NL và máy con thấy 0 dòng, QL vẫn thấy', () => {
@@ -114,18 +114,18 @@ describe('FN-CAN: điểm quyết định truy cập app.can / can_household', {
     for (const who of ['QL', 'NL', 'CON']) assert.equal(canIs(can(who, 'child.view', NA, null, who, hide)), false, who);
     const hh = { setup: `update app.households set hidden_at=now() where id='${HH1}';` };
     assert.equal(canIs(can('QL', 'child.view', NA, null, 'QL', hh)), false);
-    assert.equal(canIs(run(A.QL, `select app.can_household('${UID.QL}', 'child.create', '${HH1}')`, hh)), false);
+    assert.equal(canIs(run(A.QL, `select app_internal.can_household('${UID.QL}', 'child.create', '${HH1}')`, hh)), false);
   });
 
   it('FN-CAN-08: can_household - chỉ QL của đúng hộ; hàm nội bộ và anon không gọi được', () => {
-    const ch = (who, hh, act = 'child.create') => run(A[who], `select app.can_household('${UID[who]}', '${act}', '${hh}')`);
+    const ch = (who, hh, act = 'child.create') => run(A[who], `select app_internal.can_household('${UID[who]}', '${act}', '${hh}')`);
     assert.equal(canIs(ch('QL', HH1)), true);
     assert.equal(canIs(ch('QL', HH2)), false);
     assert.equal(canIs(ch('NL', HH1)), false);
     assert.equal(canIs(ch('CON', HH1)), false);
     assert.equal(canIs(ch('HO_KHAC', HH1)), false);
     assert.equal(canIs(ch('QL', HH1, 'household.admin_read')), true);
-    NO_EXEC(run(A.ANON, `select app.can('${UID.QL}', 'child.view', '${NA}', null)`));
+    NO_EXEC(run(A.ANON, `select app_internal.can('${UID.QL}', 'child.view', '${NA}', null)`));
     for (const f of [`app.access_state('${UID.QL}', 'child.view', '${NA}', null)`, `app.fail('FORBIDDEN')`,
       `app.household_access_state('${UID.QL}', 'child.create', '${HH1}')`]) {
       NO_EXEC(run(A.QL, `select ${f}`));

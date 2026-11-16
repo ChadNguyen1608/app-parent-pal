@@ -13,7 +13,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SB="$ROOT/backend/supabase"
-TEST_FILES=("$SB/tests/rls/rls.test.mjs" "$SB/tests/rls/fn.test.mjs" "$SB/tests/rls/pair.test.mjs")
+TEST_FILES=("$SB/tests/rls/rls.test.mjs" "$SB/tests/rls/fn.test.mjs" "$SB/tests/rls/pair.test.mjs" "$SB/tests/rls/member.test.mjs")
 MODE=sandbox; RESET=0; PROVE=0
 for a in "$@"; do
   case "$a" in
