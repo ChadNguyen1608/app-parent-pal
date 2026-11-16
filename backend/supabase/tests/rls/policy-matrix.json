@@ -87,14 +87,14 @@
       }
     },
     "purposes": {
-      "spec": "§2.2, §2.7: bảng tham chiếu, mọi người đăng nhập đọc 7 mục đích",
+      "spec": "§2.2, §2.7: bảng tham chiếu, mọi người đăng nhập đọc 8 mục đích (thêm MD-CONBAO, D-58)",
       "pk": "code",
       "select": {
-        "QL": 7,
-        "NL": 7,
-        "CON": 7,
-        "CON_CHUA_GHEP": 7,
-        "HO_KHAC": 7,
+        "QL": 8,
+        "NL": 8,
+        "CON": 8,
+        "CON_CHUA_GHEP": 8,
+        "HO_KHAC": 8,
         "ANON": "denied"
       }
     },
@@ -113,6 +113,62 @@
       "spec": "§2.1, §2.7: chỉ QL của hộ đọc; ghi chưa có (member_invite trả FEATURE_OFF, cờ invites_enabled=0, T1.8)",
       "select": {
         "QL": 1,
+        "NL": 0,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      }
+    },
+    "policy_versions": {
+      "spec": "§2.2, §2.7: mọi người đăng nhập đọc; chỉ-thêm",
+      "select": {
+        "QL": 1,
+        "NL": 1,
+        "CON": 1,
+        "CON_CHUA_GHEP": 1,
+        "HO_KHAC": 1,
+        "ANON": "denied"
+      }
+    },
+    "consent_events": {
+      "spec": "§2.2, §2.7: QL đọc cả hộ; người lớn đọc dòng của chính mình; máy con không",
+      "select": {
+        "QL": 4,
+        "NL": 0,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 1,
+        "ANON": "denied"
+      }
+    },
+    "purpose_state": {
+      "spec": "§2.2, §2.7: QL đọc mọi mục đích của con; NL và máy con chỉ thấy mục đích hiệu lực được xem",
+      "pk": "child_id",
+      "select": {
+        "QL": 4,
+        "NL": 1,
+        "CON": 3,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 1,
+        "ANON": "denied"
+      }
+    },
+    "audit_log": {
+      "spec": "§2.5, §2.7: chỉ QL đọc dòng của hộ mình; chỉ-thêm",
+      "select": {
+        "QL": 4,
+        "NL": 0,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 2,
+        "ANON": "denied"
+      }
+    },
+    "deletion_requests": {
+      "spec": "§2.5, §2.7: QL đọc yêu cầu của hộ; người lớn đọc yêu cầu của chính mình",
+      "select": {
+        "QL": 0,
         "NL": 0,
         "CON": 0,
         "CON_CHUA_GHEP": 0,
@@ -139,6 +195,12 @@
     },
     "pair_throttle": {
       "spec": "Architecture §5.3: giới hạn nhập mã ghép theo tài khoản và hộ; không vai nào đọc"
+    },
+    "audit_events": {
+      "spec": "T2.5: danh mục sự kiện audit và khóa meta được phép; không vai nào đọc"
+    },
+    "withdraw_confirmations": {
+      "spec": "T2.2: mã xác nhận bước hai khi rút toàn bộ; không vai nào đọc"
     }
   },
   "app_functions": {
@@ -203,7 +265,21 @@
       "authenticated"
     ],
     "is_anonymous_caller": [],
-    "pin_verify": []
+    "pin_verify": [],
+    "consent_record": [
+      "authenticated"
+    ],
+    "consent_withdraw_all": [
+      "authenticated"
+    ],
+    "tg_audit_validate": [],
+    "tg_audit_binding": [],
+    "tg_audit_child": [],
+    "tg_purpose_state_guard": [],
+    "tg_consent_check": [],
+    "tg_consent_apply": [],
+    "tg_consent_audit": [],
+    "tg_deletion_audit": []
   },
   "app_internal_functions": {
     "_doc": "Hàm phụ trợ của chính sách RLS, nằm schema app_internal (không mở API, T1.8-b). Vai được EXECUTE (ngoài service_role). Chính sách chạy với quyền người gọi nên authenticated cần EXECUTE; anon không có gì. Hàm mới phải khai ở đây.",
@@ -217,6 +293,13 @@
       "authenticated"
     ],
     "is_self_member": [
+      "authenticated"
+    ],
+    "purpose_effective": [],
+    "visible_from": [
+      "authenticated"
+    ],
+    "purpose_visible": [
       "authenticated"
     ]
   },

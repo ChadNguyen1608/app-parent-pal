@@ -135,11 +135,12 @@ describe('FN-CAN: điểm quyết định truy cập app.can / can_household', {
 
 // ================================================================ bảng mới (T1.1)
 describe('FN-TBL: purposes, mode_history, invitations, FK', { skip }, () => {
-  it('FN-TBL-01: 7 mục đích đúng BL 11.3 §2.2; MD-SUCKHOE không thu; chưa duyệt', () => {
+  it('FN-TBL-01: 8 mục đích (BL 11.3 §2.2 + MD-CONBAO, D-58); MD-SUCKHOE và MD-CONBAO không thu; chưa duyệt', () => {
     const r = run(A.QL, `select code || ':' || kind || ':' || collect_enabled || ':' || approval || ':' || array_to_string(depends_on, '+')
       from app.purposes order by code`);
     assert.deepEqual(r.rows, [
       'MD-BAOCAO:TUY_CHON:true:CHUA_DUYET:MD-XONG',
+      'MD-CONBAO:TUY_CHON:false:CHUA_DUYET:MD-DONGBO',
       'MD-DONGBO:TUY_CHON:true:CHUA_DUYET:MD-LICH',
       'MD-LICH:LOI:true:CHUA_DUYET:',
       'MD-MET:TUY_CHON:true:CHUA_DUYET:MD-DONGBO',

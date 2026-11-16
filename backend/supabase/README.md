@@ -6,10 +6,10 @@ Nơi đặt dự án đám mây chưa chốt (LQ-08); chưa tạo dự án nào.
 | Thư mục / file | Nội dung |
 |---|---|
 | `config.toml` | Cấu hình Supabase CLI cục bộ, tối thiểu. `private` không nằm trong `[api] schemas` |
-| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set`. `…140000` T1.2: `family_create`, `touch_active`, `private.params`. `…150000` T1.5: ghép máy (`pair_*`), Parent PIN (`pin_set`, `pin_verify` nội bộ), `access_state` thêm `child.pair` và claim epoch, `RATE_LIMITED`. `…160000` T1.6: `unlink_device`. `…170000` T1.8: `member_invite` (khung, cờ `invites_enabled=0`, luôn `FEATURE_OFF`). `…180000` hàm phụ trợ RLS (`can`, `can_household`, `is_member`, `is_self_member`) chuyển sang schema `app_internal` không mở API; 5 hàm không còn dùng thu hồi EXECUTE |
+| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set`. `…140000` T1.2: `family_create`, `touch_active`, `private.params`. `…150000` T1.5: ghép máy (`pair_*`), Parent PIN (`pin_set`, `pin_verify` nội bộ), `access_state` thêm `child.pair` và claim epoch, `RATE_LIMITED`. `…160000` T1.6: `unlink_device`. `…170000` T1.8: `member_invite` (khung, cờ `invites_enabled=0`, luôn `FEATURE_OFF`). `…180000` hàm phụ trợ RLS (`can`, `can_household`, `is_member`, `is_self_member`) chuyển sang schema `app_internal` không mở API; 5 hàm không còn dùng thu hồi EXECUTE. `…20261116110000` T2.5: `audit_log` + cơ chế ghi. `…120000` T2.1: mục đích thứ 8, `policy_versions`, `consent_events`, `purpose_state`, `consent_record`, nối `access_state` với đồng ý. `…130000` T2.2: `deletion_requests`, `consent_withdraw_all` hai bước |
 | `seed/` | Dữ liệu giả (chị Hoa, anh Minh, bé Na, bé Bin, cô Lan, bé Su). **Không dữ liệu thật của trẻ** |
 | `tests/stub/` | `supabase-stub.sql`: vai `anon`/`authenticated`/`service_role`, schema `auth`, `auth.uid()`/`auth.jwt()`, `pgcrypto` ở schema `extensions`, `vault.decrypted_secrets` với khóa GIẢ chỉ để test. **Chỉ dùng cho test trên Postgres thuần, không nằm trong migrations** |
-| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `pair.test.mjs` (FN-FAM, FN-PAIR, FN-PIN, FR01-T01..T10, RLS-EPOCH), `member.test.mjs` (MEM-INV, MEM-NL), `policy-matrix.json`, `mutations/` |
+| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `pair.test.mjs` (FN-FAM, FN-PAIR, FN-PIN, FR01-T01..T10, RLS-EPOCH), `member.test.mjs` (MEM-INV, MEM-NL), `consent.test.mjs` (CON-01..08, 22, CON-D58, CON-WA: T2.1, T2.2), `audit.test.mjs` (AUD-01..06: T2.5), `policy-matrix.json`, `mutations/` |
 | `functions/` | Edge Function (task sau) |
 
 ## Chạy test RLS
@@ -20,7 +20,7 @@ Hai chế độ, cùng một bộ test (`tests/rls/rls.test.mjs`, đọc `RLS_DB
 
 ```bash
 scripts/db-test.sh                  # initdb vào /tmp, cổng tự chọn, nạp stub + migrations + seed, chạy test, dọn dẹp
-scripts/db-test.sh --prove-negative # thêm: áp 43 đột biến và xác nhận test THẤT BẠI đúng mã
+scripts/db-test.sh --prove-negative # thêm: áp 62 đột biến và xác nhận test THẤT BẠI đúng mã
 ```
 
 Chạy bằng root thì script tự hạ quyền initdb/postgres xuống user `postgres`.
@@ -246,3 +246,45 @@ supabase migration list
 ```
 
 Chỉ sau khi chủ sản phẩm đồng ý áp lên đám mây mới chạy `supabase db push` (áp `…170000` và `…180000`). Từ nay nên áp bằng `db push` để version đám mây trùng version file, không áp bằng công cụ tạo version theo giờ. Lệnh `repair` đổi bảng `supabase_migrations.schema_migrations`, nên cần chủ sản phẩm duyệt trước khi chạy (quy tắc: không áp gì lên đám mây từ nhánh code).
+
+## T2.1, T2.2, T2.5: đồng ý theo mục đích, rút toàn bộ, audit
+
+### Đồng ý (T2.1)
+
+- Bảng: `purposes` (nay 8 mục), `policy_versions` (chỉ-thêm, một bản nháp `NHAP-D42-CHUA-DUYET`), `consent_events` (sổ chỉ-thêm: trigger chặn sửa/xóa/truncate kể cả `service_role`), `purpose_state` (`CHUA_HOI` = không có dòng; chỉ trigger của sổ ghi được, chặn bằng `pg_trigger_depth()`).
+- `app_internal.purpose_effective(child, code)` (nội bộ, không cấp cho `authenticated`): mục đích tự `DANG_BAT`, `collect_enabled`, và mọi mục phụ thuộc (kể cả gián tiếp) hiệu lực. `app.access_state` / `app_internal.can` với `p_purpose` khác null nay DENY khi mục đích chưa hiệu lực, kể cả với QL (nối Tech Spec §2.8, BL 11.3 §5).
+- Dữ liệu cũ: bảng dữ liệu của task sau (T3+) dùng chính sách `app_internal.purpose_visible(child, 'MD-xxx', created_at)` (hoặc `visible_from`). Dữ liệu chỉ hiện nếu `created_at >= visible_from`, mốc = lớn nhất của `active_since` trên cả chuỗi phụ thuộc. Rút rồi đồng ý lại (mục đó hoặc mục cha) không làm dữ liệu cũ hiện lại (D-42, AC-CON-07). Mẫu chính sách được kiểm trong `consent.test.mjs` (CON-07).
+- `app.consent_record(p_child, p_purpose_code, p_event, p_policy_version_id, p_paper_ref, p_idempotency_key, p_for_self)`:
+
+| Tình huống | Kết quả |
+|---|---|
+| QL, theo con | ghi `DONG_Y` / `RUT`; cùng trạng thái thì `changed=false`, không ghi sổ |
+| NL theo con (`p_for_self=false`) | `FORBIDDEN` (AC-CON-05) |
+| NL hoặc QL của chính mình (`p_for_self=true`) | ghi sổ có `subject_member_id`; không đổi `purpose_state`; `RUT` thu hồi grant của chính người đó cho mục đích và mục phụ thuộc |
+| Máy con | `FORBIDDEN` `BR-CON-020` |
+| `DONG_Y` mục `collect_enabled=false` (MD-SUCKHOE, MD-CONBAO) | `FEATURE_OFF`; `RUT` vẫn ghi được |
+| `RUT` mục lõi MD-LICH ở cấp con | `VALIDATION` `BR-CON-026`: phải dùng rút toàn bộ |
+| Hộ đóng băng | `FROZEN` |
+
+- Rút một mục: ghi `RUT` và `RUT` theo cho mục phụ thuộc đang bật (`origin='PHU_THUOC'`).
+
+### Rút toàn bộ (T2.2)
+
+`app.consent_withdraw_all(p_child, p_confirm_token)`. Bước 1 (không mã): trả hệ quả và `confirm_token` dùng một lần (hạn `withdraw_confirm_ttl_minutes`=10 trong `private.params`), không đổi dữ liệu. Bước 2 (có mã): một giao dịch ghi `RUT` mọi mục đang bật (`RUT_TOAN_BO`), hủy liên kết máy con (`RUT_DONG_Y`), ẩn hồ sơ (`state='CHO_XOA'`, `hidden_reason='RUT_DONG_Y'`; mọi hàm dùng `app.can` nên từ chối ghi và đọc), tạo `deletion_requests` (`CHO_QUYET_HAN`, `due_at` null vì hạn xóa hẳn `UNKNOWN`). Gửi lặp: `replay` và giữ `accepted_at` đầu. Không xóa hẳn, `hard_deleted=false` (xóa thật: T2.3/T2.4).
+
+### Audit (T2.5)
+
+- `audit_log` chỉ-thêm; QL đọc dòng của hộ mình. Ghi bằng trigger trên bảng nguồn (`device_bindings`, `children`, `consent_events`, `deletion_requests`) nên mọi đường, kể cả `service_role`, để lại dấu và dòng audit cùng giao dịch. Sự kiện hiện có: `binding.requested|paired|unlinked`, `mode.changed`, `child.hidden`, `consent.granted|withdrawn`, `deletion.requested`.
+- Không PIN, mã, token, chữ tự do, lựa chọn hỏi thăm: `private.audit_events` khai sẵn khóa `meta` cho từng sự kiện; trigger `tg_audit_validate` chỉ nhận giá trị là mã ngắn, số nhỏ, boolean (không chuỗi toàn chữ số dài) và không lặp giá trị sai trong thông báo lỗi. Không có sự kiện nào cho nút "Con cần giúp đỡ" hay hỏi thăm (BR-CON-035).
+- Thêm sự kiện mới: thêm dòng vào `private.audit_events` (migration) rồi gọi `private.audit_write_auto(...)` từ trigger/hàm.
+
+### Mặc định an toàn đã chọn (tài liệu thiếu hoặc mơ hồ; chờ chủ sản phẩm duyệt)
+
+1. Mục đích thứ 8 mã `MD-CONBAO` (D-58 không đặt mã), tùy chọn, phụ thuộc MD-DONGBO, `collect_enabled=false` cho tới khi LQ-16 có trả lời; chưa ghi `DONG_Y` được.
+2. Rút mục cha kéo theo `RUT` mục con đang bật; đồng ý lại mục cha KHÔNG tự bật lại mục con.
+3. Hộ đóng băng: ghi đồng ý, rút, rút toàn bộ đều `FROZEN` (BR-FAM-054 "không ẩn thêm"; giống `child.delete`).
+4. Rút toàn bộ ẩn luôn hồ sơ con (QL cũng không thấy); `deletion_requests` là nơi QL xem tiến trình. Hoàn tác trong thời gian chờ (BR-FAM-084, `UNKNOWN`) chưa có.
+5. Mã xác nhận bước hai hạn 10 phút (`CHUA_CHOT`), do máy chủ ép (không chỉ cờ `confirm=true`).
+6. Đồng ý của chính người lớn (NL, BR-CON-007): ghi sổ, rút thì thu hồi grant của họ; không đổi `purpose_state`.
+7. Chưa ép "không đồng ý MD-LICH thì không tạo hồ sơ" (BR-CON-001) ở `child_create`; chưa có `CHO_DONG_Y_LAI`; `approval='CHUA_DUYET'` chưa chặn gì ở máy chủ (chặn dữ liệu thật theo `data_class` là T2.4); vô hiệu CR khi rút MD-MONGMUON (AC-CON-04) chờ bảng ở T4.3; `family_create` chưa ghi đồng ý (chưa có con để gắn).
+8. Audit: `pin_set` chưa có sự kiện (đề xuất `pin.set` không kèm PIN nếu muốn dò đổi PIN); PIN sai và `pair_confirm` thất bại (trả HTTP 200, không raise) chưa ghi audit; hạn giữ audit `PR-CON-04` `UNKNOWN`, không có job xóa.
