@@ -87,14 +87,14 @@
       }
     },
     "purposes": {
-      "spec": "§2.2, §2.7: bảng tham chiếu, mọi người đăng nhập đọc 8 mục đích (thêm MD-CONBAO, D-58)",
+      "spec": "§2.2, §2.7: bảng tham chiếu, mọi người đăng nhập đọc 3 mục đích (MD-LICH lõi gộp, MD-SUCKHOE, MD-CONBAO; D-64, D-66)",
       "pk": "code",
       "select": {
-        "QL": 8,
-        "NL": 8,
-        "CON": 8,
-        "CON_CHUA_GHEP": 8,
-        "HO_KHAC": 8,
+        "QL": 3,
+        "NL": 3,
+        "CON": 3,
+        "CON_CHUA_GHEP": 3,
+        "HO_KHAC": 3,
         "ANON": "denied"
       }
     },
@@ -132,9 +132,9 @@
       }
     },
     "consent_events": {
-      "spec": "§2.2, §2.7: QL đọc cả hộ; người lớn đọc dòng của chính mình; máy con không",
+      "spec": "§2.2, §2.7: QL đọc cả hộ (kể cả dòng 'con đã đồng ý', D-64); người lớn đọc dòng của chính mình; máy con không",
       "select": {
-        "QL": 4,
+        "QL": 3,
         "NL": 0,
         "CON": 0,
         "CON_CHUA_GHEP": 0,
@@ -143,12 +143,12 @@
       }
     },
     "purpose_state": {
-      "spec": "§2.2, §2.7: QL đọc mọi mục đích của con; NL và máy con chỉ thấy mục đích hiệu lực được xem",
+      "spec": "§2.2, §2.7: QL đọc mọi mục đích của con; NL và máy con chỉ thấy mục đích hiệu lực được xem; máy con không thấy MD-SUCKHOE (D-66)",
       "pk": "child_id",
       "select": {
-        "QL": 4,
+        "QL": 3,
         "NL": 1,
-        "CON": 3,
+        "CON": 1,
         "CON_CHUA_GHEP": 0,
         "HO_KHAC": 1,
         "ANON": "denied"
@@ -208,6 +208,28 @@
         "HO_KHAC": "denied",
         "ANON": "denied"
       }
+    },
+    "child_alerts": {
+      "spec": "D-67: QL đọc; NL chỉ khi có grant MD-CONBAO (seed: không); máy con chỉ thấy cái chính máy đó gửi; chỉ khi đã đồng ý MD-CONBAO; chỉ trong 7 ngày",
+      "select": {
+        "QL": 0,
+        "NL": 0,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      }
+    },
+    "child_health_notes": {
+      "spec": "D-66: QL đọc; NL chỉ khi có grant MD-SUCKHOE (seed: không); máy con KHÔNG đọc; chỉ khi đã đồng ý MD-SUCKHOE",
+      "select": {
+        "QL": 1,
+        "NL": 0,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      }
     }
   },
   "private": {
@@ -218,7 +240,7 @@
       "spec": "§2.5, D-38: không vai người lớn/con đọc trực tiếp"
     },
     "child_settings": {
-      "spec": "§2.5, BR-CON-034"
+      "spec": "§2.5, BR-CON-034; thêm ai_chat_enabled (T2.7): đọc/ghi chỉ qua child_setting_get/set, my_child_settings"
     },
     "params": {
       "spec": "T1.2: tham số chưa chốt (private.params); không vai nào đọc"
@@ -337,7 +359,41 @@
     "tg_trial_slot_ended": [],
     "tg_household_trial_guard": [],
     "tg_trial_withdraw": [],
-    "tg_evidence_validate": []
+    "tg_evidence_validate": [],
+    "health_note_json": [],
+    "tg_health_audit": [],
+    "health_note_add": [
+      "authenticated"
+    ],
+    "health_note_update": [
+      "authenticated"
+    ],
+    "health_note_delete": [
+      "authenticated"
+    ],
+    "tg_alert_audit": [],
+    "child_alert_send": [
+      "authenticated"
+    ],
+    "child_alert_seen": [
+      "authenticated"
+    ],
+    "child_consent_record": [
+      "authenticated"
+    ],
+    "child_setting_set": [
+      "authenticated"
+    ],
+    "child_setting_get": [
+      "authenticated"
+    ],
+    "my_child_settings": [
+      "authenticated"
+    ],
+    "my_family_state": [
+      "authenticated"
+    ],
+    "purge_child": []
   },
   "app_internal_functions": {
     "_doc": "Hàm phụ trợ của chính sách RLS, nằm schema app_internal (không mở API, T1.8-b). Vai được EXECUTE (ngoài service_role). Chính sách chạy với quyền người gọi nên authenticated cần EXECUTE; anon không có gì. Hàm mới phải khai ở đây.",
@@ -359,11 +415,21 @@
     ],
     "purpose_visible": [
       "authenticated"
+    ],
+    "is_adult_of_child": [
+      "authenticated"
+    ],
+    "alert_fresh": [
+      "authenticated"
+    ],
+    "is_alert_sender": [
+      "authenticated"
     ]
   },
   "private_readers": {
     "_doc": "Chỉ các hàm này được nhắc tới private.checkin_responses trong thân hàm (RLS-D38-02).",
     "functions": [
+      "app.purge_child",
       "app.purge_household",
       "app.weekly_report"
     ]

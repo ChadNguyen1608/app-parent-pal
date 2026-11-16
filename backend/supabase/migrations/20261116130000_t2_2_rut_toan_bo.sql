@@ -16,17 +16,19 @@ create table app.deletion_requests (
   id           uuid primary key default gen_random_uuid(),
   created_at   timestamptz not null default now(),
   household_id uuid not null references app.households (id),
-  scope        text not null check (scope in ('HO_SO_CON', 'NGUOI_LON_ROI', 'GIA_DINH')),
+  scope        text not null check (scope in ('HO_SO_CON', 'NGUOI_LON_ROI', 'GIA_DINH', 'SUC_KHOE')),   -- SUC_KHOE: chỉ phần ghi chú sức khỏe của con (D-66)
   child_id     uuid references app.children (id),
   requested_by uuid not null references app.members (id),
   accepted_at  timestamptz not null default clock_timestamp(),     -- thời điểm chấp nhận LẦN ĐẦU (AC-CON-17)
   state        text not null default 'CHO_QUYET_HAN' check (state in ('CHO_QUYET_HAN', 'CHO_XOA_HAN', 'DA_XOA', 'DA_HUY')),
   due_at       timestamptz,                                         -- null = UNKNOWN (PR-CON-01), không tự xóa
-  reason       text not null check (reason in ('RUT_TOAN_BO', 'XOA_HO_SO')),
-  check (scope <> 'HO_SO_CON' or child_id is not null)
+  reason       text not null check (reason in ('RUT_TOAN_BO', 'XOA_HO_SO', 'RUT_SUC_KHOE')),
+  check (scope not in ('HO_SO_CON', 'SUC_KHOE') or child_id is not null)
 );
 create unique index deletion_requests_one_open_per_child
   on app.deletion_requests (child_id) where scope = 'HO_SO_CON' and state <> 'DA_HUY';
+create unique index deletion_requests_one_open_health_per_child
+  on app.deletion_requests (child_id) where scope = 'SUC_KHOE' and state <> 'DA_HUY';
 create index deletion_requests_household_idx on app.deletion_requests (household_id);
 
 create function app.tg_deletion_audit() returns trigger

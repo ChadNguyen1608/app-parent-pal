@@ -59,17 +59,21 @@ insert into app.invitations (household_id, invited_by, role, code_hmac, expires_
   ('00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-000000000201', 'OBSERVER',
    'seed-fake-invite-hmac-0001', now() + interval '72 hours');
 
--- T2.1: đồng ý đã ghi (tên giả). Bé Na: MD-LICH, MD-DONGBO, MD-XONG (như AC-CON-01); bé Bin và bé Su: chỉ MD-LICH.
--- Không có MD-MET, MD-MONGMUON, MD-BAOCAO, MD-SUCKHOE, MD-CONBAO (mục tùy chọn không chọn sẵn, D-42).
+-- T2.1 (D-64, D-66): đồng ý đã ghi (tên giả). Bé Na: MD-LICH (lõi) và MD-SUCKHOE (riêng, D-66);
+-- bé Bin và bé Su: chỉ MD-LICH. Không có MD-CONBAO (chưa thu, D-58).
 insert into app.consent_events (at, household_id, child_id, purpose_code, event, actor_member_id, policy_version_id)
 select '2025-09-15 08:00+07'::timestamptz + (n * interval '1 minute'), c.household_id, c.id, v.code, 'DONG_Y', m.id,
        (select id from app.policy_versions order by effective_at limit 1)
 from (values
-  ('00000000-0000-4000-8000-000000000301'::uuid, 'MD-LICH',   1),
-  ('00000000-0000-4000-8000-000000000301'::uuid, 'MD-DONGBO', 2),
-  ('00000000-0000-4000-8000-000000000301'::uuid, 'MD-XONG',   3),
-  ('00000000-0000-4000-8000-000000000302'::uuid, 'MD-LICH',   4),
-  ('00000000-0000-4000-8000-000000000303'::uuid, 'MD-LICH',   5)
+  ('00000000-0000-4000-8000-000000000301'::uuid, 'MD-LICH',    1),
+  ('00000000-0000-4000-8000-000000000301'::uuid, 'MD-SUCKHOE', 2),
+  ('00000000-0000-4000-8000-000000000302'::uuid, 'MD-LICH',    4),
+  ('00000000-0000-4000-8000-000000000303'::uuid, 'MD-LICH',    5)
 ) as v(child, code, n)
 join app.children c on c.id = v.child
 join app.members m on m.household_id = c.household_id and m.role = 'PRIMARY';
+
+-- D-66: một ghi chú sức khỏe giả của bé Na (tên giả, nội dung giả), chị Hoa khai.
+insert into app.child_health_notes (child_id, kind, content, declared_by_member_id, declared_by_role, declared_at, source_note)
+values ('00000000-0000-4000-8000-000000000301', 'DI_UNG', 'Dị ứng giả định (dữ liệu thử)', '00000000-0000-4000-8000-000000000201',
+        'PRIMARY', '2025-09-16', 'theo giấy khám (giả)');

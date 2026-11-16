@@ -13,15 +13,17 @@
 --     (lần chạy kế tiếp, xem README). `private.trial_end_due`: hết hạn thử -> HET_THU, hộ sang CHO_XOA (ngừng thu).
 --  5. `app.trial_open/trial_close/trial_attach` (service_role = chủ sản phẩm; `trial-open/close` của Tech Spec §3 #34).
 --  6. `app.export_request`: luôn BLOCKED_H4 ở đợt thử (chưa dựng bản xuất).
---  7. Móc "rút giữa chừng": một yêu cầu xóa kiểu RUT_TOAN_BO (hoặc xóa cả gia đình) của hộ thử đặt vị trí sang RUT_SOM.
+--  7. Móc "rút giữa chừng": một yêu cầu xóa kiểu RUT_TOAN_BO của CON CUỐI CÙNG (hoặc xóa cả gia đình) của hộ thử đặt vị trí sang RUT_SOM.
+--  8. `app.purge_child(child, reason)` (D-64): rút cho MỘT con trong hộ nhiều con chỉ xóa dữ liệu con đó (cùng nguyên tắc purge_household:
+--     thứ tự khóa ngoại, bằng chứng xóa, chỉ hệ thống, BLOCKED_H4 với dữ liệu thật). Con cuối cùng của hộ thì xóa cả hộ.
 --
 -- QUYẾT ĐỊNH MẶC ĐỊNH (tài liệu thiếu hoặc mơ hồ; chờ chủ sản phẩm duyệt):
 --  1. "Ngày kết thúc" `end_date` là ngày CUỐI được thu. Job-daily chuyển HET_THU khi `end_date` < hôm nay (giờ VN); xóa khi
 --     hôm nay >= `end_date` + 7 (D-44 "7 ngày sau ngày kết thúc"). Thu và xóa dùng ngày theo Asia/Ho_Chi_Minh.
 --  2. Hết hạn hoặc rút: hộ sang `state = 'CHO_XOA'` (ngừng thu: mọi hàm ghi FROZEN, máy con và NL không đọc, QL đọc được, không
 --     mở lại được). Dùng lại nghĩa "ngừng xử lý" của đóng băng nên không đụng `app.access_state`.
---  3. Một yêu cầu rút toàn bộ của MỘT con trong hộ thử = hộ rút (BR-CON-087), xóa cả hộ (đơn vị xóa là hộ, `purge_household`).
---     Nếu chủ sản phẩm muốn chỉ xóa con đó khi hộ còn con khác: cần hàm xóa theo con (chưa làm).
+--  3. Rút toàn bộ của MỘT con trong hộ thử còn con khác: chỉ xóa con đó (`purge_child`, job chạy "xóa ngay" như RUT_SOM); hộ thử và vị trí giữ
+--     nguyên. Rút con cuối cùng = hộ rút (BR-CON-087): vị trí sang RUT_SOM, xóa cả hộ. "Con cuối" = không còn con nào chưa bị ẩn.
 --  4. `purge_household` cũng xóa dòng `auth.users` của người lớn trong hộ và máy con chỉ gắn với hộ này (một người dùng còn
 --     liên kết ở hộ khác thì giữ). Chưa kiểm trên Supabase thật (stub chỉ có bảng `auth.users` tối thiểu): nếu dự án thật từ chối
 --     DELETE trên auth.users cho vai chạy hàm, đặt `purge_delete_auth_users = 0` thì hàm trả `auth_user_ids` (chưa xóa) để Edge
@@ -57,7 +59,7 @@ end $$;
 insert into private.params (key, value_int, status, note) values
   ('trial_purge_after_days', 7, 'DA_CHOT', 'D-44: xóa dữ liệu hộ thử 7 ngày sau ngày kết thúc'),
   ('trial_max_active', 3, 'DA_CHOT', 'D-01, D-45, PR-CON-10: tối đa 3 hộ thử cùng lúc (AC-CON-23)'),
-  ('trial_max_days', 14, 'CHUA_CHOT', 'Tech Spec §2.1 [MĐKT], Q-ARC-09: hạn kết thúc tối đa N ngày kể từ lúc mở vị trí thử; PR-CON-09 do chủ sản phẩm chọn hạn từng vị trí'),
+  ('trial_max_days', 14, 'DA_CHOT', 'D-65 (17/11/2026), Tech Spec §2.1, Q-ARC-09: hạn kết thúc tối đa 14 ngày kể từ lúc mở vị trí thử; PR-CON-09 do chủ sản phẩm chọn hạn từng vị trí'),
   ('purge_delete_auth_users', 1, 'CHUA_CHOT', 'Kỹ thuật: 1 = purge_household xóa luôn auth.users của hộ (chưa kiểm trên Supabase thật); 0 = trả auth_user_ids để Edge Function xóa bằng Admin API');
 
 -- Chỉ hệ thống (service_role, job, quản trị CSDL) gọi hàm quản trị; JWT của người dùng đăng nhập thì không (phòng thủ chiều sâu, ngoài EXECUTE).
@@ -174,10 +176,15 @@ end $$;
 create trigger households_trial_guard before insert or update of data_class, trial_slot_id on app.households
   for each row execute function app.tg_household_trial_guard();
 
--- Rút giữa chừng (BR-CON-087, AC-CON-26): yêu cầu rút toàn bộ hoặc xóa gia đình của hộ thử -> vị trí RUT_SOM (xóa ở lần chạy kế tiếp).
+-- Rút giữa chừng (BR-CON-087, AC-CON-26): yêu cầu rút toàn bộ của con cuối, hoặc xóa gia đình, của hộ thử -> vị trí RUT_SOM (xóa ở lần chạy kế tiếp).
 create function app.tg_trial_withdraw() returns trigger
 language plpgsql security definer set search_path = '' as $$
 begin
+  -- Rút cho một con khi hộ còn con khác (chưa bị ẩn): không rút cả hộ; chỉ con đó bị xóa (purge_child, job-trial-purge).
+  if new.scope = 'HO_SO_CON'
+     and exists (select 1 from app.children c where c.household_id = new.household_id and c.hidden_at is null) then
+    return null;
+  end if;
   update app.trial_slots s set state = 'RUT_SOM'
     from app.households h
    where h.id = new.household_id and h.trial_slot_id = s.id and s.state in ('DANG_THU', 'HET_THU');
@@ -191,7 +198,8 @@ create trigger deletion_requests_trial_withdraw after insert on app.deletion_req
 create table app.deletion_evidence (
   id                 uuid primary key default gen_random_uuid(),
   created_at         timestamptz not null default now(),
-  household_ref_hash text not null unique check (household_ref_hash ~ '^[0-9a-f]{64}$'),
+  scope              text not null default 'HO' check (scope in ('HO', 'CON')),   -- CON: chỉ một con bị xóa (purge_child), hộ còn
+  household_ref_hash text not null unique check (household_ref_hash ~ '^[0-9a-f]{64}$'),   -- sha256 của id hộ (scope HO) hoặc id con (scope CON)
   reason             text not null check (reason in ('HET_THU', 'RUT_SOM', 'GIA_LAP_DIEN_TAP', 'OWNER')),
   data_class         text not null check (data_class in ('GIA_LAP', 'THU_NOI_BO_D01')),
   trial_slot_id      uuid references app.trial_slots (id),
@@ -306,6 +314,10 @@ begin
   get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('private.checkin_responses', v_n);
   delete from private.child_settings t where t.child_id in (select c.id from app.children c where c.household_id = p_household);
   get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('private.child_settings', v_n);
+  delete from app.child_health_notes t where t.child_id in (select c.id from app.children c where c.household_id = p_household);
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.child_health_notes', v_n);
+  delete from app.child_alerts t where t.child_id in (select c.id from app.children c where c.household_id = p_household);
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.child_alerts', v_n);
   delete from private.parent_pins t where t.member_id in (select m.id from app.members m where m.household_id = p_household);
   get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('private.parent_pins', v_n);
   delete from private.pairing_codes t where t.device_user_id = any (v_del);
@@ -352,6 +364,124 @@ begin
     'auth_user_ids', to_jsonb(case when v_drop then '{}'::uuid[] else v_del end));
 end $$;
 
+-- ============================================================ app.purge_child (D-64; BR-CON-056, 087; AC-CON-20, 26)
+-- Xóa THẬT dữ liệu của MỘT con (hộ giữ nguyên). Chỉ hệ thống. Vào: p_child, p_reason ('RUT_SOM' | 'GIA_LAP_DIEN_TAP' | 'OWNER').
+-- Từ chối: loại dữ liệu ngoài GIA_LAP / THU_NOI_BO_D01 -> BLOCKED_H4; hộ thử: vị trí phải còn trong vòng thử (DANG_THU, HET_THU,
+-- RUT_SOM) và con phải đã rút/xóa (state CHO_XOA); hộ giả lập: lý do GIA_LAP_DIEN_TAP hoặc OWNER.
+-- Con cuối cùng của hộ (không còn con nào chưa bị ẩn) -> xóa cả hộ bằng purge_household (kết quả có scope 'HO').
+-- Ra: {ok, replay, scope: 'CON', row_counts, auth_users_deleted, auth_user_ids}. Gửi lặp (đã xóa, còn bằng chứng): replay.
+-- Không xóa: người lớn và tài khoản của họ, thông báo vòng đời, bộ đếm ghép của hộ. Xóa dòng audit có chủ thể là con (subject_ref).
+create function app.purge_child(p_child uuid, p_reason text) returns jsonb
+language plpgsql security definer set search_path = '' as $$
+declare
+  v_c      app.children;
+  v_h      app.households;
+  v_slot   app.trial_slots;
+  v_hash   text;
+  v_counts jsonb := '{}'::jsonb;
+  v_n      int;
+  v_users  uuid[];
+  v_del    uuid[];
+  v_drop   boolean := private.param_int('purge_delete_auth_users') = 1;
+  v_sub    text := 'child:' || p_child::text;
+  v_res    jsonb;
+begin
+  perform private.require_system();
+  if p_child is null or p_reason is null or p_reason not in ('RUT_SOM', 'GIA_LAP_DIEN_TAP', 'OWNER') then
+    perform app.fail('VALIDATION', 'D-64', 'Con hoặc lý do xóa không hợp lệ.');
+  end if;
+  v_hash := encode(extensions.digest(convert_to(p_child::text, 'UTF8'), 'sha256'), 'hex');
+
+  select * into v_c from app.children c where c.id = p_child for update;
+  if not found then
+    if exists (select 1 from app.deletion_evidence e where e.household_ref_hash = v_hash) then
+      return jsonb_build_object('ok', true, 'replay', true, 'scope', 'CON');
+    end if;
+    perform app.fail('NOT_FOUND');
+  end if;
+  select * into v_h from app.households h where h.id = v_c.household_id for update;
+
+  if v_h.data_class not in ('GIA_LAP', 'THU_NOI_BO_D01') then
+    perform app.fail('BLOCKED_H4', 'BR-CON-056', 'Dữ liệu thật chưa được xóa hẳn khi cổng pháp lý H4 còn mở.');
+  end if;
+  if v_h.data_class = 'THU_NOI_BO_D01' then
+    select * into v_slot from app.trial_slots s where s.id = v_h.trial_slot_id for update;
+    if not found or v_slot.state not in ('DANG_THU', 'HET_THU', 'RUT_SOM') then
+      perform app.fail('VALIDATION', 'D-44', 'Vị trí thử không còn trong vòng thử.');
+    end if;
+    if p_reason not in ('RUT_SOM', 'OWNER') then
+      perform app.fail('VALIDATION', 'D-44', 'Lý do xóa không khớp loại dữ liệu.');
+    end if;
+    if v_c.state <> 'CHO_XOA' then
+      perform app.fail('VALIDATION', 'D-64', 'Con này chưa rút đồng ý hoặc chưa yêu cầu xóa.');
+    end if;
+  elsif p_reason not in ('GIA_LAP_DIEN_TAP', 'OWNER') then
+    perform app.fail('VALIDATION', 'D-44', 'Lý do xóa không khớp loại dữ liệu.');
+  end if;
+
+  -- con cuối cùng: xóa cả hộ
+  if not exists (select 1 from app.children c where c.household_id = v_h.id and c.id <> p_child and c.hidden_at is null) then
+    v_res := app.purge_household(v_h.id, p_reason);
+    -- dấu vết theo con (để gửi lặp purge_child cho con này trả replay, không NOT_FOUND); số dòng nằm ở bằng chứng của hộ
+    insert into app.deletion_evidence (scope, household_ref_hash, reason, data_class, trial_slot_id, row_counts)
+    values ('CON', v_hash, p_reason, v_h.data_class, v_h.trial_slot_id, '{}'::jsonb)
+    on conflict (household_ref_hash) do nothing;
+    return v_res || jsonb_build_object('scope', 'HO');
+  end if;
+
+  -- máy con ẩn danh của con này (giữ lại nếu còn gắn với con khác hoặc là thành viên)
+  select coalesce(array_agg(distinct b.device_user_id), '{}') into v_users from app.device_bindings b where b.child_id = p_child;
+  select coalesce(array_agg(u), '{}') into v_del from unnest(v_users) u
+   where not exists (select 1 from app.members m where m.user_id = u)
+     and not exists (select 1 from app.device_bindings b where b.device_user_id = u and b.child_id <> p_child);
+
+  insert into private.purge_context (txid, household_id) values (txid_current(), v_h.id) on conflict (txid) do nothing;
+
+  delete from private.pair_throttle t where t.scope = 'USER' and t.key = any (v_del);
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('private.pair_throttle', v_n);
+  delete from private.withdraw_confirmations t where t.child_id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('private.withdraw_confirmations', v_n);
+  delete from private.checkin_responses t where t.child_id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('private.checkin_responses', v_n);
+  delete from private.child_settings t where t.child_id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('private.child_settings', v_n);
+  delete from app.child_health_notes t where t.child_id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.child_health_notes', v_n);
+  delete from app.child_alerts t where t.child_id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.child_alerts', v_n);
+  delete from private.pairing_codes t where t.device_user_id = any (v_del);
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('private.pairing_codes', v_n);
+  delete from app.purpose_state t where t.child_id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.purpose_state', v_n);
+  delete from app.consent_events t where t.child_id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.consent_events', v_n);
+  delete from app.deletion_requests t where t.child_id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.deletion_requests', v_n);
+  delete from app.audit_log t where t.household_id = v_h.id and t.subject_ref = v_sub;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.audit_log', v_n);
+  delete from app.mode_history t where t.child_id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.mode_history', v_n);
+  delete from app.grants t where t.child_id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.grants', v_n);
+  delete from app.device_bindings t where t.child_id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.device_bindings', v_n);
+  delete from app.children t where t.id = p_child;
+  get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('app.children', v_n);
+
+  if v_drop then
+    delete from auth.users t where t.id = any (v_del);
+    get diagnostics v_n = row_count; v_counts := v_counts || jsonb_build_object('auth.users', v_n);
+  end if;
+
+  insert into app.deletion_evidence (scope, household_ref_hash, reason, data_class, trial_slot_id, row_counts)
+  values ('CON', v_hash, p_reason, v_h.data_class, v_h.trial_slot_id, v_counts);
+  delete from private.purge_context where txid = txid_current();
+
+  return jsonb_build_object('ok', true, 'replay', false, 'scope', 'CON', 'row_counts', v_counts,
+    'auth_users_deleted', case when v_drop then coalesce(cardinality(v_del), 0) else 0 end,
+    'auth_user_ids', to_jsonb(case when v_drop then '{}'::uuid[] else v_del end));
+end $$;
+
 -- ============================================================ job: hết hạn thử và xóa
 -- trial_end_due: DANG_THU quá ngày cuối -> HET_THU (trigger đưa hộ sang CHO_XOA = ngừng thu). Gọi từ job_daily và job_trial_purge (chạy bù).
 create function private.trial_end_due(p_now timestamptz default clock_timestamp()) returns jsonb
@@ -383,6 +513,8 @@ declare
   v_today  date := private.today_vn(p_now);
   r        record;
   h        record;
+  v_kid    uuid;
+  v_kids   int := 0;
   v_ok     int := 0;
   v_fail   int := 0;
   v_ended  jsonb;
@@ -407,8 +539,25 @@ begin
       update app.trial_slots set state = 'XOA_XONG', purged_at = clock_timestamp() where id = r.id and state <> 'XOA_XONG';
     end if;
   end loop;
-  v_res := jsonb_build_object('purged', v_ok, 'failed', v_fail, 'ended', v_ended -> 'ended');
-  if not p_only_withdrawn or v_ok + v_fail > 0 then
+  -- rút cho MỘT con của hộ thử còn trong vòng thử (và còn con khác): chỉ xóa con đó, xóa ngay (D-64)
+  for v_kid in
+    select ch.id from app.children ch
+    join app.households hh on hh.id = ch.household_id
+    join app.trial_slots s on s.id = hh.trial_slot_id
+    where hh.data_class = 'THU_NOI_BO_D01' and s.state = 'DANG_THU' and ch.state = 'CHO_XOA'
+      and exists (select 1 from app.deletion_requests dr
+                  where dr.child_id = ch.id and dr.scope = 'HO_SO_CON' and dr.reason = 'RUT_TOAN_BO' and dr.state <> 'DA_HUY')
+    order by ch.id
+  loop
+    begin
+      perform app.purge_child(v_kid, 'RUT_SOM');
+      v_kids := v_kids + 1;
+    exception when others then
+      v_fail := v_fail + 1;
+    end;
+  end loop;
+  v_res := jsonb_build_object('purged', v_ok, 'children_purged', v_kids, 'failed', v_fail, 'ended', v_ended -> 'ended');
+  if not p_only_withdrawn or v_ok + v_kids + v_fail > 0 then
     insert into app.job_runs (job, status, summary)
     values ('job-trial-purge', case when v_fail > 0 then 'LOI' else 'OK' end, v_res);
   end if;
@@ -525,12 +674,12 @@ grant all on app.trial_slots, app.deletion_evidence to service_role;
 revoke all on function
   app.tg_trial_slot_guard(), app.tg_trial_slot_ended(), app.tg_household_trial_guard(), app.tg_trial_withdraw(),
   app.tg_evidence_validate(),
-  app.purge_household(uuid, text), app.trial_open(date, text, uuid), app.trial_close(uuid), app.trial_attach(uuid, uuid),
+  app.purge_household(uuid, text), app.purge_child(uuid, text), app.trial_open(date, text, uuid), app.trial_close(uuid), app.trial_attach(uuid, uuid),
   app.export_request(text, uuid),
   private.trial_end_due(timestamptz), private.job_daily(timestamptz), private.job_trial_purge(timestamptz, boolean)
   from public, anon, authenticated;
 grant execute on function
-  app.purge_household(uuid, text), app.trial_open(date, text, uuid), app.trial_close(uuid), app.trial_attach(uuid, uuid),
+  app.purge_household(uuid, text), app.purge_child(uuid, text), app.trial_open(date, text, uuid), app.trial_close(uuid), app.trial_attach(uuid, uuid),
   private.trial_end_due(timestamptz), private.job_daily(timestamptz), private.job_trial_purge(timestamptz, boolean)
   to service_role;
 grant execute on function app.export_request(text, uuid) to authenticated;

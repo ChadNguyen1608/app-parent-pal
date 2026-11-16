@@ -21,6 +21,7 @@ const skip = DB_URL ? false : 'đặt RLS_DB_URL (hoặc chạy scripts/db-test.
 const QL = A.QL, NL = A.NL, HK = A.HO_KHAC, ANON = A.ANON;
 const DEV_NA = { ...A.CON, claims: { is_anonymous: true } };
 const SVC = { role: 'service_role' };
+const as = (a) => `select set_config('request.jwt.claims', '${JSON.stringify({ sub: a.sub, role: a.role, ...(a.claims || {}) })}', true) as _s \\gset\nset local role ${a.role};\n`;
 const adm = (sql) => `reset role;\nselect set_config('request.jwt.claims', '{"role":"service_role"}', true) as _s \\gset\n${sql};\n`;
 const J = (r, i = 0) => { assert.ok(r.ok, r.err); return JSON.parse(r.rows[i]); };
 const rejected = (r, code, sqlstate, rule = '') => {
@@ -127,7 +128,7 @@ describe('TRIAL-JOB: hết hạn thử và xóa theo D-44 (AC-CON-25; BR-CON-086
     assert.equal(r.rows[7], '1');
     const end = `do $e$ begin perform private.job_daily(${TS(1)}); end $e$;`;
     const o = { setup: `${OPEN()} ${end}` };
-    FROZEN(run(QL, `select app.consent_record('${NA}', 'MD-MET', 'DONG_Y')`, o));
+    FROZEN(run(QL, `select app.consent_record('${BIN}', 'MD-SUCKHOE', 'DONG_Y')`, o));
     FROZEN(run(QL, `select app.child_create('${HH1}', 'bé Mít', p_grade => 3)`, o));
     assert.equal(run(DEV_NA, `select count(*) from app.children`, o).rows[0], '0');
     VALIDATION(run(QL, `select app.household_reopen(true)`, o), 'BR-CON-086');
@@ -174,10 +175,12 @@ describe('TRIAL-WD: hộ thử rút giữa chừng thì xóa ngay (AC-CON-26; BR
   const tok = `select app.consent_withdraw_all('${NA}')->>'confirm_token' as tok \\gset\n`;
   const withdraw = `${tok} select app.consent_withdraw_all('${NA}', :'tok'::uuid);`;
 
-  it('TRIAL-WD-01: rút toàn bộ bước 2: vị trí RUT_SOM, hộ ngừng thu; lần chạy purge kế tiếp (chế độ chỉ RUT_SOM) xóa cả hộ, không chờ hết hạn', () => {
+  // bé Bin đã bị ẩn từ trước (yêu cầu xóa): bé Na là con CUỐI chưa ẩn -> rút bé Na là hộ rút
+  const BIN_HIDDEN = `update app.children set state = 'CHO_XOA', hidden_at = now(), hidden_reason = 'XOA' where id = '${BIN}';`;
+  it('TRIAL-WD-01: rút toàn bộ CON CUỐI bước 2: vị trí RUT_SOM, hộ ngừng thu; lần chạy purge kế tiếp (chế độ chỉ RUT_SOM) xóa cả hộ, không chờ hết hạn', () => {
     const r = run(QL, `${withdraw} ${adm(`${slot}; select state from app.households where id = '${HH1}'`)}
       ${adm(`select private.job_trial_purge(now(), true); ${hh()}; ${hh(HH2)}; ${slot}; select reason from app.deletion_evidence;
-      select count(*) from auth.users where id in ('${U_HOA}', '${U_MINH}', '${U_NA}'); select count(*) from auth.users where id in ('${U_LAN}', '${U_SU}')`)}`, { setup: OPEN() });
+      select count(*) from auth.users where id in ('${U_HOA}', '${U_MINH}', '${U_NA}'); select count(*) from auth.users where id in ('${U_LAN}', '${U_SU}')`)}`, { setup: `${OPEN()} ${BIN_HIDDEN}` });
     assert.ok(r.ok, r.err);
     assert.equal(r.rows[1], 'RUT_SOM');
     assert.equal(r.rows[2], 'CHO_XOA');
@@ -190,7 +193,7 @@ describe('TRIAL-WD: hộ thử rút giữa chừng thì xóa ngay (AC-CON-26; BR
     assert.equal(r.rows[9], '2', 'người dùng hộ khác còn nguyên');
   });
 
-  it('TRIAL-WD-02: chế độ "chỉ RUT_SOM" không xóa vị trí HET_THU chưa đến hạn; xóa cả gia đình của hộ thử cũng là rút; xóa một hồ sơ con thì không', () => {
+  it('TRIAL-WD-02: chế độ "chỉ RUT_SOM" không xóa vị trí HET_THU chưa đến hạn; xóa cả gia đình của hộ thử cũng là rút; xóa một hồ sơ con (yêu cầu xóa) thì không', () => {
     const end = `do $e$ begin perform private.job_daily(${TS(1)}); end $e$;`;
     const early = run({ role: 'admin' }, `select private.job_trial_purge(${TS(2)}, true); ${hh()}`, { setup: `${OPEN()} ${end}` });
     assert.equal(J(early, 0).purged, 0);
@@ -199,6 +202,44 @@ describe('TRIAL-WD: hộ thử rút giữa chừng thì xóa ngay (AC-CON-26; BR
     assert.equal(fam.rows[1], 'RUT_SOM');
     const kid = run(QL, `select app.deletion_request('HO_SO_CON', '${BIN}', true); ${adm(slot)}`, { setup: OPEN() });
     assert.equal(kid.rows[1], 'DANG_THU');
+  });
+
+  it('TRIAL-WD-03: rút MỘT con khi hộ còn con khác (D-64): vị trí và hộ giữ nguyên; job xóa ngay chỉ dữ liệu con đó (bằng chứng scope CON); con kia và người lớn còn nguyên', () => {
+    const r = run(QL, `${withdraw} ${adm(`${slot}; select state from app.households where id = '${HH1}'; select state from app.children where id = '${NA}'`)}
+      ${adm(`select private.job_trial_purge(now(), true); ${slot}; select state from app.households where id = '${HH1}';
+        select (select count(*) from app.children where id = '${NA}') || ':' || (select count(*) from app.children where id = '${BIN}')
+          || ':' || (select count(*) from app.members where household_id = '${HH1}') || ':' || (select count(*) from app.purpose_state where child_id = '${BIN}')
+          || ':' || (select count(*) from app.consent_events where child_id = '${NA}') || ':' || (select count(*) from app.child_health_notes where child_id = '${NA}')
+          || ':' || (select count(*) from app.audit_log where subject_ref = 'child:${NA}') || ':' || (select count(*) from app.deletion_requests where child_id = '${NA}');
+        select scope || ':' || reason || ':' || data_class || ':' || (household_ref_hash = encode(extensions.digest(convert_to('${NA}', 'UTF8'), 'sha256'), 'hex')) from app.deletion_evidence;
+        select count(*) from auth.users where id = '${U_NA}'; select count(*) from auth.users where id in ('${U_HOA}', '${U_MINH}')`)}`, { setup: OPEN() });
+    assert.ok(r.ok, r.err);
+    assert.equal(r.rows[1], 'DANG_THU', 'vị trí không RUT_SOM khi hộ còn con khác');
+    assert.equal(r.rows[2], 'HOAT_DONG');
+    assert.equal(r.rows[3], 'CHO_XOA');
+    assert.equal(J(r, 4).children_purged, 1);
+    assert.equal(J(r, 4).purged, 0);
+    assert.equal(r.rows[5], 'DANG_THU');
+    assert.equal(r.rows[6], 'HOAT_DONG');
+    assert.equal(r.rows[7], '0:1:2:1:0:0:0:0');
+    assert.equal(r.rows[8], 'CON:RUT_SOM:THU_NOI_BO_D01:true');
+    assert.equal(r.rows[9], '0', 'máy bé Na ẩn danh bị xóa');
+    assert.equal(r.rows[10], '2', 'người lớn còn nguyên');
+  });
+
+  it('TRIAL-WD-04: rút nốt con cuối sau đó: hộ rút (RUT_SOM) và xóa cả hộ; chạy lại job không đổi gì', () => {
+    const tokBin = `select app.consent_withdraw_all('${BIN}')->>'confirm_token' as tok \\gset\n`;
+    const r = run(QL, `${withdraw} ${adm(`select private.job_trial_purge(now(), true)`)} ${as(QL)} ${tokBin} select app.consent_withdraw_all('${BIN}', :'tok'::uuid);
+      ${adm(`${slot}; select private.job_trial_purge(now(), true); ${hh()}; ${slot}; select string_agg(scope, ',' order by scope) from app.deletion_evidence;
+        select private.job_trial_purge(now(), true)`)}`, { setup: OPEN() });
+    assert.ok(r.ok, r.err);
+    assert.equal(J(r, 1).children_purged, 1);
+    assert.equal(r.rows[3], 'RUT_SOM');
+    assert.equal(J(r, 4).purged, 1);
+    assert.equal(r.rows[5], '0');
+    assert.equal(r.rows[6], 'XOA_XONG');
+    assert.equal(r.rows[7], 'CON,HO');
+    assert.equal(J(r, 8).purged, 0);
   });
 });
 
@@ -211,8 +252,9 @@ const RICH = `
     insert into private.lifecycle_notices(household_id, kind, anchor_at) values ('${HH1}', 'NHAC_QL', now());
     insert into private.withdraw_confirmations(child_id, member_id, expires_at) values ('${NA}', '${MEM_HOA}', now() + interval '10 minutes');
     insert into app.deletion_requests(household_id, scope, child_id, requested_by, reason) values ('${HH1}', 'HO_SO_CON', '${BIN}', '${MEM_HOA}', 'XOA_HO_SO');
+    insert into app.child_alerts(child_id, binding_id, kind) values ('${NA}', '00000000-0000-4000-8000-000000000401', 'DON_SOM');
   end $r$;`;
-const DRILL = (reason = 'GIA_LAP_DIEN_TAP', prelude = RICH) => `${prelude}
+const DRILL = (reason = 'GIA_LAP_DIEN_TAP', prelude = RICH, root = HH1, call = `app.purge_household('${HH1}', '${reason}')`) => `${prelude}
   create temp table pp_ids (id text primary key);
   create temp table pp_before (tbl text primary key, n bigint);
   create temp table pp_out (line text);
@@ -221,7 +263,7 @@ const DRILL = (reason = 'GIA_LAP_DIEN_TAP', prelude = RICH) => `${prelude}
     select format('%I.%I', n.nspname, c.relname) from pg_class c join pg_namespace n on n.oid = c.relnamespace
     where c.relkind = 'r' and (n.nspname in ('app', 'private') or (n.nspname = 'auth' and c.relname = 'users')) $f$;
   do $d$ declare fk record; k int; v int; begin
-    insert into pp_ids values ('${HH1}');
+    insert into pp_ids values ('${root}');
     loop
       v := 0;
       insert into pp_ids select m.user_id::text from app.members m where m.id::text in (select id from pp_ids) on conflict do nothing;
@@ -242,7 +284,7 @@ const DRILL = (reason = 'GIA_LAP_DIEN_TAP', prelude = RICH) => `${prelude}
     insert into pp_before select t, pg_temp.cnt(t) from pg_temp.alltbls() t;
   end $d$;
   select count(*) from pp_ids;
-  select app.purge_household('${HH1}', '${reason}') as pr \\gset
+  select ${call} as pr \\gset
   insert into pp_out select 'RESULT|' || ((:'pr'::jsonb)->>'ok');
   do $d$ declare t text; n bigint; ev jsonb; b bigint; begin
     select row_counts into ev from app.deletion_evidence order by purged_at desc limit 1;
@@ -307,6 +349,62 @@ describe('TRIAL-PURGE: diễn tập xóa trên dữ liệu giả (seed) - không
       select jsonb_array_length((:'pr'::jsonb)->'auth_user_ids'); select count(*) from auth.users where id in ('${U_HOA}', '${U_MINH}', '${U_NA}')`);
     assert.ok(r.ok, r.err);
     assert.deepEqual(r.rows, ['3', '3']);
+  });
+});
+
+describe('TRIAL-CHILD: app.purge_child - xóa thật chỉ dữ liệu một con (D-64; cùng nguyên tắc purge_household)', { skip }, () => {
+  const CHILD_RICH = `${RICH}
+    do $c$ begin
+      insert into app.deletion_requests(household_id, scope, child_id, requested_by, reason) values ('${HH1}', 'HO_SO_CON', '${NA}', '${MEM_HOA}', 'XOA_HO_SO');
+    end $c$;`;
+
+  it('TRIAL-CHILD-01: diễn tập trên bé Na: không còn id nào của bé Na ở mọi bảng, số dòng khớp bằng chứng; bé Bin, người lớn, hộ còn nguyên', () => {
+    const r = admin(DRILL('GIA_LAP_DIEN_TAP', CHILD_RICH, NA, `app.purge_child('${NA}', 'GIA_LAP_DIEN_TAP')`));
+    assert.ok(r.ok, r.err);
+    const n = Number(r.rows[0]);
+    assert.ok(n >= 12, `tập id quá nhỏ (${n})`);
+    assert.deepEqual(r.rows.slice(1), ['RESULT|true'], `còn sót hoặc lệch: ${r.rows.slice(1).join(' ; ')}`);
+    const keep = admin(`${CHILD_RICH} select app.purge_child('${NA}', 'OWNER');
+      select (select count(*) from app.children where household_id = '${HH1}') || ':' || (select count(*) from app.members where household_id = '${HH1}')
+        || ':' || (select count(*) from app.purpose_state where child_id = '${BIN}') || ':' || (select count(*) from app.households where id = '${HH1}')
+        || ':' || (select count(*) from auth.users where id in ('${U_HOA}', '${U_MINH}')) || ':' || (select count(*) from auth.users where id = '${U_NA}')`);
+    assert.ok(keep.ok, keep.err);
+    assert.equal(keep.rows[1], '1:2:1:1:2:0');
+  });
+
+  it('TRIAL-CHILD-02: chạm MỌI bảng gắn con (số dòng đã xóa > 0 ở từng bảng, trừ bộ đếm hộ)', () => {
+    const r = admin(`${CHILD_RICH} select app.purge_child('${NA}', 'OWNER') as pr \\gset
+      select k from jsonb_object_keys((:'pr'::jsonb)->'row_counts') k where ((:'pr'::jsonb)->'row_counts'->>k)::int = 0 order by 1`);
+    assert.ok(r.ok, r.err);
+    assert.deepEqual(r.rows, [], `bảng chưa có dữ liệu diễn tập: ${r.rows.join(', ')}`);
+  });
+
+  it('TRIAL-CHILD-03: con cuối cùng của hộ -> xóa cả hộ (scope HO); gửi lặp replay; con không có NOT_FOUND', () => {
+    const r = admin(`update app.children set hidden_at = now() where id = '${BIN}'; select app.purge_child('${NA}', 'OWNER');
+      select count(*) from app.households where id = '${HH1}'; select string_agg(scope, ',' order by scope) from app.deletion_evidence; select app.purge_child('${NA}', 'OWNER')`);
+    assert.ok(r.ok, r.err);
+    assert.equal(J(r, 0).scope, 'HO');
+    assert.equal(r.rows[1], '0');
+    assert.equal(r.rows[2], 'CON,HO');
+    assert.equal(J(r, 3).replay, true);
+    NOT_FOUND(admin(`select app.purge_child(gen_random_uuid(), 'OWNER')`));
+  });
+
+  it('TRIAL-CHILD-04: dữ liệu thật -> BLOCKED_H4 không xóa gì; lý do lạ/không khớp loại: VALIDATION; hộ thử: con phải đã rút (CHO_XOA)', () => {
+    const REAL = `alter table app.households drop constraint households_data_class_check; update app.households set data_class = 'THAT' where id = '${HH1}';`;
+    BLOCKED(admin(`select app.purge_child('${NA}', 'OWNER')`, { setup: REAL }));
+    VALIDATION(admin(`select app.purge_child('${NA}', 'LY_DO_LA')`), 'D-64');
+    VALIDATION(admin(`select app.purge_child('${NA}', 'RUT_SOM')`), 'D-44');           // hộ giả lập không dùng lý do của hộ thử
+    VALIDATION(admin(`select app.purge_child('${NA}', 'GIA_LAP_DIEN_TAP')`, { setup: OPEN() }), 'D-44');   // hộ thử không dùng lý do giả lập
+    VALIDATION(admin(`select app.purge_child('${NA}', 'RUT_SOM')`, { setup: OPEN() }), 'D-64');            // con chưa rút
+    const after = admin(`do $x$ begin begin perform app.purge_child('${NA}', 'OWNER'); exception when others then null; end; end $x$;
+      select (select count(*) from app.children where id = '${NA}') || ':' || (select count(*) from app.deletion_evidence)`, { setup: REAL });
+    assert.equal(after.rows[0], '1:0');
+  });
+
+  it('TRIAL-CHILD-05: chỉ hệ thống: người đăng nhập, máy con, anon không gọi được; JWT người dùng bị từ chối dù có EXECUTE', () => {
+    for (const who of [QL, NL, DEV_NA, HK, ANON]) NO_EXEC(run(who, `select app.purge_child('${NA}', 'OWNER')`));
+    FORBIDDEN(run({ role: 'authenticated', sub: U_HOA }, `select app.purge_child('${NA}', 'OWNER')`, { setup: `grant execute on function app.purge_child(uuid, text) to authenticated;` }), 'D-44');
   });
 });
 
@@ -399,5 +497,23 @@ describe('TRIAL-FK: mọi bảng mới phải có cách xóa theo hộ (chặn b
     for (const t of all.filter((x) => !GLOBAL.includes(x) && x !== 'app.trial_slots')) {
       assert.ok(fn.includes(`delete from ${t} `), `purge_household không xóa ${t}`);
     }
+  });
+
+  it('TRIAL-FK-02: mọi bảng có đường khóa ngoại tới app.children (hoặc dữ liệu theo con) phải được purge_child xóa', () => {
+    const kids = admin(`with recursive linked(tbl) as (
+        select 'app.children'::text collate "C"
+        union select format('%I.%I', cn.nspname, cc.relname) from pg_constraint k
+          join pg_class cc on cc.oid = k.conrelid join pg_namespace cn on cn.oid = cc.relnamespace
+          join pg_class pc on pc.oid = k.confrelid join pg_namespace pn on pn.oid = pc.relnamespace
+          join linked l on l.tbl = format('%I.%I', pn.nspname, pc.relname)
+          where k.contype = 'f' and cn.nspname in ('app', 'private'))
+      select tbl from linked order by 1`).rows;
+    assert.ok(kids.includes('app.child_health_notes') && kids.includes('app.consent_events'), kids.join(','));
+    const fn = admin(`select pg_get_functiondef('app.purge_child(uuid,text)'::regprocedure)`).rows.join('\n');
+    for (const t of kids.filter((x) => !['app.trial_slots'].includes(x))) {
+      assert.ok(fn.includes(`delete from ${t} `), `purge_child không xóa ${t}`);
+    }
+    // bảng theo con nhưng không có khóa ngoại: audit_log (subject_ref), pair_throttle/pairing_codes (máy con)
+    for (const t of ['app.audit_log', 'private.pair_throttle', 'private.pairing_codes']) assert.ok(fn.includes(`delete from ${t} `), t);
   });
 });

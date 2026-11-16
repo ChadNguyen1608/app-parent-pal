@@ -1,32 +1,48 @@
 -- T2.1 (Dev Plan 15.1 Đợt 2; Tech Spec §2.2, §2.8, §3 `consent-record`; BL 11.3 §2.2, §3.1, BR-CON-001..008, 020..029;
 -- D-42, D-58, LQ-16; AC-CON-01..08, 22; RLS-PURPOSE). Người soạn: AI, chưa kiểm chứng độc lập.
 --
--- Thêm: mục đích thứ 8 (D-58), policy_versions, consent_events (sổ CHỈ-THÊM), purpose_state (chỉ trigger cập nhật),
--- phụ thuộc mục đích, app_internal.purpose_effective / visible_from / purpose_visible, nối vào app.access_state
--- (tham số purpose), app.consent_record. Rút toàn bộ (app.consent_withdraw_all) ở migration T2.2.
+-- Thiết kế đồng ý theo D-64 (17/11/2026, thay phần "đồng ý theo từng mục" của D-42): MỘT mục lõi gộp (MD-LICH: lập lịch, đồng bộ sang máy
+-- con, nhắc, ghi Xong, hỏi thăm, mong muốn của con, báo cáo tuần) + hai mục đồng ý RIÊNG (MD-SUCKHOE, MD-CONBAO). Không còn phụ thuộc
+-- giữa các mục, không còn rút "kéo theo", không ẩn dữ liệu theo từng tính năng của mục lõi.
+--
+-- Thêm: dọn danh mục mục đích (bỏ MD-DONGBO, MD-XONG, MD-MET, MD-MONGMUON, MD-BAOCAO và cột depends_on), mục đích thứ 8 (D-58),
+-- policy_versions, consent_events (sổ CHỈ-THÊM; thêm dòng "con đồng ý" của máy con, D-64), purpose_state (chỉ trigger cập nhật),
+-- app_internal.purpose_effective / visible_from / purpose_visible, nối vào app.access_state (tham số purpose), app.consent_record.
+-- Rút toàn bộ (app.consent_withdraw_all) ở migration T2.2. Hàm ghi "con đã đồng ý" (app.child_consent_record) ở migration T2.7.
 --
 -- QUYẾT ĐỊNH MẶC ĐỊNH (tài liệu thiếu hoặc mơ hồ; liệt kê để chủ sản phẩm duyệt):
---  1. Mục đích thứ 8 = 'MD-CONBAO' (D-58 không đặt mã). Tùy chọn, phụ thuộc MD-DONGBO, collect_enabled = FALSE (thận trọng, LQ-16
---     chưa có trả lời): không thu và KHÔNG ghi được DONG_Y (FEATURE_OFF) cho tới khi chủ sản phẩm bật cờ bằng migration.
---     RUT luôn ghi được. Tên hiển thị name_vi là đề xuất nội bộ.
---  2. Mục đích bật hiệu lực (purpose_effective) = tự DANG_BAT, collect_enabled, và MỌI mục đích phụ thuộc (kể cả gián tiếp) hiệu lực.
---  3. Rút một mục đích thì mục đích PHỤ THUỘC đang DANG_BAT bị ghi sự kiện RUT theo (origin PHU_THUOC): đồng ý lại mục cha KHÔNG
---     tự bật lại mục con, phải đồng ý lại từng mục. (Phương án lỏng hơn: chỉ tính động; Architecture §10 chỉ nói tính động.)
---  4. Dữ liệu cũ hiện nếu và chỉ nếu created_at >= visible_from = lớn nhất của active_since trên cả chuỗi phụ thuộc. Nên rút mục cha
---     rồi đồng ý lại mục cha cũng không làm dữ liệu cũ của mục con hiện lại (AC-CON-07).
---  5. Rút mục đích LÕI (MD-LICH) ở cấp con = rút toàn bộ (BR-CON-026): consent_record từ chối, dùng consent_withdraw_all.
---  6. Hộ đóng băng: mọi ghi đồng ý/rút bị FROZEN (BR-FAM-054 "không ẩn thêm"; cùng cách child.delete). Mở lại là việc T2.3.
---  7. Đồng ý của chính người lớn (BR-CON-007, AC-CON-05): p_for_self = true, ghi sổ với subject_member_id; KHÔNG đổi purpose_state
---     (trạng thái theo con do QL quyết). Rút của chính mình thì thu hồi grant của người đó cho mục đích (và mục phụ thuộc): chỉ thu hẹp.
---  8. DONG_Y/RUT trùng trạng thái hiện tại: không ghi sự kiện (changed=false). consent_record không tạo hồ sơ con; "không đồng ý
+--  1. Mục đích thứ 8 = 'MD-CONBAO' (D-58 không đặt mã; D-67: nút "Báo bố mẹ ngay"). Tùy chọn, collect_enabled = TRUE từ D-67 (bố mẹ bật bằng
+--     một lần đồng ý riêng cấp con; bảng child_alerts ở migration T2.8). Cờ collect_enabled vẫn dùng được để tắt khẩn cấp: tắt thì DONG_Y bị FEATURE_OFF.
+--     MD-SUCKHOE: collect_enabled = TRUE từ D-66 (lưu ghi chú sức khỏe trong hồ sơ con, đồng ý RIÊNG; bảng ở migration T2.6).
+--  2. Mục đích có hiệu lực (purpose_effective) = tự DANG_BAT, collect_enabled, VÀ mọi mục LÕI (kind = 'LOI') của con đó đang DANG_BAT.
+--     (Không phải cơ chế phụ thuộc: chỉ bảo đảm mục riêng không dùng được khi chưa có đồng ý lõi.)
+--  3. Dữ liệu cũ hiện nếu và chỉ nếu created_at >= visible_from = lớn nhất của active_since của mục đó và các mục lõi. Rút rồi đồng ý lại
+--     KHÔNG làm dữ liệu cũ của mục riêng hiện lại (AC-CON-07; áp cho MD-SUCKHOE). Mục lõi không rút riêng được (quyết định 4).
+--  4. Rút mục đích LÕI (MD-LICH) ở cấp con = rút toàn bộ (BR-CON-026): consent_record từ chối, dùng consent_withdraw_all.
+--  5. Hộ đóng băng: ghi ĐỒNG Ý mới bị FROZEN; RÚT (consent_record RUT, kể cả người lớn tự rút phần của mình, rút toàn bộ, yêu cầu xóa)
+--     luôn được, kể cả khi đóng băng (D-64). Mở lại là việc T2.3.
+--  6. Đồng ý của chính người lớn (BR-CON-007, AC-CON-05): p_for_self = true, ghi sổ với subject_member_id; KHÔNG đổi purpose_state
+--     (trạng thái theo con do QL quyết). Rút của chính mình thì thu hồi grant của người đó cho mục đích: chỉ thu hẹp.
+--  7. DONG_Y/RUT trùng trạng thái hiện tại: không ghi sự kiện (changed=false). consent_record không tạo hồ sơ con; "không đồng ý
 --     MD-LICH thì không tạo hồ sơ" (BR-CON-001) chưa ép ở máy chủ: hồ sơ chưa có MD-LICH DANG_BAT không dùng được mục đích nào.
---  9. CHO_DONG_Y_LAI (BL 11.3 §3.1, chính sách đổi nội dung) chưa có: Tech Spec §2.2 chỉ có CHUA_HOI|DANG_BAT|DA_RUT. Mục đích MỚI
+--  8. CHO_DONG_Y_LAI (BL 11.3 §3.1, chính sách đổi nội dung) chưa có: Tech Spec §2.2 chỉ có CHUA_HOI|DANG_BAT|DA_RUT. Mục đích MỚI
 --     thì tự nhiên chưa đồng ý nên không thu (AC-CON-08). approval 'CHUA_DUYET' chưa chặn gì ở máy chủ; chặn dữ liệu thật theo data_class là T2.4.
--- 10. Chưa làm (bảng chưa có): vô hiệu CR khi rút MD-MONGMUON (AC-CON-04, T4.3), hủy nhắc, thông báo.
+--  9. Chưa làm (bảng chưa có): vô hiệu CR khi rút (AC-CON-04, T4.3), hủy nhắc, thông báo.
+-- 10. Đồng ý của CON (D-64): dòng sổ by_child = true, người ghi là liên kết máy con (actor_binding_id), KHÔNG đổi purpose_state
+--     (đồng ý của con không bật/tắt mục nào của bố mẹ). Chờ luật sư xác nhận (LQ-17): Nghị định 330, trẻ từ đủ 7 tuổi.
+
+-- ============================================================ danh mục mục đích (D-64, D-66)
+-- Các mục đích gộp vào mục lõi MD-LICH. Quyền xem (grants) theo mục đích bị bỏ có thể còn từ trước: xóa (chỉ thu hẹp quyền).
+delete from app.grants where purpose_code in ('MD-DONGBO', 'MD-XONG', 'MD-MET', 'MD-MONGMUON', 'MD-BAOCAO');
+delete from app.purposes where code in ('MD-DONGBO', 'MD-XONG', 'MD-MET', 'MD-MONGMUON', 'MD-BAOCAO');
+alter table app.purposes drop column depends_on;
+update app.purposes set name_vi = 'Phần cốt lõi: lập lịch, đồng bộ sang máy của con và nhắc giờ, ghi con bấm Xong, hỏi thăm, mong muốn của con, báo cáo tuần'
+ where code = 'MD-LICH';
+update app.purposes set name_vi = 'Thông tin sức khỏe của con (dị ứng, thuốc), lưu trong hồ sơ', collect_enabled = true where code = 'MD-SUCKHOE';
 
 -- ============================================================ mục đích thứ 8 (D-58)
-insert into app.purposes (code, name_vi, depends_on, kind, collect_enabled) values
-  ('MD-CONBAO', 'Con báo trực tiếp cho bố mẹ (không khỏe, nghỉ học sớm, nhờ đón)', '{MD-DONGBO}', 'TUY_CHON', false);
+insert into app.purposes (code, name_vi, kind, collect_enabled) values
+  ('MD-CONBAO', 'Con báo trực tiếp cho bố mẹ (không khỏe, nhờ đón sớm, nhờ gọi), chỉ chọn câu có sẵn', 'TUY_CHON', true);
 
 -- ============================================================ policy_versions (Tech Spec §2.2)
 create table app.policy_versions (
@@ -43,7 +59,7 @@ create trigger policy_versions_no_truncate before truncate on app.policy_version
 
 insert into app.policy_versions (effective_at, purposes_json, text_ref)
 select now(),
-       jsonb_agg(jsonb_build_object('code', p.code, 'name_vi', p.name_vi, 'kind', p.kind, 'depends_on', p.depends_on,
+       jsonb_agg(jsonb_build_object('code', p.code, 'name_vi', p.name_vi, 'kind', p.kind,
                                     'collect_enabled', p.collect_enabled, 'approval', p.approval) order by p.code),
        'NHAP-D42-CHUA-DUYET'
 from app.purposes p;
@@ -56,15 +72,20 @@ create table app.consent_events (
   child_id          uuid not null references app.children (id),
   purpose_code      text not null references app.purposes (code),
   event             text not null check (event in ('DONG_Y', 'RUT')),
-  actor_member_id   uuid not null references app.members (id),
+  actor_member_id   uuid references app.members (id),                 -- null khi by_child
+  actor_binding_id  uuid references app.device_bindings (id),         -- chỉ khi by_child: liên kết máy con đã ghi
+  by_child          boolean not null default false,                   -- D-64: chính con đồng ý trên máy con (CA-16)
   subject_member_id uuid references app.members (id),                 -- null: đồng ý theo con (QL); khác null: của chính người lớn đó
-  origin            text not null default 'MOT_MUC' check (origin in ('MOT_MUC', 'PHU_THUOC', 'RUT_TOAN_BO')),
+  origin            text not null default 'MOT_MUC' check (origin in ('MOT_MUC', 'RUT_TOAN_BO')),
   policy_version_id uuid not null references app.policy_versions (id),
   method            text not null default 'SELF_DECLARED' check (method in ('SELF_DECLARED')),
   paper_ref         text check (paper_ref is null or paper_ref ~ '^[A-Za-z0-9._-]{1,40}$'),   -- mã phiếu giấy, không dữ liệu cá nhân
   idempotency_key   uuid,
   check (subject_member_id is null or (subject_member_id = actor_member_id and origin = 'MOT_MUC')),
-  check (origin = 'MOT_MUC' or event = 'RUT')
+  check (origin = 'MOT_MUC' or event = 'RUT'),
+  check ((by_child and actor_member_id is null and actor_binding_id is not null and subject_member_id is null
+          and event = 'DONG_Y' and origin = 'MOT_MUC' and paper_ref is null)
+      or (not by_child and actor_member_id is not null and actor_binding_id is null))
 );
 create unique index consent_events_idem_uidx on app.consent_events (idempotency_key) where idempotency_key is not null;
 create index consent_events_child_idx on app.consent_events (child_id, purpose_code, at);
@@ -112,7 +133,11 @@ begin
   if v_hh is distinct from new.household_id then
     raise exception 'consent_events: household_id không khớp hồ sơ con' using errcode = '23514';
   end if;
-  if not exists (select 1 from app.members m where m.id = new.actor_member_id and m.household_id = new.household_id) then
+  if new.by_child then
+    if not exists (select 1 from app.device_bindings b where b.id = new.actor_binding_id and b.child_id = new.child_id) then
+      raise exception 'consent_events: liên kết máy con không thuộc con này' using errcode = '23514';
+    end if;
+  elsif not exists (select 1 from app.members m where m.id = new.actor_member_id and m.household_id = new.household_id) then
     raise exception 'consent_events: người ghi không thuộc hộ' using errcode = '23514';
   end if;
   select p.collect_enabled into v_collect from app.purposes p where p.code = new.purpose_code;
@@ -132,7 +157,7 @@ create trigger consent_events_check before insert on app.consent_events
 create function app.tg_consent_apply() returns trigger
 language plpgsql security definer set search_path = '' as $$
 begin
-  if new.subject_member_id is not null then return null; end if;   -- đồng ý của người lớn: chỉ ghi sổ
+  if new.subject_member_id is not null or new.by_child then return null; end if;   -- đồng ý của người lớn hoặc của con: chỉ ghi sổ
   if new.event = 'DONG_Y' then
     insert into app.purpose_state as s (child_id, purpose_code, state, active_since, last_event_id)
     values (new.child_id, new.purpose_code, 'DANG_BAT', new.at, new.id)
@@ -157,7 +182,8 @@ begin
   perform private.audit_write_auto(new.household_id,
     case new.event when 'DONG_Y' then 'consent.granted' else 'consent.withdrawn' end,
     'child:' || new.child_id,
-    jsonb_build_object('purpose', new.purpose_code, 'origin', new.origin, 'self', new.subject_member_id is not null));
+    jsonb_build_object('purpose', new.purpose_code, 'origin', new.origin, 'self', new.subject_member_id is not null)
+      || case when new.by_child then jsonb_build_object('by_child', true) else '{}'::jsonb end);
   return null;
 end $$;
 create trigger consent_events_audit after insert on app.consent_events
@@ -165,20 +191,15 @@ create trigger consent_events_audit after insert on app.consent_events
 
 -- ============================================================ hàm phụ trợ trong app_internal (không mở API)
 -- purpose_effective: nội bộ (không cấp cho authenticated); chỉ app.access_state và hàm khác gọi.
+-- Hiệu lực = mục đích có thu, tự DANG_BAT, và mọi mục LÕI của con đang DANG_BAT (không còn chuỗi phụ thuộc, D-64).
 create function app_internal.purpose_effective(p_child uuid, p_code text) returns boolean
 language sql stable security definer set search_path = '' as $$
-  with recursive chain(code) as (
-    select p_code
-    union
-    select d from chain c join app.purposes p on p.code = c.code cross join lateral unnest(p.depends_on) as d
-  )
   select p_child is not null and p_code is not null
-     and exists (select 1 from app.purposes p where p.code = p_code)
+     and exists (select 1 from app.purposes p where p.code = p_code and p.collect_enabled)
      and not exists (
-       select 1 from chain c
-       left join app.purposes p on p.code = c.code
-       left join app.purpose_state s on s.child_id = p_child and s.purpose_code = c.code
-       where p.code is null or not p.collect_enabled or s.state is distinct from 'DANG_BAT')
+       select 1 from app.purposes p
+       left join app.purpose_state s on s.child_id = p_child and s.purpose_code = p.code
+       where (p.code = p_code or p.kind = 'LOI') and s.state is distinct from 'DANG_BAT')
 $$;
 
 -- visible_from: mốc từ đó dữ liệu của mục đích được phép hiện (null = không hiện gì). Chính sách của bảng dữ liệu (T3+) dùng
@@ -193,13 +214,9 @@ begin
   if p_child is null or p_code is null then return null; end if;
   if not v_service and not app_internal.can(v_uid, 'child.view', p_child, p_code) then return null; end if;
   if not app_internal.purpose_effective(p_child, p_code) then return null; end if;
-  with recursive chain(code) as (
-    select p_code
-    union
-    select d from chain c join app.purposes p on p.code = c.code cross join lateral unnest(p.depends_on) as d
-  )
   select max(s.active_since) into v_since
-  from chain c join app.purpose_state s on s.child_id = p_child and s.purpose_code = c.code;
+  from app.purposes p join app.purpose_state s on s.child_id = p_child and s.purpose_code = p.code
+  where p.code = p_code or p.kind = 'LOI';
   return v_since;
 end $$;
 
@@ -207,6 +224,17 @@ create function app_internal.purpose_visible(p_child uuid, p_code text, p_create
 language sql stable security definer set search_path = '' as $$
   select coalesce(p_created_at >= app_internal.visible_from(p_child, p_code), false)
 $$;
+
+-- Người gọi là NGƯỜI LỚN đang tham gia hộ của con (máy con ẩn danh không phải). Dùng trong chính sách đọc.
+create function app_internal.is_adult_of_child(p_child uuid) returns boolean
+language sql stable security definer set search_path = '' as $$
+  select exists (
+    select 1 from app.children c join app.members m on m.household_id = c.household_id
+    where c.id = p_child and m.user_id = (select auth.uid()) and m.status = 'DA_THAM_GIA'
+  ) and not app.is_anonymous_caller()
+$$;
+revoke all on function app_internal.is_adult_of_child(uuid) from public, anon, authenticated;
+grant execute on function app_internal.is_adult_of_child(uuid) to authenticated, service_role;
 
 -- ============================================================ app.access_state: nối purpose_state (Tech Spec §2.8, BL 11.3 §5)
 -- Như bản T1.5, thêm: (1) mục đích truyền vào phải HIỆU LỰC cho con đó (đồng ý bật, mọi phụ thuộc bật), nếu không DENY;
@@ -237,7 +265,7 @@ begin
   where c.id = p_child and c.hidden_at is null and h.hidden_at is null;
   if v_hh is null then return 'DENY'; end if;
 
-  -- Mục đích chưa đồng ý, đã rút, hoặc có phụ thuộc đã tắt: không ai (kể cả QL) được dùng theo mục đích đó.
+  -- Mục đích chưa đồng ý, đã rút, hoặc mục lõi đã tắt: không ai (kể cả QL) được dùng theo mục đích đó.
   if p_purpose is not null and not app_internal.purpose_effective(p_child, p_purpose) then
     return 'DENY';
   end if;
@@ -293,7 +321,6 @@ declare
   v_cur     app.purpose_state;
   v_old     app.consent_events;
   v_last    text;
-  v_ids     text[];
 begin
   if v_uid is null then perform app.fail('UNAUTHENTICATED'); end if;
   if app.is_anonymous_caller() then
@@ -307,7 +334,10 @@ begin
 
   v_state := app.access_state(v_uid,
     case when v_member.role = 'PRIMARY' or not v_self then 'child.consent' else 'child.view' end, p_child, null);
-  if v_state <> 'ALLOW' then perform app.reject_child(v_uid, v_state, p_child); end if;
+  -- Rút luôn được (D-64): người lớn tự rút phần của mình khi hộ đóng băng (child.view trả FROZEN) vẫn cho qua.
+  if v_state <> 'ALLOW' and not (v_self and p_event = 'RUT' and v_state = 'FROZEN') then
+    perform app.reject_child(v_uid, v_state, p_child);
+  end if;
 
   if p_event is null or p_event not in ('DONG_Y', 'RUT') then
     perform app.fail('VALIDATION', 'BR-CON-002', 'Sự kiện không hợp lệ.');
@@ -360,15 +390,10 @@ begin
                                       policy_version_id, idempotency_key)
       values (v_child.household_id, p_child, p_purpose_code, p_event, v_member.id, v_member.id, v_pv, p_idempotency_key);
       if p_event = 'RUT' then
-        -- chỉ thu hẹp: thu hồi grant của chính người này cho mục đích và các mục phụ thuộc
-        with recursive dep(code) as (
-          select p_purpose_code
-          union
-          select p.code from dep d join app.purposes p on d.code = any (p.depends_on)
-        )
+        -- chỉ thu hẹp: thu hồi grant của chính người này cho mục đích
         update app.grants g set state = 'THU_HOI', revoked_at = now()
         where g.member_id = v_member.id and g.child_id = p_child and g.state <> 'THU_HOI'
-          and g.purpose_code in (select code from dep);
+          and g.purpose_code = p_purpose_code;
       end if;
       return jsonb_build_object('ok', true, 'child_id', p_child, 'purpose_code', p_purpose_code, 'event', p_event,
         'scope', 'SELF', 'changed', true, 'replay', false);
@@ -388,26 +413,10 @@ begin
                                   paper_ref, idempotency_key)
   values (v_child.household_id, p_child, p_purpose_code, p_event, v_member.id, v_pv, p_paper_ref, p_idempotency_key);
 
-  if p_event = 'RUT' then
-    -- mục phụ thuộc đang bật bị rút theo (quyết định 3); phải đồng ý lại từng mục
-    with recursive dep(code) as (
-      select p.code from app.purposes p where p_purpose_code = any (p.depends_on)
-      union
-      select p.code from dep d join app.purposes p on d.code = any (p.depends_on)
-    )
-    select array_agg(d.code order by d.code) into v_ids
-    from dep d join app.purpose_state s on s.child_id = p_child and s.purpose_code = d.code and s.state = 'DANG_BAT';
-    if v_ids is not null then
-      insert into app.consent_events (household_id, child_id, purpose_code, event, actor_member_id, origin, policy_version_id)
-      select v_child.household_id, p_child, c, 'RUT', v_member.id, 'PHU_THUOC', v_pv from unnest(v_ids) as c;
-    end if;
-  end if;
-
   select * into v_cur from app.purpose_state s where s.child_id = p_child and s.purpose_code = p_purpose_code;
   return jsonb_build_object('ok', true, 'child_id', p_child, 'purpose_code', p_purpose_code, 'event', p_event,
     'scope', 'CHILD', 'changed', true, 'replay', false, 'state', v_cur.state,
-    'effective', app_internal.purpose_effective(p_child, p_purpose_code), 'active_since', v_cur.active_since,
-    'also_withdrawn', coalesce(to_jsonb(v_ids), '[]'::jsonb));
+    'effective', app_internal.purpose_effective(p_child, p_purpose_code), 'active_since', v_cur.active_since);
 end $$;
 
 -- ============================================================ RLS và chính sách
@@ -423,10 +432,12 @@ create policy consent_events_select on app.consent_events for select to authenti
   using ((select app_internal.can_household((select auth.uid()), 'household.admin_read', household_id))
       or (subject_member_id is not null and (select app_internal.is_self_member(subject_member_id))));
 
--- Trạng thái: QL đọc mọi mục đích của con; NL và máy con chỉ thấy mục đích HIỆU LỰC mà họ được xem (để ẩn nút).
+-- Trạng thái: QL đọc mọi mục đích của con; NL và máy con chỉ thấy mục đích HIỆU LỰC mà họ được xem (để ẩn nút); máy con không thấy MD-SUCKHOE.
+-- MD-SUCKHOE (nhạy cảm, D-66): máy con không thấy dòng trạng thái của mục này.
 create policy purpose_state_select on app.purpose_state for select to authenticated
   using ((select app_internal.can((select auth.uid()), 'child.admin_read', child_id, null))
-      or (select app_internal.can((select auth.uid()), 'child.view', child_id, purpose_code)));
+      or ((select app_internal.can((select auth.uid()), 'child.view', child_id, purpose_code))
+          and (purpose_code <> 'MD-SUCKHOE' or (select app_internal.is_adult_of_child(child_id)))));
 
 -- ============================================================ đặc quyền
 revoke all on app.policy_versions, app.consent_events, app.purpose_state from public, anon, authenticated;

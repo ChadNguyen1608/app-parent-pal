@@ -13,12 +13,11 @@
 --  3. `app.deletion_request` (Tech Spec #30): yêu cầu xóa hồ sơ con / rời gia đình (NL) / xóa gia đình, idempotent (giữ
 --     `accepted_at` đầu, AC-CON-17), nối với `deletion_requests` của T2.2. Không xóa hẳn (hạn PR-CON-01 `UNKNOWN`, AC-CON-18):
 --     ẩn ngay, `CHO_QUYET_HAN`. Xóa hẳn chỉ có cho dữ liệu GIA_LAP và hộ thử nội bộ (T2.4 `purge_household`).
---  4. CÔNG TẮC MỘT CHỖ cho câu hỏi (a) của chủ sản phẩm "rút/xóa khi hộ đang đóng băng": hành động mới `child.withdraw` trong
---     `app.access_state` (dùng cho RUT đồng ý, rút toàn bộ, yêu cầu xóa) và `child.delete` đi qua hàm
---     `private.frozen_allows_withdrawal()` đọc `private.params.frozen_allows_withdrawal` (0 = FROZEN như hiện nay, 1 = cho phép).
---     Đổi (a) = `update private.params set value_int = 1 where key = 'frozen_allows_withdrawal'`, không sửa hàm. Đồng ý MỚI
---     (DONG_Y), đổi mode, ghép máy, đặt PIN vẫn FROZEN dù công tắc bật (chỉ thu hẹp mới được làm khi đóng băng).
---
+--  4. RÚT LUÔN ĐƯỢC, KỂ CẢ KHI ĐÓNG BĂNG (D-64; thay công tắc `frozen_allows_withdrawal` của bản nháp trước): hành động `child.withdraw`
+--     trong `app.access_state` (rút đồng ý, rút toàn bộ, yêu cầu xóa, xóa hồ sơ `child.delete`) cho QL khi hộ HOAT_DONG hoặc DONG_BANG.
+--     Hộ đã sang CHO_XOA (hết hạn thử, xóa gia đình) thì FROZEN (đã ngừng xử lý). Đồng ý MỚI (DONG_Y), đổi mode, ghép máy, đặt PIN
+--     vẫn FROZEN khi đóng băng (chỉ thu hẹp mới được làm khi đóng băng).
+
 -- QUYẾT ĐỊNH MẶC ĐỊNH (tài liệu thiếu hoặc mơ hồ; chờ chủ sản phẩm duyệt):
 --  1. Đóng băng KHÔNG đặt `device_bindings` về `DA_HUY` (Tech Spec §2.1 nhắc `revoke_reason DONG_BANG` nhưng BR-FAM-058 "máy con tiếp
 --     tục nhận lịch hiện hành" khi mở lại, và D-41 "app con chỉ xem lịch đã tải"). Máy con mất quyền đọc qua `FROZEN`, không mất liên kết.
@@ -29,23 +28,15 @@
 --     (T3+) hoặc cần Auth Admin API. `trial_slots` hết hạn: T2.4.
 --  5. `deletion_request` NGUOI_LON_ROI: chỉ NL (QL phải chuyển QL hoặc xóa gia đình, BR-FAM-016); GIA_DINH: chỉ QL và chỉ khi
 --     không còn người lớn khác (BR-FAM-083 cần luồng chuyển QL chưa có: nhánh an toàn là chặn); cả hai cần `p_confirm = true`.
---  6. Rời gia đình / xóa gia đình / xóa hồ sơ khi hộ đóng băng: cùng công tắc (a).
+--  6. Rời gia đình / xóa gia đình / xóa hồ sơ khi hộ đóng băng: được (D-64), như mục 4.
 
 -- ============================================================ tham số
 insert into private.params (key, value_int, status, note) values
   ('freeze_idle_days', 30, 'DA_CHOT',
-   'D-41, PR-FAM-06: số ngày không có thao tác có chủ đích của người lớn thì đóng băng (30 ngày liên tục, giờ máy chủ)'),
-  ('frozen_allows_withdrawal', 0, 'CHUA_CHOT',
-   'Câu hỏi (a) cho chủ sản phẩm: 0 = hộ đóng băng thì rút đồng ý, rút toàn bộ, xóa hồ sơ, yêu cầu xóa đều FROZEN (BR-FAM-054); 1 = cho phép các việc rút/xóa (chỉ đúng 1 mới bật)');
+   'D-41, PR-FAM-06: số ngày không có thao tác có chủ đích của người lớn thì đóng băng (30 ngày liên tục, giờ máy chủ)');
 
-create function private.frozen_allows_withdrawal() returns boolean
-language sql stable security definer set search_path = '' as $$
-  select private.param_int('frozen_allows_withdrawal') = 1
-$$;
-revoke all on function private.frozen_allows_withdrawal() from public, anon, authenticated;
-
--- ============================================================ app.access_state: nhóm "rút, xóa" qua công tắc (a)
--- Như bản T2.1; thay đổi duy nhất: 'child.delete' và hành động mới 'child.withdraw' xét private.frozen_allows_withdrawal().
+-- ============================================================ app.access_state: nhóm "rút, xóa" luôn được khi đóng băng (D-64)
+-- Như bản T2.1; thay đổi: 'child.delete' và hành động mới 'child.withdraw' cho QL kể cả hộ đóng băng.
 create or replace function app.access_state(p_actor uuid, p_action text, p_child uuid, p_purpose text default null)
 returns text language plpgsql stable security definer set search_path = '' as $$
 declare
@@ -53,6 +44,7 @@ declare
   v_service boolean := coalesce((select auth.jwt()) ->> 'role', '') = 'service_role';
   v_hh      uuid;
   v_frozen  boolean;
+  v_open    boolean;   -- hộ còn HOAT_DONG hoặc DONG_BANG (chưa CHO_XOA)
   v_role    text;
   v_epoch   text := (select auth.jwt()) ->> 'binding_epoch';   -- tùy chọn, chỉ để THU HẸP quyền (RLS-EPOCH)
 begin
@@ -65,8 +57,9 @@ begin
   end if;
 
   select c.household_id,
-         (h.state <> 'HOAT_DONG' or h.frozen_at is not null)
-    into v_hh, v_frozen
+         (h.state <> 'HOAT_DONG' or h.frozen_at is not null),
+         h.state in ('HOAT_DONG', 'DONG_BANG')
+    into v_hh, v_frozen, v_open
   from app.children c
   join app.households h on h.id = c.household_id
   where c.id = p_child and c.hidden_at is null and h.hidden_at is null;
@@ -103,16 +96,16 @@ begin
       if v_role <> 'PRIMARY' or v_role is null then return 'DENY'; end if;
       return case when v_frozen then 'FROZEN' else 'ALLOW' end;
     when 'child.delete', 'child.withdraw' then
-      -- Nhóm "rút, xóa" (rút đồng ý, rút toàn bộ, xóa hồ sơ, yêu cầu xóa): hộ đóng băng có được làm không là MỘT công tắc
-      -- (private.params 'frozen_allows_withdrawal', hàm private.frozen_allows_withdrawal). Mặc định 0: FROZEN (BR-FAM-054).
+      -- Nhóm "rút, xóa" (rút đồng ý, rút toàn bộ, xóa hồ sơ, yêu cầu xóa): luôn được khi hộ đóng băng (D-64); hộ CHO_XOA thì không.
       if v_role <> 'PRIMARY' or v_role is null then return 'DENY'; end if;
-      return case when v_frozen and not private.frozen_allows_withdrawal() then 'FROZEN' else 'ALLOW' end;
+      return case when v_open then 'ALLOW' else 'FROZEN' end;
     else
       return 'DENY';   -- hành động lạ: fail-closed
   end case;
 end $$;
--- ============================================================ app.consent_record: RUT dùng 'child.withdraw' (công tắc (a))
--- Như bản T2.1; thay đổi duy nhất: hành động của QL khi p_event = 'RUT' là 'child.withdraw'. DONG_Y vẫn 'child.consent' (FROZEN khi đóng băng).
+-- ============================================================ app.consent_record: RUT dùng 'child.withdraw' (luôn được, D-64)
+-- Như bản T2.1; thay đổi: hành động của QL khi p_event = 'RUT' là 'child.withdraw'. DONG_Y vẫn 'child.consent' (FROZEN khi đóng băng).
+-- Thêm (D-66): rút MD-SUCKHOE tạo yêu cầu xóa phạm vi SUC_KHOE (hàng chờ xóa phần sức khỏe của con).
 create or replace function app.consent_record(
   p_child uuid, p_purpose_code text, p_event text,
   p_policy_version_id uuid default null, p_paper_ref text default null,
@@ -129,7 +122,6 @@ declare
   v_cur     app.purpose_state;
   v_old     app.consent_events;
   v_last    text;
-  v_ids     text[];
 begin
   if v_uid is null then perform app.fail('UNAUTHENTICATED'); end if;
   if app.is_anonymous_caller() then
@@ -144,7 +136,10 @@ begin
   v_state := app.access_state(v_uid,
     case when v_member.role = 'PRIMARY' or not v_self then (case when p_event = 'RUT' then 'child.withdraw' else 'child.consent' end)
          else 'child.view' end, p_child, null);
-  if v_state <> 'ALLOW' then perform app.reject_child(v_uid, v_state, p_child); end if;
+  -- Rút luôn được (D-64): người lớn tự rút phần của mình khi hộ đóng băng (child.view trả FROZEN) vẫn cho qua.
+  if v_state <> 'ALLOW' and not (v_self and p_event = 'RUT' and v_state = 'FROZEN') then
+    perform app.reject_child(v_uid, v_state, p_child);
+  end if;
 
   if p_event is null or p_event not in ('DONG_Y', 'RUT') then
     perform app.fail('VALIDATION', 'BR-CON-002', 'Sự kiện không hợp lệ.');
@@ -197,15 +192,10 @@ begin
                                       policy_version_id, idempotency_key)
       values (v_child.household_id, p_child, p_purpose_code, p_event, v_member.id, v_member.id, v_pv, p_idempotency_key);
       if p_event = 'RUT' then
-        -- chỉ thu hẹp: thu hồi grant của chính người này cho mục đích và các mục phụ thuộc
-        with recursive dep(code) as (
-          select p_purpose_code
-          union
-          select p.code from dep d join app.purposes p on d.code = any (p.depends_on)
-        )
+        -- chỉ thu hẹp: thu hồi grant của chính người này cho mục đích
         update app.grants g set state = 'THU_HOI', revoked_at = now()
         where g.member_id = v_member.id and g.child_id = p_child and g.state <> 'THU_HOI'
-          and g.purpose_code in (select code from dep);
+          and g.purpose_code = p_purpose_code;
       end if;
       return jsonb_build_object('ok', true, 'child_id', p_child, 'purpose_code', p_purpose_code, 'event', p_event,
         'scope', 'SELF', 'changed', true, 'replay', false);
@@ -225,28 +215,19 @@ begin
                                   paper_ref, idempotency_key)
   values (v_child.household_id, p_child, p_purpose_code, p_event, v_member.id, v_pv, p_paper_ref, p_idempotency_key);
 
-  if p_event = 'RUT' then
-    -- mục phụ thuộc đang bật bị rút theo (quyết định 3); phải đồng ý lại từng mục
-    with recursive dep(code) as (
-      select p.code from app.purposes p where p_purpose_code = any (p.depends_on)
-      union
-      select p.code from dep d join app.purposes p on d.code = any (p.depends_on)
-    )
-    select array_agg(d.code order by d.code) into v_ids
-    from dep d join app.purpose_state s on s.child_id = p_child and s.purpose_code = d.code and s.state = 'DANG_BAT';
-    if v_ids is not null then
-      insert into app.consent_events (household_id, child_id, purpose_code, event, actor_member_id, origin, policy_version_id)
-      select v_child.household_id, p_child, c, 'RUT', v_member.id, 'PHU_THUOC', v_pv from unnest(v_ids) as c;
-    end if;
+  if p_event = 'RUT' and p_purpose_code = 'MD-SUCKHOE' then
+    -- D-66: rút đồng ý sức khỏe -> ẩn ngay (purpose_effective sai) và đưa phần sức khỏe của con vào hàng chờ xóa
+    insert into app.deletion_requests (household_id, scope, child_id, requested_by, reason)
+    select v_child.household_id, 'SUC_KHOE', p_child, v_member.id, 'RUT_SUC_KHOE'
+    where not exists (select 1 from app.deletion_requests dr where dr.child_id = p_child and dr.scope = 'SUC_KHOE' and dr.state <> 'DA_HUY');
   end if;
 
   select * into v_cur from app.purpose_state s where s.child_id = p_child and s.purpose_code = p_purpose_code;
   return jsonb_build_object('ok', true, 'child_id', p_child, 'purpose_code', p_purpose_code, 'event', p_event,
     'scope', 'CHILD', 'changed', true, 'replay', false, 'state', v_cur.state,
-    'effective', app_internal.purpose_effective(p_child, p_purpose_code), 'active_since', v_cur.active_since,
-    'also_withdrawn', coalesce(to_jsonb(v_ids), '[]'::jsonb));
+    'effective', app_internal.purpose_effective(p_child, p_purpose_code), 'active_since', v_cur.active_since);
 end $$;
--- ============================================================ app.consent_withdraw_all: dùng 'child.withdraw' (công tắc (a))
+-- ============================================================ app.consent_withdraw_all: dùng 'child.withdraw' (luôn được, D-64)
 -- Như bản T2.2; thay đổi duy nhất: hành động kiểm quyền là 'child.withdraw'.
 create or replace function app.consent_withdraw_all(p_child uuid, p_confirm_token uuid default null) returns jsonb
 language plpgsql security definer set search_path = '' as $$
@@ -479,7 +460,7 @@ end $$;
 -- p_scope: 'HO_SO_CON' (QL, cần p_child), 'GIA_DINH' (QL), 'NGUOI_LON_ROI' (NL tự rời). Luôn cần p_confirm = true (xác nhận lần hai).
 -- Idempotent: yêu cầu còn hiệu lực cùng đối tượng trả replay và giữ accepted_at ĐẦU (AC-CON-17). Không xóa hẳn: hard_deleted=false.
 -- Hạn xóa hẳn `due_at` null (PR-CON-01 UNKNOWN) -> state CHO_QUYET_HAN, không tự xóa (AC-CON-18).
--- Hộ đóng băng: cùng công tắc `frozen_allows_withdrawal` (câu hỏi (a)); replay thì luôn trả được.
+-- Hộ đóng băng: vẫn gửi được (D-64); hộ CHO_XOA thì FROZEN; replay thì luôn trả được.
 -- Chưa làm (bảng chưa có): vô hiệu CR, dừng nhắc, hủy token đẩy, thông báo (T3+, Edge Function).
 create function app.deletion_request(p_scope text, p_child uuid default null, p_confirm boolean default false) returns jsonb
 language plpgsql security definer set search_path = '' as $$
@@ -534,7 +515,7 @@ begin
     end if;
   end if;
 
-  if (v_h.state <> 'HOAT_DONG' or v_h.frozen_at is not null) and not private.frozen_allows_withdrawal() then
+  if v_h.state not in ('HOAT_DONG', 'DONG_BANG') then
     perform app.fail('FROZEN', 'BR-FAM-054', 'Gia đình đang tạm dừng, chưa thay đổi được.');
   end if;
   if p_confirm is distinct from true then

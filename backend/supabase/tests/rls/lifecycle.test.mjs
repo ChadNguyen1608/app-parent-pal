@@ -1,7 +1,7 @@
-// Test T2.3: đóng băng 30 ngày, job-daily, mở lại (chỉ QL), deletion_request, công tắc (a) "rút/xóa khi đóng băng".
+// Test T2.3: đóng băng 30 ngày, job-daily, mở lại (chỉ QL), deletion_request, rút luôn được khi đóng băng (D-64).
 // Chạy cùng rls.test.mjs bởi scripts/db-test.sh. Mỗi lệnh chạy trong giao dịch rồi ROLLBACK (lib/db.mjs).
 // Mã: LC-JOB (AC-FAM-21, 22, 26; BR-FAM-050..053), LC-FROZEN (RLS-FROZEN, AC-FAM-22), LC-REOPEN (AC-FAM-23, 24; BR-FAM-057, 058),
-// LC-DEL (AC-CON-17, 18; BR-FAM-080..089), LC-SWITCH (công tắc frozen_allows_withdrawal), LC-CRON.
+// LC-DEL (AC-CON-17, 18; BR-FAM-080..089), LC-WITHDRAW (rút luôn được khi đóng băng, D-64), LC-CRON.
 // AC-FAM-25 (giai đoạn tạm thời hết hạn khi đóng băng) CHƯA kiểm được: bảng `phases` ở T4.x; phần "không tính là dùng app" được kiểm ở LC-JOB-05.
 // Dữ liệu: chỉ tên giả. PIN trong test (482916) là giá trị thử.
 import { describe, it } from 'node:test';
@@ -159,24 +159,37 @@ describe('LC-FROZEN: hộ đóng băng - mọi hàm ghi trả FROZEN trừ danh 
   const FROZEN_FNS = {
     child_create: (s) => FROZEN(run(QL, `select app.child_create('${HH1}', 'bé Mít', p_grade => 3)`, s)),
     child_update: (s) => FROZEN(run(QL, `select app.child_update('${NA}', '{"grade": 4}')`, s)),
-    child_delete: (s) => FROZEN(run(QL, `select app.child_delete('${NA}', true)`, s)),
+    child_delete: (s) => assert.equal(J(run(QL, `select app.child_delete('${NA}', true)`, s)).hidden, true),   // rút/xóa luôn được (D-64)
     mode_set: (s) => FROZEN(run(QL, `select app.mode_set('${NA}', 'PARENT_LED')`, s)),
     pin_set: (s) => FROZEN(run(QL, `select app.pin_set('735190')`, s)),
     pair_confirm: (s) => FROZEN(run(QL, `select app.pair_confirm('${BIN}', '654321')`, s)),
     pair_accept: (s) => FROZEN(run(DEV_NEW, `select app.pair_accept()`, s)),
     consent_record: (s) => {
-      FROZEN(run(QL, `select app.consent_record('${NA}', 'MD-MET', 'DONG_Y')`, s));
-      FROZEN(run(QL, `select app.consent_record('${NA}', 'MD-XONG', 'RUT')`, s));
+      FROZEN(run(QL, `select app.consent_record('${BIN}', 'MD-SUCKHOE', 'DONG_Y')`, s));   // đồng ý MỚI: FROZEN
+      assert.equal(J(run(QL, `select app.consent_record('${NA}', 'MD-SUCKHOE', 'RUT')`, s)).changed, true);   // RÚT luôn được (D-64)
     },
     consent_withdraw_all: (s) => {
-      FROZEN(run(QL, `select app.consent_withdraw_all('${NA}')`, s));
-      FROZEN(run(QL, `${tok(NA)} select app.consent_withdraw_all('${NA}', :'tok'::uuid)`, s));
+      assert.equal(J(run(QL, `select app.consent_withdraw_all('${NA}')`, s)).step, 1);
+      assert.equal(J(run(QL, `${tok(NA)} select app.consent_withdraw_all('${NA}', :'tok'::uuid)`, s)).step, 2);
     },
     deletion_request: (s) => {
-      FROZEN(run(QL, `select app.deletion_request('HO_SO_CON', '${NA}', true)`, s));
-      FROZEN(run(QL, `select app.deletion_request('GIA_DINH', null, true)`, s));
-      FROZEN(run(NL, `select app.deletion_request('NGUOI_LON_ROI', null, true)`, s));
+      assert.equal(J(run(QL, `select app.deletion_request('HO_SO_CON', '${NA}', true)`, s)).replay, false);   // luôn được (D-64)
+      VALIDATION(run(QL, `select app.deletion_request('GIA_DINH', null, true)`, s), 'BR-FAM-083');          // không còn FROZEN: còn người lớn khác
+      assert.equal(J(run(NL, `select app.deletion_request('NGUOI_LON_ROI', null, true)`, s)).scope, 'NGUOI_LON_ROI');
     },
+    health_note_add: (s) => FROZEN(run(QL, `select app.health_note_add('${NA}', 'KHAC', 'ghi chú thử')`, s)),
+    health_note_update: (s) => FROZEN(run(QL, `select app.health_note_update((select id from app.child_health_notes limit 1), '{"content": "x"}')`, s)),
+    child_alert_send: (s) => FROZEN(run(DEV_NA, `select app.child_alert_send('DON_SOM')`, s)),
+    child_alert_seen: (s) => FROZEN(run(QL, `reset role; select id as aid from app.child_alerts limit 1 \\gset
+      set local role authenticated; select app.child_alert_seen(:'aid'::uuid)`, { setup: `${s.setup} insert into app.consent_events (household_id, child_id, purpose_code, event, actor_member_id, policy_version_id)
+        select '${HH1}', '${NA}', 'MD-CONBAO', 'DONG_Y', '${MEM_HOA}', id from app.policy_versions limit 1;
+        insert into app.child_alerts (child_id, binding_id, kind) values ('${NA}', '00000000-0000-4000-8000-000000000401', 'DON_SOM');` })),
+    child_consent_record: (s) => FROZEN(run(DEV_NA, `select app.child_consent_record()`, s)),
+    child_setting_set: (s) => {
+      FROZEN(run(QL, `select app.child_setting_set('${NA}', 'ai_chat_enabled', true)`, s));
+      assert.equal(run(QL, `select app.child_setting_set('${NA}', 'ai_chat_enabled', false)`, s).ok, true);   // tắt = thu hẹp
+    },
+    my_child_settings: (s) => FROZEN(run(DEV_NA, `select app.my_child_settings()`, s)),
   };
   // Ngoại lệ (được làm khi đóng băng) và lý do; mỗi hàm kiểm một lời gọi cụ thể.
   const EXCEPTIONS = {
@@ -189,6 +202,9 @@ describe('LC-FROZEN: hộ đóng băng - mọi hàm ghi trả FROZEN trừ danh 
     weekly_report: ['chỉ đọc', (s) => assert.equal(run(QL, `select app.weekly_report('${NA}', '2025-W40')`, s).ok, true)],
     family_create: ['gửi lặp trả hộ cũ', (s) => assert.equal(J(run(QL, `select app.family_create('chị Hoa')`, s)).replay, true)],
     export_request: ['luôn BLOCKED_H4 (không ghi gì)', (s) => rejected(run(QL, `select app.export_request()`, s), 'BLOCKED_H4', 'PT403')],
+    health_note_delete: ['xóa là thu hẹp, luôn được (D-66)', (s) => assert.equal(J(run(QL, `select app.health_note_delete((select id from app.child_health_notes limit 1))`, s)).deleted, true)],
+    child_setting_get: ['chỉ đọc', (s) => assert.equal(J(run(QL, `select app.child_setting_get('${NA}')`, s)).ai_chat_enabled, false)],
+    my_family_state: ['máy con biết hộ đóng băng (D-41)', (s) => assert.equal(J(run(DEV_NA, `select app.my_family_state()`, s)).frozen, true)],
     member_invite: ['tính năng tắt', (s) => rejected(run(QL, `select app.member_invite('SUPPORTER')`, s), 'FEATURE_OFF', 'PT403')],
   };
 
@@ -365,39 +381,40 @@ describe('LC-DEL: yêu cầu xóa idempotent, ẩn ngay, không xóa hẳn (Tech
   });
 });
 
-// ================================================================ LC-SWITCH: công tắc (a) một chỗ
-describe('LC-SWITCH: câu hỏi (a) "rút/xóa khi đóng băng" đổi bằng MỘT tham số (private.params.frozen_allows_withdrawal)', { skip }, () => {
-  const ON = `update private.params set value_int = 1 where key = 'frozen_allows_withdrawal';`;
+// ================================================================ LC-WITHDRAW: rút luôn được kể cả đóng băng (D-64)
+describe('LC-WITHDRAW: rút (đồng ý, toàn bộ, xóa, yêu cầu xóa) luôn được khi đóng băng; việc MỞ RỘNG vẫn FROZEN (D-64; BR-FAM-054)', { skip }, () => {
+  const o = { setup: FREEZE_JOB };
   const tok = `select app.consent_withdraw_all('${NA}')->>'confirm_token' as tok \\gset\n`;
 
-  it('LC-SWITCH-01: mặc định 0 (CHUA_CHOT): FROZEN', () => {
-    const p = admin(`select value_int || ':' || status from private.params where key = 'frozen_allows_withdrawal'`);
-    assert.equal(p.rows[0], '0:CHUA_CHOT');
-    FROZEN(run(QL, `select app.consent_record('${NA}', 'MD-XONG', 'RUT')`, { setup: FREEZE_JOB }));
+  it('LC-WITHDRAW-01: không còn tham số frozen_allows_withdrawal (không còn công tắc)', () => {
+    assert.equal(admin(`select count(*) from private.params where key = 'frozen_allows_withdrawal'`).rows[0], '0');
+    assert.equal(admin(`select count(*) from pg_proc where proname = 'frozen_allows_withdrawal'`).rows[0], '0');
   });
 
-  it('LC-SWITCH-02: bật = 1: RUT một mục, rút toàn bộ hai bước, xóa hồ sơ, yêu cầu xóa chạy được khi đóng băng; việc MỞ RỘNG vẫn FROZEN', () => {
-    const o = { setup: `${FREEZE_JOB} ${ON}` };
-    assert.equal(J(run(QL, `select app.consent_record('${NA}', 'MD-XONG', 'RUT')`, o)).changed, true);
+  it('LC-WITHDRAW-02: đóng băng: RUT một mục, rút toàn bộ hai bước, xóa hồ sơ, yêu cầu xóa đều chạy; replay luôn trả được', () => {
+    assert.equal(J(run(QL, `select app.consent_record('${NA}', 'MD-SUCKHOE', 'RUT')`, o)).changed, true);
     assert.equal(J(run(QL, `select app.consent_withdraw_all('${NA}')`, o)).step, 1);
     const two = run(QL, `${tok} select app.consent_withdraw_all('${NA}', :'tok'::uuid)`, o);
     assert.equal(J(two).step, 2);
     assert.equal(J(run(QL, `select app.child_delete('${NA}', true)`, o)).hidden, true);
     assert.equal(J(run(QL, `select app.deletion_request('HO_SO_CON', '${BIN}', true)`, o)).state, 'CHO_QUYET_HAN');
     assert.equal(J(run(NL, `select app.deletion_request('NGUOI_LON_ROI', null, true)`, o)).scope, 'NGUOI_LON_ROI');
-    // vẫn FROZEN: đồng ý mới, sửa hồ sơ, đổi mode, tạo con, ghép máy, đặt PIN
-    FROZEN(run(QL, `select app.consent_record('${NA}', 'MD-MET', 'DONG_Y')`, o));
+  });
+
+  it('LC-WITHDRAW-03: vẫn FROZEN khi đóng băng: đồng ý mới, sửa hồ sơ, đổi mode, tạo con, ghép máy, đặt PIN, bật cài đặt AI', () => {
+    FROZEN(run(QL, `select app.consent_record('${BIN}', 'MD-SUCKHOE', 'DONG_Y')`, o));
     FROZEN(run(QL, `select app.child_update('${NA}', '{"grade": 4}')`, o));
     FROZEN(run(QL, `select app.mode_set('${NA}', 'PARENT_LED')`, o));
     FROZEN(run(QL, `select app.child_create('${HH1}', 'bé Mít', p_grade => 3)`, o));
     FROZEN(run(QL, `select app.pin_set('735190')`, o));
+    FROZEN(run(QL, `select app.child_setting_set('${NA}', 'ai_chat_enabled', true)`, o));
   });
 
-  it('LC-SWITCH-03: chỉ đúng giá trị 1 mới bật (fail-closed): 2 và -1 vẫn FROZEN', () => {
-    for (const v of [2, -1, 0]) {
-      FROZEN(run(QL, `select app.consent_record('${NA}', 'MD-XONG', 'RUT')`,
-        { setup: `${FREEZE_JOB} update private.params set value_int = ${v} where key = 'frozen_allows_withdrawal';` }));
-    }
+  it('LC-WITHDRAW-04: hộ đã CHO_XOA (hết hạn thử, xóa gia đình): mọi việc FROZEN, kể cả rút (đã ngừng xử lý)', () => {
+    const c = { setup: `update app.households set state = 'CHO_XOA' where id = '${HH1}';` };
+    FROZEN(run(QL, `select app.consent_record('${NA}', 'MD-SUCKHOE', 'RUT')`, c));
+    FROZEN(run(QL, `select app.consent_withdraw_all('${NA}')`, c));
+    FROZEN(run(QL, `select app.deletion_request('HO_SO_CON', '${NA}', true)`, c));
   });
 });
 

@@ -236,12 +236,23 @@ Luồng dữ liệu ra nước ngoài hiện gồm: CSDL và hàm ở Supabase v
 
 - **(a) Bối cảnh:** con bấm "Con thấy không khỏe", app gửi thông báo tức thì cho bố mẹ và lưu loại sự kiện cùng thời điểm, không lưu triệu chứng. Dữ liệu dùng để bố mẹ biết ngay và để xét riêng trong báo cáo quy luật mệt.
 - **(b) Câu hỏi:** dữ liệu này có bị coi là dữ liệu sức khỏe (dữ liệu nhạy cảm) không? Nếu có thì cần đồng ý riêng, thời hạn lưu và biện pháp gì?
+- **Cập nhật D-67 (17/11/2026):** con chỉ chọn câu có sẵn và bấm "Đồng ý" để gửi (không gõ chữ, không triệu chứng), thông báo tự xóa sau 7 ngày, không vào báo cáo tuần; bố mẹ bật bằng đồng ý riêng `MD-CONBAO`. Câu hỏi (b) vẫn cần trả lời cho "Con thấy không khỏe?".
 - **(c) Vì sao quan trọng:** nếu là dữ liệu nhạy cảm, tính năng chỉ được bật khi có đồng ý riêng (mục đích thứ 8) và có thể phải lưu ngắn hơn.
 - **(d) Định dạng:** CÓ/KHÔNG, điều khoản, thời hạn.
 
+### LQ-17. Căn cứ xử lý phần lõi và đồng ý của con từ 7 tuổi (D-64)
+
+- **(a) Bối cảnh:** app lấy đồng ý pháp lý một lần khi đăng ký cho phần lõi (lập lịch, đồng bộ, nhắc, "Xong", báo cáo), không hỏi từng mục. Lần đầu mở app con, màn "Những gì bố mẹ thấy" đồng thời ghi nhận con đồng ý. Đồng ý riêng chỉ cho dữ liệu sức khỏe, báo "không khỏe" và chat AI.
+- **(b) Câu hỏi:**
+  1. "Thực hiện thỏa thuận" (Điều 19 khoản 1 Luật Bảo vệ dữ liệu cá nhân 91/2025) có thể là căn cứ cho xử lý lõi dữ liệu của trẻ không, hay bắt buộc phải có đồng ý?
+  2. Đồng ý của trẻ từ 7 tuổi (Nghị định 330) có cần cho xử lý không nhằm công bố không?
+  3. Ghi nhận đồng ý của con trên app con nên theo hình thức nào (bấm đồng ý, ghi phiên bản chính sách, lưu bằng chứng gì)?
+- **(c) Vì sao quan trọng:** quyết định màn CA-16 và sổ đồng ý của con; nếu bắt buộc, thiếu bước này thì không được xử lý dữ liệu thật của trẻ từ 7 tuổi.
+- **(d) Định dạng:** CÓ/KHÔNG cho từng câu, điều khoản, hình thức ghi nhận.
+
 ## 3. Thứ tự ưu tiên đề xuất cho luật sư
 
-1. LQ-01, LQ-02, LQ-11: căn cứ xử lý và đồng ý. Gỡ cổng dữ liệu thật và pilot.
+1. LQ-01, LQ-02, LQ-11, LQ-17: căn cứ xử lý và đồng ý. Gỡ cổng dữ liệu thật và pilot.
 2. LQ-04, LQ-14, LQ-15: thời hạn xóa, rút đồng ý, đóng băng (H4, cổng chặn phát hành).
 3. LQ-08, LQ-05: chuyển ra nước ngoài và DPIA.
 4. LQ-06, LQ-07, LQ-09, LQ-10: các loại dữ liệu nhạy cảm và luồng an toàn.

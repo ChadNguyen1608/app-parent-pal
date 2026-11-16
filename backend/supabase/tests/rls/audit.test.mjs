@@ -88,7 +88,7 @@ describe('AUD-02: nội dung - không PIN, mã ghép, token, chữ tự do, lự
   });
   it('AUD-02d: bản ghi hợp lệ được nhận; sự kiện lạ và kiểu người thực hiện sai bị từ chối', () => {
     assert.ok(ins('binding.unlinked', { epoch: 3, reason: 'PIN_QL' }, `child:${NA}`).ok);
-    assert.ok(ins('consent.granted', { purpose: 'MD-MET', origin: 'MOT_MUC', self: false }, `child:${NA}`).ok);
+    assert.ok(ins('consent.granted', { purpose: 'MD-SUCKHOE', origin: 'MOT_MUC', self: false }, `child:${NA}`).ok);
     assert.equal(ins('child.pressed_help', {}).ok, false);
     const noId = admin(`insert into app.audit_log (household_id, actor_kind, event_code) values ('${HH1}', 'adult', 'mode.changed')`);
     assert.equal(noId.code, '23514');
@@ -97,8 +97,9 @@ describe('AUD-02: nội dung - không PIN, mã ghép, token, chữ tự do, lự
   });
   it('AUD-02e: danh mục sự kiện cố định; KHÔNG có sự kiện nào cho nút "Con cần giúp đỡ" hay hỏi thăm (BR-CON-035, D-38)', () => {
     const codes = admin(`select event_code from private.audit_events order by 1`).rows;
-    assert.deepEqual(codes, ['binding.paired', 'binding.requested', 'binding.unlinked', 'child.hidden', 'consent.granted',
-      'consent.withdrawn', 'deletion.requested', 'household.closing', 'household.frozen', 'household.reopened', 'mode.changed']);
+    assert.deepEqual(codes, ['alert.sent', 'binding.paired', 'binding.requested', 'binding.unlinked', 'child.hidden', 'consent.granted',
+      'consent.withdrawn', 'deletion.requested', 'health.added', 'health.deleted', 'health.updated', 'household.closing', 'household.frozen',
+      'household.reopened', 'mode.changed', 'setting.changed']);
     assert.ok(!codes.some((c) => /help|checkin|hoi_tham|safety|talk/i.test(c)));
   });
 });
@@ -129,14 +130,12 @@ describe('AUD-03: sự kiện được ghi đúng, cùng giao dịch (Tech Spec 
       ${adm(log(`event_code = 'mode.changed'`))}`);
     assert.equal(r.rows[2], `mode.changed|adult|child:${NA}|{"new_mode": "PARENT_LED", "old_mode": "CHILD_EXECUTED", "mode_epoch": 2}`);
   });
-  it('AUD-03e: đồng ý và rút: consent.granted / consent.withdrawn kèm mục đích, nguồn gốc, self; rút cha kéo theo PHU_THUOC', () => {
-    const r = run(QL, `select app.consent_record('${NA}', 'MD-MET', 'DONG_Y'); select app.consent_record('${NA}', 'MD-DONGBO', 'RUT');
+  it('AUD-03e: đồng ý và rút: consent.withdrawn / consent.granted kèm mục đích, nguồn gốc, self (by_child chỉ khi con đồng ý)', () => {
+    const r = run(QL, `select app.consent_record('${NA}', 'MD-SUCKHOE', 'RUT'); select app.consent_record('${NA}', 'MD-SUCKHOE', 'DONG_Y');
       ${adm(log(`at > now() - interval '1 minute' and household_id = '${HH1}' and subject_ref = 'child:${NA}' and event_code like 'consent.%' and actor_kind = 'adult'`))}`);
     assert.equal(r.rows[2],
-      'consent.granted|adult|child:' + NA + '|{"self": false, "origin": "MOT_MUC", "purpose": "MD-MET"};' +
-      'consent.withdrawn|adult|child:' + NA + '|{"self": false, "origin": "MOT_MUC", "purpose": "MD-DONGBO"};' +
-      'consent.withdrawn|adult|child:' + NA + '|{"self": false, "origin": "PHU_THUOC", "purpose": "MD-MET"};' +
-      'consent.withdrawn|adult|child:' + NA + '|{"self": false, "origin": "PHU_THUOC", "purpose": "MD-XONG"}');
+      'consent.withdrawn|adult|child:' + NA + '|{"self": false, "origin": "MOT_MUC", "purpose": "MD-SUCKHOE"};' +
+      'consent.granted|adult|child:' + NA + '|{"self": false, "origin": "MOT_MUC", "purpose": "MD-SUCKHOE"}');
   });
   it('AUD-03f: child_delete: child.hidden + binding.unlinked (lý do XOA_HO_SO); rút toàn bộ: consent.withdrawn RUT_TOAN_BO, binding.unlinked, child.hidden, deletion.requested', () => {
     const d = run(QL, `select app.child_delete('${NA}', true); ${adm(log(`event_code in ('child.hidden', 'binding.unlinked') and subject_ref = 'child:${NA}' and actor_kind = 'adult'`))}`);
@@ -146,7 +145,7 @@ describe('AUD-03: sự kiện được ghi đúng, cùng giao dịch (Tech Spec 
       select app.consent_withdraw_all('${NA}', :'tok'::uuid);
       ${adm(`select string_agg(event_code, ',' order by at, id) from app.audit_log where actor_kind = 'adult' and at > now() - interval '1 minute'`)}`);
     assert.ok(w.ok, w.err);
-    assert.equal(w.rows[1], 'consent.withdrawn,consent.withdrawn,consent.withdrawn,binding.unlinked,child.hidden,deletion.requested');
+    assert.equal(w.rows[1], 'consent.withdrawn,consent.withdrawn,binding.unlinked,child.hidden,deletion.requested');
   });
   it('AUD-03g: dòng audit nằm cùng giao dịch - hành động bị hủy thì dòng audit cũng mất', () => {
     const r = run({ role: 'admin' }, `select count(*) as before from app.audit_log \\gset

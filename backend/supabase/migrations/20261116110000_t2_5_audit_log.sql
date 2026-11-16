@@ -35,8 +35,8 @@ insert into private.audit_events (event_code, allowed_meta_keys, note) values
   ('binding.unlinked',     '{epoch,reason}',                 'unlink_device, child_delete, rút toàn bộ: liên kết hiệu lực bị hủy (reason = mã lý do)'),
   ('mode.changed',         '{old_mode,new_mode,mode_epoch}', 'mode_set (BR-FAM-045)'),
   ('child.hidden',         '{reason}',                       'hồ sơ con bị ẩn (child_delete, rút toàn bộ); không xóa hẳn'),
-  ('consent.granted',      '{purpose,origin,self}',          'T2.1: sự kiện DONG_Y trong sổ đồng ý'),
-  ('consent.withdrawn',    '{purpose,origin,self}',          'T2.1: sự kiện RUT trong sổ đồng ý (origin: MOT_MUC, PHU_THUOC, RUT_TOAN_BO)'),
+  ('consent.granted',      '{purpose,origin,self,by_child}', 'T2.1: sự kiện DONG_Y trong sổ đồng ý (by_child: chính con đồng ý trên máy con, D-64)'),
+  ('consent.withdrawn',    '{purpose,origin,self}',          'T2.1: sự kiện RUT trong sổ đồng ý (origin: MOT_MUC, RUT_TOAN_BO)'),
   ('deletion.requested',   '{scope,reason}',                 'T2.2: tạo yêu cầu xóa (rút toàn bộ); hạn xóa hẳn UNKNOWN');
 
 -- ============================================================ bảng

@@ -120,6 +120,16 @@ jobs:
 - `mode_set`: vô hiệu CR khi con mất quyền (BR-FAM-043, AC-FAM-18), báo con sau commit (BR-FAM-045).
 - Các hàm sau (T1.5, T1.6) có PIN băm, HMAC, pepper, FCM: Edge Function.
 
+### Đồng ý của con, cài đặt, ghi chú sức khỏe, xóa theo con (D-64, D-66)
+
+- `app.child_consent_record(p_child, p_policy_version_id)`: chỉ máy con đã ghép; ghi `DONG_Y` có `by_child=true` (chủ thể = con) vào sổ, một dòng cho mỗi phiên bản chính sách, không đổi `purpose_state`. Gắn với màn CA-16. Chưa tách theo tuổi (LQ-17 chờ luật sư).
+- `private.child_settings.ai_chat_enabled` (mặc định false): QL đổi bằng `app.child_setting_set`; máy con đọc bằng `app.my_child_settings`. Tắt luôn được khi đóng băng; bật phải theo quy tắc ghi thường. Chặng 2 mới dùng.
+- `app.my_family_state()`: máy con trả `{state, frozen}`, không lộ thêm.
+- `app.child_health_notes` (D-66): `kind` DI_UNG, THUOC, KHAC; nội dung giới hạn độ dài; kèm nguồn (`declared_by_member_id`, `declared_by_role`, `declared_at`, `source_note`). RLS: QL đọc/ghi; NL chỉ đọc khi có grant; máy con không bao giờ đọc; bộ lập lịch không dùng. RPC `health_note_add`, `health_note_update` (gồm bật/tắt `active`), `health_note_delete` (xóa thật). Audit `health.added/updated/deleted` KHÔNG kèm nội dung. Cần đồng ý riêng `MD-SUCKHOE`.
+- `app.purge_child(p_child, p_reason)` (chỉ hệ thống): xóa theo thứ tự khóa ngoại và ghi bằng chứng (chỉ băm). Hộ còn con khác thì giữ hộ; con cuối thì xóa cả hộ (`purge_household`). Dữ liệu thật vẫn `BLOCKED_H4`. Hộ thử: vị trí chỉ `RUT_SOM` khi là con cuối.
+- `app.child_alerts` (D-67, nút "Báo bố mẹ ngay"): `kind` bị CHECK cứng `KHONG_KHOE | DON_SOM | GOI_BO_ME`, bảng không có cột chữ tự do. `app.child_alert_send(p_kind, p_idempotency_key, p_binding_epoch)`: chỉ máy con đã ghép (epoch sai -> `CONFLICT_REV`), hộ không đóng băng, cần `MD-CONBAO` hiệu lực (đồng ý riêng cấp con, `collect_enabled` = true), tối đa `child_alert_max_per_hour` (6, CHUA_CHOT) lần mỗi giờ mỗi con (`RATE_LIMITED`), gửi lặp cùng khóa trả bản cũ. `app.child_alert_seen(p_alert)`: người lớn đánh dấu đã xem (đóng băng -> `FROZEN`). RLS: QL đọc; NL cần grant `MD-CONBAO`; máy con chỉ thấy cái máy đó gửi; tất cả chỉ trong 7 ngày; rút `MD-CONBAO` thì ẩn, đồng ý lại không hiện lại cái cũ. `private.job_alert_cleanup` (gọi từ `job_daily`) xóa thật thông báo quá `child_alert_retention_days` (7, DA_CHOT). `weekly_report` không đọc bảng này (test ALR-WEEKLY). Audit `alert.sent` chỉ có `{kind}`. `purge_household`/`purge_child` xóa cả bảng. Thông báo đẩy (T3.5): chưa có outbox nên chưa ghi hàng đợi; nơi thêm là cuối `child_alert_send`.
+- Mặc định an toàn đã chọn thêm: `declared_by_*` không đổi khi sửa; chỉ QL thêm/sửa ghi chú sức khỏe; ghi nhận đồng ý của con cho mọi con có máy đã ghép (chưa chia tuổi); app chưa có hàm đọc "con đã đồng ý chưa".
+
 ### Mặc định an toàn đã chọn (tài liệu thiếu hoặc mơ hồ)
 
 - `purposes` seed 7 mục đích ngay trong migration (cần cho FK); tất cả `CHUA_DUYET`; `MD-SUCKHOE` có hàng nhưng `collect_enabled=false`, nên `app.can` từ chối mọi hành động gắn mục đích này. `purpose_effective` (đồng ý đang bật) thuộc T2.1; hiện `app.can` chỉ kiểm mục đích tồn tại và được thu.
@@ -252,8 +262,8 @@ Chỉ sau khi chủ sản phẩm đồng ý áp lên đám mây mới chạy `su
 
 ### Đồng ý (T2.1)
 
-- Bảng: `purposes` (nay 8 mục), `policy_versions` (chỉ-thêm, một bản nháp `NHAP-D42-CHUA-DUYET`), `consent_events` (sổ chỉ-thêm: trigger chặn sửa/xóa/truncate kể cả `service_role`), `purpose_state` (`CHUA_HOI` = không có dòng; chỉ trigger của sổ ghi được, chặn bằng `pg_trigger_depth()`).
-- `app_internal.purpose_effective(child, code)` (nội bộ, không cấp cho `authenticated`): mục đích tự `DANG_BAT`, `collect_enabled`, và mọi mục phụ thuộc (kể cả gián tiếp) hiệu lực. `app.access_state` / `app_internal.can` với `p_purpose` khác null nay DENY khi mục đích chưa hiệu lực, kể cả với QL (nối Tech Spec §2.8, BL 11.3 §5).
+- Bảng: `purposes` (D-64: một mục lõi `MD-LICH` gộp mọi tính năng lõi; mục riêng `MD-SUCKHOE`, `MD-CONBAO`; cả hai đều `collect_enabled` = true từ D-66, D-67), `policy_versions` (chỉ-thêm), `consent_events` (sổ chỉ-thêm: trigger chặn sửa/xóa/truncate kể cả `service_role`; có cột `by_child` cho đồng ý của máy con), `purpose_state` (`CHUA_HOI` = không có dòng; chỉ trigger ghi). Không còn cơ chế phụ thuộc giữa các mục và không ẩn dữ liệu theo từng tính năng lõi.
+- `app_internal.purpose_effective(child, code)` (nội bộ): mục `DANG_BAT`, `collect_enabled`, và mọi mục lõi (`kind=LOI`) đang bật. Không phải cơ chế phụ thuộc: rút lõi thì mọi mục riêng ngừng hiệu lực. `app_internal.is_adult_of_child` dùng cho RLS dữ liệu sức khỏe (máy con không đọc).
 - Dữ liệu cũ: bảng dữ liệu của task sau (T3+) dùng chính sách `app_internal.purpose_visible(child, 'MD-xxx', created_at)` (hoặc `visible_from`). Dữ liệu chỉ hiện nếu `created_at >= visible_from`, mốc = lớn nhất của `active_since` trên cả chuỗi phụ thuộc. Rút rồi đồng ý lại (mục đó hoặc mục cha) không làm dữ liệu cũ hiện lại (D-42, AC-CON-07). Mẫu chính sách được kiểm trong `consent.test.mjs` (CON-07).
 - `app.consent_record(p_child, p_purpose_code, p_event, p_policy_version_id, p_paper_ref, p_idempotency_key, p_for_self)`:
 
@@ -263,11 +273,11 @@ Chỉ sau khi chủ sản phẩm đồng ý áp lên đám mây mới chạy `su
 | NL theo con (`p_for_self=false`) | `FORBIDDEN` (AC-CON-05) |
 | NL hoặc QL của chính mình (`p_for_self=true`) | ghi sổ có `subject_member_id`; không đổi `purpose_state`; `RUT` thu hồi grant của chính người đó cho mục đích và mục phụ thuộc |
 | Máy con | `FORBIDDEN` `BR-CON-020` |
-| `DONG_Y` mục `collect_enabled=false` (MD-SUCKHOE, MD-CONBAO) | `FEATURE_OFF`; `RUT` vẫn ghi được |
+| `DONG_Y` mục có `collect_enabled=false` (cờ tắt khẩn cấp) | `FEATURE_OFF`; `RUT` vẫn ghi được. Hiện `MD-SUCKHOE` (D-66) và `MD-CONBAO` (D-67) bật được |
 | `RUT` mục lõi MD-LICH ở cấp con | `VALIDATION` `BR-CON-026`: phải dùng rút toàn bộ |
-| Hộ đóng băng | `FROZEN` |
+| Hộ đóng băng | `DONG_Y` mới: `FROZEN`; `RUT` luôn được (D-64) |
 
-- Rút một mục: ghi `RUT` và `RUT` theo cho mục phụ thuộc đang bật (`origin='PHU_THUOC'`).
+- Rút một mục riêng: ghi `RUT`; rút `MD-SUCKHOE` ẩn ngay ghi chú sức khỏe và xếp một yêu cầu xóa phạm vi `SUC_KHOE` (`RUT_SUC_KHOE`). Rút lõi ở cấp con: dùng rút toàn bộ.
 
 ### Rút toàn bộ (T2.2)
 
@@ -281,9 +291,9 @@ Chỉ sau khi chủ sản phẩm đồng ý áp lên đám mây mới chạy `su
 
 ### Mặc định an toàn đã chọn (tài liệu thiếu hoặc mơ hồ; chờ chủ sản phẩm duyệt)
 
-1. Mục đích thứ 8 mã `MD-CONBAO` (D-58 không đặt mã), tùy chọn, phụ thuộc MD-DONGBO, `collect_enabled=false` cho tới khi LQ-16 có trả lời; chưa ghi `DONG_Y` được.
-2. Rút mục cha kéo theo `RUT` mục con đang bật; đồng ý lại mục cha KHÔNG tự bật lại mục con.
-3. Hộ đóng băng: ghi đồng ý, rút, rút toàn bộ đều `FROZEN` (BR-FAM-054 "không ẩn thêm"; giống `child.delete`). Từ T2.3, rút và xóa đổi được bằng `private.params.frozen_allows_withdrawal`.
+1. `MD-CONBAO` (D-58 không đặt mã), tùy chọn, `collect_enabled=true` từ D-67; LQ-16 (có phải dữ liệu sức khỏe không) vẫn chờ luật sư, nên thông báo chỉ là mã câu, giữ 7 ngày.
+2. Không còn mục phụ thuộc (D-64); đồng ý lại một mục riêng không hiện dữ liệu cũ (`visible_from`).
+3. Hộ đóng băng: đồng ý MỚI `FROZEN`; rút, rút toàn bộ, yêu cầu xóa, tắt/xóa ghi chú sức khỏe, tắt cài đặt AI luôn được (D-64).
 4. Rút toàn bộ ẩn luôn hồ sơ con (QL cũng không thấy); `deletion_requests` là nơi QL xem tiến trình. Hoàn tác trong thời gian chờ (BR-FAM-084, `UNKNOWN`) chưa có.
 5. Mã xác nhận bước hai hạn 10 phút (`CHUA_CHOT`), do máy chủ ép (không chỉ cờ `confirm=true`).
 6. Đồng ý của chính người lớn (NL, BR-CON-007): ghi sổ, rút thì thu hồi grant của họ; không đổi `purpose_state`.
@@ -317,8 +327,9 @@ Chỉ sau khi chủ sản phẩm đồng ý áp lên đám mây mới chạy `su
 | `freeze_idle_days` | 30 | DA_CHOT (D-41) | ngày không thao tác thì đóng băng |
 | `trial_purge_after_days` | 7 | DA_CHOT (D-44) | ngày sau hạn thử thì xóa |
 | `trial_max_active` | 3 | DA_CHOT | số vị trí thử cùng lúc |
-| `trial_max_days` | 14 | CHUA_CHOT | hạn thử tối đa tính từ hôm mở (PR-CON-09) |
-| `frozen_allows_withdrawal` | 0 | CHUA_CHOT | (a) 0 = rút/xóa khi đóng băng bị `FROZEN`; 1 = cho phép. Đổi bằng một lệnh `update private.params`, không sửa hàm. Đồng ý MỚI, đổi chế độ, ghép máy, PIN vẫn `FROZEN` |
+| `child_alert_max_per_hour` | 6 | CHUA_CHOT | D-67: số lần con báo bố mẹ tối đa mỗi giờ mỗi con |
+| `child_alert_retention_days` | 7 | DA_CHOT (D-67) | ngày giữ thông báo của con rồi xóa thật |
+| `trial_max_days` | 14 | DA_CHOT (D-65) | hạn thử tối đa tính từ hôm mở (PR-CON-09) |
 | `purge_delete_auth_users` | 1 | CHUA_CHOT | 1 = purge xóa luôn `auth.users`; 0 = trả `auth_user_ids` cho Edge Function xóa bằng Admin API |
 
 ### Việc còn lại, chưa làm

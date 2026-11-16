@@ -1,4 +1,4 @@
--- expect: CON-07a,CON-07b
+-- expect: CON-07a
 -- Lỗi: visible_from lấy mốc đồng ý ĐẦU TIÊN trong sổ thay vì mốc hiện hành: đồng ý lại làm dữ liệu cũ hiện lại.
 create or replace function app_internal.visible_from(p_child uuid, p_code text) returns timestamptz
 language sql stable security definer set search_path = '' as $f$
