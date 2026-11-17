@@ -18,7 +18,7 @@ const norm = (t: string) => t.trim().normalize('NFC').toLocaleUpperCase('vi-VN')
 
 // PA-35 Xóa tài khoản và dữ liệu + PA-36 Xác nhận lần hai (cùng một route, hai giai đoạn).
 // Phần PA-35 lấy nguyên từ wireframe (gõ XÓA, "Xác nhận lần 1"). PA-36 chưa vẽ: câu chữ "tạm".
-// "Rút đồng ý toàn bộ" của một con dùng consent_withdraw_all hai bước (bước 1 lấy hệ quả và mã, bước 2 gửi mã).
+// Vào từ PA-32 với scope=RUT (một con) hoặc scope=GIA_DINH (cả gia đình). "Rút đồng ý toàn bộ" của một con dùng consent_withdraw_all hai bước (bước 1 lấy hệ quả và mã, bước 2 gửi mã).
 // Xóa gia đình, rời gia đình dùng deletion_request với confirm=true ở lần hai. Không bao giờ nói "đã xóa hết".
 export default function Xoa() {
   const { scope, childId } = useLocalSearchParams<{ scope?: string; childId?: string }>();
@@ -31,7 +31,7 @@ export default function Xoa() {
         { key: 'gd', label: 'Xóa gia đình và tài khoản', target: { kind: 'GIA_DINH' } },
       ]
     : [{ key: 'roi', label: 'Rời gia đình', target: { kind: 'NGUOI_LON_ROI' } }];
-  const initial = scope === 'RUT' && childId ? `r-${childId}` : options.length === 1 ? options[0].key : null;
+  const initial = scope === 'RUT' && childId ? `r-${childId}` : scope === 'GIA_DINH' && isPrimary ? 'gd' : options.length === 1 ? options[0].key : null;
   const [picked, setPicked] = useState<string | null>(initial);
   const [typed, setTyped] = useState('');
   const [typedError, setTypedError] = useState<string | null>(null);

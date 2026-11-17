@@ -17,6 +17,10 @@ export type Child = {
   pairState: PairState;
   /** MD-LICH (mục lõi) đang bật: chưa có thì chưa được dùng hồ sơ này (PA-02 chặn). */
   coreConsent: boolean;
+  /** MD-SUCKHOE (đồng ý riêng, D-66) đang bật cho con này. */
+  healthConsent: boolean;
+  /** MD-CONBAO (đồng ý riêng, D-67) đang bật cho con này. */
+  alertConsent: boolean;
 };
 
 export type HouseholdState = 'HOAT_DONG' | 'DONG_BANG' | 'CHO_XOA' | 'DA_XOA';
@@ -38,7 +42,7 @@ export type Home = {
 } | null;
 
 // ---- Đồng ý theo mục đích (T2.1), rút toàn bộ (T2.2), đóng băng và xóa (T2.3)
-export type Purpose = { code: string; nameVi: string; dependsOn: string[]; kind: 'LOI' | 'TUY_CHON'; collectEnabled: boolean };
+export type Purpose = { code: string; nameVi: string; kind: 'LOI' | 'TUY_CHON'; collectEnabled: boolean };
 /** CHUA_HOI = chưa có dòng trong purpose_state. */
 export type PurposeStatus = 'CHUA_HOI' | 'DANG_BAT' | 'DA_RUT';
 export type ConsentOverview = { purposes: Purpose[]; states: Record<string, { state: PurposeStatus; activeSince: string | null }> };
@@ -57,8 +61,8 @@ export type ConsentRecordResult = {
   /** false: đã đúng trạng thái đó từ trước, không ghi sổ. */
   changed: boolean;
   replay: boolean;
-  /** Các mục phụ thuộc bị rút theo (chỉ khi rút mục cha). */
-  alsoWithdrawn: string[];
+  /** Mục đang hiệu lực sau lần ghi (máy chủ tính). */
+  effective: boolean;
 };
 
 /** Hệ quả của rút toàn bộ do máy chủ tính (bước 1). */
@@ -76,6 +80,27 @@ export type DeletionResult = { replay: boolean; scope: DeletionScope; deletionRe
 
 /** Máy con: ACTIVE hoặc FROZEN (gia đình tạm dừng, CA-18). */
 export type FamilyState = 'ACTIVE' | 'FROZEN';
+
+// ---- Ghi chú sức khỏe của con (D-66, nấc 1 chỉ lưu và hiển thị)
+export type HealthKind = 'DI_UNG' | 'THUOC' | 'KHAC';
+export type HealthNote = {
+  id: string;
+  childId: string;
+  kind: HealthKind;
+  content: string;
+  /** Tên gọi người khai (từ members); null nếu không đọc được. */
+  declaredByName: string | null;
+  declaredByRole: MemberRole;
+  /** Ngày khai, YYYY-MM-DD (giờ VN). */
+  declaredAt: string;
+  sourceNote: string | null;
+  active: boolean;
+};
+export type HealthNotePatch = { kind?: HealthKind; content?: string; sourceNote?: string | null; declaredAt?: string; active?: boolean };
+
+// ---- Con báo bố mẹ ngay (D-67): chỉ ba câu có sẵn, không chữ tự do
+export type AlertKind = 'KHONG_KHOE' | 'DON_SOM' | 'GOI_BO_ME';
+export type ChildAlert = { id: string; childId: string; kind: AlertKind; createdAt: string; seenAt: string | null };
 
 export type ChildInput = {
   householdId: string;
@@ -134,6 +159,16 @@ export interface Api {
   householdReopen(confirm: boolean): Promise<{ changed: boolean }>;
   /** PA-35, PA-36: yêu cầu xóa. Luôn gửi confirm=true (người dùng đã xác nhận lần hai). */
   deletionRequest(scope: DeletionScope, childId?: string | null): Promise<DeletionResult>;
+  /** PA-06 (sức khỏe): đọc ghi chú của một con. Chưa có đồng ý hiệu lực hoặc đã rút thì máy chủ trả rỗng. */
+  listHealthNotes(childId: string): Promise<HealthNote[]>;
+  healthNoteAdd(input: { childId: string; kind: HealthKind; content: string; sourceNote?: string | null; declaredAt?: string }): Promise<HealthNote>;
+  /** Sửa nội dung, loại, nguồn hoặc bật/tắt (active). */
+  healthNoteUpdate(noteId: string, patch: HealthNotePatch): Promise<HealthNote>;
+  healthNoteDelete(noteId: string): Promise<void>;
+  /** PA-15: báo của con trong 7 ngày (máy chủ tự ẩn quá hạn), mới nhất trước. Mục đồng ý chưa bật thì rỗng. */
+  listChildAlerts(): Promise<ChildAlert[]>;
+  /** Đánh dấu một báo là đã xem. */
+  childAlertSeen(alertId: string): Promise<void>;
   /** PA-34: yêu cầu xuất dữ liệu. Ở bản thử máy chủ luôn trả BLOCKED_H4 (ApiError). */
   exportRequest(scope: 'GIA_DINH' | 'HO_SO_CON', childId?: string | null): Promise<void>;
   // Máy con
@@ -147,8 +182,12 @@ export interface Api {
   getMyBinding(): Promise<Binding | null>;
   /** CA-16: mã các mục đích đang HIỆU LỰC (bật, được thu, mục cha cũng hiệu lực) mà máy con được xem. */
   getMyConsent(childId: string): Promise<string[]>;
-  /** CA-18: gia đình có đang tạm dừng không. Chưa đọc được thì coi là ACTIVE (không chặn nhầm). */
+  /** CA-18: gia đình có đang tạm dừng không (my_family_state). */
   getFamilyState(): Promise<FamilyState>;
+  /** CA-16: con bấm "Con hiểu rồi" thì ghi đồng ý của con (child_consent_record). Gửi lặp an toàn. */
+  childConsentRecord(idempotencyKey?: string): Promise<{ changed: boolean; consentedAt: string | null }>;
+  /** CA-21: gửi một trong ba câu có sẵn (child_alert_send). Máy chủ chỉ nhận mã câu; RATE_LIMITED khi bấm quá nhiều. */
+  childAlertSend(kind: AlertKind, idempotencyKey?: string, bindingEpoch?: number): Promise<{ id: string; replay: boolean; createdAt: string | null }>;
   /** bindingEpoch: máy con bắt buộc gửi; QL có thể bỏ. */
   unlinkDevice(childId: string, pin: string, bindingEpoch?: number): Promise<void>;
 }

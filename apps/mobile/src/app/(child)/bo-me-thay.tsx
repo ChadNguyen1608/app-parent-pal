@@ -6,14 +6,17 @@ import { errorMessage } from '@/data/errors';
 import { useApp } from '@/state/app';
 import { seenLines, type SeenLine } from '@/ui/ca16-lines';
 import { Btn, H1, Notice, P, Screen } from '@/ui/kit';
+import { useAction } from '@/ui/useAction';
 
-// CA-16 Những gì bố mẹ thấy. Dòng lấy từ các mục đích đang hiệu lực (khớp quyền thật); câu chữ nguyên từ wireframe.
-// Không tải được thì báo và cho thử lại; nút "Con hiểu rồi" vẫn dùng được (không chặn dùng app, IA 4.6).
+// CA-16 Những gì bố mẹ thấy, kiêm bước con đồng ý (D-64). Dòng lấy từ các mục đích đang hiệu lực (khớp quyền thật); câu chữ nguyên từ wireframe.
+// Không tải được danh sách thì báo và cho thử lại; "Con hiểu rồi" vẫn bấm được. Lần đầu (intro) bấm nút là ghi đồng ý của con lên máy chủ;
+// ghi lỗi thì báo ngay trong màn, nút vẫn bấm lại được (không kẹt màn, không vào app khi chưa ghi được).
 export default function BoMeThay() {
   const router = useRouter();
   const { api, childId, childStage, acknowledgeIntro } = useApp();
   const [lines, setLines] = useState<SeenLine[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const act = useAction();
 
   const load = useCallback(async () => {
     if (!childId) return;
@@ -43,14 +46,19 @@ export default function BoMeThay() {
         </View>
       ))}
       {error ? <Notice>{error}</Notice> : null}
+      {act.error ? <Notice>{`${act.error} Con bấm "Con hiểu rồi" lại nhé. (tạm)`}</Notice> : null}
       {error ? <Btn big kind="secondary" label="Thử lại" onPress={() => void load()} /> : null}
       <Btn
         big
         label="Con hiểu rồi"
+        busy={act.busy}
         onPress={() => {
           if (childStage === 'intro') {
             // Guard của bo-me-thay vẫn mở khi đã 'ready' nên phải tự chuyển sang màn chính.
-            void acknowledgeIntro().then(() => router.replace('/(child)/(tabs)/hom-nay'));
+            void act.run(async () => {
+              await acknowledgeIntro();
+              router.replace('/(child)/(tabs)/hom-nay');
+            });
           } else router.back();
         }}
       />

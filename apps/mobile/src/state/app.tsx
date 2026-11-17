@@ -7,6 +7,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { getApi } from '../data';
 import { parseAuthLink } from '../data/auth-link';
 import { errorMessage } from '../data/errors';
+import { uuidv4 } from '../data/uuid';
 import type { Api, Binding, Home, SessionInfo } from '../data/types';
 import { APP_VARIANT } from '../variant';
 
@@ -80,6 +81,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
   const isParent = APP_VARIANT === 'parent';
   const [linkError, setLinkError] = useState<string | null>(null);
   const handledUrl = useRef<string | null>(null);
+  const introKey = useRef(uuidv4());
 
   // Link đăng nhập trong thư mở app (D-59): hoàn tất phiên. Chỉ app phụ huynh.
   useEffect(() => {
@@ -275,6 +277,9 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       },
       acknowledgeJustPaired: () => setChildStage('intro'),
       acknowledgeIntro: async () => {
+        // CA-16 kiêm bước con đồng ý (D-64): ghi đồng ý lên máy chủ TRƯỚC, lỗi thì ném ra để màn báo và cho thử lại
+        // (không đặt cờ "đã xem", không vào app). Khóa gửi lặp giữ nguyên giữa các lần thử.
+        await api.childConsentRecord(introKey.current);
         await AsyncStorage.setItem(INTRO_KEY, '1').catch(() => undefined);
         setChildStage('ready');
       },

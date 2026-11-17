@@ -23,8 +23,8 @@ export default function ParentLayout() {
       <Stack.Protected guard={parentStage === 'needHome'}>
         <Stack.Screen name="bat-dau" options={{ title: 'Bắt đầu' }} />
       </Stack.Protected>
-      <Stack.Protected guard={parentStage === 'needConsent' || parentStage === 'ready'}>
-        <Stack.Screen name="dong-y" options={{ title: 'Đồng ý theo từng tính năng', headerBackVisible: parentStage === 'ready' }} />
+      <Stack.Protected guard={parentStage === 'needConsent'}>
+        <Stack.Screen name="dong-y" options={{ title: 'Đồng ý sử dụng', headerBackVisible: false }} />
       </Stack.Protected>
       <Stack.Protected guard={parentStage === 'frozen'}>
         <Stack.Screen name="tam-khoa" options={{ title: 'Tài khoản tạm khóa', headerBackVisible: false }} />
@@ -35,6 +35,8 @@ export default function ParentLayout() {
       <Stack.Protected guard={parentStage === 'ready'}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="quyen-rieng-tu" options={{ title: 'Quyền riêng tư' }} />
+        <Stack.Screen name="suc-khoe" options={{ title: 'Sức khỏe của con' }} />
+        <Stack.Screen name="thong-bao" options={{ title: 'Thông báo của con' }} />
         <Stack.Screen name="du-lieu" options={{ title: 'Dữ liệu của gia đình' }} />
         <Stack.Screen name="xuat-du-lieu" options={{ title: 'Xuất dữ liệu' }} />
         <Stack.Screen name="xoa" options={{ title: 'Xóa tài khoản' }} />

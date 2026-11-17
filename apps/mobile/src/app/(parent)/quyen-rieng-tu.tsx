@@ -2,17 +2,18 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
-import { activeDependents, effectiveCodes, PURPOSE_CONBAO, PURPOSE_LICH } from '@/data/consent';
+import { OPTIONAL_PURPOSES, effectiveCodes } from '@/data/consent';
 import { errorMessage } from '@/data/errors';
 import type { ConsentOverview } from '@/data/types';
 import { useApp } from '@/state/app';
 import { Btn, Choice, H1, Note, Notice, P, Screen, SwitchRow } from '@/ui/kit';
-import { PURPOSE_LABELS, shortName } from '@/ui/purpose-labels';
+import { CORE_LABEL, OPTIONAL_LABELS, shortName } from '@/ui/purpose-labels';
 import { useAction } from '@/ui/useAction';
 
-// PA-32 Quyền riêng tư và đồng ý. Công tắc từng mục: tắt = rút đồng ý mục đó, bật = đồng ý lại.
-// Tắt mục cha kéo theo mục con đang bật: hỏi ngay trong màn trước khi rút (câu hỏi "tạm", chờ duyệt).
-// MD-CONBAO hiện "đang chờ duyệt", không bật được. Mục lõi (lịch) chỉ rút bằng "Rút toàn bộ đồng ý".
+// PA-32 Quyền riêng tư và đồng ý (D-64). Một đồng ý cốt lõi (chỉ rút bằng "Rút toàn bộ") và hai đồng ý riêng có công tắc:
+// tắt = rút đồng ý mục đó, bật = đồng ý lại. Tắt mục sức khỏe hoặc báo bố mẹ thì dữ liệu cũ của mục đó bị ẩn ngay và không hiện lại.
+// "Rút toàn bộ" cho một con (consent_withdraw_all hai bước) hoặc cho cả gia đình (deletion_request GIA_DINH, hai bước ở PA-35/36).
+// Wireframe PA-32 chưa vẽ theo mô hình mới: mọi câu chữ "tạm", chờ chủ sản phẩm duyệt.
 export default function QuyenRieng() {
   const router = useRouter();
   const { api, home } = useApp();
@@ -21,7 +22,6 @@ export default function QuyenRieng() {
   const [overview, setOverview] = useState<ConsentOverview | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [confirmOff, setConfirmOff] = useState<string | null>(null);
-  const [done, setDone] = useState<string | null>(null);
   const act = useAction();
   const cid = childId ?? kids[0]?.id ?? null;
   const isPrimary = home?.role === 'PRIMARY';
@@ -42,24 +42,16 @@ export default function QuyenRieng() {
   );
 
   if (!cid || kids.length === 0) return null;
+  const childName = kids.find((c) => c.id === cid)?.callName ?? 'con';
   const effective = overview ? new Set(effectiveCodes(overview)) : new Set<string>();
   const isOn = (code: string) => overview?.states[code]?.state === 'DANG_BAT';
 
   async function set(code: string, event: 'DONG_Y' | 'RUT') {
     setConfirmOff(null);
-    setDone(null);
     await act.run(async () => {
-      const r = await api.consentRecord({ childId: cid!, purposeCode: code, event });
-      if (r.alsoWithdrawn.length > 0) setDone(`Đã tắt thêm: ${r.alsoWithdrawn.map(shortName).join(', ')}. (tạm)`);
+      await api.consentRecord({ childId: cid!, purposeCode: code, event });
       await load();
     });
-  }
-
-  function onSwitch(code: string, next: boolean) {
-    if (!overview) return;
-    if (next) return void set(code, 'DONG_Y');
-    if (activeDependents(overview, code).length > 0) setConfirmOff(code);
-    else void set(code, 'RUT');
   }
 
   return (
@@ -74,51 +66,44 @@ export default function QuyenRieng() {
       ) : (
         <P muted>Hồ sơ của {kids[0].callName}</P>
       )}
-      <P muted>Tắt một mục là rút đồng ý cho mục đó: tính năng tắt, dữ liệu cũ của mục đó được ẩn ngay và không tự hiện lại khi bật lại.</P>
       {loadError ? <Notice>{loadError}</Notice> : null}
       <View>
-        {PURPOSE_LABELS.map((l) => {
+        <SwitchRow label={CORE_LABEL.short} desc={isPrimary ? 'Đang bật. Muốn rút thì dùng "Rút toàn bộ" bên dưới. (tạm)' : 'Đang bật.'} value={isOn(CORE_LABEL.code)} disabled onValueChange={() => undefined} />
+        {OPTIONAL_LABELS.map((l) => {
           const info = overview?.purposes.find((p) => p.code === l.code);
-          const required = l.code === PURPOSE_LICH;
-          const pending = l.code === PURPOSE_CONBAO || (info ? !info.collectEnabled : false);
-          const parentOff = info?.dependsOn.find((d) => !isOn(d));
-          const desc = pending
-            ? 'Đang chờ duyệt'
-            : required
-              ? 'Bắt buộc'
-              : isOn(l.code)
-                ? effective.has(l.code)
-                  ? 'Bật'
-                  : 'Bật, nhưng chưa dùng được vì mục cha đang tắt. (tạm)'
-                : 'Tắt';
+          const off = info ? !info.collectEnabled : false;
+          const on = isOn(l.code);
+          const desc = off ? 'Chưa mở ở bản thử' : on ? (effective.has(l.code) ? 'Bật' : 'Bật, nhưng chưa dùng được. (tạm)') : 'Tắt';
           return (
             <SwitchRow
               key={l.code}
               label={l.short}
               desc={desc}
-              value={required || (isOn(l.code) && !pending)}
-              disabled={!overview || required || pending || !isPrimary || act.busy || (!isOn(l.code) && parentOff !== undefined)}
-              onValueChange={(v) => onSwitch(l.code, v)}
+              value={on && !off}
+              disabled={!overview || off || !isPrimary || act.busy}
+              onValueChange={(v) => (v ? void set(l.code, 'DONG_Y') : setConfirmOff(l.code))}
             />
           );
         })}
       </View>
-      {confirmOff && overview ? (
-        <Notice kind="info">
-          {`Tắt "${shortName(confirmOff)}" cũng tắt: ${activeDependents(overview, confirmOff).map(shortName).join(', ')}. Bạn tắt chứ? (tạm)`}
-        </Notice>
-      ) : null}
-      {confirmOff ? (
+      {confirmOff && OPTIONAL_PURPOSES.includes(confirmOff) ? (
         <View style={{ gap: 8 }}>
+          <Notice kind="info">
+            {`Tắt "${shortName(confirmOff)}": dữ liệu cũ của mục này được ẩn ngay, sẽ không hiện lại khi bạn bật lại, và được xếp hàng xóa. Bạn tắt chứ? (tạm)`}
+          </Notice>
           <Btn label="Tắt" kind="danger" onPress={() => void set(confirmOff, 'RUT')} busy={act.busy} />
           <Btn label="Giữ nguyên" kind="secondary" onPress={() => setConfirmOff(null)} />
         </View>
       ) : null}
-      {done ? <Notice kind="info">{done}</Notice> : null}
       {act.error ? <Notice>{act.error}</Notice> : null}
       {!isPrimary ? <Note>Chỉ người quản lý chính đổi được các mục này. (tạm)</Note> : null}
       <Note>Đã ghi đồng ý không có nghĩa là đã đủ căn cứ pháp lý. Bản chính sách hiện là bản nháp, chưa duyệt.</Note>
-      {isPrimary ? <Btn label="Rút toàn bộ đồng ý" kind="secondary" onPress={() => router.push({ pathname: '/(parent)/xoa', params: { scope: 'RUT', childId: cid } })} /> : null}
+      {isPrimary ? (
+        <View style={{ gap: 8 }}>
+          <Btn label={`Rút toàn bộ đồng ý cho ${childName}`} kind="secondary" onPress={() => router.push({ pathname: '/(parent)/xoa', params: { scope: 'RUT', childId: cid } })} />
+          <Btn label="Rút toàn bộ đồng ý cho cả gia đình" kind="secondary" onPress={() => router.push({ pathname: '/(parent)/xoa', params: { scope: 'GIA_DINH' } })} />
+        </View>
+      ) : null}
     </Screen>
   );
 }

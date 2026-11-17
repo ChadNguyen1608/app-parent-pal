@@ -20,9 +20,9 @@ async function themCon(page: Page) {
   await page.getByRole('radio', { name: 'Có' }).click();
 }
 
-/** PA-02 sau khi thêm con: chỉ mục lõi (lịch), không chọn mục tùy chọn nào. */
+/** PA-02 sau khi thêm con (D-64): chỉ đồng ý cốt lõi, không chọn mục riêng nào. */
 async function dongYToiThieu(page: Page) {
-  await expect(page.getByRole('heading', { name: 'Đồng ý theo từng tính năng' }).last()).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Đồng ý sử dụng' }).last()).toBeVisible();
   await page.getByRole('button', { name: 'Đồng ý và tiếp tục' }).click();
 }
 
@@ -125,44 +125,122 @@ test('nhánh lỗi: mã ghép sai báo một câu chung (sau khi đặt PIN lầ
   await expect(page.getByRole('heading', { name: 'Đã nhập mã đúng' })).toHaveCount(0);
 });
 
-test('đồng ý theo tính năng (PA-02), bật tắt ở PA-32, mục thứ 8 chưa bật được', async ({ page }) => {
+test('đồng ý (PA-02, D-64): một đồng ý cốt lõi và hai mục riêng không chọn sẵn; PA-32 xem và rút từng mục riêng', async ({ page }) => {
   await dangNhap(page);
   await themCon(page);
   await page.getByRole('button', { name: 'Lưu' }).click();
-  await expect(page.getByRole('heading', { name: 'Đồng ý theo từng tính năng' }).last()).toBeVisible();
-  // Mục tùy chọn không chọn sẵn; mục con khóa tới khi chọn mục cha; mục thứ 8 chờ duyệt.
-  await expect(page.getByRole('checkbox', { name: 'Hỏi thăm sau giờ học' })).not.toBeChecked();
-  await expect(page.getByRole('checkbox', { name: 'Đánh dấu "Xong" trên máy con' })).toBeDisabled();
-  await expect(page.getByRole('checkbox', { name: 'Con báo không khỏe (tùy chọn)' })).toBeDisabled();
-  await expect(page.getByText('Đang chờ duyệt')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Đồng ý sử dụng' }).last()).toBeVisible();
+  // Không còn danh sách từng tính năng: chỉ hai hộp tích, không chọn sẵn.
+  await expect(page.getByRole('checkbox')).toHaveCount(2);
+  await expect(page.getByRole('checkbox', { name: 'Lưu thông tin sức khỏe của con' })).not.toBeChecked();
+  await expect(page.getByRole('checkbox', { name: 'Cho con báo bố mẹ ngay' })).not.toBeChecked();
+  await expect(page.getByText(/Lịch của con, đồng bộ sang máy con và nhắc giờ/)).toBeVisible();
   await shot(page, 'pa02-dong-y');
-  await page.getByRole('checkbox', { name: 'Nhắc giờ trên máy con' }).click();
-  await page.getByRole('checkbox', { name: 'Đánh dấu "Xong" trên máy con' }).click();
+  await page.getByRole('checkbox', { name: 'Lưu thông tin sức khỏe của con' }).click();
+  await page.getByRole('checkbox', { name: 'Cho con báo bố mẹ ngay' }).click();
   await page.getByRole('button', { name: 'Đồng ý và tiếp tục' }).click();
 
   await page.getByRole('tab', { name: /Gia đình$/ }).click();
   await page.getByRole('button', { name: 'Quyền riêng tư và đồng ý' }).click();
-  await expect(page.getByRole('switch', { name: 'Đánh dấu "Xong"' })).toBeChecked();
-  await expect(page.getByRole('switch', { name: 'Hỏi thăm sau giờ học' })).not.toBeChecked();
-  await expect(page.getByRole('switch', { name: 'Con báo không khỏe (tùy chọn)' })).toBeDisabled();
+  await expect(page.getByRole('switch', { name: 'Thông tin sức khỏe của con' })).toBeChecked();
+  await expect(page.getByRole('switch', { name: 'Con báo bố mẹ ngay' })).toBeChecked();
+  await expect(page.getByRole('switch', { name: 'Phần cốt lõi' })).toBeDisabled();
   await shot(page, 'pa32-quyen-rieng-tu');
 
-  // Tắt mục cha: hỏi trước vì kéo theo mục con.
-  await page.getByRole('switch', { name: 'Nhắc giờ trên máy con' }).click();
-  await expect(page.getByText(/cũng tắt: Đánh dấu "Xong"/)).toBeVisible();
+  // Tắt một mục riêng: hỏi trước, rồi rút; mục lõi và mục riêng kia không đổi.
+  await page.getByRole('switch', { name: 'Con báo bố mẹ ngay' }).click();
+  await expect(page.getByText(/dữ liệu cũ của mục này được ẩn ngay/)).toBeVisible();
   await page.getByRole('button', { name: 'Tắt', exact: true }).click();
-  await expect(page.getByRole('switch', { name: 'Nhắc giờ trên máy con' })).not.toBeChecked();
-  await expect(page.getByRole('switch', { name: 'Đánh dấu "Xong"' })).not.toBeChecked();
+  await expect(page.getByRole('switch', { name: 'Con báo bố mẹ ngay' })).not.toBeChecked();
+  await expect(page.getByRole('switch', { name: 'Thông tin sức khỏe của con' })).toBeChecked();
+  // Bật lại là đồng ý lại.
+  await page.getByRole('switch', { name: 'Con báo bố mẹ ngay' }).click();
+  await expect(page.getByRole('switch', { name: 'Con báo bố mẹ ngay' })).toBeChecked();
 });
 
-test('rút toàn bộ đồng ý: gõ XÓA, hai lần xác nhận theo máy chủ, hồ sơ bị ẩn', async ({ page }) => {
+test('sức khỏe của con (D-66): hỏi đồng ý riêng ngay tại chỗ, thêm ghi chú có nguồn, sửa, tắt, xóa', async ({ page }) => {
+  await dangNhap(page);
+  await themCon(page);
+  await page.getByRole('button', { name: 'Lưu' }).click();
+  await dongYToiThieu(page); // không chọn MD-SUCKHOE ở PA-02
+  await page.getByRole('tab', { name: /Gia đình$/ }).click();
+  await page.getByRole('button', { name: 'Sức khỏe của Bin' }).click();
+  await expect(page.getByRole('button', { name: 'Đồng ý lưu thông tin sức khỏe' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Thêm ghi chú' })).toHaveCount(0);
+  await shot(page, 'pa06-suc-khoe-hoi-dong-y');
+  await page.getByRole('button', { name: 'Đồng ý lưu thông tin sức khỏe' }).click();
+  await expect(page.getByText('Chưa có ghi chú nào.')).toBeVisible();
+
+  await page.getByRole('button', { name: 'Thêm ghi chú' }).click();
+  await page.getByRole('radio', { name: 'Dị ứng' }).click();
+  await page.getByRole('button', { name: 'Lưu' }).click(); // nội dung trống
+  await expect(page.getByText(/Bạn nhập nội dung ghi chú nhé/)).toBeVisible();
+  await page.getByRole('textbox', { name: 'Nội dung' }).fill('Dị ứng tôm');
+  await page.getByRole('textbox', { name: 'Nguồn (không bắt buộc)' }).fill('theo giấy khám');
+  await page.getByRole('button', { name: 'Lưu' }).click();
+  await expect(page.getByText('Dị ứng tôm', { exact: true })).toBeVisible();
+  await expect(page.getByText(/chị Lan \(người quản lý chính\) khai, \d{2}\/\d{2}\/\d{4}/)).toBeVisible();
+  await expect(page.getByText('Nguồn: theo giấy khám')).toBeVisible();
+  await shot(page, 'pa06-suc-khoe-danh-sach');
+
+  await page.getByRole('button', { name: 'Sửa' }).click();
+  await page.getByRole('textbox', { name: 'Nội dung' }).fill('Dị ứng tôm và cua');
+  await page.getByRole('button', { name: 'Lưu' }).click();
+  await expect(page.getByText('Dị ứng tôm và cua', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Tắt', exact: true }).click();
+  await expect(page.getByText('Dị ứng · đang tắt')).toBeVisible();
+  await page.getByRole('button', { name: 'Xóa', exact: true }).click();
+  await expect(page.getByText(/Xóa ghi chú này\? Không khôi phục được/)).toBeVisible();
+  await page.getByRole('button', { name: 'Xóa', exact: true }).last().click();
+  await expect(page.getByText('Chưa có ghi chú nào.')).toBeVisible();
+
+  // Rút đồng ý sức khỏe ở PA-32 thì lần sau vào lại phải hỏi đồng ý.
+  await page.goBack();
+  await page.getByRole('button', { name: 'Quyền riêng tư và đồng ý' }).click();
+  await page.getByRole('switch', { name: 'Thông tin sức khỏe của con' }).click();
+  await page.getByRole('button', { name: 'Tắt', exact: true }).click();
+  await expect(page.getByRole('switch', { name: 'Thông tin sức khỏe của con' })).not.toBeChecked();
+  await page.goBack();
+  await page.getByRole('button', { name: 'Sức khỏe của Bin' }).click();
+  await expect(page.getByRole('button', { name: 'Đồng ý lưu thông tin sức khỏe' })).toBeVisible();
+});
+
+test('báo của con (D-67): bố mẹ bật MD-CONBAO thì thấy danh sách báo và đánh dấu đã xem', async ({ page }) => {
+  await dangNhap(page);
+  await themCon(page);
+  await page.getByRole('button', { name: 'Lưu' }).click();
+  await expect(page.getByRole('heading', { name: 'Đồng ý sử dụng' }).last()).toBeVisible();
+  await page.getByRole('checkbox', { name: 'Cho con báo bố mẹ ngay' }).click();
+  await page.getByRole('button', { name: 'Đồng ý và tiếp tục' }).click();
+  await page.getByRole('tab', { name: /Gia đình$/ }).click();
+  // Mock tạo sẵn một báo mẫu khi bật MD-CONBAO (hai app giả lập không thấy nhau).
+  await page.getByRole('button', { name: 'Thông báo của con (1 chưa xem)' }).click();
+  await expect(page.getByText('Bin: Con thấy không khỏe')).toBeVisible();
+  await expect(page.getByText(/Chưa xem/)).toBeVisible();
+  await shot(page, 'pa15-thong-bao-con');
+  await page.getByRole('button', { name: 'Đánh dấu đã xem' }).click();
+  await expect(page.getByText(/· Đã xem/)).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Đánh dấu đã xem' })).toHaveCount(0);
+});
+
+test('chưa bật MD-CONBAO: tab Gia đình không có lối vào Thông báo của con', async ({ page }) => {
+  await dangNhap(page);
+  await themCon(page);
+  await page.getByRole('button', { name: 'Lưu' }).click();
+  await dongYToiThieu(page);
+  await page.getByRole('tab', { name: /Gia đình$/ }).click();
+  await expect(page.getByRole('button', { name: 'Sức khỏe của Bin' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Thông báo của con/ })).toHaveCount(0);
+});
+
+test('rút toàn bộ đồng ý cho một con: gõ XÓA, hai lần xác nhận theo máy chủ, hồ sơ bị ẩn', async ({ page }) => {
   await dangNhap(page);
   await themCon(page);
   await page.getByRole('button', { name: 'Lưu' }).click();
   await dongYToiThieu(page);
   await page.getByRole('tab', { name: /Gia đình$/ }).click();
   await page.getByRole('button', { name: 'Quyền riêng tư và đồng ý' }).click();
-  await page.getByRole('button', { name: 'Rút toàn bộ đồng ý' }).click();
+  await page.getByRole('button', { name: 'Rút toàn bộ đồng ý cho Bin' }).click();
   await expect(page.getByRole('heading', { name: 'Xóa tài khoản' }).last()).toBeVisible();
   await shot(page, 'pa35-xoa');
 
@@ -172,7 +250,7 @@ test('rút toàn bộ đồng ý: gõ XÓA, hai lần xác nhận theo máy ch�
   await page.getByRole('textbox', { name: 'Gõ XÓA để xác nhận' }).fill('XÓA');
   await page.getByRole('button', { name: 'Xác nhận lần 1' }).click();
   await expect(page.getByRole('heading', { name: 'Xác nhận lần hai' })).toBeVisible();
-  await expect(page.getByText(/Rút đồng ý: Lịch và thời khóa biểu/)).toBeVisible();
+  await expect(page.getByText(/Rút đồng ý: Phần cốt lõi/)).toBeVisible();
   await expect(page.getByText(/chưa bị xóa hẳn ngay/)).toBeVisible();
   await shot(page, 'pa36-xac-nhan-lan-hai');
 
@@ -184,6 +262,23 @@ test('rút toàn bộ đồng ý: gõ XÓA, hai lần xác nhận theo máy ch�
   // Hồ sơ đã ẩn: không còn con nào, app báo đã nhận yêu cầu xóa.
   await expect(page.getByText(/Đã nhận yêu cầu xóa hồ sơ của con/)).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Thêm con' })).toBeVisible();
+});
+
+test('rút toàn bộ đồng ý cho cả gia đình: chọn sẵn "Xóa gia đình", hai bước, rồi đăng xuất', async ({ page }) => {
+  await dangNhap(page);
+  await themCon(page);
+  await page.getByRole('button', { name: 'Lưu' }).click();
+  await dongYToiThieu(page);
+  await page.getByRole('tab', { name: /Gia đình$/ }).click();
+  await page.getByRole('button', { name: 'Quyền riêng tư và đồng ý' }).click();
+  await page.getByRole('button', { name: 'Rút toàn bộ đồng ý cho cả gia đình' }).click();
+  await page.getByRole('textbox', { name: 'Gõ XÓA để xác nhận' }).fill('XÓA');
+  await page.getByRole('button', { name: 'Xác nhận lần 1' }).click();
+  await expect(page.getByRole('heading', { name: 'Xác nhận lần hai' })).toBeVisible();
+  await expect(page.getByText('• Ngắt kết nối máy của con')).toBeVisible(); // nhánh gia đình (không phải nhánh một con tên Bin)
+  await page.getByRole('button', { name: 'Xác nhận lần 2' }).click();
+  await expect(page.getByRole('heading', { name: 'Đã nhận yêu cầu' })).toBeVisible();
+  await expect(page.getByText(/đã xóa hết/i)).toHaveCount(0);
 });
 
 test('xuất dữ liệu: máy chủ báo chưa mở ở bản thử', async ({ page }) => {

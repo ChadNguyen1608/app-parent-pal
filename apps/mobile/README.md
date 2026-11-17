@@ -154,7 +154,24 @@ Cần làm trên dự án Supabase (chủ sản phẩm hoặc người có quy�
 3. Bật Email provider. Khi sửa được mẫu thư: sửa mẫu "Magic Link / Confirm signup" thêm `{{ .Token }}` để gửi mã 6 số (xem docs Supabase: Passwordless email logins). Mặc định thư chỉ có liên kết. Độ dài OTP mặc định 6 số, khớp `OTP_LENGTH`. Dùng SMTP riêng cho gửi thật: dịch vụ mặc định giới hạn rất thấp số thư mỗi giờ.
 4. Hợp đồng RPC đã khớp migration T1.2, T1.5, T1.6 (mục "Hợp đồng RPC"); nhớ áp các migration này lên dự án đám mây khi chủ sản phẩm cho phép (task này không áp).
 5. Chưa chạy trên máy thật hay giả lập Android: chỉ kiểm `tsc`, `expo config` hai biến thể, `expo export --platform android` (bundle được, cả hai biến thể) và test node. Cần thử tay: chuyển màn tự động khi đổi giai đoạn (`Stack.Protected`), bàn phím, đọc màn hình.
-6. Chưa làm: PA-02 (đồng ý), PA-37 (không vào được tài khoản; với OTP có nút "Gửi lại mã"), PA-15 (thông báo ghép/hủy), PA-38 danh sách nhiều phiên, đổi PIN hỏi PIN cũ, CA-15 (xin quyền thông báo), CA-20, PA-03 đầy đủ. Câu chữ CA-16 bám IA 4.6, chờ chủ sản phẩm duyệt.
+6. Chưa làm: PA-37 (không vào được tài khoản; với OTP có nút "Gửi lại mã"), PA-15 (thông báo ghép/hủy), PA-38 danh sách nhiều phiên, đổi PIN hỏi PIN cũ, CA-15 (xin quyền thông báo), CA-20, PA-03 đầy đủ. Câu chữ CA-16 bám IA 4.6, chờ chủ sản phẩm duyệt.
+
+## T2.6: đồng ý, quyền riêng tư, sức khỏe, báo bố mẹ (mô hình D-64..D-67)
+
+Màn hình bám các RPC trên `main` (migration `20261116110000..170000`); `test/contract.test.ts` kiểm tên hàm, tham số, trường kết quả, cột bảng và CHECK của `kind`.
+
+| Màn | Việc | RPC / bảng |
+|---|---|---|
+| PA-02 `dong-y` | MỘT đồng ý cốt lõi (MD-LICH) + hai hộp tích riêng, không chọn sẵn: sức khỏe (MD-SUCKHOE), con báo bố mẹ (MD-CONBAO) | `consent_record` (lõi trước, rồi mục riêng; khóa gửi lặp từng mục) |
+| PA-32 `quyen-rieng-tu` | Xem trạng thái; công tắc rút/đồng ý lại hai mục riêng (tắt có xác nhận: dữ liệu cũ ẩn ngay, không hiện lại); "Rút toàn bộ" cho một con hoặc cả gia đình | `consent_record`; sang PA-35/36 |
+| PA-35/36 `xoa` | Một con: `consent_withdraw_all` hai bước (mã xác nhận); cả gia đình: `deletion_request('GIA_DINH')` | rút luôn được kể cả hộ đóng băng |
+| PA-06 `suc-khoe` (trong thẻ con ở tab Gia đình) | Chưa có MD-SUCKHOE: hỏi đồng ý ngay tại chỗ. Danh sách ghi chú (Dị ứng/Thuốc/Khác) kèm nguồn "ai khai (vai trò), ngày" và ghi chú nguồn; thêm, sửa, tắt/bật, xóa | `health_note_add/update/delete`, đọc `child_health_notes` |
+| PA-15 `thong-bao` | Báo của con trong 7 ngày, đánh dấu đã xem; lối vào ở tab Gia đình chỉ khi có con đã bật MD-CONBAO | đọc `child_alerts`, `child_alert_seen` |
+| CA-16 `bo-me-thay` | Kiêm bước con đồng ý: "Con hiểu rồi" gọi `child_consent_record` rồi mới vào Hôm nay; lỗi thì báo và bấm lại được (không kẹt, không vào app khi chưa ghi) | `child_consent_record` |
+| CA-18 `tam-dung` | Trạng thái hộ từ `my_family_state` | `my_family_state` |
+| CA-21 `bao-bo-me` | Nút ở Hôm nay chỉ hiện khi MD-CONBAO hiệu lực. Ba câu hỏi có sẵn, không ô gõ chữ; chọn câu rồi bấm "Đồng ý" ở màn xác nhận mới gửi; `RATE_LIMITED` hiện lời của máy chủ | `child_alert_send` (chỉ mã câu) |
+
+Câu chữ: wireframe chưa vẽ theo mô hình mới nên mọi câu có chú "(tạm)" hoặc nằm trong `src/ui/purpose-labels.ts`, `src/ui/alert-text.ts` đang chờ chủ sản phẩm duyệt. Mock: `MOCK_CHILD_DEFAULT_CONSENT = [MD-LICH, MD-CONBAO]` cho máy con; `demoAlert` (bật trong `src/data/index.ts`) tạo sẵn một báo mẫu khi bố mẹ bật MD-CONBAO vì hai app giả lập không thấy nhau.
 
 ## Test component, E2E và so ảnh (chạy được không cần máy Android)
 

@@ -34,6 +34,7 @@ export default function ChildLayout() {
       </Stack.Protected>
       <Stack.Protected guard={childStage === 'ready' && !paused}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="bao-bo-me" options={{ title: 'Báo bố mẹ ngay' }} />
         <Stack.Screen name="cai-dat" options={{ title: 'Cài đặt' }} />
         <Stack.Screen name="nhap-pin" options={{ title: 'Cần bố mẹ nhập PIN' }} />
       </Stack.Protected>

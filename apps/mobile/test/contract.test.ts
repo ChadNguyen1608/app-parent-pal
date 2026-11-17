@@ -133,7 +133,14 @@ async function driveApi(): Promise<Call[]> {
     pair_accept: { ok: true, replay: false, binding_id: 'b', child_id: 'c', epoch: 2 },
     pair_decline: { ok: true, declined: true },
     unlink_device: { ok: true, unlinked: true, replay: false, epoch: 3 },
-    consent_record: { ok: true, changed: true, replay: false, also_withdrawn: [] },
+    consent_record: { ok: true, changed: true, replay: false, effective: true },
+    child_consent_record: { ok: true, changed: true, replay: false, consented_at: 'x', policy_version_id: 'p' },
+    my_family_state: { ok: true, state: 'HOAT_DONG', frozen: false },
+    child_alert_send: { ok: true, replay: false, id: 'a', kind: 'KHONG_KHOE', created_at: 'x' },
+    child_alert_seen: { ok: true, changed: true, seen_at: 'x' },
+    health_note_add: { ok: true, note: { id: 'n', child_id: 'c', kind: 'DI_UNG', content: 'x', declared_by_member_id: 'm', declared_by_role: 'PRIMARY', declared_at: '2026-11-17', source_note: null, active: true } },
+    health_note_update: { ok: true, note: { id: 'n', child_id: 'c', kind: 'DI_UNG', content: 'x', declared_by_member_id: 'm', declared_by_role: 'PRIMARY', declared_at: '2026-11-17', source_note: null, active: false } },
+    health_note_delete: { ok: true, deleted: true },
     consent_withdraw_all: { ok: true, step: 1, confirm_token: 'tok', expires_at: 'x', consequences: {} },
     household_reopen: { ok: true, changed: true },
     deletion_request: { ok: true, replay: false, deletion_request_id: 'd', accepted_at: 'x', state: 'CHO_QUYET_HAN', hard_deleted: false },
@@ -173,8 +180,8 @@ async function driveApi(): Promise<Call[]> {
   await api.pairDecline();
   await api.unlinkDevice('c', '246801', 2);
   await api.unlinkDevice('c', '246801');
-  await api.consentRecord({ childId: 'c', purposeCode: 'MD-XONG', event: 'DONG_Y', idempotencyKey: 'k', forSelf: false });
-  await api.consentRecord({ childId: 'c', purposeCode: 'MD-XONG', event: 'RUT' });
+  await api.consentRecord({ childId: 'c', purposeCode: 'MD-SUCKHOE', event: 'DONG_Y', idempotencyKey: 'k', forSelf: false });
+  await api.consentRecord({ childId: 'c', purposeCode: 'MD-CONBAO', event: 'RUT' });
   await api.withdrawAllStart('c');
   canned.consent_withdraw_all = { ok: true, step: 2, replay: false, deletion_request_id: 'd', accepted_at: 'x', state: 'CHO_QUYET_HAN', hard_deleted: false };
   await api.withdrawAllConfirm('c', 'tok');
@@ -187,6 +194,17 @@ async function driveApi(): Promise<Call[]> {
   await api.getMyConsent('c');
   await api.getMyBinding();
   await api.getFamilyState();
+  await api.childConsentRecord('k');
+  await api.childConsentRecord();
+  await api.childAlertSend('KHONG_KHOE', 'k', 2);
+  await api.childAlertSend('DON_SOM');
+  await api.childAlertSeen('a');
+  await api.healthNoteAdd({ childId: 'c', kind: 'DI_UNG', content: 'Tôm', sourceNote: 'theo giấy khám', declaredAt: '2026-11-17' });
+  await api.healthNoteAdd({ childId: 'c', kind: 'KHAC', content: 'x' });
+  await api.healthNoteUpdate('n', { kind: 'THUOC', content: 'y', sourceNote: null, declaredAt: '2026-11-16', active: false });
+  await api.healthNoteDelete('n');
+  await api.listHealthNotes('c');
+  await api.listChildAlerts();
   return calls;
 }
 
@@ -285,19 +303,55 @@ test('migration có hàm đồng ý, rút toàn bộ, mở lại, xóa, xuất v
   assert.deepEqual(fns.get('consent_record')!.params.map((p) => p.name), ['p_child', 'p_purpose_code', 'p_event', 'p_policy_version_id', 'p_paper_ref', 'p_idempotency_key', 'p_for_self']);
   assert.deepEqual(fns.get('consent_withdraw_all')!.params, [{ name: 'p_child', hasDefault: false }, { name: 'p_confirm_token', hasDefault: true }]);
   assert.deepEqual(fns.get('household_reopen')!.params.map((p) => p.name), ['p_confirm']);
+  assert.deepEqual(fns.get('child_consent_record')!.params.map((p) => p.name), ['p_policy_version_id', 'p_idempotency_key']);
+  assert.deepEqual(fns.get('my_family_state')!.params, []);
+  assert.deepEqual(fns.get('child_alert_send')!.params, [
+    { name: 'p_kind', hasDefault: false },
+    { name: 'p_idempotency_key', hasDefault: true },
+    { name: 'p_binding_epoch', hasDefault: true },
+  ]);
+  assert.deepEqual(fns.get('child_alert_seen')!.params.map((p) => p.name), ['p_alert']);
+  assert.deepEqual(fns.get('health_note_add')!.params.map((p) => p.name), ['p_child', 'p_kind', 'p_content', 'p_declared_at', 'p_source_note']);
+  assert.deepEqual(fns.get('health_note_update')!.params.map((p) => p.name), ['p_note', 'p_patch']);
+  assert.deepEqual(fns.get('health_note_delete')!.params.map((p) => p.name), ['p_note']);
   assert.deepEqual(fns.get('deletion_request')!.params.map((p) => p.name), ['p_scope', 'p_child', 'p_confirm']);
   assert.deepEqual(fns.get('export_request')!.params.map((p) => p.name), ['p_scope', 'p_child']);
 });
 
 test('trường kết quả của hàm đồng ý và xóa có trong SQL', () => {
   const rec = fns.get('consent_record')!.body;
-  for (const f of ['ok', 'changed', 'replay', 'also_withdrawn']) assert.match(rec, new RegExp(`'${f}'`), `consent_record thiếu '${f}'`);
+  for (const f of ['ok', 'changed', 'replay', 'effective']) assert.match(rec, new RegExp(`'${f}'`), `consent_record thiếu '${f}'`);
   const wd = fns.get('consent_withdraw_all')!.body;
   for (const f of ['step', 'confirm_token', 'expires_at', 'consequences', 'purposes_withdrawn', 'child_hidden', 'device_unlinked', 'deletion_request',
     'hard_deleted_now', 'can_reconsent', 'deletion_request_id', 'accepted_at', 'hard_deleted']) assert.match(wd, new RegExp(`'${f}'`), `consent_withdraw_all thiếu '${f}'`);
   const del = fns.get('deletion_request')!.body;
   for (const f of ['replay', 'deletion_request_id', 'accepted_at', 'state', 'hard_deleted']) assert.match(del, new RegExp(`'${f}'`), `deletion_request thiếu '${f}'`);
   assert.match(fns.get('household_reopen')!.body, /'changed'/);
+  for (const [fn, fields] of Object.entries({
+    child_consent_record: ['ok', 'changed', 'consented_at'],
+    my_family_state: ['ok', 'frozen'],
+    child_alert_send: ['ok', 'replay', 'id', 'created_at'],
+    child_alert_seen: ['ok'],
+    health_note_add: ['ok', 'note'],
+    health_note_update: ['ok', 'note'],
+    health_note_delete: ['ok'],
+  })) {
+    for (const f of fields) assert.match(fns.get(fn)!.body, new RegExp(`'${f}'`), `${fn} thiếu '${f}'`);
+  }
+  // Mẫu ghi chú sức khỏe (health_note_json): các trường client đọc
+  for (const f of ['id', 'child_id', 'kind', 'content', 'declared_by_member_id', 'declared_by_role', 'declared_at', 'source_note', 'active']) {
+    assert.match(fns.get('health_note_json')!.body, new RegExp(`'${f}'`), `health_note_json thiếu '${f}'`);
+  }
+});
+
+test('D-64: máy chủ chỉ còn một mục lõi và hai mục riêng; bảng purposes không còn cột depends_on', () => {
+  assert.match(sql, /alter table app\.purposes drop column depends_on/);
+  assert.match(sql, /delete from app\.purposes where code in \('MD-DONGBO', 'MD-XONG', 'MD-MET', 'MD-MONGMUON', 'MD-BAOCAO'\)/);
+  assert.match(sql, /\('MD-CONBAO', '[^']*', 'TUY_CHON', true\)/);
+  assert.ok(!/depends_on/.test(readFileSync(API_TS, 'utf8').replace(/\/\/[^\n]*/g, '')), 'api.ts không được đọc depends_on');
+  // Ba câu của nút "Báo bố mẹ ngay" khớp CHECK của bảng, không có cột chữ tự do (D-67)
+  assert.match(sql, /kind\s+text not null check \(kind in \('KHONG_KHOE', 'DON_SOM', 'GOI_BO_ME'\)\)/);
+  assert.match(sql, /kind\s+text not null check \(kind in \('DI_UNG', 'THUOC', 'KHAC'\)\)/);
 });
 
 test('mã lỗi mới: BLOCKED_H4 và FEATURE_OFF là mã backend (HTTP 403)', () => {
@@ -313,7 +367,7 @@ test('mọi cột client đọc (select) có trong migration', async () => {
   await driveApi();
   assert.ok(reads.length >= 6);
   const seen = new Set(reads.map((r) => r.table));
-  for (const t of ['members', 'households', 'children', 'device_bindings', 'purposes', 'purpose_state', 'deletion_requests']) assert.ok(seen.has(t), `chưa đọc ${t}`);
+  for (const t of ['members', 'households', 'children', 'device_bindings', 'purposes', 'purpose_state', 'deletion_requests', 'child_health_notes', 'child_alerts']) assert.ok(seen.has(t), `chưa đọc ${t}`);
   for (const r of reads) {
     const cols = tables.get(r.table);
     assert.ok(cols, `migration không có bảng app.${r.table}`);
@@ -323,7 +377,7 @@ test('mọi cột client đọc (select) có trong migration', async () => {
 });
 
 test('chuỗi trạng thái client dùng có trong check của migration', () => {
-  for (const v of ['HOAT_DONG', 'DONG_BANG', 'CHO_XOA', 'DA_XOA', 'PRIMARY', 'SUPPORTER', 'OBSERVER', 'HO_SO_CON', 'GIA_DINH', 'NGUOI_LON_ROI', 'CHUA_HOI', 'DANG_BAT', 'DA_RUT', 'MD-CONBAO', 'MD-LICH']) {
+  for (const v of ['HOAT_DONG', 'DONG_BANG', 'CHO_XOA', 'DA_XOA', 'PRIMARY', 'SUPPORTER', 'OBSERVER', 'HO_SO_CON', 'GIA_DINH', 'NGUOI_LON_ROI', 'CHUA_HOI', 'DANG_BAT', 'DA_RUT', 'MD-CONBAO', 'MD-LICH', 'MD-SUCKHOE', 'KHONG_KHOE', 'DON_SOM', 'GOI_BO_ME', 'DI_UNG', 'THUOC', 'KHAC']) {
     assert.ok(sql.includes(`'${v}'`), `migration không có '${v}'`);
   }
 });

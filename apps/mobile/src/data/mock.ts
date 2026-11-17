@@ -7,19 +7,26 @@
 //    (thật: ok=false) và 5 lần sai liên tiếp thì RATE_LIMITED.
 //  - Child App: pair_pending trả pending=false `acceptAfter` lần đầu, rồi pending=true ("Kết nối với chị Lan?", giả vờ bố mẹ
 //    vừa nhập mã); pair_accept chỉ đúng khi đang pending. PIN hủy kết nối: PIN đã đặt, mặc định MOCK_DEFAULT_PIN (482915; 123456 bị máy chủ từ chối vì dễ đoán).
-//  - Đồng ý (T2.1, T2.2, T2.3): phản chiếu quy tắc của consent_record, consent_withdraw_all (hai bước, mã hạn 10 phút), household_reopen,
-//    deletion_request, export_request (luôn BLOCKED_H4). MD-CONBAO chưa mở (FEATURE_OFF). Máy con giả lập có sẵn danh sách mục đích hiệu lực
-//    (MOCK_CHILD_DEFAULT_CONSENT) vì hai app là hai tiến trình riêng.
-import { dependentsOf, effectiveCodes } from './consent.ts';
+//  - Đồng ý (D-64, T2.1..T2.3): một mục lõi MD-LICH và hai mục riêng MD-SUCKHOE, MD-CONBAO. Phản chiếu consent_record, consent_withdraw_all
+//    (hai bước, mã hạn 10 phút), household_reopen, deletion_request, export_request (luôn BLOCKED_H4). Máy con giả lập có sẵn danh sách mục đích
+//    hiệu lực (MOCK_CHILD_DEFAULT_CONSENT) vì hai app là hai tiến trình riêng.
+//  - Ghi chú sức khỏe (D-66): chỉ ghi khi MD-SUCKHOE hiệu lực; rút MD-SUCKHOE thì ghi chú biến mất (máy chủ: ẩn ngay rồi xếp hàng xóa).
+//  - Báo bố mẹ (D-67): child_alert_send cần MD-CONBAO hiệu lực, tối đa MOCK_ALERT_MAX_PER_HOUR lần mỗi giờ, giữ 7 ngày. Hai app là hai tiến trình
+//    riêng nên với `demoAlert` thì khi bố mẹ bật MD-CONBAO, mock tạo sẵn một báo mẫu để thử màn của bố mẹ.
+import { effectiveCodes, PURPOSE_CONBAO, PURPOSE_LICH, PURPOSE_SUCKHOE } from './consent.ts';
 import { apiErrorFromFailure, toApiError } from './errors.ts';
 import type {
   Api,
+  AlertKind,
   Binding,
   Child,
+  ChildAlert,
   ChildInput,
   ConsentOverview,
   DeletionResult,
   DeletionScope,
+  HealthKind,
+  HealthNote,
   Home,
   HouseholdState,
   MemberRole,
@@ -43,19 +50,17 @@ export const MOCK_MAX_CODE_FAILS = 5;
 export const MOCK_LOCK_MINUTES = 15;
 export const MOCK_ADULT_NAME = 'chị Lan';
 export const MOCK_WITHDRAW_TTL_MINUTES = 10;
-/** Danh mục mục đích như migration T1.1 và T2.1 (tên và phụ thuộc giữ nguyên). */
+/** child_alert_max_per_hour (CHUA_CHOT): 6. */
+export const MOCK_ALERT_MAX_PER_HOUR = 6;
+export const MOCK_ALERT_RETENTION_DAYS = 7;
+/** Danh mục mục đích như migration T2.1 (D-64): một mục lõi, hai mục riêng. */
 export const MOCK_PURPOSES: Purpose[] = [
-  { code: 'MD-LICH', nameVi: 'Lập và xem lịch cho con', dependsOn: [], kind: 'LOI', collectEnabled: true },
-  { code: 'MD-DONGBO', nameVi: 'Đồng bộ lịch sang máy của con và nhắc giờ', dependsOn: ['MD-LICH'], kind: 'TUY_CHON', collectEnabled: true },
-  { code: 'MD-XONG', nameVi: 'Ghi con đã bấm Xong và giờ', dependsOn: ['MD-DONGBO'], kind: 'TUY_CHON', collectEnabled: true },
-  { code: 'MD-MET', nameVi: 'Hỏi thăm sau giờ học và xu hướng mệt', dependsOn: ['MD-DONGBO'], kind: 'TUY_CHON', collectEnabled: true },
-  { code: 'MD-MONGMUON', nameVi: 'Con gửi mong muốn hoặc đề xuất cho bố mẹ', dependsOn: ['MD-DONGBO'], kind: 'TUY_CHON', collectEnabled: true },
-  { code: 'MD-BAOCAO', nameVi: 'Báo cáo tuần cho bố mẹ', dependsOn: ['MD-XONG'], kind: 'TUY_CHON', collectEnabled: true },
-  { code: 'MD-SUCKHOE', nameVi: 'Thông tin sức khỏe của con (dị ứng, thuốc)', dependsOn: ['MD-LICH'], kind: 'TUY_CHON', collectEnabled: false },
-  { code: 'MD-CONBAO', nameVi: 'Con báo trực tiếp cho bố mẹ (không khỏe, nghỉ học sớm, nhờ đón)', dependsOn: ['MD-DONGBO'], kind: 'TUY_CHON', collectEnabled: false },
+  { code: 'MD-LICH', nameVi: 'Phần cốt lõi: lập lịch, đồng bộ sang máy của con và nhắc giờ, ghi con bấm Xong, hỏi thăm, mong muốn của con, báo cáo tuần', kind: 'LOI', collectEnabled: true },
+  { code: 'MD-SUCKHOE', nameVi: 'Thông tin sức khỏe của con (dị ứng, thuốc), lưu trong hồ sơ', kind: 'TUY_CHON', collectEnabled: true },
+  { code: 'MD-CONBAO', nameVi: 'Con báo trực tiếp cho bố mẹ (không khỏe, nhờ đón sớm, nhờ gọi), chỉ chọn câu có sẵn', kind: 'TUY_CHON', collectEnabled: true },
 ];
-/** Máy con giả lập: các mục bố mẹ coi như đã bật (CA-16 dựng từ đây). */
-export const MOCK_CHILD_DEFAULT_CONSENT = ['MD-LICH', 'MD-DONGBO', 'MD-XONG', 'MD-MET', 'MD-MONGMUON', 'MD-BAOCAO'];
+/** Máy con giả lập: các mục bố mẹ coi như đã bật (CA-16 và nút "Báo bố mẹ ngay" dựng từ đây). */
+export const MOCK_CHILD_DEFAULT_CONSENT = ['MD-LICH', 'MD-CONBAO'];
 
 export type MockOptions = {
   /** Giả lập hộ đóng băng: getHome báo DONG_BANG, mọi hàm ghi trả FROZEN cho tới khi household_reopen. */
@@ -68,8 +73,16 @@ export type MockOptions = {
   role?: MemberRole;
   /** Máy con giả lập: ghi đè danh sách mục đích hiệu lực. */
   childConsent?: string[];
+  /** Khi bố mẹ bật MD-CONBAO, tạo sẵn một báo mẫu của con (hai app giả lập không thấy nhau). Mặc định tắt. */
+  demoAlert?: boolean;
   now?: () => number;
 };
+
+function checkNote(kind: HealthKind, content: string, source: string | null) {
+  if (!['DI_UNG', 'THUOC', 'KHAC'].includes(kind)) fail('VALIDATION', 'D-66', 'Loại ghi chú không hợp lệ.');
+  if (content.trim().length < 1 || content.trim().length > 500) fail('VALIDATION', 'D-66', 'Nội dung từ 1 đến 500 ký tự.');
+  if (source !== null && source.trim().length > 200) fail('VALIDATION', 'D-66', 'Nguồn từ 1 đến 200 ký tự.');
+}
 
 function fail(code: string, rule: string, hint: string): never {
   throw toApiError({ message: code, details: rule, hint });
@@ -94,6 +107,10 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
   const consent = new Map<string, Map<string, { state: PurposeStatus; activeSince: string | null }>>();
   const consentKeys = new Map<string, { child: string; code: string; event: string }>();
   const selfLast = new Map<string, string>();
+  const notes = new Map<string, HealthNote[]>();
+  const alerts: (ChildAlert & { key: string | null })[] = [];
+  const childConsented = new Set<string>();
+  let pairedChildId: string | null = null;
   const deletions: OpenDeletion[] = [];
   const withdrawTokens = new Map<string, { token: string; expiresAt: number }>();
   let pin: string | null = null;
@@ -131,6 +148,15 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
     let m = consent.get(childId);
     if (!m) consent.set(childId, (m = new Map()));
     return m;
+  };
+  /** Mục hiệu lực của con (D-64): tự bật, được thu, và mục lõi cũng bật. */
+  const effective = (childId: string, code: string) =>
+    effectiveCodes({ purposes: MOCK_PURPOSES, states: Object.fromEntries(states(childId)) }).includes(code);
+  const asKid = (): { childId: string; epoch: number } => {
+    const me = needLogin();
+    if (!me.isAnonymous) fail('FORBIDDEN', 'D-67', 'Chỉ máy của con làm được việc này.');
+    if (!bound) fail('NOT_FOUND', 'D-67', 'Máy này chưa ghép.');
+    return bound;
   };
   const noKid = () => {
     if (session?.isAnonymous) fail('FORBIDDEN', 'BR-CON-020', 'Máy của con không làm được việc này.');
@@ -201,7 +227,12 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
         memberCallName: household.memberCallName,
         role,
         householdState: hhState,
-        children: visible().map((c) => ({ ...c, coreConsent: states(c.id).get('MD-LICH')?.state === 'DANG_BAT' })),
+        children: visible().map((c) => ({
+          ...c,
+          coreConsent: states(c.id).get(PURPOSE_LICH)?.state === 'DANG_BAT',
+          healthConsent: states(c.id).get(PURPOSE_SUCKHOE)?.state === 'DANG_BAT',
+          alertConsent: states(c.id).get(PURPOSE_CONBAO)?.state === 'DANG_BAT',
+        })),
         openDeletions: deletions.map((d) => ({ ...d })),
       };
     },
@@ -236,7 +267,7 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
       if (age !== null && (age < 0 || age > 18)) fail('VALIDATION', 'BR-001', 'Tuổi từ 0 đến 18.');
       if (grade === null && age === null) fail('VALIDATION', 'BR-001', 'Cần lớp hoặc tuổi của con.');
       const childId = id('child');
-      children.push({ id: childId, callName: name, grade, ageYears: age, hasDevice: input.hasDevice, pairState: 'NONE', coreConsent: false });
+      children.push({ id: childId, callName: name, grade, ageYears: age, hasDevice: input.hasDevice, pairState: 'NONE', coreConsent: false, healthConsent: false, alertConsent: false });
       if (input.idempotencyKey) seenKeys.set(input.idempotencyKey, childId);
       return { childId };
     },
@@ -260,6 +291,7 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
       if (pinIn !== undefined) pin = pinIn;
       codeFails = 0;
       child.pairState = 'PENDING';
+      pairedChildId = childId;
       return { state: 'CHO_XAC_NHAN_MAY_CON', epoch: 1, pinSet: pinIn !== undefined };
     },
 
@@ -279,11 +311,12 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
       visibleChild(childId);
       const st: ConsentOverview['states'] = {};
       for (const [code, v] of states(childId)) st[code] = { ...v };
-      return { purposes: MOCK_PURPOSES.map((p) => ({ ...p, dependsOn: [...p.dependsOn] })), states: st };
+      return { purposes: MOCK_PURPOSES.map((p) => ({ ...p })), states: st };
     },
 
     async consentRecord(input) {
-      writable();
+      if (input.event === 'RUT') needLogin(); // rút luôn được, kể cả khi đóng băng (D-64)
+      else writable();
       await pause();
       noKid();
       const { childId, purposeCode: code, event } = input;
@@ -299,7 +332,7 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
       if (input.idempotencyKey) {
         const old = consentKeys.get(input.idempotencyKey);
         if (old) {
-          if (old.child === childId && old.code === code && old.event === event) return { changed: false, replay: true, alsoWithdrawn: [] };
+          if (old.child === childId && old.code === code && old.event === event) return { changed: false, replay: true, effective: effective(childId, code) };
           fail('VALIDATION', 'idempotency', 'Khóa gửi lại không hợp lệ.');
         }
         consentKeys.set(input.idempotencyKey, { child: childId, code, event });
@@ -308,23 +341,26 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
         const k = `${childId}|${code}`;
         const changed = selfLast.get(k) !== event;
         selfLast.set(k, event);
-        return { changed, replay: false, alsoWithdrawn: [] };
+        return { changed, replay: false, effective: false };
       }
       const m = states(childId);
       const cur = m.get(code)?.state;
-      if ((event === 'DONG_Y' && cur === 'DANG_BAT') || (event === 'RUT' && cur !== 'DANG_BAT')) return { changed: false, replay: false, alsoWithdrawn: [] };
+      if ((event === 'DONG_Y' && cur === 'DANG_BAT') || (event === 'RUT' && cur !== 'DANG_BAT')) return { changed: false, replay: false, effective: effective(childId, code) };
       if (event === 'DONG_Y') {
         m.set(code, { state: 'DANG_BAT', activeSince: new Date(now()).toISOString() });
-        return { changed: true, replay: false, alsoWithdrawn: [] };
+        if (code === PURPOSE_CONBAO && opts.demoAlert) {
+          alerts.push({ id: id('alert'), childId, kind: 'KHONG_KHOE', createdAt: new Date(now() - 5 * 60_000).toISOString(), seenAt: null, key: null });
+        }
+        return { changed: true, replay: false, effective: effective(childId, code) };
       }
       m.set(code, { state: 'DA_RUT', activeSince: null });
-      const also = dependentsOf(MOCK_PURPOSES, code).filter((d) => m.get(d)?.state === 'DANG_BAT');
-      for (const d of also) m.set(d, { state: 'DA_RUT', activeSince: null });
-      return { changed: true, replay: false, alsoWithdrawn: also };
+      if (code === PURPOSE_SUCKHOE) notes.delete(childId); // máy chủ: ẩn ngay và xếp hàng xóa; đồng ý lại không hiện lại cái cũ
+      if (code === PURPOSE_CONBAO) for (let i = alerts.length - 1; i >= 0; i--) if (alerts[i].childId === childId) alerts.splice(i, 1);
+      return { changed: true, replay: false, effective: false };
     },
 
     async withdrawAllStart(childId) {
-      writable();
+      needLogin(); // rút luôn được, kể cả khi đóng băng (D-64)
       await pause();
       noKid();
       primaryOnly('Chỉ người quản lý chính rút đồng ý toàn bộ.');
@@ -347,7 +383,7 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
     },
 
     async withdrawAllConfirm(childId, confirmToken) {
-      writable();
+      needLogin();
       await pause();
       noKid();
       primaryOnly('Chỉ người quản lý chính rút đồng ý toàn bộ.');
@@ -399,7 +435,7 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
         const d = deletions.find(same);
         if (d) return replayOf(d);
       }
-      writable();
+      if (hhState !== 'HOAT_DONG' && hhState !== 'DONG_BANG') fail('FROZEN', 'BR-FAM-054', 'Gia đình đang tạm dừng, chưa thay đổi được.'); // đóng băng vẫn gửi được (D-64)
       const rec: OpenDeletion = { id: id('del'), scope, childId: scope === 'HO_SO_CON' ? (childId ?? null) : null, acceptedAt: new Date(now()).toISOString(), state: 'CHO_QUYET_HAN' };
       deletions.push(rec);
       if (scope === 'HO_SO_CON' && childId) hidden.add(childId);
@@ -434,6 +470,126 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
       return hhState === 'DONG_BANG' ? 'FROZEN' : 'ACTIVE';
     },
 
+    async childConsentRecord() {
+      const b = asKid();
+      await pause();
+      if (hhState === 'DONG_BANG') fail('FROZEN', 'BR-FAM-054', 'Gia đình đang tạm dừng app.');
+      if (consent.has(b.childId) && !effective(b.childId, PURPOSE_LICH)) fail('FORBIDDEN', 'BR-CON-001', 'Bố mẹ chưa đồng ý phần cốt lõi.');
+      const changed = !childConsented.has(b.childId);
+      childConsented.add(b.childId);
+      return { changed, consentedAt: new Date(now()).toISOString() };
+    },
+
+    async childAlertSend(kind: AlertKind, idempotencyKey, bindingEpoch) {
+      const b = asKid();
+      await pause();
+      if (bindingEpoch !== undefined && bindingEpoch !== b.epoch) fail('CONFLICT_REV', 'D-67', 'Máy này không còn là máy đã ghép.');
+      if (hhState === 'DONG_BANG') fail('FROZEN', 'BR-FAM-054', 'Gia đình đang tạm dừng app.');
+      if (!['KHONG_KHOE', 'DON_SOM', 'GOI_BO_ME'].includes(kind)) fail('VALIDATION', 'D-67', 'Chỉ chọn câu có sẵn.');
+      if (idempotencyKey) {
+        const old = alerts.find((a) => a.key === idempotencyKey);
+        if (old) return { id: old.id, replay: true, createdAt: old.createdAt };
+      }
+      const codes = opts.childConsent ?? (consent.has(b.childId) ? effectiveCodes({ purposes: MOCK_PURPOSES, states: Object.fromEntries(states(b.childId)) }) : MOCK_CHILD_DEFAULT_CONSENT);
+      if (!codes.includes(PURPOSE_CONBAO)) fail('FORBIDDEN', 'D-67', 'Bố mẹ chưa bật tính năng này.');
+      const t = now();
+      if (alerts.filter((a) => a.childId === b.childId && a.key !== null && Date.parse(a.createdAt) > t - 3_600_000).length >= MOCK_ALERT_MAX_PER_HOUR) {
+        fail('RATE_LIMITED', 'D-67', 'Đã báo nhiều lần, hãy chờ một lúc.');
+      }
+      const a = { id: id('alert'), childId: b.childId, kind, createdAt: new Date(t).toISOString(), seenAt: null, key: idempotencyKey ?? `auto-${seq}` };
+      alerts.push(a);
+      return { id: a.id, replay: false, createdAt: a.createdAt };
+    },
+
+    async listHealthNotes(childId) {
+      needLogin();
+      await pause();
+      visibleChild(childId);
+      if (!effective(childId, PURPOSE_SUCKHOE)) return [];
+      return (notes.get(childId) ?? []).map((n) => ({ ...n }));
+    },
+
+    async healthNoteAdd(input) {
+      writable();
+      await pause();
+      noKid();
+      primaryOnly('Chỉ người quản lý chính ghi thông tin sức khỏe.');
+      visibleChild(input.childId);
+      checkNote(input.kind, input.content, input.sourceNote ?? null);
+      if (input.declaredAt && input.declaredAt > new Date(now()).toISOString().slice(0, 10)) fail('VALIDATION', 'D-66', 'Ngày khai không ở tương lai.');
+      if (!effective(input.childId, PURPOSE_SUCKHOE)) fail('FORBIDDEN', 'D-66', 'Cần đồng ý riêng cho thông tin sức khỏe trước.');
+      const list = notes.get(input.childId) ?? [];
+      if (list.length >= 50) fail('VALIDATION', 'D-66', 'Mỗi con tối đa 50 ghi chú sức khỏe.');
+      const n: HealthNote = {
+        id: id('note'),
+        childId: input.childId,
+        kind: input.kind,
+        content: input.content.trim(),
+        declaredByName: household?.memberCallName ?? null,
+        declaredByRole: role,
+        declaredAt: input.declaredAt ?? new Date(now() + 7 * 3_600_000).toISOString().slice(0, 10),
+        sourceNote: input.sourceNote?.trim() ? input.sourceNote.trim() : null,
+        active: true,
+      };
+      notes.set(input.childId, [...list, n]);
+      return { ...n };
+    },
+
+    async healthNoteUpdate(noteId, patch) {
+      const found = [...notes.values()].flat().find((n) => n.id === noteId);
+      const narrow = Object.keys(patch).length === 1 && patch.active === false;
+      if (narrow) needLogin();
+      else writable();
+      await pause();
+      noKid();
+      primaryOnly('Chỉ người quản lý chính sửa thông tin sức khỏe.');
+      if (Object.keys(patch).length === 0) fail('VALIDATION', 'D-66', 'Không có gì để sửa.');
+      if (!found) fail('NOT_FOUND', '', '');
+      if (!narrow && !effective(found.childId, PURPOSE_SUCKHOE)) fail('FORBIDDEN', 'D-66', 'Cần đồng ý riêng cho thông tin sức khỏe trước.');
+      checkNote(patch.kind ?? found.kind, patch.content ?? found.content, patch.sourceNote === undefined ? found.sourceNote : patch.sourceNote);
+      if (patch.kind !== undefined) found.kind = patch.kind;
+      if (patch.content !== undefined) found.content = patch.content.trim();
+      if (patch.sourceNote !== undefined) found.sourceNote = patch.sourceNote && patch.sourceNote.trim() ? patch.sourceNote.trim() : null;
+      if (patch.declaredAt !== undefined) found.declaredAt = patch.declaredAt;
+      if (patch.active !== undefined) found.active = patch.active;
+      return { ...found };
+    },
+
+    async healthNoteDelete(noteId) {
+      needLogin(); // thu hẹp: luôn được, kể cả đóng băng
+      await pause();
+      noKid();
+      primaryOnly('Chỉ người quản lý chính xóa thông tin sức khỏe.');
+      for (const [cid, list] of notes) {
+        if (list.some((n) => n.id === noteId)) {
+          notes.set(cid, list.filter((n) => n.id !== noteId));
+          return;
+        }
+      }
+      fail('NOT_FOUND', '', '');
+    },
+
+    async listChildAlerts() {
+      needLogin();
+      await pause();
+      noKid();
+      const cutoff = now() - MOCK_ALERT_RETENTION_DAYS * 86_400_000;
+      const ok = new Set(visible().filter((c) => effective(c.id, PURPOSE_CONBAO)).map((c) => c.id));
+      return alerts
+        .filter((a) => ok.has(a.childId) && Date.parse(a.createdAt) > cutoff)
+        .map(({ key: _k, ...a }) => ({ ...a }))
+        .sort((x, y) => Date.parse(y.createdAt) - Date.parse(x.createdAt));
+    },
+
+    async childAlertSeen(alertId) {
+      writable();
+      await pause();
+      noKid();
+      const a = alerts.find((x) => x.id === alertId);
+      if (!a) fail('NOT_FOUND', '', '');
+      if (a.seenAt === null) a.seenAt = new Date(now()).toISOString();
+    },
+
     async pairCodeCreate(): Promise<PairCode> {
       needLogin();
       await pause();
@@ -462,7 +618,7 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
       if (!pendingShown) fail('NOT_FOUND', 'AD-11', 'Không có yêu cầu ghép nào đang chờ.');
       epochSeq += 1;
       pendingShown = false;
-      bound = { childId: 'mock-child-1', epoch: epochSeq };
+      bound = { childId: pairedChildId ?? 'mock-child-1', epoch: epochSeq };
       return { ...bound };
     },
 
