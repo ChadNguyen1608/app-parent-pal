@@ -18,7 +18,7 @@ export function backendKind(): BackendKind {
 export function getApi(): Api | null {
   if (instance) return instance;
   if (BACKEND === 'mock') {
-    instance = createMockApi();
+    instance = createMockApi({ demoAlert: true }); // báo mẫu để thử màn của bố mẹ (hai app giả lập không thấy nhau)
   } else if (BACKEND === 'supabase') {
     const client = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth: {

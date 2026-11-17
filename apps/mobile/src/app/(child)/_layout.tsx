@@ -8,7 +8,7 @@ import { APP_VARIANT } from '@/variant';
 // Cổng theo giai đoạn ghép. Chưa ghép: chỉ CA-01, CA-02 (không thấy chương trình của phụ huynh).
 // Nút "Con cần giúp đỡ" có ở thanh trên mọi màn (IA-Q03) và luôn mở được, kể cả khi chưa ghép.
 export default function ChildLayout() {
-  const { childStage } = useApp();
+  const { childStage, paused } = useApp();
   if (APP_VARIANT !== 'child') return <Redirect href="/" />;
   if (childStage === 'loading') {
     return (
@@ -29,8 +29,12 @@ export default function ChildLayout() {
       <Stack.Protected guard={childStage === 'intro' || childStage === 'ready'}>
         <Stack.Screen name="bo-me-thay" options={{ title: 'Những gì bố mẹ thấy' }} />
       </Stack.Protected>
-      <Stack.Protected guard={childStage === 'ready'}>
+      <Stack.Protected guard={childStage === 'ready' && paused}>
+        <Stack.Screen name="tam-dung" options={{ title: 'Tạm dừng' }} />
+      </Stack.Protected>
+      <Stack.Protected guard={childStage === 'ready' && !paused}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="bao-bo-me" options={{ title: 'Báo bố mẹ ngay' }} />
         <Stack.Screen name="cai-dat" options={{ title: 'Cài đặt' }} />
         <Stack.Screen name="nhap-pin" options={{ title: 'Cần bố mẹ nhập PIN' }} />
       </Stack.Protected>

@@ -3,8 +3,52 @@
 // Hàm có đường thất bại cần đếm trả HTTP 200 {"ok": false, ...}: dùng rpcOk, không bao giờ coi thiếu "ok" là thành công.
 import type { Session, SupabaseClient } from '@supabase/supabase-js';
 
+import { effectiveCodes, PURPOSE_CONBAO, PURPOSE_LICH, PURPOSE_SUCKHOE } from './consent.ts';
 import { ApiError, FALLBACK_MESSAGES, apiErrorFromFailure, toApiError } from './errors.ts';
-import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmState, PairState, SessionInfo } from './types.ts';
+import type {
+  Api,
+  AlertKind,
+  Binding,
+  Child,
+  ChildAlert,
+  ChildInput,
+  ConsentOverview,
+  DeletionScope,
+  HealthKind,
+  HealthNote,
+  HealthNotePatch,
+  HouseholdState,
+  Home,
+  MemberRole,
+  OpenDeletion,
+  PairCode,
+  PairConfirmState,
+  PairState,
+  Purpose,
+  PurposeStatus,
+  SessionInfo,
+} from './types.ts';
+
+/** Cột mà client đọc từ mỗi bảng schema app. test/contract.test.ts kiểm từng cột có trong migration. */
+export const TABLE_READS = {
+  members: 'household_id, call_name, role',
+  households: 'id, state, frozen_at',
+  children: 'id, call_name, grade, age_years, has_device',
+  device_bindings: 'child_id, state',
+  device_bindings_mine: 'child_id, epoch',
+  purposes: 'code, name_vi, kind, collect_enabled',
+  purpose_state: 'child_id, purpose_code, state, active_since',
+  deletion_requests: 'id, scope, child_id, accepted_at, state',
+  members_names: 'id, call_name',
+  child_health_notes: 'id, child_id, kind, content, declared_by_member_id, declared_by_role, declared_at, source_note, active',
+  child_alerts: 'id, child_id, kind, created_at, seen_at',
+} as const;
+const cols = (k: keyof typeof TABLE_READS) => TABLE_READS[k];
+const HOUSEHOLD_STATES: readonly string[] = ['HOAT_DONG', 'DONG_BANG', 'CHO_XOA', 'DA_XOA'];
+const ROLES: readonly string[] = ['PRIMARY', 'SUPPORTER', 'OBSERVER'];
+const SCOPES: readonly string[] = ['HO_SO_CON', 'GIA_DINH', 'NGUOI_LON_ROI']; // máy chủ còn phạm vi SUC_KHOE: app không hiện
+const HEALTH_KINDS: readonly string[] = ['DI_UNG', 'THUOC', 'KHAC'];
+const ALERT_KINDS: readonly string[] = ['KHONG_KHOE', 'DON_SOM', 'GOI_BO_ME'];
 
 // touch_active_min_interval_minutes = 60 (private.params, chưa chốt): máy chủ bỏ qua lần gọi sớm hơn, client không gọi thừa.
 const TOUCH_MIN_INTERVAL_MS = 60 * 60 * 1000;
@@ -51,6 +95,68 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
     }
     if (res.error) throw toApiError(res.error);
     return res.data;
+  }
+
+  async function readOverview(childId: string): Promise<ConsentOverview> {
+    const ps = await db().from('purposes').select(cols('purposes'));
+    if (ps.error) throw toApiError(ps.error);
+    const purposes: Purpose[] = (ps.data ?? []).flatMap((row): Purpose[] => {
+      const o = asObj(row);
+      const code = asStr(o.code);
+      if (!code) return [];
+      return [
+        {
+          code,
+          nameVi: String(o.name_vi ?? ''),
+          kind: o.kind === 'LOI' ? 'LOI' : 'TUY_CHON',
+          collectEnabled: o.collect_enabled === true, // thiếu thì coi là chưa mở
+        },
+      ];
+    });
+    const st = await db().from('purpose_state').select(cols('purpose_state')).eq('child_id', childId);
+    if (st.error) throw toApiError(st.error);
+    const states: ConsentOverview['states'] = {};
+    for (const row of st.data ?? []) {
+      const o = asObj(row);
+      const code = asStr(o.purpose_code);
+      if (!code) continue;
+      const state: PurposeStatus = o.state === 'DANG_BAT' ? 'DANG_BAT' : o.state === 'DA_RUT' ? 'DA_RUT' : 'CHUA_HOI';
+      states[code] = { state, activeSince: asStr(o.active_since) };
+    }
+    return { purposes, states };
+  }
+
+  /** Tên gọi các thành viên của hộ (người khai ghi chú sức khỏe). Lỗi đọc thì trả bảng rỗng: tên là phụ. */
+  async function memberNames(): Promise<Map<string, string>> {
+    const r = await db().from('members').select(cols('members_names'));
+    const out = new Map<string, string>();
+    if (r.error) return out;
+    for (const row of r.data ?? []) {
+      const o = asObj(row);
+      const id = asStr(o.id);
+      if (id) out.set(id, String(o.call_name ?? ''));
+    }
+    return out;
+  }
+
+  function toNote(raw: unknown, names: Map<string, string>): HealthNote {
+    const o = asObj(raw);
+    const id = asStr(o.id);
+    const childId = asStr(o.child_id);
+    if (!id || !childId) throw toApiError(new Error('ghi chú sức khỏe: thiếu id hoặc child_id'));
+    const by = asStr(o.declared_by_member_id);
+    const role = String(o.declared_by_role ?? '');
+    return {
+      id,
+      childId,
+      kind: HEALTH_KINDS.includes(String(o.kind)) ? (o.kind as HealthKind) : 'KHAC',
+      content: String(o.content ?? ''),
+      declaredByName: by ? (names.get(by) ?? null) : null,
+      declaredByRole: ROLES.includes(role) ? (role as MemberRole) : 'OBSERVER',
+      declaredAt: String(o.declared_at ?? ''),
+      sourceNote: asStr(o.source_note),
+      active: o.active !== false,
+    };
   }
 
   function needSession(info: SessionInfo | null): SessionInfo {
@@ -103,7 +209,7 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       const me = needSession(toSessionInfo((await authCall(() => client.auth.getSession())).session));
       const m = await db()
         .from('members')
-        .select('household_id, call_name')
+        .select(cols('members'))
         .eq('user_id', me.userId)
         .eq('status', 'DA_THAM_GIA')
         .maybeSingle();
@@ -111,21 +217,45 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       if (!m.data) return null;
       const householdId = String(asObj(m.data).household_id);
       const memberCallName = String(asObj(m.data).call_name ?? '');
+      const rawRole = String(asObj(m.data).role ?? '');
+      const role: MemberRole = ROLES.includes(rawRole) ? (rawRole as MemberRole) : 'OBSERVER'; // vai lạ: quyền thấp nhất
+
+      // Hộ không đọc được (đã ẩn vì yêu cầu xóa) thì coi là đang chờ xóa; không đoán là hoạt động.
+      const hh = await db().from('households').select(cols('households')).eq('id', householdId).maybeSingle();
+      if (hh.error) throw toApiError(hh.error);
+      const rawState = asStr(asObj(hh.data).state);
+      const householdState: HouseholdState = !hh.data ? 'CHO_XOA' : rawState && HOUSEHOLD_STATES.includes(rawState) ? (rawState as HouseholdState) : 'DONG_BANG';
 
       const kids = await db()
         .from('children')
-        .select('id, call_name, grade, age_years, has_device')
+        .select(cols('children'))
         .eq('household_id', householdId)
         .is('hidden_at', null)
         .order('created_at', { ascending: true });
       if (kids.error) throw toApiError(kids.error);
-      const binds = await db().from('device_bindings').select('child_id, state').in('state', ['HIEU_LUC', 'CHO_XAC_NHAN_MAY_CON']);
+      const binds = await db().from('device_bindings').select(cols('device_bindings')).in('state', ['HIEU_LUC', 'CHO_XAC_NHAN_MAY_CON']);
       if (binds.error) throw toApiError(binds.error);
       const stateOf = new Map<string, PairState>();
       for (const b of binds.data ?? []) {
         const o = asObj(b);
         stateOf.set(String(o.child_id), o.state === 'HIEU_LUC' ? 'PAIRED' : 'PENDING');
       }
+      const childIds = (kids.data ?? []).map((row) => String(asObj(row).id));
+      const on: Record<string, Set<string>> = { [PURPOSE_LICH]: new Set(), [PURPOSE_SUCKHOE]: new Set(), [PURPOSE_CONBAO]: new Set() };
+      if (childIds.length > 0) {
+        const ps = await db().from('purpose_state').select(cols('purpose_state')).in('child_id', childIds).in('purpose_code', Object.keys(on)).eq('state', 'DANG_BAT');
+        if (ps.error) throw toApiError(ps.error);
+        for (const r of ps.data ?? []) on[String(asObj(r).purpose_code)]?.add(String(asObj(r).child_id));
+      }
+      const dr = await db().from('deletion_requests').select(cols('deletion_requests')).eq('household_id', householdId).neq('state', 'DA_HUY');
+      if (dr.error) throw toApiError(dr.error);
+      const openDeletions: OpenDeletion[] = (dr.data ?? []).flatMap((row): OpenDeletion[] => {
+        const o = asObj(row);
+        const id = asStr(o.id);
+        const scope = asStr(o.scope);
+        if (!id || !scope || !SCOPES.includes(scope)) return [];
+        return [{ id, scope: scope as DeletionScope, childId: asStr(o.child_id), acceptedAt: asStr(o.accepted_at), state: asStr(o.state) ?? 'CHO_QUYET_HAN' }];
+      });
       const children: Child[] = (kids.data ?? []).map((row) => {
         const o = asObj(row);
         const cid = String(o.id);
@@ -136,9 +266,12 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
           ageYears: typeof o.age_years === 'number' ? o.age_years : null,
           hasDevice: o.has_device === true,
           pairState: stateOf.get(cid) ?? 'NONE',
+          coreConsent: on[PURPOSE_LICH].has(cid),
+          healthConsent: on[PURPOSE_SUCKHOE].has(cid),
+          alertConsent: on[PURPOSE_CONBAO].has(cid),
         };
       });
-      return { householdId, memberCallName, children };
+      return { householdId, memberCallName, role, householdState, children, openDeletions };
     },
 
     async familyCreate(callName) {
@@ -184,6 +317,152 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       await rpcOk('pin_set', { p_pin: pin });
     },
 
+    getConsentOverview: (childId) => readOverview(childId),
+
+    async consentRecord(input) {
+      const o = await rpcOk('consent_record', {
+        p_child: input.childId,
+        p_purpose_code: input.purposeCode,
+        p_event: input.event,
+        p_idempotency_key: input.idempotencyKey ?? null,
+        p_for_self: input.forSelf === true,
+      });
+      return {
+        changed: o.changed === true,
+        replay: o.replay === true,
+        effective: o.effective === true,
+      };
+    },
+
+    async withdrawAllStart(childId) {
+      const o = await rpcOk('consent_withdraw_all', { p_child: childId });
+      const token = asStr(o.confirm_token);
+      if (o.step !== 1 || !token) throw toApiError(new Error('consent_withdraw_all: thiếu confirm_token ở bước 1'));
+      const c = asObj(o.consequences);
+      return {
+        confirmToken: token,
+        expiresAt: asStr(o.expires_at),
+        consequences: {
+          purposesWithdrawn: Array.isArray(c.purposes_withdrawn) ? c.purposes_withdrawn.filter((x): x is string => typeof x === 'string') : [],
+          childHidden: c.child_hidden === true,
+          deviceUnlinked: c.device_unlinked === true,
+          deletionRequest: c.deletion_request === true,
+          hardDeletedNow: c.hard_deleted_now === true,
+          canReconsent: c.can_reconsent === true,
+        },
+      };
+    },
+
+    async withdrawAllConfirm(childId, confirmToken) {
+      const o = await rpcOk('consent_withdraw_all', { p_child: childId, p_confirm_token: confirmToken });
+      if (o.step !== 2) throw toApiError(new Error('consent_withdraw_all: bước 2 trả sai bước'));
+      return {
+        replay: o.replay === true,
+        deletionRequestId: asStr(o.deletion_request_id),
+        acceptedAt: asStr(o.accepted_at),
+        state: asStr(o.state) ?? 'CHO_QUYET_HAN',
+        hardDeleted: o.hard_deleted === true,
+      };
+    },
+
+    async householdReopen(confirm) {
+      const o = await rpcOk('household_reopen', { p_confirm: confirm });
+      return { changed: o.changed === true };
+    },
+
+    async deletionRequest(scope, childId) {
+      const o = await rpcOk('deletion_request', { p_scope: scope, p_child: childId ?? null, p_confirm: true });
+      return {
+        replay: o.replay === true,
+        scope,
+        deletionRequestId: asStr(o.deletion_request_id),
+        acceptedAt: asStr(o.accepted_at),
+        state: asStr(o.state) ?? 'CHO_QUYET_HAN',
+        hardDeleted: o.hard_deleted === true,
+      };
+    },
+
+    async exportRequest(scope, childId) {
+      // Bản thử: máy chủ luôn raise BLOCKED_H4. Nếu sau này trả ok thì coi là đã nhận yêu cầu.
+      await rpcOk('export_request', { p_scope: scope, p_child: childId ?? null });
+    },
+
+    async getMyConsent(childId) {
+      return effectiveCodes(await readOverview(childId));
+    },
+
+    async getFamilyState() {
+      const o = await rpcOk('my_family_state', undefined);
+      return o.frozen === true ? 'FROZEN' : 'ACTIVE';
+    },
+
+    async childConsentRecord(idempotencyKey) {
+      const o = await rpcOk('child_consent_record', { ...(idempotencyKey !== undefined ? { p_idempotency_key: idempotencyKey } : {}) });
+      return { changed: o.changed === true, consentedAt: asStr(o.consented_at) };
+    },
+
+    async childAlertSend(kind, idempotencyKey, bindingEpoch) {
+      const o = await rpcOk('child_alert_send', {
+        p_kind: kind,
+        ...(idempotencyKey !== undefined ? { p_idempotency_key: idempotencyKey } : {}),
+        ...(bindingEpoch !== undefined ? { p_binding_epoch: bindingEpoch } : {}),
+      });
+      const id = asStr(o.id);
+      if (!id) throw toApiError(new Error('child_alert_send: thiếu id'));
+      return { id, replay: o.replay === true, createdAt: asStr(o.created_at) };
+    },
+
+    async listHealthNotes(childId) {
+      const r = await db().from('child_health_notes').select(cols('child_health_notes')).eq('child_id', childId).order('created_at', { ascending: true });
+      if (r.error) throw toApiError(r.error);
+      const names = await memberNames();
+      return (r.data ?? []).map((row) => toNote(row, names));
+    },
+
+    async healthNoteAdd(input) {
+      const o = await rpcOk('health_note_add', {
+        p_child: input.childId,
+        p_kind: input.kind,
+        p_content: input.content.trim(),
+        ...(input.declaredAt ? { p_declared_at: input.declaredAt } : {}),
+        ...(input.sourceNote?.trim() ? { p_source_note: input.sourceNote.trim() } : {}),
+      });
+      return toNote(o.note, await memberNames());
+    },
+
+    async healthNoteUpdate(noteId, patch) {
+      const p: Obj = {};
+      if (patch.kind !== undefined) p.kind = patch.kind;
+      if (patch.content !== undefined) p.content = patch.content.trim();
+      if (patch.declaredAt !== undefined) p.declared_at = patch.declaredAt;
+      if (patch.sourceNote !== undefined) p.source_note = patch.sourceNote === null || patch.sourceNote.trim() === '' ? null : patch.sourceNote.trim();
+      if (patch.active !== undefined) p.active = patch.active;
+      const o = await rpcOk('health_note_update', { p_note: noteId, p_patch: p });
+      return toNote(o.note, await memberNames());
+    },
+
+    async healthNoteDelete(noteId) {
+      await rpcOk('health_note_delete', { p_note: noteId });
+    },
+
+    async listChildAlerts() {
+      const r = await db().from('child_alerts').select(cols('child_alerts')).order('created_at', { ascending: false });
+      if (r.error) throw toApiError(r.error);
+      return (r.data ?? []).flatMap((row): ChildAlert[] => {
+        const o = asObj(row);
+        const id = asStr(o.id);
+        const childId = asStr(o.child_id);
+        const kind = asStr(o.kind);
+        const createdAt = asStr(o.created_at);
+        if (!id || !childId || !kind || !ALERT_KINDS.includes(kind) || !createdAt) return [];
+        return [{ id, childId, kind: kind as AlertKind, createdAt, seenAt: asStr(o.seen_at) }];
+      });
+    },
+
+    async childAlertSeen(alertId) {
+      await rpcOk('child_alert_seen', { p_alert: alertId });
+    },
+
     async pairCodeCreate(): Promise<PairCode> {
       const o = asObj(await rpc('pair_code_create', undefined));
       const code = asStr(o.code);
@@ -213,7 +492,7 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       const me = needSession(toSessionInfo((await authCall(() => client.auth.getSession())).session));
       const r = await db()
         .from('device_bindings')
-        .select('child_id, epoch')
+        .select(cols('device_bindings_mine'))
         .eq('device_user_id', me.userId)
         .eq('state', 'HIEU_LUC')
         .maybeSingle();
