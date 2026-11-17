@@ -1,0 +1,20 @@
+{
+  "_doc": "Vector kiểm chéo chữ ký commit (T3.2). Khóa CHỈ DÙNG TEST (trùng tests/stub). Sinh bằng node:crypto độc lập; SQL (schedule.test.mjs) và Deno (_tests/schedule.test.ts) cùng phải ra đúng chữ ký này.",
+  "key": "TEST-ONLY-schedule-commit-key-not-real-0003",
+  "fields": {
+    "child_id": "00000000-0000-4000-8000-000000000301",
+    "profile_id": "00000000-0000-4000-8000-000000000501",
+    "expected_rev": 1,
+    "idempotency_key": "30000000-0000-4000-8000-000000000001",
+    "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "input_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "engine_version": "e1-0123456789ab",
+    "params_version": "p-0123456789ab",
+    "balance_label": "UNKNOWN",
+    "output": "{\"ngay\":{\"T2\":[{\"khoi\":\"Học bài\"}]},\"tong_quan\":{}}",
+    "tradeoffs": "[]",
+    "questions": "[]",
+    "answers": "[]"
+  },
+  "signature": "f33d9de1188f4e21dafeca89ac38f3efc18c42e1e883b65c9b6800757bf1880d"
+}

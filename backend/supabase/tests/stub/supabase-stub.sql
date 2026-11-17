@@ -94,6 +94,7 @@ create table vault.decrypted_secrets (
 );
 insert into vault.decrypted_secrets (name, decrypted_secret) values
   ('pairing_secret', 'TEST-ONLY-pairing-secret-not-a-real-key-0001'),
-  ('pin_pepper',     'TEST-ONLY-pin-pepper-not-a-real-key-0002');
+  ('pin_pepper',     'TEST-ONLY-pin-pepper-not-a-real-key-0002'),
+  ('schedule_commit_key', 'TEST-ONLY-schedule-commit-key-not-real-0003');
 revoke all on schema vault from public, anon, authenticated;
 revoke all on vault.decrypted_secrets from public, anon, authenticated;

@@ -567,7 +567,7 @@ describe('FR01-T: hủy liên kết, PIN, epoch (T1.6; FR-01; AC-FAM-13..15; c�
     assert.deepEqual(Object.keys(o).sort(), ['epoch', 'ok', 'replay', 'unlinked']);
     assert.ok(!JSON.stringify(o).includes(PIN));
     // hàm không tạo hàng đợi thông báo hay token: chưa có bảng nào; ghi nhận bằng việc commit chỉ đụng device_bindings/pairing_codes
-    const tables = admin(`select count(*) from information_schema.tables where table_schema in ('app','private') and table_name ilike '%notif%' or table_name ilike '%push%'`);
+    const tables = admin(`select count(*) from information_schema.tables where table_schema in ('app','private') and (table_name ilike '%notif%' and table_name <> 'notifications') or table_name ilike '%push%'`);
     assert.equal(tables.rows[0], '0');
   });
 

@@ -18,8 +18,29 @@ jobs:
           node-version: '22'
       - name: Quét bí mật
         run: node scripts/scan-secrets.mjs
+      - name: Kiểm backend/supabase/functions/_shared khớp packages/ (T0.5)
+        run: node scripts/sync-shared.mjs --check
       - name: Test các package (nấc 1)
         run: npm test
+
+  edge-functions:
+    # Bộ xếp lịch chạy trong Deno cho cùng đầu ra với Node; test profile-save, schedule-preview, schedule-commit với CSDL giả (T0.5, T3.2).
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Kiểu (deno check)
+        working-directory: backend/supabase/functions
+        run: deno check _tests/schedule.test.ts */index.ts
+      - name: Test Edge Function (Deno)
+        working-directory: backend/supabase/functions
+        run: deno test --allow-read --allow-run=node _tests/schedule.test.ts
 
   mobile-e2e:
     # Test component, E2E và so ảnh cho apps/mobile trên bản web (dữ liệu giả), không cần máy Android.
