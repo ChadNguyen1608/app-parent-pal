@@ -16,7 +16,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SB="$ROOT/backend/supabase"
-TEST_FILES=("$SB/tests/rls/rls.test.mjs" "$SB/tests/rls/fn.test.mjs" "$SB/tests/rls/pair.test.mjs" "$SB/tests/rls/member.test.mjs" "$SB/tests/rls/consent.test.mjs" "$SB/tests/rls/audit.test.mjs" "$SB/tests/rls/lifecycle.test.mjs" "$SB/tests/rls/trial.test.mjs" "$SB/tests/rls/health.test.mjs" "$SB/tests/rls/alerts.test.mjs")
+TEST_FILES=("$SB/tests/rls/rls.test.mjs" "$SB/tests/rls/fn.test.mjs" "$SB/tests/rls/pair.test.mjs" "$SB/tests/rls/member.test.mjs" "$SB/tests/rls/consent.test.mjs" "$SB/tests/rls/audit.test.mjs" "$SB/tests/rls/lifecycle.test.mjs" "$SB/tests/rls/trial.test.mjs" "$SB/tests/rls/health.test.mjs" "$SB/tests/rls/alerts.test.mjs" "$SB/tests/rls/schedule.test.mjs")
 MODE=sandbox; RESET=0; PROVE=0; ONLY=
 while [ $# -gt 0 ]; do
   a="$1"; shift

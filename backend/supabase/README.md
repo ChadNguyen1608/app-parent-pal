@@ -6,11 +6,11 @@ Nơi đặt dự án đám mây chưa chốt (LQ-08); chưa tạo dự án nào.
 | Thư mục / file | Nội dung |
 |---|---|
 | `config.toml` | Cấu hình Supabase CLI cục bộ, tối thiểu. `private` không nằm trong `[api] schemas` |
-| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set`. `…140000` T1.2: `family_create`, `touch_active`, `private.params`. `…150000` T1.5: ghép máy (`pair_*`), Parent PIN (`pin_set`, `pin_verify` nội bộ), `access_state` thêm `child.pair` và claim epoch, `RATE_LIMITED`. `…160000` T1.6: `unlink_device`. `…170000` T1.8: `member_invite` (khung, cờ `invites_enabled=0`, luôn `FEATURE_OFF`). `…180000` hàm phụ trợ RLS (`can`, `can_household`, `is_member`, `is_self_member`) chuyển sang schema `app_internal` không mở API; 5 hàm không còn dùng thu hồi EXECUTE. `…20261116110000` T2.5: `audit_log` + cơ chế ghi. `…120000` T2.1: mục đích thứ 8, `policy_versions`, `consent_events`, `purpose_state`, `consent_record`, nối `access_state` với đồng ý. `…130000` T2.2: `deletion_requests`, `consent_withdraw_all` hai bước. `…140000` T2.3: đóng băng 30 ngày, `household_reopen`, `deletion_request`, `job_daily`. `…150000` T2.4: `trial_slots`, `purge_household`, `deletion_evidence`, `job_trial_purge`, `export_request` (`BLOCKED_H4`) |
+| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set`. `…140000` T1.2: `family_create`, `touch_active`, `private.params`. `…150000` T1.5: ghép máy (`pair_*`), Parent PIN (`pin_set`, `pin_verify` nội bộ), `access_state` thêm `child.pair` và claim epoch, `RATE_LIMITED`. `…160000` T1.6: `unlink_device`. `…170000` T1.8: `member_invite` (khung, cờ `invites_enabled=0`, luôn `FEATURE_OFF`). `…180000` hàm phụ trợ RLS (`can`, `can_household`, `is_member`, `is_self_member`) chuyển sang schema `app_internal` không mở API; 5 hàm không còn dùng thu hồi EXECUTE. `…20261116110000` T2.5: `audit_log` + cơ chế ghi. `…120000` T2.1: mục đích thứ 8, `policy_versions`, `consent_events`, `purpose_state`, `consent_record`, nối `access_state` với đồng ý. `…130000` T2.2: `deletion_requests`, `consent_withdraw_all` hai bước. `…140000` T2.3: đóng băng 30 ngày, `household_reopen`, `deletion_request`, `job_daily`. `…20261117100000` T3.1: `schedule_profiles`, `activity_cards`, `schedule_versions` (bất biến), `schedule_state`, `schedule_answers`. `…110000` T3.2: `profile_save`, `schedule_inputs`, `schedule_commit_apply`, outbox `notifications`, mở rộng `purge_household`. `…150000` T2.4: `trial_slots`, `purge_household`, `deletion_evidence`, `job_trial_purge`, `export_request` (`BLOCKED_H4`) |
 | `seed/` | Dữ liệu giả (chị Hoa, anh Minh, bé Na, bé Bin, cô Lan, bé Su). **Không dữ liệu thật của trẻ** |
 | `tests/stub/` | `supabase-stub.sql`: vai `anon`/`authenticated`/`service_role`, schema `auth`, `auth.uid()`/`auth.jwt()`, `pgcrypto` ở schema `extensions`, `vault.decrypted_secrets` với khóa GIẢ chỉ để test. **Chỉ dùng cho test trên Postgres thuần, không nằm trong migrations** |
-| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `pair.test.mjs` (FN-FAM, FN-PAIR, FN-PIN, FR01-T01..T10, RLS-EPOCH), `member.test.mjs` (MEM-INV, MEM-NL), `consent.test.mjs` (CON-01..08, 22, CON-D58, CON-WA: T2.1, T2.2), `audit.test.mjs` (AUD-01..06: T2.5), `lifecycle.test.mjs` (LC-JOB/FROZEN/REOPEN/DEL/SWITCH/CRON: T2.3), `trial.test.mjs` (TRIAL-SLOT/JOB/WD/PURGE/H4/EXP/EVID/FK: T2.4), `policy-matrix.json`, `mutations/` |
-| `functions/` | Edge Function (task sau) |
+| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `pair.test.mjs` (FN-FAM, FN-PAIR, FN-PIN, FR01-T01..T10, RLS-EPOCH), `member.test.mjs` (MEM-INV, MEM-NL), `consent.test.mjs` (CON-01..08, 22, CON-D58, CON-WA: T2.1, T2.2), `audit.test.mjs` (AUD-01..06: T2.5), `lifecycle.test.mjs` (LC-JOB/FROZEN/REOPEN/DEL/SWITCH/CRON: T2.3), `trial.test.mjs` (TRIAL-SLOT/JOB/WD/PURGE/H4/EXP/EVID/FK: T2.4), `schedule.test.mjs` (SCH-RLS/VER/PS/IN/CM/SIG: T3.1, T3.2), `policy-matrix.json`, `mutations/` |
+| `functions/` | Edge Function (Deno): `_shared/` (lõi API, `schedule-core.ts`, và `scheduler/`, `domain/` SINH TỰ ĐỘNG từ `packages/` bằng `scripts/sync-shared.mjs`), `profile-save/`, `schedule-preview/`, `schedule-commit/` (mỗi hàm: `handler.ts` thuần + `index.ts`), `_tests/` (deno test). Xem mục T0.5, T3.1, T3.2 |
 
 ## Chạy test RLS
 
@@ -20,7 +20,7 @@ Hai chế độ, cùng một bộ test (`tests/rls/rls.test.mjs`, đọc `RLS_DB
 
 ```bash
 scripts/db-test.sh                  # initdb vào /tmp, cổng tự chọn, nạp stub + migrations + seed, chạy test, dọn dẹp
-scripts/db-test.sh --prove-negative # thêm: áp 78 đột biến và xác nhận test THẤT BẠI đúng mã
+scripts/db-test.sh --prove-negative # thêm: áp 118 đột biến và xác nhận test THẤT BẠI đúng mã
 scripts/db-test.sh --prove-negative --only m66,m67   # chỉ đột biến có tên bắt đầu bằng mã này (vẫn chạy baseline trước); cả bộ mất hơn 60 phút
 ```
 
@@ -338,3 +338,56 @@ Chỉ sau khi chủ sản phẩm đồng ý áp lên đám mây mới chạy `su
 - Edge Function gửi thông báo từ `lifecycle_notices`; Edge Function bọc `trial_open/close/attach`, `job-daily`, `job-trial-purge`.
 - Bật `pg_cron` rồi gọi `select private.register_cron_jobs();`. Chưa áp lên đám mây.
 - (b) hoàn tác trong thời gian chờ xóa: không làm (chờ chủ sản phẩm). App phía con (chỉ xem lịch đã tải, không nhận lịch mới, không gửi mong muốn khi đóng băng): làm sau.
+
+
+## T0.5, T3.1, T3.2: bộ xếp lịch ở máy chủ, bảng lịch, lưu và commit lịch
+
+### Đóng gói bộ xếp vào Edge Function (T0.5)
+
+- `node scripts/sync-shared.mjs` chép `packages/scheduler/src` và `packages/domain/src` (TS thuần) vào `functions/_shared/scheduler/src`, `functions/_shared/domain/src` (giữ cấu trúc nên import tương đối vẫn đúng), thêm `scheduler/version.ts` (`ENGINE_VERSION` = băm toàn bộ nguồn) và `SYNC.json`. `--check` (CI, job `check`) thoát 1 nếu cây đích lệch, thiếu hoặc thừa file. Không sửa tay trong `_shared/scheduler`, `_shared/domain`.
+- Deno chạy được nguyên mã (không bó, không package). `functions/deno.json` tắt `strict` vì mã bộ xếp port từ spike không gõ kiểu chặt.
+- `_tests/schedule.test.ts`: đầu ra ĐẦY ĐỦ của `scheduleWeek` trên P1..P8 trong Deno trùng Node từng byte (test gọi `node --experimental-strip-types _tests/node-ref.ts`), khớp golden và `PARAMS`, tất định.
+- Độ trễ đo được (Deno 2.9.6, sandbox, 320 lần P1..P8, đã khởi động): p50 khoảng 0,6 ms, p95 khoảng 6,7 ms, max khoảng 10 ms. Chỉ là thời gian tính toán; chưa đo khởi động lạnh của Supabase Edge Runtime, mạng, hay CSDL (cần dự án thật). Chưa đặt ngưỡng (Q-TS-05).
+
+Chạy test Deno (cần Deno 2 và Node 22): `cd backend/supabase/functions && deno test --allow-read --allow-run=node _tests/schedule.test.ts` (tránh `jsr:`; test dùng `node:assert`). Không có test Edge Function chạy trên Supabase thật hay `supabase functions serve` (không Docker); `deno check */index.ts` kiểm cả nhập `npm:@supabase/supabase-js@2`.
+
+### Bảng lịch (T3.1)
+
+| Bảng | Ghi chú |
+|---|---|
+| `schedule_profiles` | `CHUAN/GIAI_DOAN/PRESET`, `version`, `input`, `budget` (null = quỹ mặc định), `keep_confirmed` (CHECK không có `ngu`, D-02). Mỗi con ≤ 1 `CHUAN` `ACTIVE` và ≤ 1 nháp. Rời `DRAFT` thì nội dung bị trigger khóa; chuyển trạng thái sai đường bị chặn |
+| `activity_cards` | Không cột địa điểm. `note` có `CHECK (note is null)` cho tới khi có `keyword-check` (BR-CON-094) |
+| `schedule_versions` | Bất biến: trigger chặn UPDATE/DELETE/TRUNCATE kể cả `service_role` (ngoại lệ duy nhất: trong `purge_household`). `label_status` luôn `chua_kiem_chung`. Duy nhất `(child_id, idempotency_key)` |
+| `schedule_state` | `rev`, con trỏ hiệu lực, khóa (`lock-set` thuộc T4.2) |
+| `schedule_answers` | duy nhất `(child_id, question_key, local_date)`; `question_key` dạng `g7_bot_hoc_nha.T2` |
+
+RLS (mô hình đồng ý D-64: lịch thuộc mục lõi MD-LICH, không có mục đích riêng cho đồng bộ, nhắc, Xong, hỏi thăm, báo cáo): chỉ người lớn thuộc hộ (QL, hoặc NL có grant `view` MD-LICH) đọc, khi MD-LICH hiệu lực và dữ liệu không cũ hơn `visible_from` (rút rồi đồng ý lại không làm dữ liệu cũ hiện lại); cùng khuôn `is_adult_of_child` + `can` + `purpose_visible` với `child_health_notes`. Máy con KHÔNG đọc bảng nào (lịch tới máy con qua `device-sync`, T3.6). Không ai ghi trực tiếp.
+
+### profile-save, schedule-preview, schedule-commit (T3.2)
+
+| Hàm Edge | Hàm SQL (RPC, JWT người dùng) | Việc |
+|---|---|---|
+| `profile-save` | `app.profile_save(p_child, p_patch, p_base_version)` | Lưu nháp: chỉ khóa có trong `p_patch` mới đổi. Hồ sơ ACTIVE + sửa -> nháp phiên bản mới (`supersedes_id`). Thẻ: có `id` thì sửa, không `id` thì thêm, vắng mặt thì lưu trữ (không xóa). `p_base_version` sai -> `CONFLICT_REV` |
+| `schedule-preview` | `app.schedule_inputs(p_profile)` | Đọc hồ sơ, lớp/tuổi (không tên con), thẻ, `content_hash`, `rev`; Edge chạy bộ xếp, trả `plan`, `tradeoffs`, `questions`, `board`, `warnings`, `blockers`, `commitable`. Không ghi |
+| `schedule-commit` | `app.schedule_inputs(p_profile, p_idempotency_key)` rồi `app.schedule_commit_apply(...)` | Chạy lại bộ xếp trên dữ liệu máy chủ, từ chối nếu `blockers`, ký, ghi một giao dịch |
+
+**Vì sao Edge Function gọi SQL bằng JWT người dùng, không `service_role` (Architecture §6.2: hai cách đều được).** (1) RLS, `app.access_state`/`app.can` và `audit_log` (`private.audit_write_auto` đọc `auth.uid()`) chạy đúng danh tính người gọi, không phải truyền "actor" hộ. (2) Ba hàm này không cần khóa `service_role`: lộ hàm không lộ quyền ghi toàn CSDL. (3) Hàm SQL ghi gọi được trực tiếp bằng PostgREST bởi bất kỳ client nào có JWT, nên "chạy lại ở máy chủ, không tin client" phải được thực thi bằng mật mã chứ không bằng đường gọi: kết quả mang **chữ ký HMAC-SHA256** của Edge Function.
+
+Chữ ký (khóa `schedule_commit_key` trong Vault của CSDL, `SCHEDULE_COMMIT_KEY` ở secret của Edge Function; chuỗi ký `v1\n` + child, profile, rev, khóa idempotency, `content_hash`, `input_hash`, engine, params, nhãn, NGUYÊN VĂN output, đánh đổi, câu hỏi, câu trả lời, nối bằng `\n`; `commitMessage()` trong `schedule-core.ts` và `private.schedule_commit_message` phải trùng, vector chéo ở `tests/fixtures/commit-signature-vector.json` kiểm ở cả hai phía). SQL kiểm chữ ký, rồi (khóa hàng con) kiểm: lịch không `LOCKED`, `rev` khớp, băm nội dung hồ sơ+thẻ tính LẠI lúc commit khớp bản đã ký (hồ sơ đổi giữa lúc xếp và lúc lưu -> `CONFLICT_REV`), cấu trúc output (đủ 7 ngày). Rồi ghi `schedule_versions` + nâng hồ sơ nháp thành ACTIVE (bản cũ SUPERSEDED) + `schedule_state.rev+1` + `schedule_answers` + `audit_log` (`schedule.committed`) + outbox `notifications(lich_moi)` cho máy con đã ghép (chỉ khi MD-DONGBO hiệu lực), cùng một giao dịch. Gửi lại cùng `idempotency_key`: trả kết quả cũ (`replay=true`, Edge trả `code: IDEMPOTENT_REPLAY`), kể cả khi hồ sơ đã đổi; không thêm phiên bản, audit, thông báo.
+
+Kiểm sàn cứng và ô đỏ nằm ở Edge Function (bộ xếp là TS): từ chối khi có ngày `XUNG_DOT` (`C/A1`), giờ ngủ dưới mức tối thiểu hoặc ô Ngủ đỏ/dưới sàn (`D-02/C1`, ô Ngủ không có "Giữ mức này"), ô đỏ có "Giữ mức này" chưa được xác nhận (`D6/A2`; xác nhận bằng `keep_confirmed` đã lưu hoặc `confirmed_red` gửi kèm lúc commit). SQL không chạy lại bộ xếp.
+
+### Quyết định mặc định (tài liệu thiếu hoặc mơ hồ; báo chủ sản phẩm)
+
+- `activity_cards.note`: chưa lưu được (fail-closed) cho tới khi `keyword-check` có; `FEATURE_OFF` ở hàm, `CHECK` ở bảng. Cột địa điểm/`location` bị từ chối (Q-ARC-10).
+- `idempotency_key` của `schedule_versions` duy nhất theo con (Tech Spec ghi duy nhất toàn cục); `profile_save` idempotent theo nội dung (gửi lại kèm id thẻ thì `changed=false`), không dùng khóa.
+- Ngày `XUNG_DOT` chặn commit (kể cả khi bộ xếp có "phương án đề xuất"): bố mẹ phải bỏ/dời hoạt động trước. Ngày `CAN_BO_ME_CHON` được commit (đánh đổi được lưu trong `tradeoffs`, bố mẹ thấy ở bản xem trước). Chưa có quy tắc nào trong tài liệu nói rõ hai điều này.
+- Câu trả lời (`answers`, ví dụ `g7_bot_hoc_nha`) được lưu và ghi vào `questions`, nhưng bộ xếp E1 hiện KHÔNG đọc câu trả lời để đổi lịch (spike chỉ sinh câu hỏi với `default: giu_quy`).
+- Lớp/tuổi thiếu một thì suy từ cái kia (lớp = tuổi - 5) [MĐKT]. `di_lai` của bộ xếp = `travel_before_min + travel_after_min`.
+- `week_start` của `schedule-preview` được nhận nhưng chưa dùng (lịch chuẩn không gắn ngày). `schedule_state.phase_id` chưa có FK (T4.1). `lock-set` (T4.2) chưa có: trạng thái khóa chỉ được đọc và chặn commit.
+- Hồ sơ/thẻ tạo trước lúc rút đồng ý rồi đồng ý lại không hiện lại; nháp cũ bị lưu trữ (`RUT_DONG_Y`) khi lưu lần sau.
+- `app.notifications` là bản tối thiểu cho outbox (type `lich_moi` cho máy con khi commit; type `con_bao` cho người lớn khi con bấm "Báo bố mẹ ngay", D-67; payload luôn chỉ `{type,id}`, không có mã câu hay tên); T3.5 mở rộng (FCM, retry, loại thông báo khác). Người nhận `con_bao`: QL và NL có grant `view` MD-CONBAO tại lúc gửi. `app.child_alert_send` được tạo lại (`create or replace`) ở migration T3.2 để gắn outbox (điểm gắn ghi ở T2.8 mục 8). Hàng outbox chưa bị hủy khi rút đồng ý (T3.5).
+- `purge_household` và `purge_child` (T2.4) được tạo lại ở migration T3.2: xóa thêm `notifications`, `schedule_answers`, `schedule_state`, `schedule_versions`, `activity_cards`, `schedule_profiles` (bảng lịch theo con; `schedule_versions` được ngoại lệ chỉ-thêm trong ngữ cảnh purge).
+- Đột biến của đợt 3a đánh số m110..m125 (main đã dùng tới m102).
+- Cần tạo secret `schedule_commit_key` (Vault) và `SCHEDULE_COMMIT_KEY` (Edge Function), cùng giá trị, ≥ 16 ký tự, khi áp lên đám mây. Chưa làm gì trên đám mây.
+- Chưa phủ: AC-04..08, 17 được kiểm ở mức bộ xếp (đã có từ T0.3) và chặn commit ở Edge Function; chưa có e2e với Supabase thật (không Docker). CI hiện chưa có job `db-test` (đề xuất ở trên).

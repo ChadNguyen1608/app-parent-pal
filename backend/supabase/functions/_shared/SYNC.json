@@ -1,0 +1,17 @@
+{
+  "_doc": "SINH TỰ ĐỘNG bởi scripts/sync-shared.mjs. Băm sha256 từng file nguồn.",
+  "engine_hash": "b509413cb95230779cb65e0b312990434b0c4d5970424829fe8ea4c4fd70ac82",
+  "sources": {
+    "packages/scheduler/src/fatigue.ts": "2177f6b4f42c36b397c8a8801ed1861ceb6a62e14874cbf686e425c3c5ec978b",
+    "packages/scheduler/src/index.ts": "f4c73331f386decfa0eb58588bd768b08cb84cdeaccfff634db253b5340c93a9",
+    "packages/scheduler/src/phase.ts": "08bcb7fa7abd32e58a589f0afec1054cc7cb081594d2023b72674bc1deea13bc",
+    "packages/scheduler/src/profiles.ts": "d4392ca218233c5a015ee54b9472d0671868b34bb5e5af3e89df64d137f94acf",
+    "packages/scheduler/src/rules.ts": "1a054157ba37f8c0d9cff474e3d7b429326327a61a748c4a7695d8538aa7000d",
+    "packages/scheduler/src/scheduler.ts": "b138a50f38dc4482de0a54b4bfcd002202a3e46f2332106ef6958450f26adf2c",
+    "packages/scheduler/src/validators.ts": "090be06f25d378cac044786e0595045a7682388268f20c93da7052cfd6aa5a55",
+    "packages/domain/src/errors.ts": "26d34f46bd5ddfdcd21c49b3fcd286a32d2429e7986cc08a1e749e1415ca6a9e",
+    "packages/domain/src/index.ts": "47b0a5673f443ebe072040fea6ca4a2a8fc172928f3cd2e669171ed6448b41b3",
+    "packages/domain/src/time.ts": "738a91498975a4f7df0b67fc2f190bcdc1af818f4e2b42ca7ec7c944ed3a11f4",
+    "packages/domain/src/types.ts": "ea397c2855e72f74ba9ac06035f0b66fb167e05dea35a7ef1ac3b5c809bb125f"
+  }
+}

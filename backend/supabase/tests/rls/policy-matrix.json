@@ -230,6 +230,73 @@
         "HO_KHAC": 0,
         "ANON": "denied"
       }
+    },
+    "schedule_profiles": {
+      "spec": "T3.1, §2.7: người lớn đọc theo MD-LICH; QL 2 (Na ACTIVE, Bin DRAFT), NL 1 (Na); máy con không đọc",
+      "select": {
+        "QL": 2,
+        "NL": 1,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 1,
+        "ANON": "denied"
+      }
+    },
+    "activity_cards": {
+      "spec": "T3.1, §2.7: như schedule_profiles",
+      "select": {
+        "QL": 2,
+        "NL": 2,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 1,
+        "ANON": "denied"
+      }
+    },
+    "schedule_versions": {
+      "spec": "T3.1, §2.7: máy con đọc qua device-sync, không đọc bảng; chỉ-thêm",
+      "select": {
+        "QL": 1,
+        "NL": 1,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      }
+    },
+    "schedule_state": {
+      "spec": "T3.1, §2.7: như schedule_versions",
+      "select": {
+        "QL": 1,
+        "NL": 1,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      },
+      "pk": "child_id"
+    },
+    "schedule_answers": {
+      "spec": "T3.1, §2.7: người lớn có quyền đọc",
+      "select": {
+        "QL": 1,
+        "NL": 1,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      }
+    },
+    "notifications": {
+      "spec": "T3.2, §2.5, §2.7: mỗi người chỉ thấy hàng của mình (hàng seed gửi cho máy bé Na)",
+      "select": {
+        "QL": 0,
+        "NL": 0,
+        "CON": 1,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      }
     }
   },
   "private": {
@@ -393,7 +460,17 @@
     "my_family_state": [
       "authenticated"
     ],
-    "purge_child": []
+    "purge_child": [],
+    "profile_save": [
+      "authenticated"
+    ],
+    "schedule_inputs": [
+      "authenticated"
+    ],
+    "schedule_commit_apply": [
+      "authenticated"
+    ],
+    "tg_schedule_profile_guard": []
   },
   "app_internal_functions": {
     "_doc": "Hàm phụ trợ của chính sách RLS, nằm schema app_internal (không mở API, T1.8-b). Vai được EXECUTE (ngoài service_role). Chính sách chạy với quyền người gọi nên authenticated cần EXECUTE; anon không có gì. Hàm mới phải khai ở đây.",
