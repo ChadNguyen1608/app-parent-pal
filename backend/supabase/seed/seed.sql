@@ -77,3 +77,28 @@ join app.members m on m.household_id = c.household_id and m.role = 'PRIMARY';
 insert into app.child_health_notes (child_id, kind, content, declared_by_member_id, declared_by_role, declared_at, source_note)
 values ('00000000-0000-4000-8000-000000000301', 'DI_UNG', 'Dị ứng giả định (dữ liệu thử)', '00000000-0000-4000-8000-000000000201',
         'PRIMARY', '2025-09-16', 'theo giấy khám (giả)');
+
+-- T3.1/T3.2: lịch giả (tên giả). Bé Na: hồ sơ ACTIVE + 2 hoạt động + phiên bản 1 + trạng thái + 1 câu trả lời + 1 thông báo cho máy con.
+-- Bé Bin: nháp. Bé Su (hộ 2): hồ sơ ACTIVE + 1 hoạt động. Ghi bằng vai quản trị (bỏ qua RLS); dữ liệu sau mốc đồng ý MD-LICH.
+insert into app.schedule_profiles (id, child_id, kind, version, input, state, created_by) values
+  ('00000000-0000-4000-8000-000000000501', '00000000-0000-4000-8000-000000000301', 'CHUAN', 1,
+   '{"school":{"T2":{"start":"07:30","end":"16:30","lunch":"11:00","pmStart":"13:30","snack":"14:30","snackDur":15},"T3":null,"T4":null,"T5":null,"T6":null,"T7":null,"CN":null},"commute":15,"twoSessions":true,"sleep":{"wake":"06:15"},"meals":{"dinner":"18:30","lunch":"11:15"}}',
+   'ACTIVE', '00000000-0000-4000-8000-000000000201'),
+  ('00000000-0000-4000-8000-000000000502', '00000000-0000-4000-8000-000000000302', 'CHUAN', 1, '{}', 'DRAFT', '00000000-0000-4000-8000-000000000201'),
+  ('00000000-0000-4000-8000-000000000503', '00000000-0000-4000-8000-000000000303', 'CHUAN', 1, '{}', 'ACTIVE', '00000000-0000-4000-8000-000000000203');
+insert into app.activity_cards (id, child_id, name, type, days, start_time, end_time, travel_before_min, travel_after_min) values
+  ('00000000-0000-4000-8000-000000000511', '00000000-0000-4000-8000-000000000301', 'Tiếng Anh', 'hoc_them', '{T2,T4}', '17:30', '19:00', 15, 15),
+  ('00000000-0000-4000-8000-000000000512', '00000000-0000-4000-8000-000000000301', 'Bơi', 'the_thao', '{T3}', '17:30', '18:30', 10, 10),
+  ('00000000-0000-4000-8000-000000000513', '00000000-0000-4000-8000-000000000303', 'Piano', 'nang_khieu', '{T7}', '08:30', '09:30', 10, 10);
+insert into app.schedule_versions (id, child_id, profile_id, profile_version, rev, engine_version, params_version, input_hash, output, committed_by_kind, committed_by, commit_reason, idempotency_key) values
+  ('00000000-0000-4000-8000-000000000521', '00000000-0000-4000-8000-000000000301', '00000000-0000-4000-8000-000000000501', 1, 1,
+   'seed-engine', 'seed-params', repeat('a', 64),
+   '{"ngay":{"T2":[],"T3":[],"T4":[],"T5":[],"T6":[],"T7":[],"CN":[]},"tong_quan":{}}', 'member', '00000000-0000-4000-8000-000000000201', 'bo_me_luu_lich',
+   '20000000-0000-4000-8000-000000000001');
+insert into app.schedule_state (child_id, rev, effective_version_id, base_version_id) values
+  ('00000000-0000-4000-8000-000000000301', 1, '00000000-0000-4000-8000-000000000521', '00000000-0000-4000-8000-000000000521');
+insert into app.schedule_answers (child_id, question_key, local_date, answer, answered_by) values
+  ('00000000-0000-4000-8000-000000000301', 'g7_bot_hoc_nha.T2', '2025-10-06', 'giu_quy', '00000000-0000-4000-8000-000000000201');
+insert into app.notifications (type, recipient_kind, recipient_id, child_id, idempotency_key, payload_min) values
+  ('lich_moi', 'device', '00000000-0000-4000-8000-000000000401', '00000000-0000-4000-8000-000000000301', '20000000-0000-4000-8000-000000000002',
+   '{"type":"lich_moi","id":"00000000-0000-4000-8000-000000000521"}');
