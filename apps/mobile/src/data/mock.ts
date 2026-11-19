@@ -5,10 +5,12 @@
 //  - Mã OTP đúng luôn là 123456. Link thư giả lập: <scheme>://auth-callback?code=mock-link.
 //  - Parent App: mã ghép đúng luôn là 123456. Lần ghép đầu phải kèm PIN (như pair_confirm thật); mã sai thì ném NOT_FOUND
 //    (thật: ok=false) và 5 lần sai liên tiếp thì RATE_LIMITED.
+//  - Gói dịch vụ (D-68): mặc định TRIAL (tạo 1 kế hoạch, sửa 3 lần, KHÔNG ghép máy). Chọn bằng MockOptions.plan, hoặc ?plan=FREE|TRIAL|PREMIUM
+//    trên URL bản web. Chỉ PREMIUM ghép máy được (pairConfirm trả PLAN_REQUIRED như máy chủ thật).
 //  - Child App: pair_pending trả pending=false `acceptAfter` lần đầu, rồi pending=true ("Kết nối với chị Lan?", giả vờ bố mẹ
 //    vừa nhập mã); pair_accept chỉ đúng khi đang pending. PIN hủy kết nối: PIN đã đặt, mặc định MOCK_DEFAULT_PIN (482915; 123456 bị máy chủ từ chối vì dễ đoán).
 import { apiErrorFromFailure, toApiError } from './errors.ts';
-import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmResult, PairPending, SessionInfo } from './types.ts';
+import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmResult, PairPending, PlanInfo, PlanTier, SessionInfo } from './types.ts';
 import { checkPin } from './validate.ts';
 
 export const MOCK_OTP = '123456';
@@ -21,7 +23,17 @@ export const MOCK_MAX_CODE_FAILS = 5;
 export const MOCK_LOCK_MINUTES = 15;
 export const MOCK_ADULT_NAME = 'chị Lan';
 
+export const MOCK_DEFAULT_PLAN: PlanTier = 'TRIAL';
+export const MOCK_TRIAL_PLANS_MAX = 1;
+export const MOCK_TRIAL_EDITS_MAX = 3;
+
+export function isPlanTier(v: unknown): v is PlanTier {
+  return v === 'FREE' || v === 'TRIAL' || v === 'PREMIUM';
+}
+
 export type MockOptions = {
+  /** Gói dịch vụ của hộ giả lập (mặc định TRIAL). */
+  plan?: PlanTier;
   /** Giả lập hộ bị đóng băng: mọi hàm ghi trả FROZEN. */
   frozen?: boolean;
   /** Số lần pair_pending trả pending=false trước khi có yêu cầu chờ (mặc định 1). */
@@ -39,6 +51,7 @@ export function createMockApi(opts: MockOptions = {}): Api {
   const now = opts.now ?? (() => Date.now());
   const latency = opts.latencyMs ?? 250;
   const acceptAfter = opts.acceptAfter ?? 1;
+  const plan: PlanTier = opts.plan ?? MOCK_DEFAULT_PLAN;
 
   let session: SessionInfo | null = null;
   const listeners = new Set<(s: SessionInfo | null) => void>();
@@ -163,11 +176,21 @@ export function createMockApi(opts: MockOptions = {}): Api {
       return { childId };
     },
 
+    async myPlan(): Promise<PlanInfo> {
+      needLogin();
+      await pause();
+      const base = { expired: false, plansUsed: 0, editsUsed: 0, palQuestionsLeft: null, trialEndsAt: null };
+      if (plan === 'PREMIUM') return { ...base, tier: 'PREMIUM', plansMax: null, editsLeft: null };
+      if (plan === 'TRIAL') return { ...base, tier: 'TRIAL', plansMax: MOCK_TRIAL_PLANS_MAX, editsLeft: MOCK_TRIAL_EDITS_MAX };
+      return { ...base, tier: 'FREE', plansMax: 0, editsLeft: 0 };
+    },
+
     async pairConfirm(childId, code, pinIn): Promise<PairConfirmResult> {
       writable();
       await pause();
       const child = children.find((c) => c.id === childId);
       if (!child) fail('NOT_FOUND', 'CHILD', 'Không tìm thấy hồ sơ con.');
+      if (plan !== 'PREMIUM') fail('PLAN_REQUIRED', 'D-68.premium', 'Chỉ gói Premium mới ghép và đồng bộ lịch sang máy của con.');
       if (codeFails >= MOCK_MAX_CODE_FAILS) fail('RATE_LIMITED', 'BR-FAM-031', 'Đã thử quá nhiều lần. Hãy thử lại sau ít phút.');
       if (!child.hasDevice) fail('VALIDATION', 'BR-FAM-037', 'Con chưa có máy riêng. Chưa ghép được.');
       if (pin === null && pinIn === undefined) fail('VALIDATION', 'FR-01', 'Cần đặt Parent PIN khi ghép lần đầu.');

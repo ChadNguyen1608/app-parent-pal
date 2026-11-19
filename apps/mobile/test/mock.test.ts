@@ -5,6 +5,8 @@ import { ApiError } from '../src/data/errors.ts';
 import { MOCK_ADULT_NAME, MOCK_DEFAULT_PIN, MOCK_OTP, MOCK_PAIR_CODE, createMockApi } from '../src/data/mock.ts';
 
 const fast = { latencyMs: 0 };
+/** Ghép máy chỉ có ở PREMIUM (D-68); mock mặc định TRIAL. */
+const premium = { latencyMs: 0, plan: 'PREMIUM' as const };
 
 async function rejects(p: Promise<unknown>, code: string) {
   await assert.rejects(p, (e: unknown) => {
@@ -35,7 +37,7 @@ test('chưa đăng nhập thì gọi RPC bị UNAUTHENTICATED', async () => {
 });
 
 test('phụ huynh: tạo hộ, tạo con, ghép máy, đặt PIN', async () => {
-  const api = createMockApi(fast);
+  const api = createMockApi(premium);
   await api.auth.sendEmailOtp('a@b.vn');
   await api.auth.verifyEmailOtp('a@b.vn', MOCK_OTP);
   assert.equal(await api.getHome(), null);
@@ -68,7 +70,7 @@ test('phụ huynh: tạo hộ, tạo con, ghép máy, đặt PIN', async () => {
 });
 
 test('không ghép được con chưa có máy riêng', async () => {
-  const api = createMockApi(fast);
+  const api = createMockApi(premium);
   await api.auth.sendEmailOtp('a@b.vn');
   await api.auth.verifyEmailOtp('a@b.vn', MOCK_OTP);
   const { householdId } = await api.familyCreate('anh Nam');
@@ -77,7 +79,7 @@ test('không ghép được con chưa có máy riêng', async () => {
 });
 
 test('phụ huynh: 5 lần nhập mã sai thì RATE_LIMITED, mã sai trả lời chung', async () => {
-  const api = createMockApi(fast);
+  const api = createMockApi(premium);
   await api.auth.sendEmailOtp('a@b.vn');
   await api.auth.verifyEmailOtp('a@b.vn', MOCK_OTP);
   const { householdId } = await api.familyCreate('chị Lan');
@@ -168,4 +170,34 @@ test('onChange báo khi đăng nhập và đăng xuất', async () => {
   off();
   await api.auth.signInAnonymously();
   assert.deepEqual(seen, ['mock-child-device', null]);
+});
+
+test('gói dịch vụ (D-68): mặc định TRIAL; my_plan theo gói; chỉ PREMIUM ghép máy, còn lại PLAN_REQUIRED trước khi đụng PIN hay mã', async () => {
+  const mk = async (plan?: 'FREE' | 'TRIAL' | 'PREMIUM') => {
+    const api = createMockApi({ ...fast, ...(plan ? { plan } : {}) });
+    await api.auth.sendEmailOtp('a@b.vn');
+    await api.auth.verifyEmailOtp('a@b.vn', MOCK_OTP);
+    const { householdId } = await api.familyCreate('chị Lan');
+    const { childId } = await api.childCreate({ householdId, callName: 'Bin', grade: 3, hasDevice: true });
+    return { api, childId };
+  };
+  const def = await mk();
+  assert.deepEqual(await def.api.myPlan(), { tier: 'TRIAL', expired: false, plansUsed: 0, plansMax: 1, editsUsed: 0, editsLeft: 3, palQuestionsLeft: null, trialEndsAt: null });
+  const free = await mk('FREE');
+  assert.deepEqual(await free.api.myPlan(), { tier: 'FREE', expired: false, plansUsed: 0, plansMax: 0, editsUsed: 0, editsLeft: 0, palQuestionsLeft: null, trialEndsAt: null });
+  const prem = await mk('PREMIUM');
+  assert.deepEqual(await prem.api.myPlan(), { tier: 'PREMIUM', expired: false, plansUsed: 0, plansMax: null, editsUsed: 0, editsLeft: null, palQuestionsLeft: null, trialEndsAt: null });
+
+  for (const { api, childId } of [def, free]) {
+    await assert.rejects(api.pairConfirm(childId, MOCK_PAIR_CODE, '482915'), (e: unknown) => {
+      assert.ok(e instanceof ApiError);
+      assert.equal(e.code, 'PLAN_REQUIRED');
+      assert.equal(e.rule, 'D-68.premium');
+      assert.match(e.userMessage, /Premium/);
+      return true;
+    });
+  }
+  assert.equal((await prem.api.pairConfirm(prem.childId, MOCK_PAIR_CODE, '482915')).state, 'CHO_XAC_NHAN_MAY_CON');
+  const out = createMockApi(fast);
+  await rejects(out.myPlan(), 'UNAUTHENTICATED');
 });

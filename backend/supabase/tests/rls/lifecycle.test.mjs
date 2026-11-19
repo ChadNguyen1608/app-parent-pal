@@ -207,6 +207,7 @@ describe('LC-FROZEN: hộ đóng băng - mọi hàm ghi trả FROZEN trừ danh 
     export_request: ['luôn BLOCKED_H4 (không ghi gì)', (s) => rejected(run(QL, `select app.export_request()`, s), 'BLOCKED_H4', 'PT403')],
     health_note_delete: ['xóa là thu hẹp, luôn được (D-66)', (s) => assert.equal(J(run(QL, `select app.health_note_delete((select id from app.child_health_notes limit 1))`, s)).deleted, true)],
     child_setting_get: ['chỉ đọc', (s) => assert.equal(J(run(QL, `select app.child_setting_get('${NA}')`, s)).ai_chat_enabled, false)],
+    my_plan: ['chỉ đọc gói dịch vụ (D-68)', (s) => assert.equal(J(run(QL, `select app.my_plan()`, s)).tier, 'PREMIUM')],
     my_family_state: ['máy con biết hộ đóng băng (D-41)', (s) => assert.equal(J(run(DEV_NA, `select app.my_family_state()`, s)).frozen, true)],
     member_invite: ['tính năng tắt', (s) => rejected(run(QL, `select app.member_invite('SUPPORTER')`, s), 'FEATURE_OFF', 'PT403')],
   };

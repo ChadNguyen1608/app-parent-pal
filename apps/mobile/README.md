@@ -102,7 +102,7 @@ Dữ liệu nằm trong bộ nhớ, mất khi đóng app. Hai app là hai tiến
 - `mock.ts`: bản giả lập có kiểm đầu vào giống máy chủ (tên, lớp 1-9, tuổi 0-18, cần lớp hoặc tuổi, PIN 6 số, khóa sau 5 lần sai PIN, FROZEN khi bật `frozen`).
 - `index.ts`: chọn bản thật/giả theo `src/config.ts` (duy nhất file này import module native).
 
-Test: `npm test` trong `apps/mobile` (43 test: ánh xạ lỗi, kiểm đầu vào, mock, RPC với client giả, hợp đồng với migration SQL). Lệnh `npm test` ở gốc repo cũng chạy các test này.
+Test: `npm test` trong `apps/mobile` (52 test: ánh xạ lỗi, kiểm đầu vào, mock, RPC với client giả, hợp đồng với migration SQL). Lệnh `npm test` ở gốc repo cũng chạy các test này.
 
 ### Hợp đồng RPC
 
@@ -120,6 +120,7 @@ Khớp migration `20261115140000` (T1.2), `150000` (T1.5), `160000` (T1.6) và `
 | `pair_decline` (máy con) | không | `ok` |
 | `pin_set` (QL) | `p_pin` | `ok` |
 | `unlink_device` | `p_child`, `p_pin`, `p_binding_epoch` (máy con bắt buộc) | `ok` |
+| `my_plan` (người lớn) | không | `ok`, `tier`, `expired`, `plans_used`, `plans_max`, `edits_used`, `edits_left`, `pal_questions_left`, `trial_ends_at` |
 
 **Hai kiểu lỗi.** (1) Lỗi raise: `error.message` là mã (`FORBIDDEN`, `FROZEN`, `VALIDATION`, `NOT_FOUND`, `CONFLICT_REV`, `RATE_LIMITED`...), `hint` là lời Việt, `details` là quy tắc. (2) Thất bại cần đếm trả HTTP 200 `{"ok": false, "error": {code, rule, message_vi, attempts_left?, locked_until?}}`: `pair_confirm` (mã sai, mọi lý do liên quan tới mã), `unlink_device` (PIN sai), `pair_accept` (quá hạn). `rpcOk` trong `api.ts` đổi `ok:false` thành `ApiError`; **thiếu `ok` cũng bị từ chối** (không bao giờ coi là thành công, nhất là `unlink_device`). Chỗ gọi chỉ cần try/catch.
 
@@ -134,6 +135,13 @@ Khớp migration `20261115140000` (T1.2), `150000` (T1.5), `160000` (T1.6) và `
 **`touch_active`.** Gọi khi người lớn mở app và mỗi lần app trở lại nền trước (chỉ khi đã có hộ), client giới hạn 1 lần/giờ như `touch_active_min_interval_minutes = 60` (tham số chưa chốt `CHUA_CHOT`). Máy con không gọi (máy chủ trả `FORBIDDEN`).
 
 **Chưa có trong hợp đồng (Edge Function sau này):** hủy phiên ẩn danh của máy con và xóa token đẩy sau `unlink_device`, thông báo cho QL. Sau `unlink_device` thành công, máy con tự đăng xuất cục bộ.
+
+### Gói dịch vụ (D-68)
+
+- `myPlan()` gọi `my_plan`; `useApp().plan` (null khi chưa nạp được: app không đoán, không khóa theo đoán, máy chủ vẫn quyết). Tab Gia đình hiện gói và số lượt còn lại (`src/data/plan.ts` giữ câu chữ).
+- Ghép máy chỉ PREMIUM: chưa PREMIUM thì nút thành "Ghép máy của con (cần Premium)" và dẫn tới màn `can-goi` ("Cần gói dùng thử / Premium"); màn ghép máy cũng tự giải thích nếu vào thẳng. Máy chủ báo `PLAN_REQUIRED` (HTTP 402, quy tắc `D-68.*`) thì màn hiện "Cần gói", không hiện lỗi đỏ.
+- Bản giả lập (`mock.ts`): gói mặc định TRIAL (ghép máy bị chặn như máy chủ). Chọn gói: `createMockApi({ plan })`, hoặc `?plan=FREE|TRIAL|PREMIUM` trên URL bản web (E2E). Test ghép máy (component, E2E) dùng PREMIUM.
+- Câu chữ ở `plan.ts`, `PlanRequired.tsx` là TẠM, chờ chủ sản phẩm duyệt. Chưa có thanh toán trong app (màn nói "báo người phụ trách Parent-Pal để đổi gói").
 
 ### Đăng nhập bằng link trong thư (D-59)
 

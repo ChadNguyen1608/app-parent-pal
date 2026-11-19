@@ -101,7 +101,9 @@ describe('SCH-VER: schedule_versions bất biến (Tech Spec §2.3)', { skip }, 
   it('SCH-VER-03: hồ sơ đã ACTIVE không sửa nội dung; chuyển trạng thái sai đường bị chặn', () => {
     assert.equal(run({ role: 'admin' }, `update app.schedule_profiles set input = '{}' where id = '${P_NA}'`).code, '55000');
     assert.equal(run({ role: 'admin' }, `update app.schedule_profiles set state = 'DRAFT' where id = '${P_NA}'`).code, '55000');
-    assert.equal(run({ role: 'admin' }, `update app.activity_cards set note = 'đón ở cổng' where id = '00000000-0000-4000-8000-000000000511'`).code, '23514');
+    assert.equal(run({ role: 'admin' }, `update app.activity_cards set note = 'đón ở cổng' where id = '00000000-0000-4000-8000-000000000511'`).ok, true);     // D-71: ghi chú được lưu
+    assert.equal(run({ role: 'admin' }, `update app.activity_cards set note = repeat('a', 501) where id = '00000000-0000-4000-8000-000000000511'`).code, '23514');
+    assert.equal(run({ role: 'admin' }, `update app.activity_cards set note = '' where id = '00000000-0000-4000-8000-000000000511'`).code, '23514');
   });
 });
 
@@ -136,7 +138,7 @@ describe('SCH-PS: profile_save (Tech Spec §3.1 #15)', { skip }, () => {
     rejected(run(QL, `select app.profile_save('${NA}', ${PATCH({ budget: null })}, 7)`), 'CONFLICT_REV', 'PT409');
   });
 
-  it('SCH-PS-04: từ chối: NL, hộ khác, máy con, ô Ngủ "Giữ mức này", ghi chú tự do, khóa lạ, giờ sai, địa điểm', () => {
+  it('SCH-PS-04: từ chối: NL, hộ khác, máy con, ô Ngủ "Giữ mức này", khóa lạ, giờ sai, địa điểm', () => {
     const ok = PATCH({ budget: null });
     rejected(run(NL, `select app.profile_save('${NA}', ${ok})`), 'FORBIDDEN', 'PT403');
     rejected(run(NL, `select app.profile_save('${BIN}', ${ok})`), 'NOT_FOUND', 'PT404');
@@ -144,12 +146,36 @@ describe('SCH-PS: profile_save (Tech Spec §3.1 #15)', { skip }, () => {
     rejected(run(DEV, `select app.profile_save('${NA}', ${ok})`), 'FORBIDDEN', 'PT403');
     rejected(run(A.ANON, `select app.profile_save('${NA}', ${ok})`), null, '42501');
     rejected(run(QL, `select app.profile_save('${NA}', ${PATCH({ keep_confirmed: { wd: { ngu: true } } })})`), 'VALIDATION', 'PT422', 'D-02');
-    rejected(run(QL, `select app.profile_save('${NA}', ${PATCH({ cards: [{ ...CARD, note: 'đón ở cổng sau' }] })})`), 'FEATURE_OFF', 'PT403', 'BR-CON-094');
     rejected(run(QL, `select app.profile_save('${NA}', ${PATCH({ cards: [{ ...CARD, location: 'Q1' }] })})`), 'VALIDATION', 'PT422');
     rejected(run(QL, `select app.profile_save('${NA}', ${PATCH({ cards: [{ ...CARD, end: '08:00' }] })})`), 'VALIDATION', 'PT422');
     rejected(run(QL, `select app.profile_save('${NA}', ${PATCH({ cards: [{ ...CARD, days: ['T9'] }] })})`), 'VALIDATION', 'PT422');
     rejected(run(QL, `select app.profile_save('${NA}', ${PATCH({ input: { school_name: 'Trường X' } })})`), 'VALIDATION', 'PT422');
     rejected(run(QL, `select app.profile_save('${NA}', ${PATCH({ khac: 1 })})`), 'VALIDATION', 'PT422');
+  });
+
+  it('SCH-PS-05: D-71 ghi chú hoạt động được lưu nguyên văn (tối đa 500 ký tự); vắng khóa note thì giữ, note rỗng/null thì xóa; sai kiểu hoặc quá dài bị từ chối', () => {
+    const note = 'Đón ở cổng sau, nhớ mang vợt (dữ liệu thử)';
+    const r = run(QL, `select app.profile_save('${BIN}', ${PATCH({ cards: [{ ...CARD, note }] })}) as a \\gset
+      reset role;
+      select (select note from app.activity_cards where child_id = '${BIN}' and state = 'ACTIVE')`);
+    assert.ok(r.ok, r.err);
+    assert.equal(r.rows.at(-1), note);
+    const keep = run(QL, `select app.profile_save('${BIN}', ${PATCH({ cards: [{ ...CARD, note }] })}) as a \\gset
+      select app.profile_save('${BIN}', jsonb_build_object('cards', jsonb_build_array((${PATCH(CARD)}::jsonb) || jsonb_build_object('id', ((:'a'::jsonb)->'card_ids'->>0)))));
+      reset role; select note from app.activity_cards where child_id = '${BIN}' and state = 'ACTIVE'`);
+    assert.ok(keep.ok, keep.err);
+    assert.equal(keep.rows.at(-1), note, 'vắng khóa note thì giữ ghi chú cũ');
+    for (const clear of [`""`, 'null', `"   "`]) {
+      const c = run(QL, `select app.profile_save('${BIN}', ${PATCH({ cards: [{ ...CARD, note }] })}) as a \\gset
+        select app.profile_save('${BIN}', jsonb_build_object('cards', jsonb_build_array((${PATCH(CARD)}::jsonb) || jsonb_build_object('id', ((:'a'::jsonb)->'card_ids'->>0), 'note', ${q(clear)}::jsonb))));
+        reset role; select note is null from app.activity_cards where child_id = '${BIN}' and state = 'ACTIVE'`);
+      assert.ok(c.ok, c.err);
+      assert.equal(c.rows.at(-1), 't', `note = ${clear} phải xóa ghi chú`);
+    }
+    const ok500 = run(QL, `select app.profile_save('${BIN}', ${PATCH({ cards: [{ ...CARD, note: 'a'.repeat(500) }] })})`);
+    assert.ok(ok500.ok, ok500.err);
+    rejected(run(QL, `select app.profile_save('${BIN}', ${PATCH({ cards: [{ ...CARD, note: 'a'.repeat(501) }] })})`), 'VALIDATION', 'PT422', 'D-71');
+    rejected(run(QL, `select app.profile_save('${BIN}', ${PATCH({ cards: [{ ...CARD, note: 5 }] })})`), 'VALIDATION', 'PT422', 'D-71');
   });
 });
 

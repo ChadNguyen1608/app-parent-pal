@@ -167,3 +167,30 @@ test('emailRedirectTo được truyền; link đổi phiên bằng exchangeCodeF
   assert.deepEqual(raw.auth.lastOtp, { token_hash: 'h', type: 'email' });
   await assert.rejects(api.auth.completeFromLink({ kind: 'error', errorCode: 'otp_expired' }), (e: unknown) => e instanceof ApiError && e.code === 'OTP_INVALID');
 });
+
+test('my_plan: đọc gói, số lượt; PREMIUM không giới hạn là null; phản hồi lạ bị từ chối (không đoán gói)', async () => {
+  const { client, calls } = fakeClient({
+    my_plan: { data: { ok: true, tier: 'TRIAL', expired: false, plans_used: 1, plans_max: 1, edits_used: 2, edits_left: 1, pal_questions_left: null, trial_ends_at: '2026-12-01T00:00:00Z' } },
+  });
+  const api = createSupabaseApi(client);
+  assert.deepEqual(await api.myPlan(), {
+    tier: 'TRIAL', expired: false, plansUsed: 1, plansMax: 1, editsUsed: 2, editsLeft: 1, palQuestionsLeft: null, trialEndsAt: '2026-12-01T00:00:00Z',
+  });
+  assert.deepEqual(calls.map((c) => [c.schema, c.fn, c.args]), [['app', 'my_plan', undefined]]);
+
+  const prem = createSupabaseApi(fakeClient({ my_plan: { data: { ok: true, tier: 'PREMIUM', expired: false, plans_used: 3, plans_max: null, edits_used: 9, edits_left: null, pal_questions_left: 5, trial_ends_at: null } } }).client);
+  assert.deepEqual(await prem.myPlan(), { tier: 'PREMIUM', expired: false, plansUsed: 3, plansMax: null, editsUsed: 9, editsLeft: null, palQuestionsLeft: 5, trialEndsAt: null });
+
+  for (const data of [null, {}, { ok: true }, { ok: true, tier: 'GOLD', plans_used: 0, edits_used: 0 }, { ok: true, tier: 'PREMIUM' }]) {
+    const bad = createSupabaseApi(fakeClient({ my_plan: { data } }).client);
+    await assert.rejects(bad.myPlan(), (e: unknown) => e instanceof ApiError && e.code === 'UNKNOWN', JSON.stringify(data));
+  }
+});
+
+test('PLAN_REQUIRED (HTTP 402) từ pair_confirm thành ApiError có quy tắc D-68', async () => {
+  const { client } = fakeClient({
+    pair_confirm: { error: { message: 'PLAN_REQUIRED', details: 'D-68.premium', hint: 'Chỉ gói Premium mới ghép và đồng bộ lịch sang máy của con.', code: 'PT402' } },
+  });
+  const api = createSupabaseApi(client);
+  await assert.rejects(api.pairConfirm('c', '123456'), (e: unknown) => e instanceof ApiError && e.code === 'PLAN_REQUIRED' && e.rule === 'D-68.premium' && e.userMessage.includes('Premium'));
+});

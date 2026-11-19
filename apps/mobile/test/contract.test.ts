@@ -7,6 +7,7 @@ import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import { createSupabaseApi } from '../src/data/api.ts';
+import { PLAN_RULES } from '../src/data/plan.ts';
 import { PIN_EXISTS_HINT, PIN_REQUIRED_HINT, PIN_REQUIRED_RULE } from '../src/data/validate.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -99,6 +100,7 @@ async function driveApi(): Promise<Call[]> {
     pair_accept: { ok: true, replay: false, binding_id: 'b', child_id: 'c', epoch: 2 },
     pair_decline: { ok: true, declined: true },
     unlink_device: { ok: true, unlinked: true, replay: false, epoch: 3 },
+    my_plan: { ok: true, tier: 'TRIAL', expired: false, plans_used: 0, plans_max: 1, edits_used: 0, edits_left: 3, pal_questions_left: null, trial_ends_at: null },
   };
   const client = {
     schema: () => ({
@@ -128,11 +130,12 @@ async function driveApi(): Promise<Call[]> {
   await api.pairDecline();
   await api.unlinkDevice('c', '246801', 2);
   await api.unlinkDevice('c', '246801');
+  await api.myPlan();
   return calls;
 }
 
 test('migration có đủ hàm RPC và phân tích được', () => {
-  for (const f of ['family_create', 'touch_active', 'child_create', 'pair_code_create', 'pair_confirm', 'pair_pending', 'pair_accept', 'pair_decline', 'pin_set', 'unlink_device']) {
+  for (const f of ['family_create', 'touch_active', 'child_create', 'pair_code_create', 'pair_confirm', 'pair_pending', 'pair_accept', 'pair_decline', 'pin_set', 'unlink_device', 'my_plan']) {
     assert.ok(fns.has(f), `migration thiếu app.${f}`);
   }
   assert.deepEqual(fns.get('pair_confirm')!.params, [
@@ -145,7 +148,7 @@ test('migration có đủ hàm RPC và phân tích được', () => {
 
 test('mỗi lời gọi RPC của api.ts: hàm tồn tại, tham số có thật, đủ tham số bắt buộc, được cấp EXECUTE cho authenticated', async () => {
   const calls = await driveApi();
-  assert.ok(calls.length >= 10);
+  assert.ok(calls.length >= 12);
   for (const c of calls) {
     const f = fns.get(c.fn);
     assert.ok(f, `api.ts gọi app.${c.fn} nhưng migration không có`);
@@ -178,6 +181,7 @@ test('trường kết quả mà client đọc có trong jsonb_build_object của
     pair_accept: ['ok', 'child_id', 'epoch'],
     pair_decline: ['ok'],
     unlink_device: ['ok'],
+    my_plan: ['ok', 'tier', 'expired', 'plans_used', 'plans_max', 'edits_used', 'edits_left', 'pal_questions_left', 'trial_ends_at'],
   };
   for (const [fn, fields] of Object.entries(reads)) {
     let body = fns.get(fn)!.body;
@@ -220,4 +224,15 @@ test('unlink_device: máy con phải gửi epoch, epoch sai là CONFLICT_REV', (
   const body = fns.get('unlink_device')!.body;
   assert.match(body, /v_is_dev and p_binding_epoch is null/);
   assert.match(body, /app\.fail\('CONFLICT_REV'/);
+});
+
+test('PLAN_REQUIRED (D-68): app.fail trả PT402; my_plan không tham số; pair_confirm/pair_accept/profile_save/commit gọi kiểm gói với đúng mã quy tắc', () => {
+  assert.match(sql, /when 'PLAN_REQUIRED'\s+then 'PT402'/);
+  assert.deepEqual(fns.get('my_plan')!.params, []);
+  assert.match(fns.get('pair_confirm')!.body, /plan_require_premium/);
+  assert.match(fns.get('pair_accept')!.body, /plan_require_premium/);
+  assert.match(fns.get('profile_save')!.body, /plan_check_schedule/);
+  assert.match(fns.get('schedule_commit_apply')!.body, /plan_check_schedule/);
+  // Mã quy tắc mà plan.ts nhận diện phải do máy chủ thật sự phát ra (private.plan_*).
+  for (const rule of Object.values(PLAN_RULES)) assert.ok(sql.includes(`'${rule}'`), `migration không phát quy tắc ${rule}`);
 });

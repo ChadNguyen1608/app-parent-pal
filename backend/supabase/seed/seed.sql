@@ -102,3 +102,8 @@ insert into app.schedule_answers (child_id, question_key, local_date, answer, an
 insert into app.notifications (type, recipient_kind, recipient_id, child_id, idempotency_key, payload_min) values
   ('lich_moi', 'device', '00000000-0000-4000-8000-000000000401', '00000000-0000-4000-8000-000000000301', '20000000-0000-4000-8000-000000000002',
    '{"type":"lich_moi","id":"00000000-0000-4000-8000-000000000521"}');
+
+-- D-68: gói dịch vụ của hai hộ giả. Cả hai PREMIUM để các luồng ghép máy, lịch, đồng bộ của test chạy được; test gói đổi bằng setup.
+insert into app.household_plans (household_id, tier, set_by, note) values
+  ('00000000-0000-4000-8000-000000000101', 'PREMIUM', 'seed', 'Dữ liệu giả'),
+  ('00000000-0000-4000-8000-000000000102', 'PREMIUM', 'seed', 'Dữ liệu giả');

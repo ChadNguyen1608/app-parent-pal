@@ -1,12 +1,13 @@
 // Ánh xạ lỗi PostgREST / Supabase Auth / mạng sang thông báo tiếng Việt.
 // Hợp đồng lỗi của backend (backend/supabase/README.md, "Hai kiểu trả lỗi"):
 //  1. Lỗi raise (app.fail): message = mã (FORBIDDEN, FROZEN, VALIDATION, NOT_FOUND, UNAUTHENTICATED, CONFLICT_REV,
-//     RATE_LIMITED, ...), hint = lời tiếng Việt, detail = quy tắc.
+//     RATE_LIMITED, PLAN_REQUIRED (402, D-68), ...), hint = lời tiếng Việt, detail = quy tắc.
 //  2. Thất bại cần đếm (pair_confirm mã sai, unlink_device PIN sai, pair_accept quá hạn): HTTP 200 với
 //     {"ok": false, "error": {code, rule, message_vi, attempts_left?, locked_until?}}. `apiErrorFromFailure` đổi sang ApiError.
 
 export type ApiErrorCode =
   | 'UNAUTHENTICATED'
+  | 'PLAN_REQUIRED'
   | 'FORBIDDEN'
   | 'FROZEN'
   | 'VALIDATION'
@@ -48,6 +49,7 @@ export class ApiError extends Error {
 
 export const FALLBACK_MESSAGES: Record<ApiErrorCode, string> = {
   UNAUTHENTICATED: 'Bạn cần đăng nhập lại.',
+  PLAN_REQUIRED: 'Cần gói dùng thử hoặc Premium để làm việc này.',
   FORBIDDEN: 'Bạn chưa có quyền làm việc này.',
   FROZEN: 'Gia đình đang tạm dừng app, chưa làm được việc này.',
   VALIDATION: 'Thông tin chưa hợp lệ. Bạn kiểm tra lại giúp mình nhé.',
@@ -64,7 +66,7 @@ export const FALLBACK_MESSAGES: Record<ApiErrorCode, string> = {
 };
 
 const SERVER_CODES: ReadonlySet<string> = new Set([
-  'UNAUTHENTICATED', 'FORBIDDEN', 'FROZEN', 'VALIDATION', 'NOT_FOUND', 'FEATURE_OFF', 'CONFLICT_REV', 'LOCKED', 'RATE_LIMITED',
+  'UNAUTHENTICATED', 'PLAN_REQUIRED', 'FORBIDDEN', 'FROZEN', 'VALIDATION', 'NOT_FOUND', 'FEATURE_OFF', 'CONFLICT_REV', 'LOCKED', 'RATE_LIMITED',
 ]);
 
 const AUTH_CODES: Record<string, ApiErrorCode> = {
@@ -109,6 +111,8 @@ export function toApiError(err: unknown): ApiError {
 
   // Thiếu quyền EXECUTE / RLS của Postgres (anon gọi hàm không cho phép).
   if (authCode === '42501') return new ApiError('FORBIDDEN', FALLBACK_MESSAGES.FORBIDDEN, rule);
+  // PostgREST: errcode PT402 (PLAN_REQUIRED, D-68) thành HTTP 402 khi message không mang mã.
+  if (authCode === 'PT402') return new ApiError('PLAN_REQUIRED', FALLBACK_MESSAGES.PLAN_REQUIRED, rule);
   // PostgREST: errcode PT429 thành HTTP 429 (RATE_LIMITED) khi message không mang mã.
   if (authCode === 'PT429') return new ApiError('RATE_LIMITED', FALLBACK_MESSAGES.RATE_LIMITED, rule);
 
@@ -127,6 +131,7 @@ export function toApiError(err: unknown): ApiError {
   }
   if (name === 'AuthSessionMissingError') return new ApiError('UNAUTHENTICATED', FALLBACK_MESSAGES.UNAUTHENTICATED);
   if (e.status === 401) return new ApiError('UNAUTHENTICATED', FALLBACK_MESSAGES.UNAUTHENTICATED);
+  if (e.status === 402) return new ApiError('PLAN_REQUIRED', FALLBACK_MESSAGES.PLAN_REQUIRED);
   if (e.status === 429) return new ApiError('RATE_LIMITED', FALLBACK_MESSAGES.RATE_LIMITED);
 
   return new ApiError('UNKNOWN', FALLBACK_MESSAGES.UNKNOWN);
