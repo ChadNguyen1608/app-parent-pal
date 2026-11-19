@@ -297,6 +297,28 @@
         "HO_KHAC": 0,
         "ANON": "denied"
       }
+    },
+    "pal_conversations": {
+      "spec": "D-69: phạm vi RIÊNG, chỉ người lớn đã viết đọc (QL 1, NL 1: mỗi người một cuộc); máy con không đọc; hội thoại gắn con ẩn khi rút đồng ý lõi",
+      "select": {
+        "QL": 1,
+        "NL": 1,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      }
+    },
+    "pal_messages": {
+      "spec": "D-69, D-71: như pal_conversations (mỗi cuộc 2 tin trong seed)",
+      "select": {
+        "QL": 2,
+        "NL": 2,
+        "CON": 0,
+        "CON_CHUA_GHEP": 0,
+        "HO_KHAC": 0,
+        "ANON": "denied"
+      }
     }
   },
   "private": {
@@ -329,6 +351,15 @@
     },
     "purge_context": {
       "spec": "T2.4: ngữ cảnh xóa của purge_household (cho phép DELETE bảng chỉ-thêm trong đúng giao dịch); không vai nào, kể cả service_role"
+    },
+    "ai_usage": {
+      "spec": "D-69 theo dõi token: mỗi lần gọi AI (token vào/ra, model, hộ, người, chi phí ước tính); không vai nào đọc, chỉ qua app.ai_usage_report (service_role)"
+    },
+    "ops_alerts": {
+      "spec": "D-69 theo dõi token: cảnh báo vận hành, không chứa nội dung hội thoại; không vai nào đọc, chỉ qua app.ai_alerts_list (service_role)"
+    },
+    "pal_locks": {
+      "spec": "D-69 theo dõi token: hộ bị tự khóa Pal vì đột biến; không vai nào đọc, mở khóa bằng app.pal_unlock (service_role)"
     }
   },
   "app_functions": {
@@ -470,7 +501,21 @@
     "schedule_commit_apply": [
       "authenticated"
     ],
-    "tg_schedule_profile_guard": []
+    "tg_schedule_profile_guard": [],
+    "pal_quota": [
+      "authenticated"
+    ],
+    "pal_prepare": [
+      "authenticated"
+    ],
+    "pal_record_turn": [
+      "authenticated"
+    ],
+    "ai_usage_series": [],
+    "ai_usage_report": [],
+    "ai_alerts_list": [],
+    "pal_unlock": [],
+    "pal_set_enabled": []
   },
   "app_internal_functions": {
     "_doc": "Hàm phụ trợ của chính sách RLS, nằm schema app_internal (không mở API, T1.8-b). Vai được EXECUTE (ngoài service_role). Chính sách chạy với quyền người gọi nên authenticated cần EXECUTE; anon không có gì. Hàm mới phải khai ở đây.",

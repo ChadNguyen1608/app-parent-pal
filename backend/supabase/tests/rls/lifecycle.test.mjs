@@ -193,6 +193,8 @@ describe('LC-FROZEN: hộ đóng băng - mọi hàm ghi trả FROZEN trừ danh 
       assert.equal(run(QL, `select app.child_setting_set('${NA}', 'ai_chat_enabled', false)`, s).ok, true);   // tắt = thu hẹp
     },
     my_child_settings: (s) => FROZEN(run(DEV_NA, `select app.my_child_settings()`, s)),
+    pal_record_turn: (s) => FROZEN(run(QL, `select app.pal_record_turn(null, null, '40000000-0000-4000-8000-0000000000f1', 'u', 'a', '{}', false, null, null, null, :'sig')`,
+      { setup: `${s.setup} select private.pal_record_sign(private.pal_record_message('-', '-', '40000000-0000-4000-8000-0000000000f1', 'u', 'a', '', false, null, null, null)) as sig \\gset` })),
   };
   // Ngoại lệ (được làm khi đóng băng) và lý do; mỗi hàm kiểm một lời gọi cụ thể.
   const EXCEPTIONS = {
@@ -208,6 +210,8 @@ describe('LC-FROZEN: hộ đóng băng - mọi hàm ghi trả FROZEN trừ danh 
     health_note_delete: ['xóa là thu hẹp, luôn được (D-66)', (s) => assert.equal(J(run(QL, `select app.health_note_delete((select id from app.child_health_notes limit 1))`, s)).deleted, true)],
     child_setting_get: ['chỉ đọc', (s) => assert.equal(J(run(QL, `select app.child_setting_get('${NA}')`, s)).ai_chat_enabled, false)],
     my_family_state: ['máy con biết hộ đóng băng (D-41)', (s) => assert.equal(J(run(DEV_NA, `select app.my_family_state()`, s)).frozen, true)],
+    pal_quota: ['chỉ đọc', (s) => assert.equal(J(run(QL, `select app.pal_quota()`, s)).state, 'FROZEN')],
+    pal_prepare: ['chỉ đọc', (s) => assert.equal(J(run(QL, `select app.pal_prepare()`, s)).state, 'FROZEN')],
     member_invite: ['tính năng tắt', (s) => rejected(run(QL, `select app.member_invite('SUPPORTER')`, s), 'FEATURE_OFF', 'PT403')],
   };
 

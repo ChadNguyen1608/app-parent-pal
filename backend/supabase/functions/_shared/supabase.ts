@@ -18,3 +18,8 @@ export function userDeps(authHeader: string): Deps {
   };
   return { db, env };
 }
+
+/** pal-chat: như userDeps, thêm fetch để gọi Claude API (test tiêm fetch giả). */
+export function palDeps(authHeader: string) {
+  return { ...userDeps(authHeader), fetch: globalThis.fetch.bind(globalThis) };
+}
