@@ -42,6 +42,24 @@ export type PairPending = { pending: false } | { pending: true; adultCallName: s
 /** Liên kết hiệu lực của máy con. epoch phải gửi lại khi hủy (FR01-T09). */
 export type Binding = { childId: string; epoch: number };
 
+/**
+ * Trạng thái Pal tư vấn (D-69) do máy chủ quyết. OK: dùng được. OFF: cờ tắt (app ẩn mục Pal). LOCKED: đang tạm dừng cho hộ này.
+ * Các trạng thái còn lại: Pal hiện nhưng chưa trả lời được (hết lượt, quá nhanh, chưa đồng ý lập lịch, hộ tạm dừng).
+ */
+export type PalState = 'OK' | 'OFF' | 'LOCKED' | 'FROZEN' | 'NO_CONSENT' | 'BUSY' | 'TOKENS' | 'QUOTA' | 'RATE' | 'NO_HOUSEHOLD';
+export type PalQuota = { state: PalState; tier: string | null; limit: number | null; used: number | null; remaining: number | null };
+export type PalMessage = { id: string; role: 'user' | 'assistant'; content: string; flags: string[]; createdAt: string };
+export type PalReply = {
+  conversationId: string;
+  reply: string;
+  /** true: lớp an toàn trả lời sẵn, không gọi AI và không tính lượt. */
+  blocked: boolean;
+  flags: string[];
+  remaining: number | null;
+  state: PalState;
+};
+export type PalSendInput = { message: string; conversationId?: string | null; childId?: string | null; idempotencyKey: string };
+
 export interface Api {
   readonly kind: 'mock' | 'supabase';
   auth: {
@@ -76,4 +94,11 @@ export interface Api {
   getMyBinding(): Promise<Binding | null>;
   /** bindingEpoch: máy con bắt buộc gửi; QL có thể bỏ. */
   unlinkDevice(childId: string, pin: string, bindingEpoch?: number): Promise<void>;
+  // Pal tư vấn (D-69). Chỉ người lớn; máy con bị từ chối.
+  /** Trạng thái và số lượt còn lại hôm nay (giờ Việt Nam). */
+  palQuota(): Promise<PalQuota>;
+  /** Gửi một câu cho Pal qua Edge Function `pal-chat`. Gửi lặp cùng idempotencyKey trả câu đã lưu. */
+  palSend(input: PalSendInput): Promise<PalReply>;
+  /** Cuộc trò chuyện gần nhất của chính người này (RLS: người khác không thấy). */
+  palHistory(): Promise<{ conversationId: string | null; messages: PalMessage[] }>;
 }

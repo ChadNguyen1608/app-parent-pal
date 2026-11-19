@@ -116,3 +116,26 @@ test('nhánh lỗi: mã ghép sai báo một câu chung (sau khi đặt PIN lầ
   await expect(page.getByText('Mã không đúng hoặc đã hết hạn.')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Đã nhập mã đúng' })).toHaveCount(0);
 });
+
+// PA-22: Pal tư vấn (D-69) ở chế độ giả lập. Không chụp ảnh so sánh: không thêm ảnh chuẩn mới.
+test('Trò chuyện với Pal: lời giới thiệu, hỏi một câu, lượt giảm; câu nguy cấp ra số hỗ trợ và không trừ lượt', async ({ page }) => {
+  await dangNhap(page);
+  await themCon(page);
+  await page.getByRole('button', { name: 'Lưu' }).click();
+  await page.getByRole('tab', { name: /Lên kế hoạch$/ }).click();
+  await page.getByRole('button', { name: 'Trò chuyện với Pal' }).click();
+  await expect(page.getByRole('heading', { name: 'Trò chuyện với Pal' })).toBeVisible();
+  await expect(page.getByText(/không phải tư vấn tâm lý và không thay thế việc khám bệnh/)).toBeVisible();
+  await expect(page.getByText('Hôm nay bạn còn 20 lượt hỏi Pal.')).toBeVisible();
+
+  await page.getByRole('textbox', { name: 'Nhắn cho Pal' }).fill('Con mình hay quấy vào buổi tối');
+  await page.getByRole('button', { name: 'Gửi' }).click();
+  await expect(page.getByText('Con mình hay quấy vào buổi tối')).toBeVisible();
+  await expect(page.getByText(/Mình nghe chị/)).toBeVisible();
+  await expect(page.getByText('Hôm nay bạn còn 19 lượt hỏi Pal.')).toBeVisible();
+
+  await page.getByRole('textbox', { name: 'Nhắn cho Pal' }).fill('Mình muốn chết');
+  await page.getByRole('button', { name: 'Gửi' }).click();
+  await expect(page.getByText(/gọi 115 \(cấp cứu\)/).last()).toBeVisible();
+  await expect(page.getByText('Hôm nay bạn còn 19 lượt hỏi Pal.')).toBeVisible();
+});

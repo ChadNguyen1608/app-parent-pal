@@ -391,3 +391,65 @@ Kiểm sàn cứng và ô đỏ nằm ở Edge Function (bộ xếp là TS): t�
 - Đột biến của đợt 3a đánh số m110..m125 (main đã dùng tới m102).
 - Cần tạo secret `schedule_commit_key` (Vault) và `SCHEDULE_COMMIT_KEY` (Edge Function), cùng giá trị, ≥ 16 ký tự, khi áp lên đám mây. Chưa làm gì trên đám mây.
 - Chưa phủ: AC-04..08, 17 được kiểm ở mức bộ xếp (đã có từ T0.3) và chặn commit ở Edge Function; chưa có e2e với Supabase thật (không Docker). CI hiện chưa có job `db-test` (đề xuất ở trên).
+
+## D-69, D-71: Pal tư vấn (`pal-chat`) và theo dõi token
+
+Migration `20261119200000_pal_tu_van_d69.sql`, Edge Function `functions/pal-chat/` (bộ xử lý thuần `handler.ts` + `index.ts`), lõi dùng chung `functions/_shared/pal-*.ts`.
+
+### Luồng một lượt hỏi
+
+1. App gọi `pal-chat` bằng JWT người dùng: `{ message, idempotency_key, conversation_id?, child_id? }`. Máy con (ẩn danh) bị từ chối.
+2. Edge Function gọi `app.pal_prepare` → trạng thái (`OFF`, `LOCKED`, `FROZEN`, `NO_CONSENT`, `BUSY`, `TOKENS`, `QUOTA`, `RATE`, `OK`), tên con/người lớn để ẩn danh, lịch sử. Không có dữ liệu sức khỏe của con.
+3. **Lớp an toàn chạy trước AI** (`_shared/pal-safety.ts`, từ khóa tiếng Việt có và không dấu). Khẩn cấp (tự hại, bạo hành trẻ, nguy hiểm tính mạng): không gọi AI, chỉ trả thông tin 115/111/113, không tính lượt. Hỏi thuốc/liều/chẩn đoán: nhắc "không thay khám bệnh". Bị chặn cũng được ghi lại (D-71).
+4. Ẩn danh (`_shared/pal-anon.ts`): tên con, tên người lớn, trường, địa chỉ, số điện thoại, email thành nhãn `[con 1]`, `[phụ huynh]`...; kiểm lại không còn lọt trước khi gửi; khôi phục khi trả về.
+5. Ước lượng token (ký tự / 2,5 + `max_tokens`) so với mức còn lại của hộ và ngân sách hệ thống **trước** khi gọi API; gọi Claude; token thật lấy từ `usage` của API.
+6. `app.pal_record_turn` ghi tin nhắn + `private.ai_usage` + chạy `private.pal_check_usage`. Hàm này **chỉ chạy được khi có chữ ký HMAC** của Edge Function (cùng kiểu `schedule_commit_apply`); người dùng không ghi thẳng được vào bảng Pal.
+
+### Bảng
+
+| Bảng | Ai đọc | Ghi |
+|---|---|---|
+| `app.pal_conversations`, `app.pal_messages` | chỉ người lớn đã viết (RLS `is_self_member`) và còn đồng ý mục đích với con được gắn; máy con không đọc | chỉ `pal_record_turn` |
+| `private.ai_usage` | không ai qua API | `pal_record_turn` |
+| `private.ops_alerts` | `app.ai_alerts_list()` (service_role) | `private.ops_alert_add` |
+| `private.pal_locks` | không ai qua API | `pal_check_usage` (khóa), `app.pal_unlock` (mở) |
+
+`purge_household` / `purge_child` được tạo lại (sao từ bản T3.2) để xóa thêm các bảng này. Nếu nhánh khác cũng sửa hai hàm này thì sẽ xung đột khi gộp: gộp tay phần `delete`.
+
+### Theo dõi token
+
+- **Ghi mỗi lần gọi AI** vào `private.ai_usage`: giờ, hộ, thành viên, model, `input_tokens`, `output_tokens` (từ `usage` của API), `est_cost_usd` ước tính từ giá trong `private.params` (`ai_price_in_usd_x100_per_mtok`, `ai_price_out_usd_x100_per_mtok`; đang `0` = chủ sản phẩm chưa điền nguồn giá nên chi phí ước tính là 0).
+- **Giới hạn cứng** (`private.params`, mọi dòng `CHUA_CHOT`): `pal_max_output_tokens` 1024, `pal_max_question_chars` 2000, `pal_max_per_minute` 6 (mỗi người), `pal_household_tokens_per_day` 60000, `pal_system_tokens_per_day` 2000000, lượt hỏi/ngày theo gói `pal_questions_per_day_free/trial/premium` = 5/20/100. Chạm ngưỡng thì Edge Function trả `RATE_LIMITED` (`PAL-QUOTA`, `PAL-TOKENS`, `PAL-BUSY`, `PAL-RATE`) và không gọi API. Gói hiện luôn là `TRIAL` (`private.household_tier`, TODO nối `app.household_plans` khi bảng đó vào main).
+- **Phát hiện đột biến** (`private.pal_check_usage`, chạy sau mỗi lượt có tính):
+  - Hộ: token 1 giờ qua > `pal_spike_factor` (5) × trung bình theo giờ của chính hộ đó trong 7 ngày, nhưng tối thiểu `pal_spike_floor_tokens_per_hour` (20000) để hộ mới không bị khóa oan. Vượt: ghi `SPIKE_HOUSEHOLD` và **khóa Pal của hộ** (`private.pal_locks`) cho tới khi chủ sản phẩm mở. Người lớn trong hộ chỉ thấy "Pal đang tạm dừng" (mã `PAL_LOCKED`, HTTP 423).
+  - Hệ thống: token 1 giờ > `pal_system_tokens_per_hour` (500000). Vượt: ghi `SPIKE_SYSTEM` và đặt `pal_enabled = 0` (tắt Pal cho mọi người).
+  - Cảnh báo mềm khi đạt `pal_soft_warn_pct` (80%) của trần ngày (`SOFT_HOUSEHOLD_DAY`, `SOFT_SYSTEM_DAY`): chỉ ghi, mỗi loại một lần mỗi ngày. Chạm trần ghi `CAP_*`.
+  - `private.ops_alerts` chỉ có loại, phạm vi, số liệu, thời gian, hành động; không có nội dung trò chuyện.
+- **Hàm cho chủ sản phẩm** (chỉ `service_role`, qua `private.require_system`; gọi từ SQL editor hoặc script có khóa dịch vụ, không bao giờ từ app):
+
+```sql
+select app.ai_usage_report(date '2026-11-01', date '2026-11-30');        -- theo ngày, hộ, model, tổng
+select app.ai_usage_series(now() - interval '2 days', now(), 'hour');     -- theo giờ; thêm p_household / p_member để lọc
+select app.ai_alerts_list(50);                                            -- cảnh báo mới nhất
+select app.pal_unlock('<household_id>');                                  -- mở khóa một hộ
+select app.pal_set_enabled(true);                                         -- bật lại sau khi tắt toàn bộ
+```
+
+- **Chưa làm: gửi cảnh báo ra ngoài** (email Resend). Điểm gắn là `private.ops_alert_add` (có TODO): sau khi chủ sản phẩm có tài khoản Resend, thêm một Edge Function đọc `ops_alerts` mới hoặc gọi từ trigger. Hiện chủ sản phẩm phải mở `app.ai_alerts_list()` để thấy cảnh báo.
+
+### Bí mật cần đặt trên Supabase (chưa đặt gì trên đám mây)
+
+| Tên | Nơi | Ghi chú |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | secret Edge Function | khóa Claude; thiếu thì `pal-chat` trả `FEATURE_OFF` |
+| `PAL_RECORD_KEY` | secret Edge Function | ≥ 16 ký tự; **cùng giá trị** với secret Vault `pal_record_key` |
+| `pal_record_key` | Vault | cùng giá trị với `PAL_RECORD_KEY` |
+| `PAL_MODEL` | secret Edge Function (tùy chọn) | mặc định `claude-sonnet-5-5` |
+
+### Kiến thức nhúng
+
+`scripts/sync-pal-knowledge.mjs` chép đoạn "Ở tuổi này con cần gì" của 14 bài theo tuổi vào `functions/_shared/knowledge/pal-knowledge.ts` (nhãn "nháp, người soạn AI, chưa duyệt"). Chạy lại khi bài gốc đổi; `--check` báo lệch (chưa gắn vào CI).
+
+### Giới hạn bản đầu
+
+Chưa tìm vector; không gửi dữ liệu sức khỏe; phạm vi hội thoại chỉ `RIENG`; danh sách từ khóa an toàn và câu trả lời tĩnh chờ chuyên gia xem (cổng B-6); đột biến m150..m172.

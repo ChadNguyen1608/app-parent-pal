@@ -94,3 +94,10 @@ test('ApiError đi qua nguyên vẹn', () => {
   const orig = new ApiError('LOCKED', 'x');
   assert.equal(toApiError(orig), orig);
 });
+
+test('PAL_LOCKED: mã của Edge Function pal-chat được nhận ra và có lời dự phòng', () => {
+  const e = apiErrorFromFailure({ error: { code: 'PAL_LOCKED', rule: 'PAL-LOCKED', message_vi: 'Pal đang tạm dừng.' } }, 0);
+  assert.equal(e.code, 'PAL_LOCKED');
+  assert.match(e.userMessage, /Pal đang tạm dừng/);
+  assert.equal(toApiError({ message: 'PAL_LOCKED' }).code, 'PAL_LOCKED');
+});
