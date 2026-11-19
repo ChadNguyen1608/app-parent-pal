@@ -5,7 +5,7 @@
 // nên kết quả xếp lịch phải mang chữ ký HMAC của Edge Function (xem schedule-core.ts, app.schedule_commit_apply).
 
 export const STATUS: Record<string, number> = {
-  UNAUTHENTICATED: 401, FORBIDDEN: 403, FEATURE_OFF: 403, BLOCKED_H4: 403, PURPOSE_OFF: 403, NOT_FOUND: 404,
+  UNAUTHENTICATED: 401, PLAN_REQUIRED: 402, FORBIDDEN: 403, FEATURE_OFF: 403, BLOCKED_H4: 403, PURPOSE_OFF: 403, NOT_FOUND: 404,
   VALIDATION: 422, FROZEN: 423, CONFLICT_REV: 409, LOCKED: 409, RATE_LIMITED: 429, INTERNAL: 500,
 };
 

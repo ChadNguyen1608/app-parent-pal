@@ -222,7 +222,8 @@ Deno.test('T3.2 profile-save: kiểm đầu vào rồi chuyển patch nguyên v�
   assertEquals(r.ok, true);
   assertEquals(f.calls[0].fn, 'profile_save'); assertEquals(f.calls[0].args.p_patch, { input: { commute: 10 }, budget: null, cards: [card] }); assertEquals(f.calls[0].args.p_base_version, 1);
   const bad = async (b: any, code: string) => assertEquals((await assertRejects(() => profileSave({ child_id: CID, ...b }, fake(inputsOf(P('P2'))).deps), ApiError)).code, code, JSON.stringify(b));
-  await bad({ cards: [{ ...card, note: 'đón ở cổng' }] }, 'FEATURE_OFF');
+  await bad({ cards: [{ ...card, note: 'a'.repeat(501) }] }, 'VALIDATION');   // D-71: ghi chú tối đa 500 ký tự
+  await bad({ cards: [{ ...card, note: 7 }] }, 'VALIDATION');
   await bad({ cards: [{ ...card, location: 'Q1' }] }, 'VALIDATION');
   await bad({ cards: [{ ...card, end: '08:00' }] }, 'VALIDATION');
   await bad({ cards: [{ ...card, days: [] }] }, 'VALIDATION');
@@ -255,6 +256,8 @@ Deno.test('API: handler chỉ nhận POST + Bearer + JSON object; lỗi theo d�
   assertEquals(r3.status, 500); assert(!t3.includes('123456'));
   const e = fromDbError({ message: 'FROZEN', details: 'BR-FAM-054', hint: 'tạm dừng' });
   assertEquals([e.code, e.status, e.rule, e.messageVi], ['FROZEN', 423, 'BR-FAM-054', 'tạm dừng']);
+  const pr = fromDbError({ message: 'PLAN_REQUIRED', details: 'D-68.free', hint: 'Cần gói' });
+  assertEquals([pr.code, pr.status, pr.rule, pr.messageVi], ['PLAN_REQUIRED', 402, 'D-68.free', 'Cần gói']);   // D-68
   assertEquals(fromDbError({ message: 'relation "x" does not exist' }).code, 'INTERNAL');
 });
 

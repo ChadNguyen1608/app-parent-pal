@@ -97,7 +97,8 @@ export function validateCards(cards: any): void {
     if (!Array.isArray(c.days) || !c.days.length || c.days.some((d: any) => !(DAYS as readonly string[]).includes(d)) || new Set(c.days).size !== c.days.length) throw bad('BR-008', 'Thứ của hoạt động không hợp lệ.');
     if (!HHMM.test(c.start) || !HHMM.test(c.end) || c.end <= c.start) throw bad('BR-008', 'Giờ bắt đầu/kết thúc không hợp lệ (kết thúc phải sau bắt đầu).');
     for (const k of ['travel_before_min', 'travel_after_min']) if (c[k] !== undefined && !isInt(c[k], 0, 180)) throw bad('BR-008', `${k} từ 0 đến 180.`);
-    if (c.note !== undefined && c.note !== null && c.note !== '') throw new ApiError('FEATURE_OFF', 'BR-CON-094', 'Ghi chú tự do chưa dùng được vì chưa có bộ kiểm khẩn (keyword-check).');
+    // D-71 (giai đoạn test lưu toàn bộ dữ liệu): ghi chú được lưu nguyên văn, tối đa 500 ký tự; CHƯA qua bộ kiểm khẩn (BR-CON-094). Lọc trước khi phát hành.
+    if (c.note !== undefined && c.note !== null && (typeof c.note !== 'string' || c.note.length > 500)) throw bad('D-71', 'Ghi chú là chữ, tối đa 500 ký tự.');
     if (c.location !== undefined || c.address !== undefined) throw bad('Q-ARC-10', 'Nấc 1 không lưu địa điểm hoạt động.');
   }
 }

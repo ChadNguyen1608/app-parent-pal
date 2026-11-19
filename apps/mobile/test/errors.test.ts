@@ -94,3 +94,14 @@ test('ApiError đi qua nguyên vẹn', () => {
   const orig = new ApiError('LOCKED', 'x');
   assert.equal(toApiError(orig), orig);
 });
+
+test('PLAN_REQUIRED (D-68): mã máy chủ, lời tiếng Việt của máy chủ, HTTP 402 / PT402, ok=false', () => {
+  const a = toApiError({ message: 'PLAN_REQUIRED', details: 'D-68.premium', hint: 'Chỉ gói Premium mới ghép và đồng bộ lịch sang máy của con.', code: 'PT402' });
+  assert.equal(a.code, 'PLAN_REQUIRED');
+  assert.equal(a.rule, 'D-68.premium');
+  assert.equal(a.userMessage, 'Chỉ gói Premium mới ghép và đồng bộ lịch sang máy của con.');
+  assert.equal(toApiError({ message: 'PLAN_REQUIRED', hint: 'plan required' }).userMessage, FALLBACK_MESSAGES.PLAN_REQUIRED, 'hint không có dấu thì dùng câu dự phòng');
+  assert.equal(toApiError({ code: 'PT402', message: 'x' }).code, 'PLAN_REQUIRED');
+  assert.equal(toApiError({ status: 402, message: 'x' }).code, 'PLAN_REQUIRED');
+  assert.equal(apiErrorFromFailure({ ok: false, error: { code: 'PLAN_REQUIRED', rule: 'D-68.free', message_vi: 'Cần gói dùng thử hoặc Premium.' } }, 0).code, 'PLAN_REQUIRED');
+});

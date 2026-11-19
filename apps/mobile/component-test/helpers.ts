@@ -1,9 +1,10 @@
 // Dựng mock api đã ghép sẵn để test màn hình. Dữ liệu giả, không mạng.
 import { createMockApi, MOCK_PAIR_CODE } from '../src/data/mock';
-import type { Api, Home } from '../src/data/types';
+import type { Api, Home, PlanTier } from '../src/data/types';
 
-export async function parentWithChild(): Promise<{ api: Api; home: Home }> {
-  const api = createMockApi({ latencyMs: 0 });
+/** Ghép máy chỉ có ở PREMIUM (D-68), nên mặc định PREMIUM cho các test ghép máy; test gói truyền plan khác. */
+export async function parentWithChild(plan: PlanTier = 'PREMIUM'): Promise<{ api: Api; home: Home }> {
+  const api = createMockApi({ latencyMs: 0, plan });
   await api.auth.sendEmailOtp('test.gia@example.com');
   await api.auth.verifyEmailOtp('test.gia@example.com', '123456');
   const { householdId } = await api.familyCreate('chị Lan');

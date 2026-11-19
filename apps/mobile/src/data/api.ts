@@ -4,7 +4,7 @@
 import type { Session, SupabaseClient } from '@supabase/supabase-js';
 
 import { ApiError, FALLBACK_MESSAGES, apiErrorFromFailure, toApiError } from './errors.ts';
-import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmState, PairState, SessionInfo } from './types.ts';
+import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmState, PairState, PlanInfo, PlanTier, SessionInfo } from './types.ts';
 
 // touch_active_min_interval_minutes = 60 (private.params, chưa chốt): máy chủ bỏ qua lần gọi sớm hơn, client không gọi thừa.
 const TOUCH_MIN_INTERVAL_MS = 60 * 60 * 1000;
@@ -170,6 +170,25 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       const childId = asStr(o.child_id);
       if (!childId) throw toApiError(new Error('child_create: thiếu child_id'));
       return { childId };
+    },
+
+    async myPlan(): Promise<PlanInfo> {
+      const o = await rpcOk('my_plan', undefined);
+      // Phản hồi lạ thì từ chối chứ không đoán gói (không bao giờ mặc định thành PREMIUM).
+      const tier = o.tier === 'FREE' || o.tier === 'TRIAL' || o.tier === 'PREMIUM' ? (o.tier as PlanTier) : null;
+      const plansUsed = asInt(o.plans_used);
+      const editsUsed = asInt(o.edits_used);
+      if (!tier || plansUsed === null || editsUsed === null) throw toApiError(new Error('my_plan: phản hồi sai hợp đồng'));
+      return {
+        tier,
+        expired: o.expired === true,
+        plansUsed,
+        plansMax: asInt(o.plans_max),
+        editsUsed,
+        editsLeft: asInt(o.edits_left),
+        palQuestionsLeft: asInt(o.pal_questions_left),
+        trialEndsAt: asStr(o.trial_ends_at),
+      };
     },
 
     async pairConfirm(childId, code, pin) {

@@ -26,6 +26,7 @@ export default function ParentLayout() {
       <Stack.Protected guard={parentStage === 'ready'}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="ghep-may" options={{ title: 'Ghép máy của con' }} />
+        <Stack.Screen name="can-goi" options={{ title: 'Cần gói dịch vụ' }} />
         <Stack.Screen name="dat-pin" options={{ title: 'Mã PIN của bố mẹ' }} />
         <Stack.Screen name="phien" options={{ title: 'Phiên đăng nhập' }} />
       </Stack.Protected>

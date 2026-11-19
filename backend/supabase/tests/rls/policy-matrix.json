@@ -157,11 +157,11 @@
     "audit_log": {
       "spec": "§2.5, §2.7: chỉ QL đọc dòng của hộ mình; chỉ-thêm",
       "select": {
-        "QL": 4,
+        "QL": 5,
         "NL": 0,
         "CON": 0,
         "CON_CHUA_GHEP": 0,
-        "HO_KHAC": 2,
+        "HO_KHAC": 3,
         "ANON": "denied"
       }
     },
@@ -297,6 +297,18 @@
         "HO_KHAC": 0,
         "ANON": "denied"
       }
+    },
+    "household_plans": {
+      "spec": "D-68: gói dịch vụ của hộ; không vai người dùng nào đọc trực tiếp (đọc qua app.my_plan()); ghi chỉ service_role qua app.plan_set",
+      "select": {
+        "QL": "denied",
+        "NL": "denied",
+        "CON": "denied",
+        "CON_CHUA_GHEP": "denied",
+        "HO_KHAC": "denied",
+        "ANON": "denied"
+      },
+      "pk": "household_id"
     }
   },
   "private": {
@@ -470,7 +482,10 @@
     "schedule_commit_apply": [
       "authenticated"
     ],
-    "tg_schedule_profile_guard": []
+    "tg_schedule_profile_guard": [],
+    "my_plan": ["authenticated"],
+    "plan_set": [],
+    "tg_audit_plan": []
   },
   "app_internal_functions": {
     "_doc": "Hàm phụ trợ của chính sách RLS, nằm schema app_internal (không mở API, T1.8-b). Vai được EXECUTE (ngoài service_role). Chính sách chạy với quyền người gọi nên authenticated cần EXECUTE; anon không có gì. Hàm mới phải khai ở đây.",

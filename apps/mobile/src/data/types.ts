@@ -30,6 +30,23 @@ export type ChildInput = {
   idempotencyKey?: string;
 };
 
+/** Gói dịch vụ của hộ (D-68). */
+export type PlanTier = 'FREE' | 'TRIAL' | 'PREMIUM';
+
+/** Kết quả app.my_plan(). Giá trị null ở *Max / editsLeft nghĩa là không giới hạn (PREMIUM). */
+export type PlanInfo = {
+  tier: PlanTier;
+  /** Gói TRIAL đã quá hạn (máy chủ coi như FREE). */
+  expired: boolean;
+  plansUsed: number;
+  plansMax: number | null;
+  editsUsed: number;
+  editsLeft: number | null;
+  /** Số câu hỏi Pal còn lại; null khi chưa có bộ đếm (agent Pal làm sau). */
+  palQuestionsLeft: number | null;
+  trialEndsAt: string | null;
+};
+
 export type PairCode = { code: string; expiresAt: string | null };
 
 /** CHO_XAC_NHAN_MAY_CON: máy con sẽ hỏi "Kết nối với ...?". CHO_XAC_MINH: máy từng ghép ở hộ khác, chưa có quyền gì (AC-FAM-16). */
@@ -62,6 +79,8 @@ export interface Api {
   /** Gọi khi người lớn mở app. Client tự giới hạn tối đa 1 lần/giờ như máy chủ. Trả touched=false nếu không gọi hoặc máy chủ bỏ qua. */
   touchActive(): Promise<{ touched: boolean }>;
   childCreate(input: ChildInput): Promise<{ childId: string }>;
+  /** Gói dịch vụ của hộ và số lượt còn lại (D-68). Chỉ người lớn trong hộ. */
+  myPlan(): Promise<PlanInfo>;
   /** pin: bắt buộc ở lần ghép đầu của QL (đặt PIN cùng lúc), không gửi các lần sau. */
   pairConfirm(childId: string, code: string, pin?: string): Promise<PairConfirmResult>;
   pinSet(pin: string): Promise<void>;

@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import type { ApiError } from '@/data/errors';
+import { PLAN_RULES, canPair } from '@/data/plan';
 import type { PairConfirmResult } from '@/data/types';
 import { PAIR_CODE_LENGTH, PIN_EXISTS_HINT, PIN_LENGTH, PIN_REQUIRED_HINT, PIN_REQUIRED_RULE, checkPairCode, checkPin } from '@/data/validate';
 import { useApp } from '@/state/app';
 import { Btn, Choice, Field, H1, Notice, P, Screen } from '@/ui/kit';
+import { PlanRequiredView } from '@/ui/PlanRequired';
 import { useAction } from '@/ui/useAction';
 
 const isPinRequired = (e: ApiError | null) => e?.code === 'VALIDATION' && e.rule === PIN_REQUIRED_RULE && e.userMessage.startsWith(PIN_REQUIRED_HINT);
@@ -19,7 +21,7 @@ const isPinExists = (e: ApiError | null) => e?.code === 'VALIDATION' && e.rule =
 export default function GhepMay() {
   const router = useRouter();
   const { childId: paramId } = useLocalSearchParams<{ childId?: string }>();
-  const { api, home, refreshHome } = useApp();
+  const { api, home, refreshHome, plan } = useApp();
   const options = (home?.children ?? []).filter((c) => c.hasDevice && c.pairState !== 'PAIRED');
   const [childId, setChildId] = useState<string | null>(paramId ?? (options.length === 1 ? options[0].id : null));
   const [code, setCode] = useState('');
@@ -59,6 +61,11 @@ export default function GhepMay() {
       setAgain('');
     }
   }, [failure]);
+
+  // D-68: chỉ gói Premium ghép máy. App biết gói chưa đủ, hoặc máy chủ vừa báo PLAN_REQUIRED, thì giải thích thay vì cho nhập mã.
+  if (plan ? !canPair(plan) : failure?.code === 'PLAN_REQUIRED') {
+    return <PlanRequiredView rule={failure?.code === 'PLAN_REQUIRED' ? failure.rule : PLAN_RULES.premium} onBack={() => router.back()} />;
+  }
 
   if (result) {
     return (

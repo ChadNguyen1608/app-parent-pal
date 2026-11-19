@@ -7,7 +7,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { getApi } from '../data';
 import { parseAuthLink } from '../data/auth-link';
 import { errorMessage } from '../data/errors';
-import type { Api, Binding, Home, SessionInfo } from '../data/types';
+import type { Api, Binding, Home, PlanInfo, SessionInfo } from '../data/types';
 import { APP_VARIANT } from '../variant';
 
 /** Phụ huynh: loading → out (PA-01) → needHome (tạo hộ, con) → ready. */
@@ -22,6 +22,9 @@ type Ctx = {
   parentStage: ParentStage;
   home: Home;
   refreshHome: () => Promise<void>;
+  /** Gói dịch vụ của hộ (D-68); null khi chưa nạp được (màn không đoán, để máy chủ quyết). */
+  plan: PlanInfo | null;
+  refreshPlan: () => Promise<void>;
   signOut: () => Promise<void>;
   /** Lỗi khi hoàn tất đăng nhập từ link trong thư (D-59), hiện ở PA-01. */
   linkError: string | null;
@@ -59,6 +62,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
   const [booted, setBooted] = useState(false);
   const [home, setHome] = useState<Home>(null);
   const [homeLoaded, setHomeLoaded] = useState(false);
+  const [plan, setPlan] = useState<PlanInfo | null>(null);
   const [childId, setChildId] = useState<string | null>(null);
   const [bindingEpoch, setBindingEpoch] = useState<number | null>(null);
   const [childStage, setChildStage] = useState<ChildStage>('loading');
@@ -109,6 +113,10 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
     setHomeLoaded(true);
   }, [api]);
 
+  const refreshPlan = useCallback(async () => {
+    setPlan(await api.myPlan());
+  }, [api]);
+
   // Phụ huynh: có phiên (không ẩn danh) thì nạp hộ và báo "đang hoạt động".
   const parentSession = isParent && session && !session.isAnonymous ? session : null;
   useEffect(() => {
@@ -133,6 +141,23 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       alive = false;
     };
   }, [api, parentSession?.userId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Có hộ thì nạp gói dịch vụ (D-68). Lỗi thì để null: màn không chặn theo đoán, máy chủ vẫn là nơi quyết định.
+  const hasHome = Boolean(home);
+  useEffect(() => {
+    if (!parentSession || !hasHome) {
+      setPlan(null);
+      return;
+    }
+    let alive = true;
+    api
+      .myPlan()
+      .then((p) => alive && setPlan(p))
+      .catch(() => alive && setPlan(null));
+    return () => {
+      alive = false;
+    };
+  }, [api, parentSession?.userId, hasHome]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Người lớn mở app (lúc nạp hộ xong và mỗi lần app trở lại nền trước) thì báo "đang hoạt động" (BR-FAM-050).
   // Chỉ thao tác có chủ đích của người lớn; client tự giới hạn 1 lần/giờ. Máy con không gọi hàm này.
@@ -198,6 +223,8 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       parentStage,
       home,
       refreshHome,
+      plan,
+      refreshPlan,
       signOut: async () => {
         await api.auth.signOut();
         setSession(null);
@@ -238,7 +265,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
         setChildStage('unpaired');
       },
     }),
-    [api, session, parentStage, home, refreshHome, linkError, childStage, childId, bindingEpoch],
+    [api, session, parentStage, home, refreshHome, plan, refreshPlan, linkError, childStage, childId, bindingEpoch],
   );
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;

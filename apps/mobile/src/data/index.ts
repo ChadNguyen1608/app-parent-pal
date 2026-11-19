@@ -5,7 +5,7 @@ import { AppState } from 'react-native';
 
 import { BACKEND, SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL, type BackendKind } from '../config';
 import { createSupabaseApi } from './api';
-import { createMockApi } from './mock';
+import { createMockApi, isPlanTier } from './mock';
 import type { Api } from './types';
 
 let instance: Api | null = null;
@@ -18,7 +18,9 @@ export function backendKind(): BackendKind {
 export function getApi(): Api | null {
   if (instance) return instance;
   if (BACKEND === 'mock') {
-    instance = createMockApi();
+    // Bản web thử (E2E): ?plan=FREE|TRIAL|PREMIUM chọn gói giả lập; không có thì mặc định TRIAL. Chỉ bản mock đọc tham số này.
+    const q = typeof globalThis.location?.search === 'string' ? new URLSearchParams(globalThis.location.search).get('plan') : null;
+    instance = createMockApi(isPlanTier(q) ? { plan: q } : {});
   } else if (BACKEND === 'supabase') {
     const client = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth: {
