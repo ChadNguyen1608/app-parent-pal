@@ -1,23 +1,25 @@
-// PA-02, PA-32, PA-33, PA-34, PA-35/36, PA-39, CA-17, CA-18: màn đồng ý (D-64), rút, xóa, đóng băng (mock api, không mạng).
+// PA-32 (quyền riêng tư, D-73), Cài đặt dữ liệu (D-73), PA-33, PA-34, PA-35/36, PA-39, CA-17, CA-18: đồng ý (D-64), rút, xóa, đóng băng (mock api, không mạng).
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 
 import CaiDat from '../src/app/(parent)/du-lieu';
-import DongY from '../src/app/(parent)/dong-y';
+import CaiDatDuLieu from '../src/app/(parent)/cai-dat-du-lieu';
 import QuyenRieng from '../src/app/(parent)/quyen-rieng-tu';
 import TamKhoa from '../src/app/(parent)/tam-khoa';
 import Xoa from '../src/app/(parent)/xoa';
 import XuatDuLieu from '../src/app/(parent)/xuat-du-lieu';
 import TamDung from '../src/app/(child)/tam-dung';
+import { DIEU_KHOAN, TUYEN_BO_QUYEN_RIENG_TU } from '../src/content/dieu-khoan';
 import { MatKetNoi } from '../src/ui/MatKetNoi';
 import { parentWithChild } from './helpers';
 
 const mockUseApp = jest.fn();
 const mockPush = jest.fn();
 const mockReplace = jest.fn();
+const mockBack = jest.fn();
 const mockParams = jest.fn((): Record<string, string> => ({}));
 jest.mock('@/state/app', () => ({ useApp: () => mockUseApp() }));
 jest.mock('expo-router', () => ({
-  useRouter: () => ({ replace: mockReplace, back: jest.fn(), push: mockPush }),
+  useRouter: () => ({ replace: mockReplace, back: mockBack, push: mockPush }),
   useLocalSearchParams: () => mockParams(),
   useFocusEffect: (cb: () => void) => require('react').useEffect(cb, []),
 }));
@@ -26,8 +28,11 @@ jest.mock('expo-router', () => ({
 beforeEach(() => {
   mockPush.mockClear();
   mockReplace.mockClear();
+  mockBack.mockClear();
   mockParams.mockReturnValue({});
 });
+
+const all = ['MD-LICH', 'MD-SUCKHOE', 'MD-CONBAO'];
 
 async function setup(opts: { consent?: string[]; frozen?: boolean } = {}) {
   const { api, home } = await parentWithChild();
@@ -43,107 +48,93 @@ async function setup(opts: { consent?: string[]; frozen?: boolean } = {}) {
   return { api, childId, refreshHome, signOut };
 }
 
-describe('PA-02 Đồng ý (D-64): một đồng ý cốt lõi và hai lựa chọn riêng', () => {
-  it('không còn danh sách từng tính năng; hai mục riêng không chọn sẵn', async () => {
-    await setup();
-    await render(<DongY />);
-    await waitFor(() => expect(screen.getByLabelText('Lưu thông tin sức khỏe của con')).toBeTruthy());
-    expect(screen.getByLabelText('Lưu thông tin sức khỏe của con').props.accessibilityState.checked).toBe(false);
-    expect(screen.getByLabelText('Cho con báo bố mẹ ngay').props.accessibilityState.checked).toBe(false);
-    expect(screen.getByText(/Lịch của con, đồng bộ sang máy con và nhắc giờ, con bấm "Xong", hỏi thăm sau giờ học, mong muốn của con, báo cáo tuần/)).toBeTruthy();
-    for (const old of ['Đánh dấu "Xong" trên máy con', 'Hỏi thăm sau giờ học', 'Nhắc giờ trên máy con', 'Báo cáo tuần', 'Mong muốn của con', 'Lịch sử thay đổi lịch']) {
-      expect(screen.queryByLabelText(old)).toBeNull();
-    }
-    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+describe('PA-32 Quyền riêng tư (D-73)', () => {
+  it('đoạn tuyên bố nguyên văn, ghi chú "câu chữ chờ duyệt", nút Đồng ý, khung cuộn điều khoản nháp', async () => {
+    await setup({ consent: all });
+    await render(<QuyenRieng />);
+    expect(screen.getByText(TUYEN_BO_QUYEN_RIENG_TU)).toBeTruthy();
+    expect(TUYEN_BO_QUYEN_RIENG_TU.startsWith('Trong quá trình sử dụng dịch vụ, chúng tôi ghi lại thông tin liên quan đến trẻ (tên, tuổi, sức khỏe…)')).toBe(true);
+    expect(TUYEN_BO_QUYEN_RIENG_TU.endsWith('Sử dụng app đồng nghĩa với việc bạn đồng ý với điều khoản này.')).toBe(true);
+    expect(screen.getByText('Câu chữ chờ duyệt.')).toBeTruthy();
+    expect(screen.getByText('BẢN NHÁP, người soạn: AI, chờ luật sư duyệt')).toBeTruthy();
+    expect(screen.getByTestId('khung-dieu-khoan')).toBeTruthy();
+    expect(DIEU_KHOAN.length).toBeGreaterThanOrEqual(10);
+    expect(DIEU_KHOAN.length).toBeLessThanOrEqual(14);
+    for (const d of DIEU_KHOAN) expect(screen.getByText(`${d.so}. ${d.tieuDe}`)).toBeTruthy();
   });
 
-  it('"Đồng ý và tiếp tục" mà không chọn gì: chỉ ghi MD-LICH', async () => {
-    const { api, childId, refreshHome } = await setup();
-    const spy = jest.spyOn(api, 'consentRecord');
-    await render(<DongY />);
-    await waitFor(() => screen.getByLabelText('Cho con báo bố mẹ ngay'));
-    await fireEvent.press(screen.getByText('Đồng ý và tiếp tục'));
-    await waitFor(() => expect(refreshHome).toHaveBeenCalled());
-    expect(spy.mock.calls.map((c) => c[0].purposeCode)).toEqual(['MD-LICH']);
-    const c = (await api.getHome())!.children[0];
-    expect([c.coreConsent, c.healthConsent, c.alertConsent]).toEqual([true, false, false]);
-    expect((await api.getConsentOverview(childId)).states['MD-SUCKHOE']).toBeUndefined();
+  it('không chia theo con, không còn công tắc hay nút rút toàn bộ', async () => {
+    await setup({ consent: all });
+    await render(<QuyenRieng />);
+    expect(screen.queryByText(/Hồ sơ của/)).toBeNull();
+    expect(screen.queryByRole('switch')).toBeNull();
+    expect(screen.queryByText(/Rút toàn bộ/)).toBeNull();
   });
 
-  it('chọn cả hai mục riêng: ghi MD-LICH trước rồi MD-SUCKHOE, MD-CONBAO', async () => {
-    const { api, refreshHome } = await setup();
+  it('"Đồng ý": quay lại, không ghi gì lên máy chủ', async () => {
+    const { api } = await setup({ consent: all });
     const spy = jest.spyOn(api, 'consentRecord');
-    await render(<DongY />);
-    await waitFor(() => screen.getByLabelText('Cho con báo bố mẹ ngay'));
-    await fireEvent.press(screen.getByLabelText('Cho con báo bố mẹ ngay'));
-    await fireEvent.press(screen.getByLabelText('Lưu thông tin sức khỏe của con'));
-    expect(screen.getByLabelText('Lưu thông tin sức khỏe của con').props.accessibilityState.checked).toBe(true);
-    await fireEvent.press(screen.getByText('Đồng ý và tiếp tục'));
-    await waitFor(() => expect(refreshHome).toHaveBeenCalled());
-    expect(spy.mock.calls.map((c) => c[0].purposeCode)).toEqual(['MD-LICH', 'MD-SUCKHOE', 'MD-CONBAO']);
-    const c = (await api.getHome())!.children[0];
-    expect([c.coreConsent, c.healthConsent, c.alertConsent]).toEqual([true, true, true]);
-  });
-
-  it('Không đồng ý: không ghi gì, có đường quay lại và đăng xuất', async () => {
-    const { api, signOut } = await setup();
-    const spy = jest.spyOn(api, 'consentRecord');
-    await render(<DongY />);
-    await waitFor(() => screen.getByLabelText('Cho con báo bố mẹ ngay'));
-    await fireEvent.press(screen.getByText('Không đồng ý'));
-    expect(screen.getByText('Mình dừng ở đây')).toBeTruthy();
+    await render(<QuyenRieng />);
+    await fireEvent.press(screen.getByText('Đồng ý'));
+    expect(mockBack).toHaveBeenCalled();
     expect(spy).not.toHaveBeenCalled();
-    await fireEvent.press(screen.getByText('Đăng xuất'));
-    expect(signOut).toHaveBeenCalled();
   });
 });
 
-describe('PA-32 Quyền riêng tư và đồng ý (D-64)', () => {
-  const all = ['MD-LICH', 'MD-SUCKHOE', 'MD-CONBAO'];
-
-  it('mục lõi khóa; hai mục riêng có công tắc, tắt phải xác nhận rồi mới rút', async () => {
+describe('Cài đặt dữ liệu (D-73)', () => {
+  it('ba công tắc: sức khỏe và báo bố mẹ bật sẵn, AI trên máy con tắt; tắt phải xác nhận rồi mới rút', async () => {
     const { api, childId } = await setup({ consent: all });
-    await render(<QuyenRieng />);
-    await waitFor(() => expect(screen.getByLabelText('Thông tin sức khỏe của con').props.value).toBe(true));
-    expect(screen.getByLabelText('Phần cốt lõi').props.disabled).toBe(true);
-    await fireEvent(screen.getByLabelText('Con báo bố mẹ ngay'), 'valueChange', false);
+    await render(<CaiDatDuLieu />);
+    await waitFor(() => expect(screen.getByLabelText('Lưu thông tin sức khỏe của con').props.value).toBe(true));
+    expect(screen.getByLabelText('Cho con báo bố mẹ ngay').props.value).toBe(true);
+    expect(screen.getByLabelText('Trò chuyện AI trên máy con').props.value).toBe(false);
+    await fireEvent(screen.getByLabelText('Cho con báo bố mẹ ngay'), 'valueChange', false);
     expect(screen.getByText(/dữ liệu cũ của mục này được ẩn ngay, sẽ không hiện lại khi bạn bật lại/)).toBeTruthy();
     await fireEvent.press(screen.getByText('Giữ nguyên'));
     expect((await api.getConsentOverview(childId)).states['MD-CONBAO'].state).toBe('DANG_BAT');
-    await fireEvent(screen.getByLabelText('Con báo bố mẹ ngay'), 'valueChange', false);
+    await fireEvent(screen.getByLabelText('Cho con báo bố mẹ ngay'), 'valueChange', false);
     await fireEvent.press(screen.getByText('Tắt'));
-    await waitFor(() => expect(screen.getByLabelText('Con báo bố mẹ ngay').props.value).toBe(false));
+    await waitFor(() => expect(screen.getByLabelText('Cho con báo bố mẹ ngay').props.value).toBe(false));
     const ov = await api.getConsentOverview(childId);
     expect([ov.states['MD-CONBAO'].state, ov.states['MD-SUCKHOE'].state, ov.states['MD-LICH'].state]).toEqual(['DA_RUT', 'DANG_BAT', 'DANG_BAT']);
   });
 
   it('bật lại mục đã tắt là đồng ý lại ngay (không cần xác nhận)', async () => {
     const { api, childId } = await setup({ consent: ['MD-LICH'] });
-    await render(<QuyenRieng />);
-    await waitFor(() => expect(screen.getByLabelText('Thông tin sức khỏe của con').props.value).toBe(false));
-    await fireEvent(screen.getByLabelText('Thông tin sức khỏe của con'), 'valueChange', true);
-    await waitFor(() => expect(screen.getByLabelText('Thông tin sức khỏe của con').props.value).toBe(true));
+    await render(<CaiDatDuLieu />);
+    await waitFor(() => expect(screen.getByLabelText('Lưu thông tin sức khỏe của con').props.value).toBe(false));
+    await fireEvent(screen.getByLabelText('Lưu thông tin sức khỏe của con'), 'valueChange', true);
+    await waitFor(() => expect(screen.getByLabelText('Lưu thông tin sức khỏe của con').props.value).toBe(true));
     expect((await api.getConsentOverview(childId)).states['MD-SUCKHOE'].state).toBe('DANG_BAT');
   });
 
-  it('"Rút toàn bộ" có hai lối: cho đúng con và cho cả gia đình', async () => {
-    const { childId } = await setup({ consent: ['MD-LICH'] });
-    await render(<QuyenRieng />);
-    await waitFor(() => screen.getByLabelText('Con báo bố mẹ ngay'));
-    await fireEvent.press(screen.getByText('Rút toàn bộ đồng ý cho Bin'));
+  it('công tắc trò chuyện AI ghi ai_chat_enabled lên máy chủ', async () => {
+    const { api, childId } = await setup({ consent: all });
+    await render(<CaiDatDuLieu />);
+    await waitFor(() => expect(screen.getByLabelText('Trò chuyện AI trên máy con').props.disabled).toBe(false));
+    await fireEvent(screen.getByLabelText('Trò chuyện AI trên máy con'), 'valueChange', true);
+    await waitFor(() => expect(screen.getByLabelText('Trò chuyện AI trên máy con').props.value).toBe(true));
+    expect(await api.childSettingGet(childId)).toEqual({ aiChatEnabled: true });
+  });
+
+  it('xóa dữ liệu có hai lối: một con và cả gia đình (dẫn sang luồng hai bước)', async () => {
+    const { childId } = await setup({ consent: all });
+    await render(<CaiDatDuLieu />);
+    await waitFor(() => screen.getByLabelText('Cho con báo bố mẹ ngay'));
+    await fireEvent.press(screen.getByText('Xóa dữ liệu của Bin'));
     expect(mockPush).toHaveBeenCalledWith({ pathname: '/(parent)/xoa', params: { scope: 'RUT', childId } });
-    await fireEvent.press(screen.getByText('Rút toàn bộ đồng ý cho cả gia đình'));
+    await fireEvent.press(screen.getByText('Xóa dữ liệu của cả gia đình'));
     expect(mockPush).toHaveBeenCalledWith({ pathname: '/(parent)/xoa', params: { scope: 'GIA_DINH' } });
   });
 
-  it('người lớn khác: công tắc khóa, không có nút rút toàn bộ', async () => {
-    const { api } = await setup({ consent: ['MD-LICH'] });
+  it('người lớn khác: công tắc khóa, không có nút xóa', async () => {
+    const { api } = await setup({ consent: all });
     mockUseApp.mockReturnValue({ api, home: { ...(await api.getHome())!, role: 'SUPPORTER' }, refreshHome: jest.fn() });
-    await render(<QuyenRieng />);
-    await waitFor(() => screen.getByLabelText('Con báo bố mẹ ngay'));
-    expect(screen.getByLabelText('Con báo bố mẹ ngay').props.disabled).toBe(true);
-    expect(screen.queryByText(/Rút toàn bộ/)).toBeNull();
-    expect(screen.queryByText(/Rút toàn bộ đồng ý/)).toBeNull();
+    await render(<CaiDatDuLieu />);
+    await waitFor(() => screen.getByLabelText('Cho con báo bố mẹ ngay'));
+    expect(screen.getByLabelText('Cho con báo bố mẹ ngay').props.disabled).toBe(true);
+    expect(screen.getByLabelText('Trò chuyện AI trên máy con').props.disabled).toBe(true);
+    expect(screen.queryByText(/Xóa dữ liệu của/)).toBeNull();
   });
 });
 
@@ -232,12 +223,12 @@ describe('PA-35, PA-36 Xóa và rút toàn bộ: hai bước theo máy chủ', (
 });
 
 describe('PA-33, PA-34', () => {
-  it('PA-33: giữ câu "không hứa đã xóa hết" và dẫn tới sổ đồng ý, xuất, xóa', async () => {
+  it('PA-33: giữ câu "không hứa đã xóa hết" và dẫn tới cài đặt dữ liệu, xuất, xóa', async () => {
     await setup({ consent: ['MD-LICH'] });
     await render(<CaiDat />);
     expect(screen.getByText(/app không hứa "đã xóa hết" khi chưa xóa hẳn/)).toBeTruthy();
-    await fireEvent.press(screen.getByText('Xem sổ đồng ý'));
-    expect(mockPush).toHaveBeenCalledWith('/(parent)/quyen-rieng-tu');
+    await fireEvent.press(screen.getByText('Mở cài đặt dữ liệu'));
+    expect(mockPush).toHaveBeenCalledWith('/(parent)/cai-dat-du-lieu');
   });
 
   it('PA-34: máy chủ trả BLOCKED_H4, hiện lời tiếng Việt', async () => {

@@ -110,6 +110,7 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
   const notes = new Map<string, HealthNote[]>();
   const alerts: (ChildAlert & { key: string | null })[] = [];
   const childConsented = new Set<string>();
+  const aiChat = new Map<string, boolean>(); // cài đặt ai_chat_enabled từng con, mặc định tắt (D-73)
   let pairedChildId: string | null = null;
   const deletions: OpenDeletion[] = [];
   const withdrawTokens = new Map<string, { token: string; expiresAt: number }>();
@@ -357,6 +358,26 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
       if (code === PURPOSE_SUCKHOE) notes.delete(childId); // máy chủ: ẩn ngay và xếp hàng xóa; đồng ý lại không hiện lại cái cũ
       if (code === PURPOSE_CONBAO) for (let i = alerts.length - 1; i >= 0; i--) if (alerts[i].childId === childId) alerts.splice(i, 1);
       return { changed: true, replay: false, effective: false };
+    },
+
+    async childSettingGet(childId) {
+      needLogin();
+      await pause();
+      noKid();
+      visibleChild(childId);
+      return { aiChatEnabled: aiChat.get(childId) === true };
+    },
+
+    async childSettingSet(childId, key, value) {
+      if (value) writable();
+      else needLogin(); // tắt = thu hẹp, luôn được
+      await pause();
+      noKid();
+      visibleChild(childId);
+      primaryOnly('Chỉ người quản lý chính đổi cài đặt này.');
+      if (key !== 'ai_chat_enabled') fail('VALIDATION', 'BR-CON-034', 'Cài đặt không hợp lệ.');
+      aiChat.set(childId, value);
+      return { aiChatEnabled: value };
     },
 
     async withdrawAllStart(childId) {

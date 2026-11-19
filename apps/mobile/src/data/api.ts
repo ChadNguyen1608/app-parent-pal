@@ -334,6 +334,16 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       };
     },
 
+    async childSettingGet(childId) {
+      const o = await rpcOk('child_setting_get', { p_child: childId });
+      return { aiChatEnabled: o.ai_chat_enabled === true };
+    },
+
+    async childSettingSet(childId, key, value) {
+      const o = await rpcOk('child_setting_set', { p_child: childId, p_key: key, p_value: value });
+      return { aiChatEnabled: o.value === true };
+    },
+
     async withdrawAllStart(childId) {
       const o = await rpcOk('consent_withdraw_all', { p_child: childId });
       const token = asStr(o.confirm_token);

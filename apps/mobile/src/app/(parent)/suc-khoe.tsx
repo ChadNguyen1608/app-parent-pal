@@ -1,17 +1,16 @@
-import { useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { effectiveCodes, PURPOSE_SUCKHOE } from '@/data/consent';
 import { errorMessage } from '@/data/errors';
 import type { HealthKind, HealthNote, MemberRole } from '@/data/types';
-import { uuidv4 } from '@/data/uuid';
 import { useApp } from '@/state/app';
 import { Btn, Choice, Field, H1, Note, Notice, P, Screen } from '@/ui/kit';
 import { useAction } from '@/ui/useAction';
 
 // PA-06 (phần sức khỏe) Sức khỏe của con, trong hồ sơ con (D-66). Nấc 1 chỉ LƯU và HIỂN THỊ, chưa dùng để lập lịch hay cho Pal.
-// Lần đầu chưa có đồng ý riêng MD-SUCKHOE thì hỏi ngay tại chỗ. Mỗi ghi chú hiện nguồn: ai khai, vai trò, ngày, ghi chú nguồn.
+// D-73: không còn bước hỏi đồng ý ở đây (MD-SUCKHOE ghi mặc định khi tạo con). Nếu phụ huynh đã tắt ở Cài đặt dữ liệu thì màn chỉ chỉ đường tới đó. Mỗi ghi chú hiện nguồn: ai khai, vai trò, ngày, ghi chú nguồn.
 // Tắt (ẩn khỏi mọi nơi dùng) và xóa luôn làm được. Máy con không bao giờ thấy màn này. Wireframe chưa vẽ: câu chữ "tạm".
 const KIND_LABEL: Record<HealthKind, string> = { DI_UNG: 'Dị ứng', THUOC: 'Thuốc', KHAC: 'Khác' };
 const KINDS: HealthKind[] = ['DI_UNG', 'THUOC', 'KHAC'];
@@ -27,7 +26,8 @@ type Form = { id: string | null; kind: HealthKind; content: string; sourceNote: 
 
 export default function SucKhoe() {
   const { childId: paramId } = useLocalSearchParams<{ childId?: string }>();
-  const { api, home, refreshHome } = useApp();
+  const router = useRouter();
+  const { api, home } = useApp();
   const child = home?.children.find((c) => c.id === paramId) ?? home?.children[0];
   const isPrimary = home?.role === 'PRIMARY';
   const [allowed, setAllowed] = useState<boolean | null>(null); // MD-SUCKHOE đang hiệu lực
@@ -36,7 +36,6 @@ export default function SucKhoe() {
   const [form, setForm] = useState<Form | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
-  const consentKey = useRef(uuidv4());
   const act = useAction();
   const cid = child?.id ?? null;
 
@@ -57,14 +56,6 @@ export default function SucKhoe() {
   }, [load]);
 
   if (!child) return null;
-
-  async function agree() {
-    await act.run(async () => {
-      await api.consentRecord({ childId: child!.id, purposeCode: PURPOSE_SUCKHOE, event: 'DONG_Y', idempotencyKey: consentKey.current });
-      await refreshHome().catch(() => undefined);
-      await load();
-    });
-  }
 
   async function save() {
     if (!form) return;
@@ -105,10 +96,9 @@ export default function SucKhoe() {
           <P muted>Đang mở...</P>
         ) : (
           <>
-            <P>Để lưu dị ứng, thuốc hay ghi chú sức khỏe của {child.callName}, mình cần bạn đồng ý riêng cho việc này. (tạm)</P>
-            <Note>Chỉ bạn thấy. Máy của con không thấy. Mình chỉ lưu và hiển thị, chưa dùng để lập lịch. Bạn tắt lúc nào cũng được; tắt thì ghi chú được ẩn ngay và không hiện lại khi bật lại. (tạm)</Note>
-            {act.error ? <Notice>{act.error}</Notice> : null}
-            {isPrimary ? <Btn label="Đồng ý lưu thông tin sức khỏe" onPress={agree} busy={act.busy} /> : <Note>Chỉ người quản lý chính đồng ý được mục này. (tạm)</Note>}
+            <P>Bạn đang tắt việc lưu thông tin sức khỏe của {child.callName}, nên danh sách ghi chú đang ẩn. (tạm)</P>
+            <Note>Bật lại ở Cài đặt dữ liệu để thêm ghi chú mới. Ghi chú cũ đã ẩn khi tắt thì không hiện lại. (tạm)</Note>
+            <Btn label="Mở cài đặt dữ liệu" onPress={() => router.push('/(parent)/cai-dat-du-lieu')} />
           </>
         )}
       </Screen>

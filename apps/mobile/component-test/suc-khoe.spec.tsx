@@ -1,4 +1,4 @@
-// PA-06 (sức khỏe của con, D-66): đồng ý riêng ngay tại chỗ, danh sách có nguồn, thêm/sửa/tắt/xóa (mock api, không mạng).
+// PA-06 (sức khỏe của con, D-66; D-73: không còn bước hỏi đồng ý, mặc định đã bật), danh sách có nguồn, thêm/sửa/tắt/xóa (mock api, không mạng).
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 
 import SucKhoe from '../src/app/(parent)/suc-khoe';
@@ -7,7 +7,8 @@ import { parentWithChild } from './helpers';
 const mockUseApp = jest.fn();
 const mockParams = jest.fn((): Record<string, string> => ({}));
 jest.mock('@/state/app', () => ({ useApp: () => mockUseApp() }));
-jest.mock('expo-router', () => ({ useLocalSearchParams: () => mockParams() }));
+const mockPush = jest.fn();
+jest.mock('expo-router', () => ({ useLocalSearchParams: () => mockParams(), useRouter: () => ({ push: mockPush }) }));
 
 async function setup(opts: { core?: boolean; health?: boolean; role?: 'PRIMARY' | 'SUPPORTER' } = {}) {
   const { api, home } = await parentWithChild();
@@ -21,23 +22,23 @@ async function setup(opts: { core?: boolean; health?: boolean; role?: 'PRIMARY' 
 }
 
 describe('PA-06 Sức khỏe của con', () => {
-  it('lần đầu chưa có MD-SUCKHOE: hỏi đồng ý riêng ngay tại chỗ, đồng ý xong thì thấy danh sách rỗng', async () => {
-    const { api, childId } = await setup();
+  it('D-73: không hỏi đồng ý ở đây; mặc định đã bật thì thấy ngay danh sách rỗng và nút thêm ghi chú', async () => {
+    await setup({ health: true });
     await render(<SucKhoe />);
-    await waitFor(() => expect(screen.getByText('Đồng ý lưu thông tin sức khỏe')).toBeTruthy());
-    expect(screen.queryByText('Thêm ghi chú')).toBeNull();
-    expect((await api.getConsentOverview(childId)).states['MD-SUCKHOE']).toBeUndefined();
-    await fireEvent.press(screen.getByText('Đồng ý lưu thông tin sức khỏe'));
     await waitFor(() => expect(screen.getByText('Chưa có ghi chú nào.')).toBeTruthy());
-    expect((await api.getConsentOverview(childId)).states['MD-SUCKHOE'].state).toBe('DANG_BAT');
     expect(screen.getByText('Thêm ghi chú')).toBeTruthy();
+    expect(screen.queryByText('Đồng ý lưu thông tin sức khỏe')).toBeNull();
   });
 
-  it('người lớn không phải QL: không thấy nút đồng ý', async () => {
-    await setup({ role: 'SUPPORTER' });
+  it('đã tắt ở Cài đặt dữ liệu: không có nút đồng ý, chỉ đường tới Cài đặt dữ liệu', async () => {
+    mockPush.mockClear();
+    await setup();
     await render(<SucKhoe />);
-    await waitFor(() => expect(screen.getByText(/Chỉ người quản lý chính đồng ý được mục này/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Mở cài đặt dữ liệu')).toBeTruthy());
     expect(screen.queryByText('Đồng ý lưu thông tin sức khỏe')).toBeNull();
+    expect(screen.queryByText('Thêm ghi chú')).toBeNull();
+    await fireEvent.press(screen.getByText('Mở cài đặt dữ liệu'));
+    expect(mockPush).toHaveBeenCalledWith('/(parent)/cai-dat-du-lieu');
   });
 
   it('thêm ghi chú: hiện loại, nội dung, nguồn "ai khai, vai trò, ngày" và ghi chú nguồn', async () => {
@@ -90,15 +91,13 @@ describe('PA-06 Sức khỏe của con', () => {
     expect(await api.listHealthNotes(childId)).toHaveLength(0);
   });
 
-  it('đã rút MD-SUCKHOE: ghi chú cũ không hiện, phải đồng ý lại và danh sách vẫn rỗng', async () => {
+  it('đã rút MD-SUCKHOE: ghi chú cũ không hiện, màn chỉ chỉ đường tới Cài đặt dữ liệu', async () => {
     const { api, childId } = await setup({ health: true });
     await api.healthNoteAdd({ childId, kind: 'KHAC', content: 'Ghi chú cũ' });
     await api.consentRecord({ childId, purposeCode: 'MD-SUCKHOE', event: 'RUT' });
     await render(<SucKhoe />);
-    await waitFor(() => screen.getByText('Đồng ý lưu thông tin sức khỏe'));
+    await waitFor(() => screen.getByText('Mở cài đặt dữ liệu'));
     expect(screen.queryByText('Ghi chú cũ')).toBeNull();
-    await fireEvent.press(screen.getByText('Đồng ý lưu thông tin sức khỏe'));
-    await waitFor(() => expect(screen.getByText('Chưa có ghi chú nào.')).toBeTruthy());
-    expect(screen.queryByText('Ghi chú cũ')).toBeNull();
+    expect(screen.queryByText('Thêm ghi chú')).toBeNull();
   });
 });

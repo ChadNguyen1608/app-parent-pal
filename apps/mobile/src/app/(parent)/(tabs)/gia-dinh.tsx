@@ -14,7 +14,7 @@ function pairText(c: Child): string {
   return 'Chưa ghép máy';
 }
 
-// PA-03 rút gọn: thẻ từng con + lối vào PA-06 (sức khỏe của con), PA-13 (ghép máy), PA-14 (PIN), PA-15 (báo của con), PA-32, PA-33, PA-35, PA-38.
+// PA-03 rút gọn: thẻ từng con + lối vào PA-06 (sức khỏe của con), PA-13 (ghép máy), PA-14 (PIN), PA-15 (báo của con), PA-32 (quyền riêng tư), Cài đặt dữ liệu (D-73), PA-33, PA-35, PA-38.
 export default function GiaDinh() {
   const router = useRouter();
   const { api, home, refreshHome } = useApp();
@@ -48,7 +48,8 @@ export default function GiaDinh() {
         </View>
       ))}
       {alertsOn ? <Btn label={unseen > 0 ? `Thông báo của con (${unseen} chưa xem)` : 'Thông báo của con'} kind="secondary" onPress={() => router.push('/(parent)/thong-bao')} /> : null}
-      <Btn label="Quyền riêng tư và đồng ý" kind="secondary" onPress={() => router.push('/(parent)/quyen-rieng-tu')} />
+      <Btn label="Cài đặt dữ liệu" kind="secondary" onPress={() => router.push('/(parent)/cai-dat-du-lieu')} />
+      <Btn label="Quyền riêng tư và điều khoản" kind="secondary" onPress={() => router.push('/(parent)/quyen-rieng-tu')} />
       <Btn label="Dữ liệu của gia đình" kind="secondary" onPress={() => router.push('/(parent)/du-lieu')} />
       <Btn label="Xóa tài khoản và dữ liệu" kind="secondary" onPress={() => router.push('/(parent)/xoa')} />
       <Btn label="Đặt hoặc đổi mã PIN" kind="secondary" onPress={() => router.push('/(parent)/dat-pin')} />

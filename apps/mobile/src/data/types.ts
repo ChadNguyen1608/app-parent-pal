@@ -47,6 +47,8 @@ export type Purpose = { code: string; nameVi: string; kind: 'LOI' | 'TUY_CHON'; 
 export type PurposeStatus = 'CHUA_HOI' | 'DANG_BAT' | 'DA_RUT';
 export type ConsentOverview = { purposes: Purpose[]; states: Record<string, { state: PurposeStatus; activeSince: string | null }> };
 
+export type ChildSettings = { aiChatEnabled: boolean };
+
 export type ConsentEvent = 'DONG_Y' | 'RUT';
 export type ConsentRecordInput = {
   childId: string;
@@ -151,6 +153,9 @@ export interface Api {
   getConsentOverview(childId: string): Promise<ConsentOverview>;
   /** PA-02, PA-32: ghi đồng ý hoặc rút một mục (consent_record). */
   consentRecord(input: ConsentRecordInput): Promise<ConsentRecordResult>;
+  /** D-73, Cài đặt dữ liệu: cài đặt của một con (hiện chỉ ai_chat_enabled, mặc định tắt; chuẩn bị cho chặng sau). */
+  childSettingGet(childId: string): Promise<ChildSettings>;
+  childSettingSet(childId: string, key: 'ai_chat_enabled', value: boolean): Promise<ChildSettings>;
   /** PA-35 lần 1: rút toàn bộ bước 1, máy chủ trả hệ quả và mã xác nhận dùng một lần (consent_withdraw_all). */
   withdrawAllStart(childId: string): Promise<WithdrawStep1>;
   /** PA-36 lần 2: rút toàn bộ bước 2, gửi mã của bước 1. */

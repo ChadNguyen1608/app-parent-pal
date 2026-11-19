@@ -12,10 +12,10 @@ import type { Api, Binding, Home, SessionInfo } from '../data/types';
 import { APP_VARIANT } from '../variant';
 
 /**
- * Phụ huynh: loading → out (PA-01) → needHome (tạo hộ, con) → needConsent (PA-02, QL chưa đồng ý mục lõi) → ready.
+ * Phụ huynh: loading → out (PA-01) → needHome (tạo hộ, thêm con; đồng ý ghi mặc định, D-73) → ready.
  * frozen: hộ đóng băng (PA-39). closing: hộ đang chờ xóa (đã gửi yêu cầu xóa gia đình).
  */
-export type ParentStage = 'loading' | 'out' | 'needHome' | 'needConsent' | 'frozen' | 'closing' | 'ready';
+export type ParentStage = 'loading' | 'out' | 'needHome' | 'frozen' | 'closing' | 'ready';
 /** Máy con: loading → unpaired (CA-01, CA-02) → justPaired (CA-03) → intro (CA-16) → ready. */
 export type ChildStage = 'loading' | 'unpaired' | 'justPaired' | 'intro' | 'ready';
 
@@ -236,9 +236,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
               ? 'frozen'
               : home.children.length === 0
                 ? 'needHome'
-                : home.role === 'PRIMARY' && home.children.some((c) => !c.coreConsent)
-                  ? 'needConsent'
-                  : 'ready';
+                : 'ready';
 
   const value = useMemo<Ctx>(
     () => ({

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { createSupabaseApi } from '../src/data/api.ts';
-import { effectiveCodes } from '../src/data/consent.ts';
+import { DEFAULT_PURPOSES, effectiveCodes, recordDefaultConsents } from '../src/data/consent.ts';
 import { ApiError, toApiError } from '../src/data/errors.ts';
 import { MOCK_ALERT_MAX_PER_HOUR, MOCK_PURPOSES, createMockApi, type MockApi } from '../src/data/mock.ts';
 
@@ -367,4 +367,33 @@ test('api.ts: RATE_LIMITED của child_alert_send thành lời Việt của máy
     assert.equal(e.userMessage, 'Đã báo nhiều lần, hãy chờ một lúc.');
     return true;
   });
+});
+
+test('D-73: recordDefaultConsents ghi MD-LICH, MD-SUCKHOE, MD-CONBAO theo thứ tự; cả ba hiệu lực; gọi lặp cùng khóa không ghi lại', async () => {
+  const { api, childId } = await setup();
+  const order: string[] = [];
+  const orig = api.consentRecord.bind(api);
+  api.consentRecord = async (i) => {
+    order.push(i.purposeCode);
+    return orig(i);
+  };
+  const keys: Record<string, string> = {};
+  await recordDefaultConsents(api, childId, keys);
+  assert.deepEqual(order, ['MD-LICH', 'MD-SUCKHOE', 'MD-CONBAO']);
+  assert.deepEqual([...DEFAULT_PURPOSES], order);
+  assert.deepEqual(effectiveCodes(await api.getConsentOverview(childId)), ['MD-LICH', 'MD-SUCKHOE', 'MD-CONBAO']);
+  const c = (await api.getHome())!.children[0];
+  assert.deepEqual([c.coreConsent, c.healthConsent, c.alertConsent], [true, true, true]);
+  assert.equal(Object.keys(keys).length, 3, 'mỗi mục một khóa gửi lặp');
+  await recordDefaultConsents(api, childId, keys); // sau lỗi giữa chừng, bấm lại là an toàn
+  assert.equal((await api.getConsentOverview(childId)).states['MD-CONBAO'].state, 'DANG_BAT');
+});
+
+test('D-73: cài đặt ai_chat_enabled mặc định tắt; chỉ QL đổi; tắt luôn được kể cả khi đóng băng', async () => {
+  const { api, childId } = await setup();
+  assert.deepEqual(await api.childSettingGet(childId), { aiChatEnabled: false });
+  assert.deepEqual(await api.childSettingSet(childId, 'ai_chat_enabled', true), { aiChatEnabled: true });
+  assert.deepEqual(await api.childSettingGet(childId), { aiChatEnabled: true });
+  assert.deepEqual(await api.childSettingSet(childId, 'ai_chat_enabled', false), { aiChatEnabled: false });
+  await rejects(api.childSettingGet('khong-co'), 'NOT_FOUND');
 });

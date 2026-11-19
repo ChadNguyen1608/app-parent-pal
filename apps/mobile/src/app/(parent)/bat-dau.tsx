@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { View } from 'react-native';
 
+import { recordDefaultConsents } from '@/data/consent';
 import { uuidv4 } from '@/data/uuid';
 import { checkCallName, parseGrade } from '@/data/validate';
 import { useApp } from '@/state/app';
@@ -9,7 +10,8 @@ import { Btn, Choice, Field, H1, Notice, P, Screen } from '@/ui/kit';
 import { useAction } from '@/ui/useAction';
 
 // Lần đầu sau khi đăng nhập: tạo hộ (family_create) rồi hồ sơ con tối thiểu (PA-04 rút gọn).
-// Chưa có PA-02 (đồng ý) và PA-05..07: thuộc task sau. Chỉ nhập tên gọi, không họ tên đầy đủ.
+// D-73: không còn màn đồng ý (PA-02). Ngay sau child_create, ghi đồng ý lõi và hai mục riêng (sức khỏe, con báo bố mẹ) mặc định;
+// phụ huynh tắt sau trong Cài đặt dữ liệu. PA-05..07 thuộc task sau. Chỉ nhập tên gọi, không họ tên đầy đủ.
 export default function BatDau() {
   const { api, home, refreshHome } = useApp();
   const [householdId, setHouseholdId] = useState<string | null>(home?.householdId ?? null);
@@ -20,6 +22,7 @@ export default function BatDau() {
   const [hasDevice, setHasDevice] = useState<boolean | null>(null);
   const [errors, setErrors] = useState<Record<string, string | null>>({});
   const key = useRef(uuidv4());
+  const consentKeys = useRef<Record<string, string>>({});
   const fam = useAction();
   const kid = useAction();
 
@@ -46,7 +49,8 @@ export default function BatDau() {
     setErrors(e);
     if (Object.values(e).some(Boolean) || !householdId || hasDevice === null) return;
     await kid.run(async () => {
-      await api.childCreate({
+      // Gửi lại sau lỗi dùng cùng khóa nên không tạo con thứ hai; các khóa đồng ý cũng giữ nguyên.
+      const { childId } = await api.childCreate({
         householdId,
         callName: childName,
         grade: g.grade,
@@ -54,6 +58,7 @@ export default function BatDau() {
         hasDevice,
         idempotencyKey: key.current,
       });
+      await recordDefaultConsents(api, childId, consentKeys.current);
       await refreshHome(); // cổng ở _layout tự chuyển vào khung chính
     });
   }

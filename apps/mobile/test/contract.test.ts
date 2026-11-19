@@ -145,6 +145,8 @@ async function driveApi(): Promise<Call[]> {
     household_reopen: { ok: true, changed: true },
     deletion_request: { ok: true, replay: false, deletion_request_id: 'd', accepted_at: 'x', state: 'CHO_QUYET_HAN', hard_deleted: false },
     export_request: { ok: true },
+    child_setting_get: { ok: true, ai_chat_enabled: false },
+    child_setting_set: { ok: true, key: 'ai_chat_enabled', value: true, changed: true },
   };
   /** Truy vấn giả: mọi bộ lọc trả chính nó; await ra danh sách rỗng; maybeSingle ra null. */
   const query = (table: string, columns: string) => {
@@ -189,6 +191,8 @@ async function driveApi(): Promise<Call[]> {
   await api.deletionRequest('HO_SO_CON', 'c');
   await api.deletionRequest('GIA_DINH');
   await api.exportRequest('GIA_DINH');
+  await api.childSettingGet('c');
+  await api.childSettingSet('c', 'ai_chat_enabled', true);
   await api.getHome();
   await api.getConsentOverview('c');
   await api.getMyConsent('c');
@@ -311,6 +315,8 @@ test('migration có hàm đồng ý, rút toàn bộ, mở lại, xóa, xuất v
     { name: 'p_binding_epoch', hasDefault: true },
   ]);
   assert.deepEqual(fns.get('child_alert_seen')!.params.map((p) => p.name), ['p_alert']);
+  assert.deepEqual(fns.get('child_setting_get')!.params.map((p) => p.name), ['p_child']);
+  assert.deepEqual(fns.get('child_setting_set')!.params.map((p) => p.name), ['p_child', 'p_key', 'p_value']);
   assert.deepEqual(fns.get('health_note_add')!.params.map((p) => p.name), ['p_child', 'p_kind', 'p_content', 'p_declared_at', 'p_source_note']);
   assert.deepEqual(fns.get('health_note_update')!.params.map((p) => p.name), ['p_note', 'p_patch']);
   assert.deepEqual(fns.get('health_note_delete')!.params.map((p) => p.name), ['p_note']);
