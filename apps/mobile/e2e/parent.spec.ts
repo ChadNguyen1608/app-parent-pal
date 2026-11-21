@@ -1,6 +1,6 @@
 // Tên tab trên web có thêm ký tự giữ chỗ "⏷" (biểu tượng chưa đặt), nên so khớp phần cuối tên.
 // Luồng phụ huynh (EXPO_PUBLIC_API_MOCK=1: OTP và mã ghép đều 123456).
-// Gói dịch vụ (D-68): mock mặc định TRIAL (không ghép máy được); ?plan=PREMIUM|FREE|TRIAL trên URL chọn gói. Luồng ghép máy dùng PREMIUM.
+// Gói dịch vụ (D-68, D-72): mock mặc định TRIAL (không ghép máy được); ?plan=PREMIUM|FREE|TRIAL trên URL chọn gói. Luồng ghép máy dùng PREMIUM.
 import { expect, test, type Page } from '@playwright/test';
 
 const shot = (page: Page, name: string) => expect(page).toHaveScreenshot(`${name}.png`);
@@ -130,7 +130,8 @@ async function giaDinhVoiGoi(page: Page, plan?: 'FREE' | 'TRIAL' | 'PREMIUM') {
 test('gói dùng thử (mặc định): hiện gói, ghép máy bị khóa và được giải thích, không vào được màn nhập mã', async ({ page }) => {
   await giaDinhVoiGoi(page);
   await expect(page.getByText('Gói: Dùng thử')).toBeVisible();
-  await expect(page.getByText(/Đã tạo 0\/1 kế hoạch\. Còn 3 lần chỉnh sửa\./)).toBeVisible();
+  await expect(page.getByText('Mỗi con tạo được 1 kế hoạch và chỉnh sửa 3 lần.')).toBeVisible();
+  await expect(page.getByText('Chưa tạo kế hoạch (tạo được 1 kế hoạch).')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Ghép máy của con', exact: true })).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Ghép máy của con (cần Premium)' }).click();
@@ -141,10 +142,10 @@ test('gói dùng thử (mặc định): hiện gói, ghép máy bị khóa và �
   await expect(page.getByText('Gói: Dùng thử')).toBeVisible();
 });
 
-test('gói miễn phí: nói rõ chưa tạo được kế hoạch; ghép máy bị khóa', async ({ page }) => {
+test('gói miễn phí: nhập thông tin và hỏi Pal được, chưa xem trước và tạo lịch; ghép máy bị khóa', async ({ page }) => {
   await giaDinhVoiGoi(page, 'FREE');
   await expect(page.getByText('Gói: Miễn phí')).toBeVisible();
-  await expect(page.getByText('Chưa tạo được kế hoạch.')).toBeVisible();
+  await expect(page.getByText('Nhập thông tin con và hỏi Pal được; chưa xem trước và tạo lịch được.')).toBeVisible();
   await page.getByRole('button', { name: 'Ghép máy của con (cần Premium)' }).click();
   await expect(page.getByRole('heading', { name: 'Ghép máy cần gói Premium' })).toBeVisible();
 });
@@ -154,4 +155,31 @@ test('gói Premium: hiện gói, ghép máy mở bình thường', async ({ page
   await expect(page.getByText('Gói: Premium')).toBeVisible();
   await page.getByRole('button', { name: 'Ghép máy của con', exact: true }).click();
   await expect(page.getByRole('textbox', { name: /Mã trên máy con/ })).toBeVisible();
+});
+
+test('dùng thử (D-72): gói miễn phí bấm Dùng thử, vào gói TRIAL; nút biến mất; không chụp ảnh', async ({ page }) => {
+  await giaDinhVoiGoi(page, 'FREE');
+  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).click();
+  await expect(page.getByRole('heading', { name: 'Cần gói dùng thử hoặc Premium' })).toBeVisible();
+  await expect(page.getByText(/chưa xem trước và tạo lịch/).last()).toBeVisible();
+  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).click();
+  await expect(page.getByText('Gói: Dùng thử')).toBeVisible();
+  await expect(page.getByText('Mỗi con tạo được 1 kế hoạch và chỉnh sửa 3 lần.')).toBeVisible();
+  await expect(page.getByRole('button', { name: /^Dùng thử \d+ ngày$/ })).toHaveCount(0);
+});
+
+test('dùng thử (D-72): máy hoặc email đã dùng thử -> lời từ chối tiếng Việt, vẫn FREE', async ({ page }) => {
+  await page.goto('/?plan=FREE&trial=used');
+  await page.getByRole('textbox', { name: 'Email của bạn' }).fill('test.gia@example.com');
+  await page.getByRole('button', { name: 'Gửi mã cho mình' }).click();
+  await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
+  await page.getByRole('button', { name: 'Xác nhận' }).click();
+  await themCon(page);
+  await page.getByRole('button', { name: 'Lưu' }).click();
+  await page.getByRole('tab', { name: /Gia đình$/ }).click();
+  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).click();
+  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).click();
+  await expect(page.getByText('Máy này hoặc email này đã dùng thử rồi.')).toBeVisible();
+  await page.getByRole('button', { name: 'Quay lại' }).click();
+  await expect(page.getByText('Gói: Miễn phí')).toBeVisible();
 });

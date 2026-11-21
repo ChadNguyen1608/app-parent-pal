@@ -1,10 +1,12 @@
-// D-68: gói dịch vụ trong app phụ huynh: tab Gia đình hiện gói và khóa nút ghép máy; màn ghép máy giải thích khi chưa PREMIUM;
+// D-68, D-72: gói dịch vụ trong app phụ huynh (và máy con tạm dừng): tab Gia đình hiện gói và khóa nút ghép máy; màn ghép máy giải thích khi chưa PREMIUM;
 // máy chủ báo PLAN_REQUIRED thì hiện màn "Cần gói" thay vì lỗi đỏ.
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 
 import GhepMay from '../src/app/(parent)/ghep-may';
 import GiaDinh from '../src/app/(parent)/(tabs)/gia-dinh';
 import CanGoi from '../src/app/(parent)/can-goi';
+import TamDung from '../src/app/(child)/tam-dung';
+import { createMockApi } from '../src/data/mock';
 import type { PlanTier } from '../src/data/types';
 import { parentWithChild } from './helpers';
 
@@ -37,7 +39,8 @@ describe('Tab Gia đình theo gói (D-68)', () => {
     await setup('TRIAL', true);
     await render(<GiaDinh />);
     expect(screen.getByText('Gói: Dùng thử')).toBeTruthy();
-    expect(screen.getByText(/Đã tạo 0\/1 kế hoạch\. Còn 3 lần chỉnh sửa\./)).toBeTruthy();
+    expect(screen.getByText('Mỗi con tạo được 1 kế hoạch và chỉnh sửa 3 lần.')).toBeTruthy();
+    expect(screen.getByText('Chưa tạo kế hoạch (tạo được 1 kế hoạch).')).toBeTruthy();   // mức dùng của TỪNG CON (D-72)
     expect(screen.queryByText('Ghép máy của con')).toBeNull();
     await fireEvent.press(screen.getByText('Ghép máy của con (cần Premium)'));
     expect(mockPush).toHaveBeenCalledWith({ pathname: '/(parent)/can-goi', params: { rule: 'D-68.premium' } });
@@ -47,8 +50,20 @@ describe('Tab Gia đình theo gói (D-68)', () => {
     await setup('FREE', true);
     await render(<GiaDinh />);
     expect(screen.getByText('Gói: Miễn phí')).toBeTruthy();
-    expect(screen.getByText('Chưa tạo được kế hoạch.')).toBeTruthy();
+    expect(screen.getByText('Nhập thông tin con và hỏi Pal được; chưa xem trước và tạo lịch được.')).toBeTruthy();
     expect(screen.getByText('Ghép máy của con (cần Premium)')).toBeTruthy();
+    await fireEvent.press(screen.getByText('Dùng thử 7 ngày'));      // lối vào dùng thử (D-72)
+    expect(mockPush).toHaveBeenCalledWith({ pathname: '/(parent)/can-goi', params: { rule: 'D-68.free' } });
+  });
+
+  it('không có nút Dùng thử khi gói không phải FREE hoặc hộ đã dùng thử', async () => {
+    await setup('TRIAL', true);
+    const view = await render(<GiaDinh />);
+    expect(screen.queryByText(/^Dùng thử \d+ ngày$/)).toBeNull();
+    view.unmount();
+    await setup('PREMIUM', true);
+    await render(<GiaDinh />);
+    expect(screen.queryByText(/^Dùng thử \d+ ngày$/)).toBeNull();
   });
 
   it('PREMIUM: nút ghép máy bình thường, đi tới màn ghép máy', async () => {
@@ -88,15 +103,75 @@ describe('Màn ghép máy và màn "Cần gói" (D-68)', () => {
   });
 
   it.each([
-    ['D-68.trial_plan', 'Gói dùng thử đã tạo đủ kế hoạch'],
     ['D-68.trial_edit', 'Đã dùng hết lượt chỉnh sửa'],
     ['D-68.free', 'Cần gói dùng thử hoặc Premium'],
     ['ma-la', 'Cần gói dùng thử hoặc Premium'],
     [undefined, 'Cần gói dùng thử hoặc Premium'],
   ])('màn can-goi với quy tắc %s: tiêu đề "%s", có lời về thanh toán', async (rule, title) => {
     mockParams = rule ? { rule } : {};
+    mockUseApp.mockReturnValue({ api: {}, plan: null, refreshPlan: async () => undefined });
     await render(<CanGoi />);
     expect(screen.getByText(title)).toBeTruthy();
     expect(screen.getByText(/chưa có thanh toán/)).toBeTruthy();
+  });
+});
+
+describe('Dùng thử trên màn "Cần gói" (D-72)', () => {
+  it('FREE chưa dùng thử: có nút "Dùng thử 7 ngày"; bấm thì gọi trialStart, nạp lại gói rồi quay lại; không hiện lỗi', async () => {
+    const { api } = await setup('FREE', true);
+    const spy = jest.spyOn(api, 'trialStart');
+    const refreshPlan = jest.fn(async () => undefined);
+    mockUseApp.mockReturnValue({ api, plan: await api.myPlan(), refreshPlan });
+    await render(<CanGoi />);
+    expect(screen.getByText(/nhập thông tin con và hỏi Pal, nhưng chưa xem trước và tạo lịch/)).toBeTruthy();
+    await fireEvent.press(screen.getByText('Dùng thử 7 ngày'));
+    await waitFor(() => expect(mockBack).toHaveBeenCalled());
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(refreshPlan).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect((await api.myPlan()).tier).toBe('TRIAL');
+  });
+
+  it('máy hoặc email đã dùng thử (TRIAL_USED): hiện lời tiếng Việt của máy chủ, không quay lại, không đổi gói', async () => {
+    const api = createMockApi({ latencyMs: 0, plan: 'FREE', trialClaimed: true });
+    await api.auth.sendEmailOtp('test.gia@example.com');
+    await api.auth.verifyEmailOtp('test.gia@example.com', '123456');
+    await api.familyCreate('chị Lan');
+    mockUseApp.mockReturnValue({ api, plan: await api.myPlan(), refreshPlan: async () => undefined });
+    await render(<CanGoi />);
+    await fireEvent.press(screen.getByText('Dùng thử 7 ngày'));
+    await waitFor(() => expect(screen.getByText('Máy này hoặc email này đã dùng thử rồi.')).toBeTruthy());
+    expect(mockBack).not.toHaveBeenCalled();
+    expect((await api.myPlan()).tier).toBe('FREE');
+  });
+
+  it('không mời dùng thử khi: lý do là ghép máy hay hết lượt sửa, gói không phải FREE, hộ đã dùng thử, hoặc chưa biết gói', async () => {
+    const free = createMockApi({ latencyMs: 0, plan: 'FREE' });
+    await free.auth.sendEmailOtp('a@b.vn');
+    await free.auth.verifyEmailOtp('a@b.vn', '123456');
+    const freePlan = await free.myPlan();
+    const cases: Array<[Record<string, string>, unknown]> = [
+      [{ rule: 'D-68.premium' }, freePlan],
+      [{ rule: 'D-68.trial_edit' }, freePlan],
+      [{}, { ...freePlan, tier: 'TRIAL', trialAvailable: false }],
+      [{}, { ...freePlan, trialAvailable: false }],
+      [{}, null],
+    ];
+    for (const [params, plan] of cases) {
+      mockParams = params;
+      mockUseApp.mockReturnValue({ api: free, plan, refreshPlan: async () => undefined });
+      const view = await render(<CanGoi />);
+      expect(screen.queryByText(/^Dùng thử \d+ ngày$/)).toBeNull();
+      view.unmount();
+    }
+  });
+});
+
+describe('Máy con tạm dừng khi hộ không còn PREMIUM (D-72, CA-18)', () => {
+  it('màn tạm dừng nói chờ bố mẹ cập nhật, không có lịch hay nút làm việc khác', async () => {
+    await render(<TamDung />);
+    expect(await screen.findByText('Tạm dừng')).toBeTruthy();
+    expect(screen.getByText(/Tạm dừng, chờ bố mẹ cập nhật/)).toBeTruthy();
+    expect(screen.queryByRole('button')).toBeNull();
   });
 });

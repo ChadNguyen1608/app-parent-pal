@@ -182,11 +182,20 @@ test('gói dịch vụ (D-68): mặc định TRIAL; my_plan theo gói; chỉ PRE
     return { api, childId };
   };
   const def = await mk();
-  assert.deepEqual(await def.api.myPlan(), { tier: 'TRIAL', expired: false, plansUsed: 0, plansMax: 1, editsUsed: 0, editsLeft: 3, palQuestionsLeft: null, trialEndsAt: null });
+  assert.deepEqual(await def.api.myPlan(), {
+    tier: 'TRIAL', expired: false, plansMax: 1, editsMax: 3, children: [{ childId: def.childId, plansUsed: 0, editsUsed: 0, editsLeft: 3 }],
+    palQuestionsLeft: null, trialEndsAt: null, trialAvailable: false, trialDays: 7,
+  });
   const free = await mk('FREE');
-  assert.deepEqual(await free.api.myPlan(), { tier: 'FREE', expired: false, plansUsed: 0, plansMax: 0, editsUsed: 0, editsLeft: 0, palQuestionsLeft: null, trialEndsAt: null });
+  assert.deepEqual(await free.api.myPlan(), {
+    tier: 'FREE', expired: false, plansMax: 0, editsMax: 0, children: [{ childId: free.childId, plansUsed: 0, editsUsed: 0, editsLeft: 0 }],
+    palQuestionsLeft: null, trialEndsAt: null, trialAvailable: true, trialDays: 7,
+  });
   const prem = await mk('PREMIUM');
-  assert.deepEqual(await prem.api.myPlan(), { tier: 'PREMIUM', expired: false, plansUsed: 0, plansMax: null, editsUsed: 0, editsLeft: null, palQuestionsLeft: null, trialEndsAt: null });
+  assert.deepEqual(await prem.api.myPlan(), {
+    tier: 'PREMIUM', expired: false, plansMax: null, editsMax: null, children: [{ childId: prem.childId, plansUsed: 0, editsUsed: 0, editsLeft: null }],
+    palQuestionsLeft: null, trialEndsAt: null, trialAvailable: false, trialDays: 7,
+  });
 
   for (const { api, childId } of [def, free]) {
     await assert.rejects(api.pairConfirm(childId, MOCK_PAIR_CODE, '482915'), (e: unknown) => {
@@ -200,4 +209,40 @@ test('gói dịch vụ (D-68): mặc định TRIAL; my_plan theo gói; chỉ PRE
   assert.equal((await prem.api.pairConfirm(prem.childId, MOCK_PAIR_CODE, '482915')).state, 'CHO_XAC_NHAN_MAY_CON');
   const out = createMockApi(fast);
   await rejects(out.myPlan(), 'UNAUTHENTICATED');
+});
+
+test('dùng thử (D-72): FREE bấm Dùng thử thành TRIAL có hạn; dùng lại, hộ đã có gói, máy/email đã dùng thử đều TRIAL_USED', async () => {
+  const mk = async (o: { plan?: 'FREE' | 'TRIAL' | 'PREMIUM'; trialClaimed?: boolean }) => {
+    const api = createMockApi({ ...fast, now: () => Date.UTC(2026, 10, 19), ...o });
+    await api.auth.sendEmailOtp('a@b.vn');
+    await api.auth.verifyEmailOtp('a@b.vn', MOCK_OTP);
+    await api.familyCreate('chị Lan');
+    return api;
+  };
+  const api = await mk({ plan: 'FREE' });
+  assert.equal((await api.myPlan()).trialAvailable, true);
+  const r = await api.trialStart();
+  assert.equal(r.trialEndsAt, '2026-11-26T00:00:00.000Z');
+  const p = await api.myPlan();
+  assert.equal(p.tier, 'TRIAL'); assert.equal(p.trialAvailable, false); assert.equal(p.trialEndsAt, '2026-11-26T00:00:00.000Z');
+  await assert.rejects(api.trialStart(), (e: unknown) => e instanceof ApiError && e.code === 'TRIAL_USED' && e.rule === 'D-72.claim');
+  await rejects((await mk({ plan: 'PREMIUM' })).trialStart(), 'TRIAL_USED');
+  await rejects((await mk({ plan: 'TRIAL' })).trialStart(), 'TRIAL_USED');
+  const claimed = await mk({ plan: 'FREE', trialClaimed: true });
+  await rejects(claimed.trialStart(), 'TRIAL_USED');
+  assert.equal((await claimed.myPlan()).tier, 'FREE');
+  await rejects(createMockApi(fast).trialStart(), 'UNAUTHENTICATED');
+  await rejects(createMockApi({ ...fast, plan: 'FREE', frozen: true }).trialStart(), 'UNAUTHENTICATED');
+});
+
+test('máy con: my_family_state báo planActive chỉ khi PREMIUM; đóng băng báo riêng', async () => {
+  for (const [plan, active] of [['PREMIUM', true], ['TRIAL', false], ['FREE', false]] as const) {
+    const api = createMockApi({ ...fast, plan });
+    await rejects(api.myFamilyState(), 'UNAUTHENTICATED');
+    await api.auth.signInAnonymously();
+    assert.deepEqual(await api.myFamilyState(), { frozen: false, planActive: active });
+  }
+  const f = createMockApi({ ...fast, plan: 'PREMIUM', frozen: true });
+  await f.auth.signInAnonymously();
+  assert.deepEqual(await f.myFamilyState(), { frozen: true, planActive: true });
 });

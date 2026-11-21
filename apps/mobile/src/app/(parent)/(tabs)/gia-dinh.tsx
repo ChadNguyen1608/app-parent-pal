@@ -2,7 +2,7 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { PLAN_RULES, canPair, planLines, tierLabel } from '@/data/plan';
+import { PLAN_RULES, canPair, childPlanLine, planLines, tierLabel } from '@/data/plan';
 import type { Child } from '@/data/types';
 import { useApp } from '@/state/app';
 import { Btn, H1, P, Screen } from '@/ui/kit';
@@ -38,6 +38,9 @@ export default function GiaDinh() {
               {line}
             </P>
           ))}
+          {plan.tier === 'FREE' && plan.trialAvailable ? (
+            <Btn label={`Dùng thử ${plan.trialDays} ngày`} kind="secondary" onPress={() => router.push({ pathname: '/(parent)/can-goi', params: { rule: PLAN_RULES.free } })} />
+          ) : null}
         </View>
       ) : null}
       {home?.children.map((c) => (
@@ -48,6 +51,7 @@ export default function GiaDinh() {
             {' · '}
             {pairText(c)}
           </P>
+          {childPlanLine(plan, c.id) ? <P muted>{childPlanLine(plan, c.id)}</P> : null}
           {c.hasDevice && c.pairState !== 'PAIRED' ? (
             pairLocked ? (
               <Btn label="Ghép máy của con (cần Premium)" kind="secondary" onPress={() => router.push({ pathname: '/(parent)/can-goi', params: { rule: PLAN_RULES.premium } })} />

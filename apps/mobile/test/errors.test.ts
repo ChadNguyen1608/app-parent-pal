@@ -105,3 +105,14 @@ test('PLAN_REQUIRED (D-68): mã máy chủ, lời tiếng Việt của máy ch�
   assert.equal(toApiError({ status: 402, message: 'x' }).code, 'PLAN_REQUIRED');
   assert.equal(apiErrorFromFailure({ ok: false, error: { code: 'PLAN_REQUIRED', rule: 'D-68.free', message_vi: 'Cần gói dùng thử hoặc Premium.' } }, 0).code, 'PLAN_REQUIRED');
 });
+
+test('TRIAL_USED (409, D-72): lấy lời tiếng Việt của máy chủ; thiếu lời thì dùng câu dự phòng, không lộ mã', () => {
+  const e = toApiError({ message: 'TRIAL_USED', details: 'D-72.claim', hint: 'Máy này hoặc email này đã dùng thử rồi.', code: 'PT409' });
+  assert.equal(e.code, 'TRIAL_USED');
+  assert.equal(e.rule, 'D-72.claim');
+  assert.equal(e.userMessage, 'Máy này hoặc email này đã dùng thử rồi.');
+  const f = toApiError({ message: 'TRIAL_USED', details: 'D-72.household', code: 'PT409' });
+  assert.equal(f.code, 'TRIAL_USED');
+  assert.match(f.userMessage, /đã dùng thử/);
+  assert.ok(!/TRIAL_USED|D-72/.test(f.userMessage));
+});

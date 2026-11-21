@@ -100,7 +100,9 @@ async function driveApi(): Promise<Call[]> {
     pair_accept: { ok: true, replay: false, binding_id: 'b', child_id: 'c', epoch: 2 },
     pair_decline: { ok: true, declined: true },
     unlink_device: { ok: true, unlinked: true, replay: false, epoch: 3 },
-    my_plan: { ok: true, tier: 'TRIAL', expired: false, plans_used: 0, plans_max: 1, edits_used: 0, edits_left: 3, pal_questions_left: null, trial_ends_at: null },
+    my_plan: { ok: true, tier: 'TRIAL', expired: false, plans_max: 1, edits_max: 3, children: [{ child_id: 'c', plans_used: 0, edits_used: 0, edits_left: 3 }], pal_questions_left: null, trial_ends_at: null, trial_available: false, trial_days: 7 },
+    trial_start: { ok: true, tier: 'TRIAL', trial_ends_at: 'x' },
+    my_family_state: { ok: true, state: 'HOAT_DONG', frozen: false, plan_active: true },
   };
   const client = {
     schema: () => ({
@@ -131,11 +133,13 @@ async function driveApi(): Promise<Call[]> {
   await api.unlinkDevice('c', '246801', 2);
   await api.unlinkDevice('c', '246801');
   await api.myPlan();
+  await api.trialStart();
+  await api.myFamilyState();
   return calls;
 }
 
 test('migration có đủ hàm RPC và phân tích được', () => {
-  for (const f of ['family_create', 'touch_active', 'child_create', 'pair_code_create', 'pair_confirm', 'pair_pending', 'pair_accept', 'pair_decline', 'pin_set', 'unlink_device', 'my_plan']) {
+  for (const f of ['family_create', 'touch_active', 'child_create', 'pair_code_create', 'pair_confirm', 'pair_pending', 'pair_accept', 'pair_decline', 'pin_set', 'unlink_device', 'my_plan', 'trial_start', 'my_family_state']) {
     assert.ok(fns.has(f), `migration thiếu app.${f}`);
   }
   assert.deepEqual(fns.get('pair_confirm')!.params, [
@@ -181,7 +185,9 @@ test('trường kết quả mà client đọc có trong jsonb_build_object của
     pair_accept: ['ok', 'child_id', 'epoch'],
     pair_decline: ['ok'],
     unlink_device: ['ok'],
-    my_plan: ['ok', 'tier', 'expired', 'plans_used', 'plans_max', 'edits_used', 'edits_left', 'pal_questions_left', 'trial_ends_at'],
+    my_plan: ['ok', 'tier', 'expired', 'plans_max', 'edits_max', 'children', 'child_id', 'plans_used', 'edits_used', 'edits_left', 'pal_questions_left', 'trial_ends_at', 'trial_available', 'trial_days'],
+    trial_start: ['ok', 'trial_ends_at'],
+    my_family_state: ['ok', 'frozen', 'plan_active'],
   };
   for (const [fn, fields] of Object.entries(reads)) {
     let body = fns.get(fn)!.body;
@@ -231,8 +237,20 @@ test('PLAN_REQUIRED (D-68): app.fail trả PT402; my_plan không tham số; pair
   assert.deepEqual(fns.get('my_plan')!.params, []);
   assert.match(fns.get('pair_confirm')!.body, /plan_require_premium/);
   assert.match(fns.get('pair_accept')!.body, /plan_require_premium/);
-  assert.match(fns.get('profile_save')!.body, /plan_check_schedule/);
+  assert.doesNotMatch(fns.get('profile_save')!.body, /plan_check_schedule/, 'D-72: lưu hồ sơ không xét gói (FREE nhập được)');
   assert.match(fns.get('schedule_commit_apply')!.body, /plan_check_schedule/);
+  assert.match(fns.get('schedule_plan_check')!.body, /plan_check_schedule/);
   // Mã quy tắc mà plan.ts nhận diện phải do máy chủ thật sự phát ra (private.plan_*).
   for (const rule of Object.values(PLAN_RULES)) assert.ok(sql.includes(`'${rule}'`), `migration không phát quy tắc ${rule}`);
+});
+
+test('D-72: trial_start nhận đúng một băm 64 hex; TRIAL_USED là PT409; máy chủ phát đúng các quy tắc app dựa vào; my_family_state có plan_active', () => {
+  assert.deepEqual(fns.get('trial_start')!.params, [{ name: 'p_device_hash', hasDefault: false }]);
+  assert.match(fns.get('trial_start')!.body, /\^\[0-9a-f\]\{64\}\$/);
+  assert.match(sql, /when 'TRIAL_USED'\s+then 'PT409'/);
+  assert.match(fns.get('trial_start')!.body, /'TRIAL_USED',\s*'D-72\.claim'/);
+  assert.match(fns.get('trial_start')!.body, /'TRIAL_USED',\s*'D-72\.household'/);
+  assert.deepEqual(fns.get('schedule_plan_check')!.params, [{ name: 'p_profile', hasDefault: false }]);
+  assert.match(fns.get('my_family_state')!.body, /'plan_active'/);
+  assert.ok(granted.has('trial_start') && granted.has('schedule_plan_check') && granted.has('my_family_state'));
 });

@@ -99,7 +99,7 @@ describe('AUD-02: nội dung - không PIN, mã ghép, token, chữ tự do, lự
     const codes = admin(`select event_code from private.audit_events order by 1`).rows;
     assert.deepEqual(codes, ['alert.sent', 'binding.paired', 'binding.requested', 'binding.unlinked', 'child.hidden', 'consent.granted',
       'consent.withdrawn', 'deletion.requested', 'health.added', 'health.deleted', 'health.updated', 'household.closing', 'household.frozen',
-      'household.reopened', 'mode.changed', 'plan.changed', 'schedule.committed', 'setting.changed']);
+      'household.reopened', 'mode.changed', 'plan.changed', 'plan.expired', 'schedule.committed', 'setting.changed']);
     assert.ok(!codes.some((c) => /help|checkin|hoi_tham|safety|talk/i.test(c)));
   });
 });

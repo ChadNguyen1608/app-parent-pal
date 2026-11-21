@@ -33,19 +33,27 @@ export type ChildInput = {
 /** Gói dịch vụ của hộ (D-68). */
 export type PlanTier = 'FREE' | 'TRIAL' | 'PREMIUM';
 
-/** Kết quả app.my_plan(). Giá trị null ở *Max / editsLeft nghĩa là không giới hạn (PREMIUM). */
+/** Mức dùng gói của MỘT con (D-72: đếm theo con). editsLeft null = không giới hạn (PREMIUM). */
+export type PlanChildUsage = { childId: string; plansUsed: number; editsUsed: number; editsLeft: number | null };
+
+/** Kết quả app.my_plan(). Giá trị null ở plansMax / editsMax nghĩa là không giới hạn (PREMIUM). Số kế hoạch và lượt sửa là MỖI CON (D-72). */
 export type PlanInfo = {
   tier: PlanTier;
   /** Gói TRIAL đã quá hạn (máy chủ coi như FREE). */
   expired: boolean;
-  plansUsed: number;
   plansMax: number | null;
-  editsUsed: number;
-  editsLeft: number | null;
+  editsMax: number | null;
+  children: PlanChildUsage[];
   /** Số câu hỏi Pal còn lại; null khi chưa có bộ đếm (agent Pal làm sau). */
   palQuestionsLeft: number | null;
   trialEndsAt: string | null;
+  /** Hộ chưa từng dùng thử hay PREMIUM, đang FREE: được bấm "Dùng thử" (máy chủ còn kiểm mã máy và email). */
+  trialAvailable: boolean;
+  trialDays: number;
 };
+
+/** Kết quả app.my_family_state() cho máy con. planActive=false: hộ không PREMIUM, máy con tạm dừng chờ bố mẹ cập nhật (D-72). */
+export type FamilyState = { frozen: boolean; planActive: boolean };
 
 export type PairCode = { code: string; expiresAt: string | null };
 
@@ -81,6 +89,10 @@ export interface Api {
   childCreate(input: ChildInput): Promise<{ childId: string }>;
   /** Gói dịch vụ của hộ và số lượt còn lại (D-68). Chỉ người lớn trong hộ. */
   myPlan(): Promise<PlanInfo>;
+  /** Bắt đầu dùng thử (D-72). Ném TRIAL_USED nếu máy hoặc email đã dùng thử, hoặc hộ đã dùng thử / có gói. */
+  trialStart(): Promise<{ trialEndsAt: string | null }>;
+  /** Máy con: hộ có đóng băng không và gói còn hoạt động không (D-72). */
+  myFamilyState(): Promise<FamilyState>;
   /** pin: bắt buộc ở lần ghép đầu của QL (đặt PIN cùng lúc), không gửi các lần sau. */
   pairConfirm(childId: string, code: string, pin?: string): Promise<PairConfirmResult>;
   pinSet(pin: string): Promise<void>;

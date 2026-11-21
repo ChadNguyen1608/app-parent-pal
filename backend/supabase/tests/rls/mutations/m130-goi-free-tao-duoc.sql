@@ -3,7 +3,7 @@
 do $m$
 declare d text; n text;
 begin
-  d := pg_get_functiondef('private.plan_check_schedule(uuid,boolean)'::regprocedure);
+  d := pg_get_functiondef('private.plan_check_schedule(uuid)'::regprocedure);
   n := replace(d, $f$if v_tier <> 'TRIAL' then$f$, $t$if false then$t$);
   if n = d then raise exception 'đột biến không áp được'; end if;
   execute n;

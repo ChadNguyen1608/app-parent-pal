@@ -32,6 +32,8 @@ type Ctx = {
   // máy con
   childStage: ChildStage;
   childId: string | null;
+  /** Gói của hộ còn hoạt động với máy con (hộ PREMIUM, D-72). false: hiện màn tạm dừng CA-18. Mặc định true tới khi máy chủ báo khác. */
+  childPlanActive: boolean;
   /** binding_epoch của liên kết hiện hành (nhận từ pair_accept); unlink_device phải gửi kèm. */
   bindingEpoch: number | null;
   onPaired: (b: Binding) => void;
@@ -66,6 +68,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
   const [childId, setChildId] = useState<string | null>(null);
   const [bindingEpoch, setBindingEpoch] = useState<number | null>(null);
   const [childStage, setChildStage] = useState<ChildStage>('loading');
+  const [childPlanActive, setChildPlanActive] = useState(true);
 
   const isParent = APP_VARIANT === 'parent';
   const [linkError, setLinkError] = useState<string | null>(null);
@@ -206,6 +209,25 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
     };
   }, [api, isParent, booted, childSession?.userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Máy con đã vào app: hỏi máy chủ gói còn hoạt động không (D-72), lúc vào và mỗi lần app trở lại nền trước. Lỗi mạng thì giữ trạng thái cũ.
+  useEffect(() => {
+    if (isParent || childStage !== 'ready') return;
+    let alive = true;
+    const check = () =>
+      api
+        .myFamilyState()
+        .then((st) => alive && setChildPlanActive(st.planActive))
+        .catch(() => undefined);
+    void check();
+    const sub = AppState.addEventListener('change', (st) => {
+      if (st === 'active') void check();
+    });
+    return () => {
+      alive = false;
+      sub.remove();
+    };
+  }, [api, isParent, childStage]);
+
   const parentStage: ParentStage = !booted
     ? 'loading'
     : !parentSession
@@ -233,6 +255,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       clearLinkError: () => setLinkError(null),
       childStage,
       childId,
+      childPlanActive,
       bindingEpoch,
       onPaired: (b) => {
         setChildId(b.childId);
@@ -265,7 +288,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
         setChildStage('unpaired');
       },
     }),
-    [api, session, parentStage, home, refreshHome, plan, refreshPlan, linkError, childStage, childId, bindingEpoch],
+    [api, session, parentStage, home, refreshHome, plan, refreshPlan, linkError, childStage, childId, childPlanActive, bindingEpoch],
   );
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;

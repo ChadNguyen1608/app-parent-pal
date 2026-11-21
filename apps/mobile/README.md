@@ -136,12 +136,15 @@ Khớp migration `20261115140000` (T1.2), `150000` (T1.5), `160000` (T1.6) và `
 
 **Chưa có trong hợp đồng (Edge Function sau này):** hủy phiên ẩn danh của máy con và xóa token đẩy sau `unlink_device`, thông báo cho QL. Sau `unlink_device` thành công, máy con tự đăng xuất cục bộ.
 
-### Gói dịch vụ (D-68)
+### Gói dịch vụ (D-68, D-72)
 
-- `myPlan()` gọi `my_plan`; `useApp().plan` (null khi chưa nạp được: app không đoán, không khóa theo đoán, máy chủ vẫn quyết). Tab Gia đình hiện gói và số lượt còn lại (`src/data/plan.ts` giữ câu chữ).
+- `myPlan()` gọi `my_plan`; `useApp().plan` (null khi chưa nạp được: app không đoán, không khóa theo đoán, máy chủ vẫn quyết). Tab Gia đình hiện gói; gói TRIAL hiện mức dùng của TỪNG CON (D-72: mỗi con 1 kế hoạch, 3 lần sửa). `src/data/plan.ts` giữ câu chữ.
 - Ghép máy chỉ PREMIUM: chưa PREMIUM thì nút thành "Ghép máy của con (cần Premium)" và dẫn tới màn `can-goi` ("Cần gói dùng thử / Premium"); màn ghép máy cũng tự giải thích nếu vào thẳng. Máy chủ báo `PLAN_REQUIRED` (HTTP 402, quy tắc `D-68.*`) thì màn hiện "Cần gói", không hiện lỗi đỏ.
 - Bản giả lập (`mock.ts`): gói mặc định TRIAL (ghép máy bị chặn như máy chủ). Chọn gói: `createMockApi({ plan })`, hoặc `?plan=FREE|TRIAL|PREMIUM` trên URL bản web (E2E). Test ghép máy (component, E2E) dùng PREMIUM.
-- Câu chữ ở `plan.ts`, `PlanRequired.tsx` là TẠM, chờ chủ sản phẩm duyệt. Chưa có thanh toán trong app (màn nói "báo người phụ trách Parent-Pal để đổi gói").
+- **Dùng thử (D-72)**: màn `can-goi` có nút "Dùng thử N ngày" khi `plan.trialAvailable` (gói FREE chưa từng dùng thử) và lý do không phải ghép máy hay hết lượt sửa; bấm gọi `trialStart()` (RPC `trial_start`), thành công thì nạp lại gói và quay lại. `TRIAL_USED` (409) hiện lời tiếng Việt của máy chủ. Mã máy gửi lên là `sha256(androidId + muối)` (`src/data/device-hash.ts`, SHA-256 thuần TS có test so với `node:crypto`); `expo-application` `getAndroidId()` chỉ đọc ở `src/data/index.ts` (Android; web/mock dùng giá trị giả). App không gửi Android ID thô (có test).
+- **Máy con (D-72)**: `myFamilyState()` (RPC `my_family_state`) hỏi lúc vào và mỗi lần app trở lại nền trước; `useApp().childPlanActive` mặc định true, chỉ false khi máy chủ báo `plan_active = false` (lỗi mạng giữ trạng thái cũ). False thì `(child)/_layout.tsx` đóng nhóm `(tabs)` và mở `tam-dung.tsx` (CA-18, "Tạm dừng, chờ bố mẹ cập nhật"; nút Con cần giúp đỡ vẫn ở thanh trên). Chưa có thông báo đẩy `goi_doi` (T3.5).
+- Bản giả lập: `?trial=used` trên URL (hoặc `trialClaimed`) giả lập máy/email đã dùng thử.
+- Câu chữ ở `plan.ts`, `PlanRequired.tsx`, `tam-dung.tsx` là TẠM, chờ chủ sản phẩm duyệt. Chưa có thanh toán trong app (màn nói "báo người phụ trách Parent-Pal để đổi gói").
 
 ### Đăng nhập bằng link trong thư (D-59)
 

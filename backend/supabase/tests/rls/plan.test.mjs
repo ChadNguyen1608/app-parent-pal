@@ -1,6 +1,8 @@
-// Test D-68: gói dịch vụ FREE / TRIAL / PREMIUM ở cấp hộ (app.household_plans, my_plan, plan_set, chặn tạo/sửa kế hoạch, ghép máy, đồng bộ).
+// Test D-68, D-72: gói dịch vụ FREE / TRIAL / PREMIUM ở cấp hộ (app.household_plans, my_plan, plan_set, chặn tạo/sửa kế hoạch THEO CON, ghép máy, đồng bộ,
+// dùng thử tự phục vụ trial_start, plan_active của máy con, outbox goi_doi, hết hạn).
 // Mã: PLAN-DB (bảng, plan_set), PLAN-AUD (audit plan.changed), PLAN-MY (my_plan), PLAN-GATE (chặn tạo/sửa kế hoạch: profile_save, commit),
-//     PLAN-PAIR (ghép máy chỉ PREMIUM), PLAN-SYNC (outbox lich_moi chỉ PREMIUM), PLAN-PURGE (xóa theo hộ).
+//     PLAN-PAIR (ghép máy chỉ PREMIUM), PLAN-SYNC (outbox lich_moi chỉ PREMIUM), PLAN-PURGE (xóa theo hộ),
+//     PLAN-TRIAL (trial_start, trial_claims: D-72), PLAN-ACTIVE (plan_active), PLAN-NOTIFY (goi_doi), PLAN-EXP (plan.expired).
 // Seed: hai hộ PREMIUM; mỗi test đổi gói bằng setup (giao dịch rồi ROLLBACK). Dữ liệu: chỉ tên giả.
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
@@ -131,7 +133,8 @@ describe('PLAN-DB: bảng household_plans và app.plan_set (chỉ hệ thống)'
     const r = run(MAI, `select app.family_create('chị Mai'); select app.my_plan()`);
     assert.ok(r.ok, r.err);
     const p = J(r, 1);
-    assert.equal(p.tier, 'FREE'); assert.equal(p.plans_max, 0); assert.equal(p.edits_left, 0); assert.equal(p.plans_used, 0);
+    assert.equal(p.tier, 'FREE'); assert.equal(p.plans_max, 0); assert.deepEqual(p.children, []);
+    assert.equal(p.trial_available, true); assert.equal(p.trial_days, 7);
   });
 });
 
@@ -154,29 +157,35 @@ describe('PLAN-AUD: audit plan.changed (chỉ gói cũ và gói mới)', { skip 
   });
 });
 
-describe('PLAN-MY: app.my_plan (người lớn trong hộ)', { skip }, () => {
+describe('PLAN-MY: app.my_plan (người lớn trong hộ, theo con)', { skip }, () => {
   const my = (who, setup = '') => J(run(who, `select app.my_plan()`, { setup }));
-  it('PLAN-MY-01: FREE: không được tạo, không lượt sửa; số kế hoạch đã dùng vẫn hiện', () => {
+  const kid = (p, id) => p.children.find((c) => c.child_id === id);
+  it('PLAN-MY-01: FREE: không được tạo, không lượt sửa; số kế hoạch đã dùng của từng con vẫn hiện; hộ từng PREMIUM thì không còn trial_available', () => {
     const p = my(QL, TIER(HH1, 'FREE'));
-    assert.deepEqual(p, { ok: true, tier: 'FREE', expired: false, plans_used: 1, plans_max: 0, edits_used: 0, edits_left: 0, pal_questions_left: null, trial_ends_at: null });
+    assert.deepEqual(p, { ok: true, tier: 'FREE', expired: false, plans_max: 0, edits_max: 0, pal_questions_left: null, trial_ends_at: null, trial_available: false, trial_days: 7,
+      children: [{ child_id: NA, plans_used: 1, edits_used: 0, edits_left: 0 }, { child_id: BIN, plans_used: 0, edits_used: 0, edits_left: 0 }] });
   });
-  it('PLAN-MY-02: TRIAL: 1 kế hoạch, còn 3 lượt sửa; trừ dần theo phiên bản mới; không âm', () => {
+  it('PLAN-MY-02: TRIAL: mỗi con 1 kế hoạch, còn 3 lượt sửa; trừ dần theo phiên bản mới CỦA CON ĐÓ; không âm', () => {
     let p = my(QL, TIER(HH1, 'TRIAL'));
-    assert.equal(p.tier, 'TRIAL'); assert.equal(p.plans_max, 1); assert.equal(p.plans_used, 1); assert.equal(p.edits_used, 0); assert.equal(p.edits_left, 3);
+    assert.equal(p.tier, 'TRIAL'); assert.equal(p.plans_max, 1); assert.equal(p.edits_max, 3);
+    assert.deepEqual(kid(p, NA), { child_id: NA, plans_used: 1, edits_used: 0, edits_left: 3 });
+    assert.deepEqual(kid(p, BIN), { child_id: BIN, plans_used: 0, edits_used: 0, edits_left: 3 });
     p = my(QL, TIER(HH1, 'TRIAL') + NA_EDITS(2));
-    assert.equal(p.edits_used, 2); assert.equal(p.edits_left, 1);
+    assert.equal(kid(p, NA).edits_used, 2); assert.equal(kid(p, NA).edits_left, 1); assert.equal(kid(p, BIN).edits_left, 3, 'con khác không bị trừ');
     p = my(QL, TIER(HH1, 'TRIAL') + NA_EDITS(5));
-    assert.equal(p.edits_used, 5); assert.equal(p.edits_left, 0);
+    assert.equal(kid(p, NA).edits_used, 5); assert.equal(kid(p, NA).edits_left, 0);
     p = my(QL, TIER(HH1, 'TRIAL', { ends: `now() + interval '5 days'` }));
     assert.match(p.trial_ends_at, /^\d{4}-\d\d-\d\dT/);
-    assert.equal(my(HK, TIER(HH2, 'TRIAL')).plans_used, 0);
-    assert.equal(my(HK, TIER(HH2, 'TRIAL')).edits_left, 3);
+    assert.equal(kid(my(HK, TIER(HH2, 'TRIAL')), SU).plans_used, 0);
+    assert.equal(kid(my(HK, TIER(HH2, 'TRIAL')), SU).edits_left, 3);
   });
   it('PLAN-MY-03: PREMIUM không giới hạn (null); TRIAL quá hạn coi như FREE và báo expired', () => {
     const p = my(QL);
-    assert.equal(p.tier, 'PREMIUM'); assert.equal(p.plans_max, null); assert.equal(p.edits_left, null); assert.equal(p.pal_questions_left, null);
+    assert.equal(p.tier, 'PREMIUM'); assert.equal(p.plans_max, null); assert.equal(p.edits_max, null); assert.equal(p.pal_questions_left, null);
+    assert.equal(kid(p, NA).edits_left, null);
     const e = my(QL, TIER(HH1, 'TRIAL', EXPIRED));
-    assert.equal(e.tier, 'FREE'); assert.equal(e.expired, true); assert.equal(e.edits_left, 0); assert.equal(e.trial_ends_at, null);
+    assert.equal(e.tier, 'FREE'); assert.equal(e.expired, true); assert.equal(kid(e, NA).edits_left, 0); assert.equal(e.trial_ends_at, null);
+    assert.equal(e.trial_available, false);
   });
   it('PLAN-MY-04: ai gọi được: mọi người lớn trong hộ (cả NL); người hộ khác thấy gói hộ mình; máy con, người chưa có hộ, anon bị từ chối', () => {
     assert.equal(my(NL).tier, 'PREMIUM');
@@ -185,31 +194,45 @@ describe('PLAN-MY: app.my_plan (người lớn trong hộ)', { skip }, () => {
     rejected(run(MAI, `select app.my_plan()`), 'FORBIDDEN', 'PT403');
     assert.equal(run(ANON, `select app.my_plan()`).code, '42501');
   });
-  it('PLAN-MY-05: con đã ẩn vẫn tính suất kế hoạch (xóa hồ sơ con không trả lại suất)', () => {
+  it('PLAN-MY-05: con đã ẩn không còn trong danh sách và không ảnh hưởng con khác; NL chỉ thấy con mình được xem', () => {
     const p = my(HK, `${TIER(HH2, 'TRIAL')} ${EDITS(SU, P_SU, MEM_LAN, 1, 1)} update app.children set hidden_at = now(), hidden_reason = 'XOA' where id = '${SU}';`);
-    assert.equal(p.plans_used, 1); assert.equal(p.edits_used, 0);
+    assert.deepEqual(p.children, []);
+    const nl = my(NL);
+    assert.deepEqual(nl.children.map((c) => c.child_id), [NA], 'NL có grant xem bé Na, không thấy bé Bin');
+  });
+  it('PLAN-MY-06: trial_available: hộ chưa có dòng gói hoặc FREE chưa từng dùng thử; false khi từng TRIAL hoặc PREMIUM', () => {
+    assert.equal(my(QL, `delete from app.household_plans where household_id = '${HH1}';`).trial_available, true);
+    assert.equal(my(QL, `update app.household_plans set tier = 'FREE', had_premium = false where household_id = '${HH1}';`).trial_available, true);
+    assert.equal(my(QL).trial_available, false, 'PREMIUM');
+    assert.equal(my(QL, TIER(HH1, 'TRIAL')).trial_available, false, 'đang TRIAL');
   });
 });
 
-describe('PLAN-GATE: chặn tạo và sửa kế hoạch (profile_save, schedule_commit_apply)', { skip }, () => {
-  it('PLAN-GATE-01: FREE: lưu nháp và commit đều PLAN_REQUIRED (402), không ghi gì', () => {
+describe('PLAN-GATE: chặn xem trước và tạo/sửa kế hoạch THEO CON (schedule_plan_check, schedule_commit_apply); lưu hồ sơ không xét gói', { skip }, () => {
+  const SAVE_OK = (who, child, setup) => { const r = run(who, `select app.profile_save('${child}', ${q(JSON.stringify({ budget: null }))})`, { setup }); assert.ok(r.ok, r.err); return r; };
+  const CHECK = (who, profile, setup = '') => run(who, `select app.schedule_plan_check('${profile}')`, { setup });
+  it('PLAN-GATE-01: FREE: lưu hồ sơ ĐƯỢC; xem trước và commit đều PLAN_REQUIRED (402), commit không ghi gì', () => {
     const FREE = TIER(HH1, 'FREE');
-    const r = run(QL, `select app.profile_save('${NA}', ${q(JSON.stringify({ budget: null }))})`, { setup: FREE });
-    PLAN_REQ(r, 'D-68.free');
-    assert.match(r.err, /Cần gói dùng thử hoặc Premium/);
-    const c = commit();
-    PLAN_REQ(COMMIT(c, QL, FREE), 'D-68.free');
-    const n = admin(`select ${versions(NA)}, (select count(*) from app.schedule_profiles where child_id = '${NA}')`);
-    assert.equal(n.rows[0], '1|1');
-    PLAN_REQ(run(HK, `select app.profile_save('${SU}', ${q(JSON.stringify({ budget: null }))})`, { setup: TIER(HH2, 'FREE') }), 'D-68.free');
+    SAVE_OK(QL, NA, FREE);
+    const card = run(QL, `select app.profile_save('${NA}', ${q(JSON.stringify({ cards: [CARD] }))})`, { setup: FREE });
+    assert.ok(card.ok, card.err);
+    const pv = CHECK(QL, P_NA, FREE);
+    PLAN_REQ(pv, 'D-68.free');
+    assert.match(pv.err, /miễn phí chưa xem trước và tạo lịch/);
+    PLAN_REQ(COMMIT(commit(), QL, FREE), 'D-68.free');
+    assert.equal(admin(`select ${versions(NA)}`).rows[0], '1');
+    SAVE_OK(HK, SU, TIER(HH2, 'FREE'));
+    PLAN_REQ(CHECK(HK, P_SU, TIER(HH2, 'FREE')), 'D-68.free');
   });
 
-  it('PLAN-GATE-02: kiểm gói chạy SAU kiểm quyền: NL không grant vẫn FORBIDDEN/NOT_FOUND chứ không PLAN_REQUIRED', () => {
+  it('PLAN-GATE-02: kiểm gói chạy SAU kiểm quyền: NL không grant, hộ khác, máy con nhận FORBIDDEN/NOT_FOUND chứ không PLAN_REQUIRED', () => {
     const FREE = TIER(HH1, 'FREE');
-    rejected(run(NL, `select app.profile_save('${NA}', ${q(JSON.stringify({ budget: null }))})`, { setup: FREE }), 'FORBIDDEN', 'PT403');
-    rejected(run(NL, `select app.profile_save('${BIN}', ${q(JSON.stringify({ budget: null }))})`, { setup: FREE }), 'NOT_FOUND', 'PT404');
-    rejected(run(HK, `select app.profile_save('${NA}', ${q(JSON.stringify({ budget: null }))})`, { setup: FREE }), 'NOT_FOUND', 'PT404');
-    rejected(run(DEV, `select app.profile_save('${NA}', ${q(JSON.stringify({ budget: null }))})`, { setup: FREE }), 'FORBIDDEN', 'PT403');
+    rejected(CHECK(NL, P_BIN, FREE), 'NOT_FOUND', 'PT404');
+    rejected(CHECK(NL, P_NA, FREE), 'FORBIDDEN', 'PT403');
+    rejected(CHECK(HK, P_NA, FREE), 'NOT_FOUND', 'PT404');
+    rejected(CHECK(DEV, P_NA, FREE), 'FORBIDDEN', 'PT403');
+    assert.equal(CHECK(ANON, P_NA, FREE).code, '42501');
+    rejected(run(QL, `select app.schedule_plan_check('00000000-0000-4000-8000-0000000fffff')`, { setup: FREE }), 'NOT_FOUND', 'PT404');
   });
 
   it('PLAN-GATE-03: gửi lại cùng khóa idempotency vẫn trả kết quả cũ khi gói đã hạ xuống FREE (replay chạy trước kiểm gói)', () => {
@@ -221,16 +244,17 @@ describe('PLAN-GATE: chặn tạo và sửa kế hoạch (profile_save, schedule
     PLAN_REQ(run(QL, `select ${commit({ key: '30000000-0000-4000-8000-0000000000a2' }).call}`, { setup: `${TIER(HH1, 'FREE')} ${commit({ key: '30000000-0000-4000-8000-0000000000a2' }).setup}` }), 'D-68.free');
   });
 
-  it('PLAN-GATE-04: TRIAL tạo kế hoạch đầu tiên được (hộ chưa có phiên bản nào)', () => {
+  it('PLAN-GATE-04: TRIAL tạo kế hoạch đầu tiên của con được (con chưa có phiên bản nào); xem trước được', () => {
     const c = commit({ child: SU, profile: P_SU, rev: 0 });
     const r = run(HK, `select ${c.call}; select app.my_plan()`, { setup: `${TIER(HH2, 'TRIAL')} ${c.setup}` });
     assert.ok(r.ok, r.err);
     assert.equal(J(r, 0).rev, 1);
     const p = J(r, 1);
-    assert.equal(p.plans_used, 1); assert.equal(p.edits_used, 0); assert.equal(p.edits_left, 3);
+    assert.deepEqual(p.children, [{ child_id: SU, plans_used: 1, edits_used: 0, edits_left: 3 }]);
+    assert.ok(CHECK(HK, P_SU, TIER(HH2, 'TRIAL')).ok);
   });
 
-  it('PLAN-GATE-05: TRIAL đã có kế hoạch: sửa tối đa 3 lần (phiên bản mới), lần thứ 4 PLAN_REQUIRED', () => {
+  it('PLAN-GATE-05: TRIAL con đã có kế hoạch: sửa tối đa 3 lần (phiên bản mới), lần thứ 4 PLAN_REQUIRED', () => {
     for (const [n, ok] of [[0, true], [2, true], [3, false], [6, false]]) {
       const c = commit({ rev: 1 + n, key: `30000000-0000-4000-8000-00000000b00${n}` });
       const r = COMMIT(c, QL, `${TIER(HH1, 'TRIAL')} ${NA_EDITS(n)}`);
@@ -240,43 +264,51 @@ describe('PLAN-GATE: chặn tạo và sửa kế hoạch (profile_save, schedule
     assert.equal(admin(`select ${versions(NA)}`).rows[0], '1');
   });
 
-  it('PLAN-GATE-06: TRIAL chỉ 1 kế hoạch cho cả hộ: con thứ hai (bé Bin) không tạo được, kể cả lưu nháp', () => {
-    const T = TIER(HH1, 'TRIAL');
-    const c = commit({ child: BIN, profile: P_BIN, rev: 0 });
-    PLAN_REQ(COMMIT(c, QL, T), 'D-68.trial_plan');
-    const s = run(QL, `select app.profile_save('${BIN}', ${q(JSON.stringify({ budget: null }))})`, { setup: T });
-    PLAN_REQ(s, 'D-68.trial_plan');
-    assert.match(s.err, /chỉ tạo được 1 kế hoạch/);
+  it('PLAN-GATE-06: đếm THEO CON: bé Na hết lượt sửa nhưng bé Bin vẫn tạo kế hoạch đầu và sửa đủ 3 lần riêng; hết lượt của Bin không ảnh hưởng Na', () => {
+    const T = TIER(HH1, 'TRIAL') + NA_EDITS(3);
+    PLAN_REQ(COMMIT(commit({ rev: 4, key: '30000000-0000-4000-8000-00000000c001' }), QL, T), 'D-68.trial_edit');   // Na hết lượt
+    const BIN_EDITS = (n) => EDITS(BIN, P_BIN, MEM_HOA, 1, n);
+    const first = COMMIT(commit({ child: BIN, profile: P_BIN, rev: 0, key: '30000000-0000-4000-8000-00000000c002' }), QL, T);
+    assert.ok(first.ok, first.err);                                                                                  // Bin tạo kế hoạch đầu
+    assert.ok(CHECK(QL, P_BIN, T).ok);
+    const third = COMMIT(commit({ child: BIN, profile: P_BIN, rev: 2, key: '30000000-0000-4000-8000-00000000c003' }), QL, `${T} ${BIN_EDITS(2)}`);
+    assert.ok(third.ok, third.err);                                                                                  // Bin: đã có 2 phiên bản (1 sửa) + lần này = lần sửa thứ 2, còn lượt
+    PLAN_REQ(COMMIT(commit({ child: BIN, profile: P_BIN, rev: 4, key: '30000000-0000-4000-8000-00000000c004' }), QL, `${T} ${BIN_EDITS(4)}`), 'D-68.trial_edit');
+    const kids = J(run(QL, `select app.my_plan()`, { setup: `${T} ${BIN_EDITS(4)}` })).children;
+    assert.deepEqual(kids.map((c) => [c.child_id, c.edits_used, c.edits_left]), [[NA, 3, 0], [BIN, 3, 0]]);
   });
 
-  it('PLAN-GATE-07: TRIAL: lưu nháp cho con có kế hoạch được khi còn lượt sửa, hết lượt thì chặn', () => {
-    const ok = run(QL, `select app.profile_save('${NA}', ${q(JSON.stringify({ budget: null }))})`, { setup: TIER(HH1, 'TRIAL') + NA_EDITS(2) });
+  it('PLAN-GATE-07: xem trước (schedule_plan_check) bị chặn khi con hết lượt sửa TRIAL; còn lượt thì qua; lưu hồ sơ vẫn được', () => {
+    const ok = CHECK(QL, P_NA, TIER(HH1, 'TRIAL') + NA_EDITS(2));
     assert.ok(ok.ok, ok.err);
-    const s = run(QL, `select app.profile_save('${NA}', ${q(JSON.stringify({ budget: null }))})`, { setup: TIER(HH1, 'TRIAL') + NA_EDITS(3) });
+    const s = CHECK(QL, P_NA, TIER(HH1, 'TRIAL') + NA_EDITS(3));
     PLAN_REQ(s, 'D-68.trial_edit');
-    assert.match(s.err, /tối đa 3 lần/);
+    assert.match(s.err, /mỗi con tối đa 3 lần/);
+    SAVE_OK(QL, NA, TIER(HH1, 'TRIAL') + NA_EDITS(3));
   });
 
-  it('PLAN-GATE-08: TRIAL quá hạn (trial_ends_at đã qua) bị chặn như FREE', () => {
+  it('PLAN-GATE-08: TRIAL quá hạn (trial_ends_at đã qua) bị chặn như FREE: xem trước, commit; lưu hồ sơ vẫn được', () => {
     const E = TIER(HH1, 'TRIAL', EXPIRED);
-    PLAN_REQ(run(QL, `select app.profile_save('${NA}', ${q(JSON.stringify({ budget: null }))})`, { setup: E }), 'D-68.free');
+    PLAN_REQ(CHECK(QL, P_NA, E), 'D-68.free');
     PLAN_REQ(COMMIT(commit(), QL, E), 'D-68.free');
+    SAVE_OK(QL, NA, E);
   });
 
-  it('PLAN-GATE-09: PREMIUM không giới hạn số lần sửa lẫn số kế hoạch (hai con cùng có kế hoạch)', () => {
+  it('PLAN-GATE-09: PREMIUM không giới hạn số lần sửa lẫn số kế hoạch (hai con cùng có kế hoạch); xem trước được', () => {
     const r = COMMIT(commit({ rev: 13, key: '30000000-0000-4000-8000-00000000b0aa' }), QL, NA_EDITS(12));
     assert.ok(r.ok, r.err);
     const b = COMMIT(commit({ child: BIN, profile: P_BIN, rev: 0, key: '30000000-0000-4000-8000-00000000b0ab' }), QL, NA_EDITS(12));
     assert.ok(b.ok, b.err);
+    assert.ok(CHECK(QL, P_NA, NA_EDITS(12)).ok);
   });
 
-  it('PLAN-GATE-10: đổi tham số (trial_edits_max, trial_plans_max) có hiệu lực không cần sửa hàm', () => {
+  it('PLAN-GATE-10: đổi tham số trial_edits_max có hiệu lực không cần sửa hàm; 0 nghĩa là con đã có kế hoạch không sửa được', () => {
     const c = commit({ rev: 4, key: '30000000-0000-4000-8000-00000000b0ac' });
     PLAN_REQ(COMMIT(c, QL, `${TIER(HH1, 'TRIAL')} ${NA_EDITS(3)}`), 'D-68.trial_edit');
     const up = COMMIT(c, QL, `${TIER(HH1, 'TRIAL')} ${NA_EDITS(3)} update private.params set value_int = 4 where key = 'trial_edits_max';`);
     assert.ok(up.ok, up.err);
-    const two = COMMIT(commit({ child: BIN, profile: P_BIN, rev: 0, key: '30000000-0000-4000-8000-00000000b0ad' }), QL, `${TIER(HH1, 'TRIAL')} update private.params set value_int = 2 where key = 'trial_plans_max';`);
-    assert.ok(two.ok, two.err);
+    const zero = CHECK(QL, P_NA, `${TIER(HH1, 'TRIAL')} update private.params set value_int = 0 where key = 'trial_edits_max';`);
+    PLAN_REQ(zero, 'D-68.trial_edit');
   });
 });
 
@@ -342,5 +374,231 @@ describe('PLAN-PURGE: xóa theo hộ gồm household_plans', { skip }, () => {
     assert.ok(r.ok, r.err);
     assert.equal(J(r, 0).ok, true);
     assert.deepEqual(r.rows.slice(1), ['0', '1', '1']);
+  });
+});
+
+// ================================================================ D-72
+const H1 = 'a'.repeat(64);
+const H2 = 'b'.repeat(64);
+const QL_SUB = '00000000-0000-4000-8000-0000000000a1';
+/** Đưa hộ 1 về FREE chưa từng dùng thử (xóa dòng gói): đủ điều kiện gọi trial_start. */
+const FRESH = `delete from app.household_plans where household_id = '${HH1}';`;
+/** Ghi sẵn một lần dùng thử của hộ khác (hộ ma): mã máy và email thô (được chuẩn hóa + băm như trial_start). */
+const CLAIM = (device, email) => `insert into private.trial_claims (device_hash, email_norm_hash, household_id) values ('${device}', private.email_hash(${q(email)}), gen_random_uuid());`;
+const SET_EMAIL = (email) => `update auth.users set email = ${q(email)} where id = '${QL_SUB}';`;
+const START = (who, hash, setup = '') => run(who, `select app.trial_start('${hash}')`, { setup });
+const USED = (r, rule = 'D-72') => rejected(r, 'TRIAL_USED', 'PT409', rule);
+
+describe('PLAN-TRIAL: app.trial_start và private.trial_claims (D-72)', { skip }, () => {
+  it('PLAN-TRIAL-01: email chuẩn hóa: chữ thường; mọi miền bỏ phần sau "+"; gmail/googlemail bỏ dấu chấm và thành gmail.com; miền khác giữ dấu chấm', () => {
+    const e = (x) => admin(`select private.email_norm(${q(x)})`).rows[0];
+    assert.equal(e('Hoa.Nguyen+Test@Example.Test'), 'hoa.nguyen@example.test');
+    assert.equal(e('  HOA@example.test '), 'hoa@example.test');
+    assert.equal(e('Ho.A.n+x+y@Gmail.com'), 'hoan@gmail.com');
+    assert.equal(e('ho.an@googlemail.com'), 'hoan@gmail.com');
+    assert.equal(e('ho.an@gmail.com.vn'), 'ho.an@gmail.com.vn');
+    assert.equal(e('hoan+@gmail.com'), 'hoan@gmail.com');
+    assert.equal(e('khong-co-a-cong'), 'khong-co-a-cong');
+    assert.equal(admin(`select private.email_hash('HOA+1@example.test') = private.email_hash('hoa@example.test')`).rows[0], 't');
+    assert.equal(admin(`select private.email_hash('ho.a@example.test') = private.email_hash('hoa@example.test')`).rows[0], 'f');
+  });
+
+  it('PLAN-TRIAL-02: hộ đủ điều kiện: TRIAL đủ trial_days (7), ghi một dòng trial_claims chỉ có băm (không email thô, không Android ID), audit plan.changed FREE -> TRIAL do người lớn', () => {
+    const r = run(QL, `select app.trial_start('${H1}'); select app.my_plan();
+      reset role; select count(*), min(device_hash), bool_and(email_norm_hash ~ '^[0-9a-f]{64}$' and position('@' in email_norm_hash) = 0), min(household_id::text) from private.trial_claims;
+      select tier, set_by, trial_ends_at - trial_started_at = interval '7 days', expired_noted_at is null from app.household_plans where household_id = '${HH1}';
+      select actor_kind || '|' || meta::text from app.audit_log where event_code = 'plan.changed' and household_id = '${HH1}' order by at desc, id limit 1`, { setup: FRESH });
+    assert.ok(r.ok, r.err);
+    const o = J(r, 0);
+    assert.equal(o.tier, 'TRIAL'); assert.match(o.trial_ends_at, /^\d{4}-\d\d-\d\dT/);
+    const p = J(r, 1);
+    assert.equal(p.tier, 'TRIAL'); assert.equal(p.trial_available, false); assert.equal(p.expired, false);
+    assert.equal(r.rows[2], `1|${H1}|t|${HH1}`);
+    assert.equal(r.rows[3], 'TRIAL|self|t|t');
+    assert.equal(r.rows[4], 'adult|{"new_tier": "TRIAL", "old_tier": "FREE"}');
+  });
+
+  it('PLAN-TRIAL-03: hộ FREE có dòng gói nhưng chưa từng dùng thử cũng bắt đầu được; sau đó tạo kế hoạch đầu của con được', () => {
+    const r = run(QL, `select app.trial_start('${H1}')`, { setup: `update app.household_plans set tier = 'FREE', had_premium = false where household_id = '${HH1}';` });
+    assert.ok(r.ok, r.err);
+    assert.equal(J(r).tier, 'TRIAL');
+    const c = commit({ child: BIN, profile: P_BIN, rev: 0, key: '30000000-0000-4000-8000-00000000d001' });
+    const k = run(QL, `select app.trial_start('${H1}'); ${as(QL)} select ${c.call}`, { setup: `${FRESH} ${c.setup}` });
+    assert.ok(k.ok, k.err);
+    assert.equal(J(k, 1).rev, 1);
+  });
+
+  it('PLAN-TRIAL-04: lặp theo MÃ MÁY: mã máy đã có trong trial_claims -> TRIAL_USED 409, không đổi gói, không thêm dòng', () => {
+    const r = START(QL, H1, `${FRESH} ${CLAIM(H1, 'nguoi-khac@example.test')}`);
+    USED(r, 'D-72.claim');
+    assert.match(r.err, /Máy này hoặc email này đã dùng thử/);
+    const after = run(QL, `do $t$ begin perform app.trial_start('${H1}'); exception when sqlstate 'PT409' then null; end $t$; reset role;
+      select (select count(*) from private.trial_claims), (select count(*) from app.household_plans where household_id = '${HH1}')`, { setup: `${FRESH} ${CLAIM(H1, 'nguoi-khac@example.test')}` });
+    assert.equal(after.rows.at(-1), '1|0');
+    assert.ok(START(QL, H2, `${FRESH} ${CLAIM(H1, 'nguoi-khac@example.test')}`).ok, 'mã máy khác thì được');
+  });
+
+  it('PLAN-TRIAL-05: lặp theo EMAIL chuẩn hóa: biến thể hoa/thường, "+tag" đều bị chặn; email khác hẳn (kể cả khác dấu chấm ở miền thường) thì được', () => {
+    for (const old of ['HOA@Example.Test', 'hoa+thu1@example.test', 'Hoa+a+b@EXAMPLE.test']) {
+      USED(START(QL, H2, `${FRESH} ${CLAIM(H1, old)}`), 'D-72.claim');
+    }
+    assert.ok(START(QL, H2, `${FRESH} ${CLAIM(H1, 'ho.a@example.test')}`).ok, 'miền thường: dấu chấm là khác');
+    assert.ok(START(QL, H2, `${FRESH} ${CLAIM(H1, 'hoa2@example.test')}`).ok);
+  });
+
+  it('PLAN-TRIAL-06: gmail: biến thể dấu chấm, "+", googlemail đều coi là một email; không áp cho miền khác', () => {
+    const E = SET_EMAIL('Ho.A+abc@gmail.com');
+    for (const old of ['hoa@gmail.com', 'h.o.a@googlemail.com', 'HOA+x@Gmail.com']) {
+      USED(START(QL, H2, `${FRESH} ${E} ${CLAIM(H1, old)}`), 'D-72.claim');
+    }
+    assert.ok(START(QL, H2, `${FRESH} ${E} ${CLAIM(H1, 'hoa@gmail.com.vn')}`).ok);
+    assert.ok(START(QL, H2, `${FRESH} ${E} ${CLAIM(H1, 'hoa@yahoo.com')}`).ok);
+    USED(START(QL, H2, `${FRESH} ${SET_EMAIL('hoa@googlemail.com')} ${CLAIM(H1, 'h.o.a+z@gmail.com')}`), 'D-72.claim');
+  });
+
+  it('PLAN-TRIAL-07: hộ đã từng TRIAL hoặc PREMIUM bị TRIAL_USED (rule D-72.household) dù mã máy/email mới; PREMIUM đang dùng cũng vậy', () => {
+    for (const [name, setup] of [
+      ['đang PREMIUM', ''],
+      ['đang TRIAL', TIER(HH1, 'TRIAL')],
+      ['TRIAL hết hạn', TIER(HH1, 'TRIAL', EXPIRED)],
+      ['FREE nhưng từng TRIAL', `update app.household_plans set tier = 'FREE', trial_started_at = now() - interval '30 days', trial_ends_at = now() - interval '23 days' where household_id = '${HH1}';`],
+      ['FREE nhưng từng PREMIUM', `update app.household_plans set tier = 'FREE' where household_id = '${HH1}';`],
+    ]) {
+      const r = START(QL, H1, setup);
+      assert.equal(r.ok, false, name);
+      USED(r, 'D-72.household');
+    }
+    assert.equal(admin(`select count(*) from private.trial_claims`).rows[0], '0');
+  });
+
+  it('PLAN-TRIAL-08: chỉ người quản lý chính; NL, máy con, người chưa có hộ bị từ chối; anon không có EXECUTE; đầu vào sai; không có email', () => {
+    rejected(START(NL, H1, FRESH), 'FORBIDDEN', 'PT403');
+    rejected(START(DEV, H1, FRESH), 'FORBIDDEN', 'PT403');
+    rejected(START(MAI, H1), 'FORBIDDEN', 'PT403');
+    assert.equal(START(ANON, H1, FRESH).code, '42501');
+    for (const bad of ['', 'xyz', 'A'.repeat(64), 'a'.repeat(63), 'a'.repeat(65)]) rejected(START(QL, bad, FRESH), 'VALIDATION', 'PT422');
+    assert.equal(run(QL, `select app.trial_start(null)`, { setup: FRESH }).code, 'PT422');
+    rejected(START(QL, H1, `${FRESH} ${SET_EMAIL('')}`), 'VALIDATION', 'PT422');
+    rejected(START(QL, H1, `${FRESH} update auth.users set email = null where id = '${QL_SUB}';`), 'VALIDATION', 'PT422');
+    rejected(START(HK, H1, `${FRESH}`), 'TRIAL_USED', 'PT409');                    // hộ 2 đang PREMIUM
+  });
+
+  it('PLAN-TRIAL-09: hộ đóng băng -> FROZEN; hộ ẩn -> NOT_FOUND; không dùng mã máy', () => {
+    rejected(START(QL, H1, `${FRESH} update app.households set state = 'DONG_BANG', frozen_at = now() where id = '${HH1}';`), 'FROZEN', 'PT423');
+    rejected(START(QL, H1, `${FRESH} update app.households set hidden_at = now() where id = '${HH1}';`), 'NOT_FOUND', 'PT404');
+    assert.equal(admin(`select count(*) from private.trial_claims`).rows[0], '0');
+  });
+
+  it('PLAN-TRIAL-10: người dùng, anon không đọc/ghi trial_claims; chỉ service_role', () => {
+    for (const who of [QL, NL, DEV, HK, ANON]) {
+      assert.equal(run(who, `select count(*) from private.trial_claims`).code, '42501');
+      assert.equal(run(who, `insert into private.trial_claims (device_hash, email_norm_hash, household_id) values ('${H1}', '${H2}', gen_random_uuid())`).code, '42501');
+    }
+    assert.equal(run(SVC, `select count(*) from private.trial_claims`).ok, true);
+    assert.equal(admin(`insert into private.trial_claims (device_hash, email_norm_hash, household_id) values ('x', '${H2}', gen_random_uuid())`).code, '23514');
+    assert.equal(admin(`insert into private.trial_claims (device_hash, email_norm_hash, household_id) values ('${H1}', 'y', gen_random_uuid())`).code, '23514');
+    assert.equal(admin(`insert into private.trial_claims (device_hash, email_norm_hash, household_id) values ('${H1}', '${H1}', gen_random_uuid()), ('${H1}', '${H2}', gen_random_uuid())`).code, '23505');
+    assert.equal(admin(`insert into private.trial_claims (device_hash, email_norm_hash, household_id) values ('${H1}', '${H1}', gen_random_uuid()), ('${H2}', '${H1}', gen_random_uuid())`).code, '23505');
+  });
+
+  it('PLAN-TRIAL-11: purge_household KHÔNG xóa trial_claims (chống lặp sau khi xóa hộ), không ghi vào row_counts; vẫn chặn dùng thử lại bằng mã máy cũ', () => {
+    const r = run(SVC, `select app.purge_household('${HH2}', 'GIA_LAP_DIEN_TAP'); select count(*) from private.trial_claims where household_id = '${HH2}';
+      select row_counts::text like '%trial_claims%' from app.deletion_evidence order by purged_at desc limit 1`,
+      { setup: `insert into private.trial_claims (device_hash, email_norm_hash, household_id) values ('${H1}', '${H2}', '${HH2}');` });
+    assert.ok(r.ok, r.err);
+    assert.deepEqual(r.rows.slice(1), ['1', 'f']);
+    USED(START(QL, H1, `${FRESH} insert into private.trial_claims (device_hash, email_norm_hash, household_id) values ('${H1}', '${H2}', gen_random_uuid());`), 'D-72.claim');
+  });
+
+  it('PLAN-TRIAL-12: trial_start gọi lại ngay sau khi thành công -> TRIAL_USED (hộ); sau TRIAL hết hạn không dùng thử lại được', () => {
+    const r = run(QL, `select app.trial_start('${H1}'); ${as(QL)} do $t$ begin perform app.trial_start('${H2}'); exception when sqlstate 'PT409' then null; end $t$; reset role; select (select count(*) from private.trial_claims)`, { setup: FRESH });
+    assert.ok(r.ok, r.err);
+    assert.equal(r.rows.at(-1), '1');
+    USED(run(QL, `select app.trial_start('${H2}')`, { setup: `${FRESH} insert into app.household_plans (household_id, tier, trial_started_at, trial_ends_at)
+      values ('${HH1}', 'FREE', now() - interval '9 days', now() - interval '2 days');` }), 'D-72.household');
+  });
+});
+
+describe('PLAN-ACTIVE: app.my_family_state.plan_active (máy con, D-72)', { skip }, () => {
+  const active = (setup = '') => J(run(DEV, `select app.my_family_state()`, { setup })).plan_active;
+  it('PLAN-ACTIVE-01: chỉ PREMIUM là true; TRIAL (còn hạn), TRIAL quá hạn, FREE đều false; trả đúng ba khóa ngoài ok', () => {
+    assert.equal(active(), true);
+    assert.equal(active(TIER(HH1, 'TRIAL')), false);
+    assert.equal(active(TIER(HH1, 'TRIAL', { ends: `now() + interval '5 days'` })), false);
+    assert.equal(active(TIER(HH1, 'TRIAL', EXPIRED)), false);
+    assert.equal(active(TIER(HH1, 'FREE')), false);
+    assert.equal(active(`delete from app.household_plans where household_id = '${HH1}';`), false);
+    assert.deepEqual(Object.keys(J(run(DEV, `select app.my_family_state()`))).sort(), ['frozen', 'ok', 'plan_active', 'state']);
+  });
+  it('PLAN-ACTIVE-02: đổi gói theo hộ: hạ rồi nâng lại -> false rồi true; hộ khác không ảnh hưởng; liên kết giữ nguyên', () => {
+    const r = run(DEV, `select app.my_family_state(); reset role; update app.household_plans set tier = 'TRIAL', trial_started_at = now() where household_id = '${HH1}'; ${as(DEV)} set local role authenticated;
+      select app.my_family_state(); reset role; update app.household_plans set tier = 'PREMIUM' where household_id = '${HH1}'; ${as(DEV)} set local role authenticated; select app.my_family_state();
+      reset role; select count(*) from app.device_bindings where child_id = '${NA}' and state = 'HIEU_LUC'`);
+    assert.ok(r.ok, r.err);
+    assert.deepEqual([J(r, 0).plan_active, J(r, 1).plan_active, J(r, 2).plan_active, r.rows[3]], [true, false, true, '1']);
+    assert.equal(J(run(DEV, `select app.my_family_state()`, { setup: TIER(HH2, 'FREE') })).plan_active, true);
+  });
+});
+
+describe('PLAN-NOTIFY: outbox goi_doi cho máy con khi hộ vào/ra PREMIUM (D-72)', { skip }, () => {
+  const rows = (extra = '') => `reset role; select coalesce(string_agg(payload_min::text || '|' || recipient_kind || '|' || state, ';'), '') from app.notifications where type = 'goi_doi' and child_id = '${NA}' ${extra}`;
+  const BIND = '00000000-0000-4000-8000-000000000401';
+  it('PLAN-NOTIFY-01: PREMIUM -> TRIAL và TRIAL -> PREMIUM mỗi lần ghi một hàng goi_doi cho máy đã ghép (nội dung tối giản {type,id}); không ghi cho FREE <-> TRIAL', () => {
+    const r = run(SVC, `select app.plan_set('${HH1}', 'TRIAL'); ${rows()}; select app.plan_set('${HH1}', 'FREE'); ${rows()}; select app.plan_set('${HH1}', 'TRIAL'); ${rows()};
+      select app.plan_set('${HH1}', 'PREMIUM'); select count(*) from app.notifications where type = 'goi_doi' and child_id = '${NA}'`);
+    assert.ok(r.ok, r.err);
+    const one = `{"id": "${BIND}", "type": "goi_doi"}|device|CHO_GUI`;
+    assert.equal(r.rows[1], one);
+    assert.equal(r.rows[3], one, 'TRIAL -> FREE: không thêm');
+    assert.equal(r.rows[5], one, 'FREE -> TRIAL: không thêm');
+    assert.equal(r.rows.at(-1), '2', 'TRIAL -> PREMIUM: hàng thứ hai');
+  });
+  it('PLAN-NOTIFY-02: không đổi trạng thái PREMIUM (cùng gói, đổi hạn/ghi chú) không ghi; máy con chỉ thấy hàng của mình; hộ khác và máy chưa ghép không có', () => {
+    const r = run(SVC, `select app.plan_set('${HH1}', 'PREMIUM', null, 'ghi chú mới'); select count(*) from app.notifications where type = 'goi_doi'`);
+    assert.equal(r.rows.at(-1), '0');
+    const d = run(DEV, `select count(*) from app.notifications where type = 'goi_doi'`, { setup: TIER(HH1, 'FREE') });
+    assert.equal(d.rows[0], '1');
+    assert.equal(run(QL, `select count(*) from app.notifications where type = 'goi_doi'`, { setup: TIER(HH1, 'FREE') }).rows[0], '0');
+    assert.equal(run(HK, `select count(*) from app.notifications where type = 'goi_doi'`, { setup: TIER(HH1, 'FREE') }).rows[0], '0');
+    const other = admin(`${TIER(HH2, 'FREE')} select count(*) from app.notifications where type = 'goi_doi'`);
+    assert.equal(other.rows[0], '0', 'hộ 2 chưa có máy con đã ghép');
+  });
+  it('PLAN-NOTIFY-03: hủy liên kết máy rồi đổi gói: không ghi cho liên kết đã hủy; con ẩn không nhận', () => {
+    const a = admin(`update app.device_bindings set state = 'DA_HUY', revoked_at = now() where id = '${BIND}'; ${TIER(HH1, 'FREE')} select count(*) from app.notifications where type = 'goi_doi'`);
+    assert.equal(a.rows[0], '0');
+    const b = admin(`update app.children set hidden_at = now(), hidden_reason = 'XOA' where id = '${NA}'; ${TIER(HH1, 'FREE')} select count(*) from app.notifications where type = 'goi_doi'`);
+    assert.equal(b.rows[0], '0');
+  });
+  it('PLAN-NOTIFY-04: hộ chưa có dòng gói được plan_set PREMIUM: máy đã ghép nhận goi_doi (đường INSERT)', () => {
+    const r = run(SVC, `select app.plan_set('${HH1}', 'PREMIUM'); ${rows()}`, { setup: `delete from app.household_plans where household_id = '${HH1}';` });
+    assert.ok(r.ok, r.err);
+    assert.match(r.rows.at(-1), /goi_doi/);
+  });
+});
+
+describe('PLAN-EXP: job_daily ghi audit plan.expired khi TRIAL hết hạn (D-72)', { skip }, () => {
+  const n = `select count(*) from app.audit_log where event_code = 'plan.expired' and household_id = '${HH1}'`;
+  it('PLAN-EXP-01: TRIAL quá hạn: job ghi MỘT dòng plan.expired (hệ thống, không meta); chạy lại không ghi thêm; kết quả job có plan_expiry', () => {
+    const r = run(SVC, `${TIER(HH1, 'TRIAL', EXPIRED)} select private.job_daily(); ${n}; select private.job_daily(); select private.job_daily(); ${n};
+      select actor_kind || '|' || meta::text || '|' || subject_ref from app.audit_log where event_code = 'plan.expired'`);
+    assert.ok(r.ok, r.err);
+    assert.equal(JSON.parse(r.rows[0]).plan_expiry.expired, 1);
+    assert.equal(r.rows[1], '1');
+    assert.equal(JSON.parse(r.rows[2]).plan_expiry.expired, 0);
+    assert.equal(r.rows[4], '1');
+    assert.equal(r.rows[5], `system|{}|household:${HH1}`);
+  });
+  it('PLAN-EXP-02: TRIAL còn hạn, TRIAL không hạn, FREE, PREMIUM: không ghi; gia hạn/bắt đầu đợt mới thì được ghi lại khi hết hạn', () => {
+    const r = run(SVC, `${TIER(HH1, 'TRIAL', { ends: `now() + interval '2 days'` })} select private.job_daily(); ${n}; ${TIER(HH1, 'TRIAL')} select private.job_daily(); ${n};
+      ${TIER(HH1, 'FREE')} select private.job_daily(); ${n}; select private.job_daily(); ${n}`);
+    assert.deepEqual(r.rows.filter((x) => !x.startsWith('{')), ['0', '0', '0', '0']);
+    const again = run(SVC, `${TIER(HH1, 'TRIAL', EXPIRED)} select private.job_daily(); ${n};
+      select app.plan_set('${HH1}', 'FREE'); select app.plan_set('${HH1}', 'TRIAL', now() + interval '1 day');
+      update app.household_plans set trial_ends_at = now() - interval '1 minute', trial_started_at = now() - interval '2 days' where household_id = '${HH1}';
+      select private.job_daily(); ${n}`);
+    assert.deepEqual(again.rows.filter((x) => !x.startsWith('{')), ['1', '2']);
+  });
+  it('PLAN-EXP-03: job chỉ cho hệ thống: người dùng không gọi được job_plan_expiry', () => {
+    for (const who of [QL, NL, DEV, ANON]) assert.equal(run(who, `select private.job_plan_expiry()`).code, '42501');
   });
 });

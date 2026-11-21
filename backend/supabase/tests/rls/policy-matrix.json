@@ -312,6 +312,9 @@
     }
   },
   "private": {
+    "trial_claims": {
+      "spec": "D-72: chống dùng thử lặp (băm mã máy, băm email chuẩn hóa); không vai nào đọc; KHÔNG xóa khi purge hộ"
+    },
     "pairing_codes": {
       "spec": "§2.1, §2.7: không vai nào đọc; chỉ service_role"
     },
@@ -485,7 +488,11 @@
     "tg_schedule_profile_guard": [],
     "my_plan": ["authenticated"],
     "plan_set": [],
-    "tg_audit_plan": []
+    "tg_audit_plan": [],
+    "trial_start": ["authenticated"],
+    "schedule_plan_check": ["authenticated"],
+    "tg_plan_flags": [],
+    "tg_plan_notify": []
   },
   "app_internal_functions": {
     "_doc": "Hàm phụ trợ của chính sách RLS, nằm schema app_internal (không mở API, T1.8-b). Vai được EXECUTE (ngoài service_role). Chính sách chạy với quyền người gọi nên authenticated cần EXECUTE; anon không có gì. Hàm mới phải khai ở đây.",

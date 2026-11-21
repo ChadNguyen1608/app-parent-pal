@@ -4,7 +4,8 @@
 import type { Session, SupabaseClient } from '@supabase/supabase-js';
 
 import { ApiError, FALLBACK_MESSAGES, apiErrorFromFailure, toApiError } from './errors.ts';
-import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmState, PairState, PlanInfo, PlanTier, SessionInfo } from './types.ts';
+import { deviceHash } from './device-hash.ts';
+import type { Api, Binding, Child, ChildInput, FamilyState, Home, PairCode, PairConfirmState, PairState, PlanChildUsage, PlanInfo, PlanTier, SessionInfo } from './types.ts';
 
 // touch_active_min_interval_minutes = 60 (private.params, chưa chốt): máy chủ bỏ qua lần gọi sớm hơn, client không gọi thừa.
 const TOUCH_MIN_INTERVAL_MS = 60 * 60 * 1000;
@@ -19,7 +20,8 @@ const asObj = (v: unknown): Obj => (typeof v === 'object' && v !== null ? (v as 
 const asStr = (v: unknown): string | null => (typeof v === 'string' && v !== '' ? v : null);
 const asInt = (v: unknown): number | null => (typeof v === 'number' && Number.isInteger(v) ? v : null);
 
-export function createSupabaseApi(client: SupabaseClient, now: () => number = () => Date.now()): Api {
+/** getDeviceId: Android ID thô (chỉ băm rồi mới gửi, D-72). Chỉ index.ts biết cách đọc (module native). */
+export function createSupabaseApi(client: SupabaseClient, now: () => number = () => Date.now(), getDeviceId: () => Promise<string> = async () => 'khong-co-ma-may'): Api {
   const db = () => client.schema('app');
   let lastTouch: number | null = null;
 
@@ -176,19 +178,38 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       const o = await rpcOk('my_plan', undefined);
       // Phản hồi lạ thì từ chối chứ không đoán gói (không bao giờ mặc định thành PREMIUM).
       const tier = o.tier === 'FREE' || o.tier === 'TRIAL' || o.tier === 'PREMIUM' ? (o.tier as PlanTier) : null;
-      const plansUsed = asInt(o.plans_used);
-      const editsUsed = asInt(o.edits_used);
-      if (!tier || plansUsed === null || editsUsed === null) throw toApiError(new Error('my_plan: phản hồi sai hợp đồng'));
+      if (!tier || !Array.isArray(o.children)) throw toApiError(new Error('my_plan: phản hồi sai hợp đồng'));
+      const children: PlanChildUsage[] = o.children.map((raw) => {
+        const k = asObj(raw);
+        const childId = asStr(k.child_id);
+        const plansUsed = asInt(k.plans_used);
+        const editsUsed = asInt(k.edits_used);
+        if (!childId || plansUsed === null || editsUsed === null) throw toApiError(new Error('my_plan: phản hồi sai hợp đồng'));
+        return { childId, plansUsed, editsUsed, editsLeft: asInt(k.edits_left) };
+      });
       return {
         tier,
         expired: o.expired === true,
-        plansUsed,
         plansMax: asInt(o.plans_max),
-        editsUsed,
-        editsLeft: asInt(o.edits_left),
+        editsMax: asInt(o.edits_max),
+        children,
         palQuestionsLeft: asInt(o.pal_questions_left),
         trialEndsAt: asStr(o.trial_ends_at),
+        trialAvailable: o.trial_available === true,
+        trialDays: asInt(o.trial_days) ?? 0,
       };
+    },
+
+    async trialStart() {
+      // Chỉ gửi băm của Android ID + muối; máy chủ không nhận Android ID thô.
+      const o = await rpcOk('trial_start', { p_device_hash: deviceHash(await getDeviceId()) });
+      return { trialEndsAt: asStr(o.trial_ends_at) };
+    },
+
+    async myFamilyState(): Promise<FamilyState> {
+      const o = await rpcOk('my_family_state', undefined);
+      // Thiếu plan_active thì coi là KHÔNG hoạt động (an toàn: không mở tính năng khi chưa chắc).
+      return { frozen: o.frozen === true, planActive: o.plan_active === true };
     },
 
     async pairConfirm(childId, code, pin) {

@@ -5,10 +5,11 @@ import { Center, P } from '@/ui/kit';
 import { HelpButton } from '@/ui/HelpButton';
 import { APP_VARIANT } from '@/variant';
 
+// Cổng theo giai đoạn ghép và gói (D-72: hộ không PREMIUM thì máy con ở CA-18 Tạm dừng).
 // Cổng theo giai đoạn ghép. Chưa ghép: chỉ CA-01, CA-02 (không thấy chương trình của phụ huynh).
 // Nút "Con cần giúp đỡ" có ở thanh trên mọi màn (IA-Q03) và luôn mở được, kể cả khi chưa ghép.
 export default function ChildLayout() {
-  const { childStage } = useApp();
+  const { childStage, childPlanActive } = useApp();
   if (APP_VARIANT !== 'child') return <Redirect href="/" />;
   if (childStage === 'loading') {
     return (
@@ -26,11 +27,16 @@ export default function ChildLayout() {
       <Stack.Protected guard={childStage === 'justPaired'}>
         <Stack.Screen name="ghep-xong" options={{ title: 'Đã kết nối' }} />
       </Stack.Protected>
-      <Stack.Protected guard={childStage === 'intro' || childStage === 'ready'}>
+      <Stack.Protected guard={childStage === 'intro' || (childStage === 'ready' && childPlanActive)}>
         <Stack.Screen name="bo-me-thay" options={{ title: 'Những gì bố mẹ thấy' }} />
       </Stack.Protected>
-      <Stack.Protected guard={childStage === 'ready'}>
+      <Stack.Protected guard={childStage === 'ready' && childPlanActive}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={childStage === 'ready' && !childPlanActive}>
+        <Stack.Screen name="tam-dung" options={{ title: 'Tạm dừng' }} />
+      </Stack.Protected>
+      <Stack.Protected guard={childStage === 'ready' && childPlanActive}>
         <Stack.Screen name="cai-dat" options={{ title: 'Cài đặt' }} />
         <Stack.Screen name="nhap-pin" options={{ title: 'Cần bố mẹ nhập PIN' }} />
       </Stack.Protected>

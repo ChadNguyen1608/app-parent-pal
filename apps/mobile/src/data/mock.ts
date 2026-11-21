@@ -5,12 +5,13 @@
 //  - Mã OTP đúng luôn là 123456. Link thư giả lập: <scheme>://auth-callback?code=mock-link.
 //  - Parent App: mã ghép đúng luôn là 123456. Lần ghép đầu phải kèm PIN (như pair_confirm thật); mã sai thì ném NOT_FOUND
 //    (thật: ok=false) và 5 lần sai liên tiếp thì RATE_LIMITED.
-//  - Gói dịch vụ (D-68): mặc định TRIAL (tạo 1 kế hoạch, sửa 3 lần, KHÔNG ghép máy). Chọn bằng MockOptions.plan, hoặc ?plan=FREE|TRIAL|PREMIUM
+//  - Gói dịch vụ (D-68, D-72): mặc định TRIAL (mỗi con 1 kế hoạch, sửa 3 lần, KHÔNG ghép máy). Chọn bằng MockOptions.plan, hoặc ?plan=FREE|TRIAL|PREMIUM
 //    trên URL bản web. Chỉ PREMIUM ghép máy được (pairConfirm trả PLAN_REQUIRED như máy chủ thật).
+//    trialStart: FREE chưa dùng thử -> TRIAL; MockOptions.trialClaimed (?trial=used) giả lập máy/email đã dùng thử -> TRIAL_USED. Gói FREE chưa dùng thử có trialAvailable.
 //  - Child App: pair_pending trả pending=false `acceptAfter` lần đầu, rồi pending=true ("Kết nối với chị Lan?", giả vờ bố mẹ
 //    vừa nhập mã); pair_accept chỉ đúng khi đang pending. PIN hủy kết nối: PIN đã đặt, mặc định MOCK_DEFAULT_PIN (482915; 123456 bị máy chủ từ chối vì dễ đoán).
 import { apiErrorFromFailure, toApiError } from './errors.ts';
-import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmResult, PairPending, PlanInfo, PlanTier, SessionInfo } from './types.ts';
+import type { Api, Binding, Child, ChildInput, FamilyState, Home, PairCode, PairConfirmResult, PairPending, PlanInfo, PlanTier, SessionInfo } from './types.ts';
 import { checkPin } from './validate.ts';
 
 export const MOCK_OTP = '123456';
@@ -26,6 +27,7 @@ export const MOCK_ADULT_NAME = 'chị Lan';
 export const MOCK_DEFAULT_PLAN: PlanTier = 'TRIAL';
 export const MOCK_TRIAL_PLANS_MAX = 1;
 export const MOCK_TRIAL_EDITS_MAX = 3;
+export const MOCK_TRIAL_DAYS = 7;
 
 export function isPlanTier(v: unknown): v is PlanTier {
   return v === 'FREE' || v === 'TRIAL' || v === 'PREMIUM';
@@ -36,6 +38,8 @@ export type MockOptions = {
   plan?: PlanTier;
   /** Giả lập hộ bị đóng băng: mọi hàm ghi trả FROZEN. */
   frozen?: boolean;
+  /** Giả lập mã máy hoặc email đã dùng thử ở nơi khác: trialStart trả TRIAL_USED. */
+  trialClaimed?: boolean;
   /** Số lần pair_pending trả pending=false trước khi có yêu cầu chờ (mặc định 1). */
   acceptAfter?: number;
   /** Độ trễ giả (ms) để thấy trạng thái đang xử lý. Test đặt 0. */
@@ -51,7 +55,9 @@ export function createMockApi(opts: MockOptions = {}): Api {
   const now = opts.now ?? (() => Date.now());
   const latency = opts.latencyMs ?? 250;
   const acceptAfter = opts.acceptAfter ?? 1;
-  const plan: PlanTier = opts.plan ?? MOCK_DEFAULT_PLAN;
+  let plan: PlanTier = opts.plan ?? MOCK_DEFAULT_PLAN;
+  let trialUsed = plan !== 'FREE'; // đã từng TRIAL hoặc PREMIUM
+  let trialEndsAt: string | null = null; // chỉ có khi dùng thử bắt đầu bằng trialStart
 
   let session: SessionInfo | null = null;
   const listeners = new Set<(s: SessionInfo | null) => void>();
@@ -179,10 +185,34 @@ export function createMockApi(opts: MockOptions = {}): Api {
     async myPlan(): Promise<PlanInfo> {
       needLogin();
       await pause();
-      const base = { expired: false, plansUsed: 0, editsUsed: 0, palQuestionsLeft: null, trialEndsAt: null };
-      if (plan === 'PREMIUM') return { ...base, tier: 'PREMIUM', plansMax: null, editsLeft: null };
-      if (plan === 'TRIAL') return { ...base, tier: 'TRIAL', plansMax: MOCK_TRIAL_PLANS_MAX, editsLeft: MOCK_TRIAL_EDITS_MAX };
-      return { ...base, tier: 'FREE', plansMax: 0, editsLeft: 0 };
+      const left = plan === 'PREMIUM' ? null : plan === 'TRIAL' ? MOCK_TRIAL_EDITS_MAX : 0;
+      return {
+        tier: plan,
+        expired: false,
+        plansMax: plan === 'PREMIUM' ? null : plan === 'TRIAL' ? MOCK_TRIAL_PLANS_MAX : 0,
+        editsMax: plan === 'PREMIUM' ? null : plan === 'TRIAL' ? MOCK_TRIAL_EDITS_MAX : 0,
+        children: children.map((c) => ({ childId: c.id, plansUsed: 0, editsUsed: 0, editsLeft: left })),
+        palQuestionsLeft: null,
+        trialEndsAt: plan === 'TRIAL' ? trialEndsAt : null,
+        trialAvailable: plan === 'FREE' && !trialUsed,
+        trialDays: MOCK_TRIAL_DAYS,
+      };
+    },
+
+    async trialStart() {
+      writable();
+      await pause();
+      if (plan !== 'FREE' || trialUsed || opts.trialClaimed) fail('TRIAL_USED', 'D-72.claim', 'Máy này hoặc email này đã dùng thử rồi.');
+      plan = 'TRIAL';
+      trialUsed = true;
+      trialEndsAt = new Date(now() + MOCK_TRIAL_DAYS * 86_400_000).toISOString();
+      return { trialEndsAt };
+    },
+
+    async myFamilyState(): Promise<FamilyState> {
+      needLogin();
+      await pause();
+      return { frozen: opts.frozen === true, planActive: plan === 'PREMIUM' };
     },
 
     async pairConfirm(childId, code, pinIn): Promise<PairConfirmResult> {
