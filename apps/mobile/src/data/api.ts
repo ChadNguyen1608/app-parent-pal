@@ -4,7 +4,7 @@
 import type { Session, SupabaseClient } from '@supabase/supabase-js';
 
 import { ApiError, FALLBACK_MESSAGES, apiErrorFromFailure, toApiError } from './errors.ts';
-import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmState, PairState, SessionInfo } from './types.ts';
+import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmState, PairState, PalMessage, PalQuota, PalReply, PalState, SessionInfo } from './types.ts';
 
 // touch_active_min_interval_minutes = 60 (private.params, chưa chốt): máy chủ bỏ qua lần gọi sớm hơn, client không gọi thừa.
 const TOUCH_MIN_INTERVAL_MS = 60 * 60 * 1000;
@@ -18,6 +18,24 @@ type Obj = Record<string, unknown>;
 const asObj = (v: unknown): Obj => (typeof v === 'object' && v !== null ? (v as Obj) : {});
 const asStr = (v: unknown): string | null => (typeof v === 'string' && v !== '' ? v : null);
 const asInt = (v: unknown): number | null => (typeof v === 'number' && Number.isInteger(v) ? v : null);
+
+const PAL_STATES: ReadonlySet<string> = new Set(['OK', 'OFF', 'LOCKED', 'FROZEN', 'NO_CONSENT', 'BUSY', 'TOKENS', 'QUOTA', 'RATE', 'NO_HOUSEHOLD']);
+const asPalState = (v: unknown): PalState => (typeof v === 'string' && PAL_STATES.has(v) ? (v as PalState) : 'OFF');
+const asNum = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? v : null);
+
+/** supabase-js ném FunctionsHttpError với context là Response: đọc {error:{code,message_vi,rule}} của Edge Function. */
+async function palEdgeError(err: unknown, nowMs: number): Promise<ApiError> {
+  const ctx = typeof err === 'object' && err !== null ? (err as { context?: unknown }).context : undefined;
+  if (ctx && typeof (ctx as { json?: unknown }).json === 'function') {
+    try {
+      const body: unknown = await (ctx as { json: () => Promise<unknown> }).json();
+      return apiErrorFromFailure(body, nowMs);
+    } catch {
+      return new ApiError('UNKNOWN', FALLBACK_MESSAGES.UNKNOWN);
+    }
+  }
+  return toApiError(err);
+}
 
 export function createSupabaseApi(client: SupabaseClient, now: () => number = () => Date.now()): Api {
   const db = () => client.schema('app');
@@ -226,6 +244,65 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
 
     async unlinkDevice(childId, pin, bindingEpoch) {
       await rpcOk('unlink_device', { p_child: childId, p_pin: pin, ...(bindingEpoch !== undefined ? { p_binding_epoch: bindingEpoch } : {}) });
+    },
+
+    async palQuota(): Promise<PalQuota> {
+      const o = asObj(await rpc('pal_quota', undefined));
+      return { state: asPalState(o.state), tier: asStr(o.tier), limit: asNum(o.limit), used: asNum(o.used), remaining: asNum(o.remaining) };
+    },
+
+    async palSend(input): Promise<PalReply> {
+      // Edge Function pal-chat: lớp an toàn chạy trước AI, khóa Claude chỉ nằm ở máy chủ. Body khớp handler.ts (contract.test.ts kiểm).
+      let res: { data: unknown; error: unknown };
+      try {
+        res = await client.functions.invoke('pal-chat', {
+          body: {
+            message: input.message,
+            idempotency_key: input.idempotencyKey,
+            ...(input.conversationId ? { conversation_id: input.conversationId } : {}),
+            ...(input.childId ? { child_id: input.childId } : {}),
+          },
+        });
+      } catch (e) {
+        throw toApiError(e);
+      }
+      if (res.error) throw await palEdgeError(res.error, now());
+      const o = asObj(res.data);
+      const conversationId = asStr(o.conversation_id);
+      const reply = asStr(o.reply);
+      if (!conversationId || !reply) throw new ApiError('UNKNOWN', FALLBACK_MESSAGES.UNKNOWN);
+      return {
+        conversationId,
+        reply,
+        blocked: o.blocked === true,
+        flags: Array.isArray(o.flags) ? o.flags.filter((f): f is string => typeof f === 'string') : [],
+        remaining: asNum(o.remaining),
+        state: asPalState(o.state),
+      };
+    },
+
+    async palHistory() {
+      const c = await db().from('pal_conversations').select('id').order('created_at', { ascending: false }).limit(1).maybeSingle();
+      if (c.error) throw toApiError(c.error);
+      const conversationId = asStr(asObj(c.data).id);
+      if (!conversationId) return { conversationId: null, messages: [] };
+      const m = await db()
+        .from('pal_messages')
+        .select('id, role, content, safety_flags, created_at')
+        .eq('conversation_id', conversationId)
+        .order('seq', { ascending: true });
+      if (m.error) throw toApiError(m.error);
+      const messages: PalMessage[] = (m.data ?? []).map((row) => {
+        const o = asObj(row);
+        return {
+          id: String(o.id),
+          role: o.role === 'assistant' ? 'assistant' : 'user',
+          content: String(o.content ?? ''),
+          flags: Array.isArray(o.safety_flags) ? o.safety_flags.filter((f): f is string => typeof f === 'string') : [],
+          createdAt: String(o.created_at ?? ''),
+        };
+      });
+      return { conversationId, messages };
     },
   };
 }

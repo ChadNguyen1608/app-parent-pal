@@ -169,3 +169,50 @@ test('onChange báo khi đăng nhập và đăng xuất', async () => {
   await api.auth.signInAnonymously();
   assert.deepEqual(seen, ['mock-child-device', null]);
 });
+
+async function palApi(opts: Parameters<typeof createMockApi>[0] = {}) {
+  const api = createMockApi({ ...fast, ...opts });
+  await api.auth.sendEmailOtp('a@b.vn');
+  await api.auth.verifyEmailOtp('a@b.vn', MOCK_OTP);
+  return api;
+}
+
+test('Pal giả lập: chưa có hộ thì NO_HOUSEHOLD; có hộ thì còn đủ lượt và trừ dần', async () => {
+  const api = await palApi();
+  assert.equal((await api.palQuota()).state, 'NO_HOUSEHOLD');
+  await api.familyCreate('chị Lan');
+  const q = await api.palQuota();
+  assert.deepEqual([q.state, q.limit, q.remaining], ['OK', 20, 20]);
+  const r = await api.palSend({ message: 'Con em hay quấy', idempotencyKey: 'k1' });
+  assert.equal(r.blocked, false);
+  assert.equal(r.remaining, 19);
+  // gửi lặp cùng khóa: câu cũ, không trừ thêm
+  const again = await api.palSend({ message: 'Con em hay quấy', idempotencyKey: 'k1' });
+  assert.deepEqual(again, r);
+  assert.equal((await api.palQuota()).remaining, 19);
+  const h = await api.palHistory();
+  assert.equal(h.messages.length, 2);
+  assert.equal(h.conversationId, r.conversationId);
+});
+
+test('Pal giả lập: câu nguy cấp bị lớp an toàn chặn, có số khẩn cấp, không tính lượt', async () => {
+  const api = await palApi();
+  await api.familyCreate('chị Lan');
+  const r = await api.palSend({ message: 'Em muốn chết', idempotencyKey: 'k2' });
+  assert.equal(r.blocked, true);
+  assert.match(r.reply, /115/);
+  assert.equal(r.remaining, 20);
+});
+
+test('Pal giả lập: hết lượt thì RATE_LIMITED, bị khóa thì PAL_LOCKED, tắt cờ thì FEATURE_OFF', async () => {
+  const out = await palApi({ palUsed: 20 });
+  await out.familyCreate('chị Lan');
+  assert.equal((await out.palQuota()).state, 'QUOTA');
+  await rejects(out.palSend({ message: 'xin chào', idempotencyKey: 'k3' }), 'RATE_LIMITED');
+  const locked = await palApi({ palState: 'LOCKED' });
+  await locked.familyCreate('chị Lan');
+  await rejects(locked.palSend({ message: 'xin chào', idempotencyKey: 'k4' }), 'PAL_LOCKED');
+  const off = await palApi({ palState: 'OFF' });
+  await off.familyCreate('chị Lan');
+  await rejects(off.palSend({ message: 'xin chào', idempotencyKey: 'k5' }), 'FEATURE_OFF');
+});

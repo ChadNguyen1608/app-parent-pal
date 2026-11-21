@@ -253,6 +253,9 @@ const RICH = `
     insert into private.withdraw_confirmations(child_id, member_id, expires_at) values ('${NA}', '${MEM_HOA}', now() + interval '10 minutes');
     insert into app.deletion_requests(household_id, scope, child_id, requested_by, reason) values ('${HH1}', 'HO_SO_CON', '${BIN}', '${MEM_HOA}', 'XOA_HO_SO');
     insert into app.child_alerts(child_id, binding_id, kind) values ('${NA}', '00000000-0000-4000-8000-000000000401', 'DON_SOM');
+    insert into private.ai_usage(household_id, member_id, model, input_tokens, output_tokens) values ('${HH1}', '${MEM_HOA}', 'model-gia', 100, 50);
+    insert into private.ops_alerts(kind, scope, household_id, metrics, action) values ('SOFT_HOUSEHOLD_DAY', 'HOUSEHOLD', '${HH1}', '{"tokens_today": 1}', 'NONE');
+    insert into private.pal_locks(household_id, reason) values ('${HH1}', 'SPIKE');
   end $r$;`;
 const DRILL = (reason = 'GIA_LAP_DIEN_TAP', prelude = RICH, root = HH1, call = `app.purge_household('${HH1}', '${reason}')`) => `${prelude}
   create temp table pp_ids (id text primary key);

@@ -102,3 +102,13 @@ insert into app.schedule_answers (child_id, question_key, local_date, answer, an
 insert into app.notifications (type, recipient_kind, recipient_id, child_id, idempotency_key, payload_min) values
   ('lich_moi', 'device', '00000000-0000-4000-8000-000000000401', '00000000-0000-4000-8000-000000000301', '20000000-0000-4000-8000-000000000002',
    '{"type":"lich_moi","id":"00000000-0000-4000-8000-000000000521"}');
+
+-- D-69, D-71 (Pal tư vấn): hai cuộc trò chuyện giả. Chị Hoa hỏi về bé Na; anh Minh hỏi chung (không gắn con). Mỗi người chỉ thấy của mình.
+insert into app.pal_conversations (id, household_id, member_id, child_id) values
+  ('00000000-0000-4000-8000-000000000601', '00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-000000000201', '00000000-0000-4000-8000-000000000301'),
+  ('00000000-0000-4000-8000-000000000602', '00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-000000000202', null);
+insert into app.pal_messages (conversation_id, household_id, member_id, child_id, seq, role, content, safety_flags, counted, idempotency_key, created_at) values
+  ('00000000-0000-4000-8000-000000000601', '00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-000000000201', '00000000-0000-4000-8000-000000000301', 1, 'user',      'Con dạo này hay cáu khi làm bài (dữ liệu giả)', '{}', true, '40000000-0000-4000-8000-000000000001', now() - interval '5 minutes'),
+  ('00000000-0000-4000-8000-000000000601', '00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-000000000201', '00000000-0000-4000-8000-000000000301', 2, 'assistant', 'Mình nghe chị. Con cáu vào lúc nào trong buổi học? (câu trả lời mẫu)', '{}', false, null, now() - interval '5 minutes'),
+  ('00000000-0000-4000-8000-000000000602', '00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-000000000202', null, 1, 'user',      'Cuối tuần nên cho con chơi gì? (dữ liệu giả)', '{}', true, '40000000-0000-4000-8000-000000000002', now() - interval '5 minutes'),
+  ('00000000-0000-4000-8000-000000000602', '00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-000000000202', null, 2, 'assistant', 'Anh cho mình biết con mấy tuổi nhé? (câu trả lời mẫu)', '{}', false, null, now() - interval '5 minutes');

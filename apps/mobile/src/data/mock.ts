@@ -8,7 +8,7 @@
 //  - Child App: pair_pending trả pending=false `acceptAfter` lần đầu, rồi pending=true ("Kết nối với chị Lan?", giả vờ bố mẹ
 //    vừa nhập mã); pair_accept chỉ đúng khi đang pending. PIN hủy kết nối: PIN đã đặt, mặc định MOCK_DEFAULT_PIN (482915; 123456 bị máy chủ từ chối vì dễ đoán).
 import { apiErrorFromFailure, toApiError } from './errors.ts';
-import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmResult, PairPending, SessionInfo } from './types.ts';
+import type { Api, Binding, Child, ChildInput, Home, PairCode, PairConfirmResult, PairPending, PalMessage, PalQuota, PalReply, PalState, SessionInfo } from './types.ts';
 import { checkPin } from './validate.ts';
 
 export const MOCK_OTP = '123456';
@@ -20,12 +20,25 @@ export const MOCK_MAX_PIN_TRIES = 5;
 export const MOCK_MAX_CODE_FAILS = 5;
 export const MOCK_LOCK_MINUTES = 15;
 export const MOCK_ADULT_NAME = 'chị Lan';
+/** Pal giả lập: mặc định 20 lượt/ngày (gói TRIAL, số CHUA_CHOT). Câu có "muốn chết" bị lớp an toàn chặn và không tính lượt. */
+export const MOCK_PAL_LIMIT = 20;
+export const MOCK_PAL_REPLIES = [
+  'Mình nghe chị. Nghe như hôm nay là một ngày dài. Chị kể thêm cho mình chuyện xảy ra lúc nào nhé?',
+  'Cảm ơn chị đã chia sẻ. Mình gợi ý một việc nhỏ thôi: tối nay dành 10 phút ngồi cạnh con, không làm gì khác. Chị thấy có làm được không?',
+  'Mình chưa có nghiên cứu kiểm trực tiếp cho chuyện này, nên mình không chắc chắn. Chị có thể cho con thử một tuần rồi mình cùng xem lại.',
+];
+export const MOCK_PAL_SAFETY_REPLY =
+  'Mình rất lo cho chị. Nếu chị hoặc ai đó đang gặp nguy hiểm ngay bây giờ, chị gọi 115 (cấp cứu). Nếu trẻ em đang bị xâm hại, gọi 111 (bảo vệ trẻ em) hoặc 113 (công an).';
 
 export type MockOptions = {
   /** Giả lập hộ bị đóng băng: mọi hàm ghi trả FROZEN. */
   frozen?: boolean;
   /** Số lần pair_pending trả pending=false trước khi có yêu cầu chờ (mặc định 1). */
   acceptAfter?: number;
+  /** Trạng thái Pal giả lập (mặc định OK). OFF: ẩn mục Pal. LOCKED: Pal đang tạm dừng. */
+  palState?: PalState;
+  /** Số lượt đã dùng sẵn hôm nay (mặc định 0). */
+  palUsed?: number;
   /** Độ trễ giả (ms) để thấy trạng thái đang xử lý. Test đặt 0. */
   latencyMs?: number;
   now?: () => number;
@@ -55,6 +68,10 @@ export function createMockApi(opts: MockOptions = {}): Api {
   let epochSeq = 1;
   let bound: Binding | null = null;
   const seenKeys = new Map<string, string>();
+  let palUsed = opts.palUsed ?? 0;
+  let palConv: string | null = null;
+  const palMsgs: PalMessage[] = [];
+  const palReplays = new Map<string, PalReply>();
   let seq = 0;
 
   const pause = () => (latency > 0 ? new Promise<void>((r) => setTimeout(r, latency)) : Promise.resolve());
@@ -71,6 +88,13 @@ export function createMockApi(opts: MockOptions = {}): Api {
     if (opts.frozen) fail('FROZEN', 'BR-FAM-FROZEN', 'Gia đình đang tạm dừng app.');
   };
   const id = (p: string) => `${p}-${++seq}`;
+  const palStatus = (): PalQuota => {
+    if (!household) return { state: 'NO_HOUSEHOLD', tier: null, limit: null, used: null, remaining: null };
+    const forced = opts.palState ?? 'OK';
+    const remaining = Math.max(0, MOCK_PAL_LIMIT - palUsed);
+    const state: PalState = forced !== 'OK' ? forced : remaining === 0 ? 'QUOTA' : 'OK';
+    return { state, tier: 'TRIAL', limit: MOCK_PAL_LIMIT, used: palUsed, remaining };
+  };
 
   return {
     kind: 'mock',
@@ -275,6 +299,40 @@ export function createMockApi(opts: MockOptions = {}): Api {
       pinLockedUntil = null;
       codesIssued = 0;
       pendingShown = false;
+    },
+
+    async palQuota() {
+      needLogin();
+      return palStatus();
+    },
+
+    async palSend(input): Promise<PalReply> {
+      needLogin();
+      await pause();
+      const done = palReplays.get(input.idempotencyKey);
+      if (done) return done;
+      const q = palStatus();
+      if (q.state === 'LOCKED') fail('PAL_LOCKED', 'PAL-LOCKED', 'Pal đang tạm dừng.');
+      if (q.state === 'OFF') fail('FEATURE_OFF', 'PAL-FLAG', 'Tính năng trò chuyện với Pal đang tắt.');
+      const text = input.message.trim();
+      if (text === '') fail('VALIDATION', 'PAL-IN', 'Bạn nhập câu hỏi trước nhé.');
+      const blocked = /muốn chết|tự tử|tu tu/i.test(text);
+      if (!blocked && q.state !== 'OK') fail('RATE_LIMITED', 'PAL-QUOTA', 'Hôm nay bạn đã dùng hết lượt hỏi Pal.');
+      palConv = input.conversationId ?? palConv ?? id('pal-conv');
+      const reply = blocked ? MOCK_PAL_SAFETY_REPLY : MOCK_PAL_REPLIES[palUsed % MOCK_PAL_REPLIES.length];
+      if (!blocked) palUsed += 1;
+      const flags = blocked ? ['EMERGENCY_SELF_HARM'] : [];
+      const at = new Date(now()).toISOString();
+      palMsgs.push({ id: id('pal-msg'), role: 'user', content: text, flags: [], createdAt: at });
+      palMsgs.push({ id: id('pal-msg'), role: 'assistant', content: reply, flags, createdAt: at });
+      const out: PalReply = { conversationId: palConv, reply, blocked, flags, remaining: palStatus().remaining, state: palStatus().state };
+      palReplays.set(input.idempotencyKey, out);
+      return out;
+    },
+
+    async palHistory() {
+      needLogin();
+      return { conversationId: palConv, messages: [...palMsgs] };
     },
   };
 }

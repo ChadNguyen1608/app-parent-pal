@@ -14,6 +14,7 @@ export type ApiErrorCode =
   | 'FEATURE_OFF'
   | 'CONFLICT_REV'
   | 'LOCKED'
+  | 'PAL_LOCKED'
   | 'OTP_INVALID'
   | 'RATE_LIMITED'
   | 'EMAIL_INVALID'
@@ -55,6 +56,7 @@ export const FALLBACK_MESSAGES: Record<ApiErrorCode, string> = {
   FEATURE_OFF: 'Tính năng này chưa mở.',
   CONFLICT_REV: 'Dữ liệu vừa có thay đổi. Bạn thử lại nhé.',
   LOCKED: 'Dữ liệu đang bị khóa. Bạn thử lại sau nhé.',
+  PAL_LOCKED: 'Pal đang tạm dừng. Mình sẽ báo khi Pal trò chuyện lại được nhé.',
   OTP_INVALID: 'Mã không đúng hoặc đã hết hạn. Bạn kiểm tra lại hoặc xin mã mới.',
   RATE_LIMITED: 'Bạn thử quá nhiều lần. Chờ một lúc rồi thử lại nhé.',
   EMAIL_INVALID: 'Email này chưa đúng. Bạn kiểm tra lại giúp mình nhé.',
@@ -64,7 +66,7 @@ export const FALLBACK_MESSAGES: Record<ApiErrorCode, string> = {
 };
 
 const SERVER_CODES: ReadonlySet<string> = new Set([
-  'UNAUTHENTICATED', 'FORBIDDEN', 'FROZEN', 'VALIDATION', 'NOT_FOUND', 'FEATURE_OFF', 'CONFLICT_REV', 'LOCKED', 'RATE_LIMITED',
+  'UNAUTHENTICATED', 'FORBIDDEN', 'FROZEN', 'VALIDATION', 'NOT_FOUND', 'FEATURE_OFF', 'CONFLICT_REV', 'LOCKED', 'PAL_LOCKED', 'RATE_LIMITED',
 ]);
 
 const AUTH_CODES: Record<string, ApiErrorCode> = {

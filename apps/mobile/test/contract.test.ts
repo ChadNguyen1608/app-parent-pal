@@ -12,6 +12,8 @@ import { PIN_EXISTS_HINT, PIN_REQUIRED_HINT, PIN_REQUIRED_RULE } from '../src/da
 const here = dirname(fileURLToPath(import.meta.url));
 const MIGRATIONS = join(here, '../../../backend/supabase/migrations');
 const API_TS = join(here, '../src/data/api.ts');
+const PAL_HANDLER = join(here, '../../../backend/supabase/functions/pal-chat/handler.ts');
+const EDGE_API = join(here, '../../../backend/supabase/functions/_shared/api.ts');
 
 type Param = { name: string; hasDefault: boolean };
 type Fn = { params: Param[]; body: string };
@@ -83,6 +85,7 @@ const sql = stripComments(loadSql());
 const fns = parseFunctions(sql);
 const granted = grantedToAuthenticated(sql);
 
+let paInvokes: { name: string; body: Record<string, unknown> }[] = [];
 type Call = { fn: string; args: Record<string, unknown> | undefined };
 
 /** Chạy mọi hàm RPC của Api với client giả, trả danh sách lời gọi (cả có và không có tham số tùy chọn). */
@@ -99,18 +102,30 @@ async function driveApi(): Promise<Call[]> {
     pair_accept: { ok: true, replay: false, binding_id: 'b', child_id: 'c', epoch: 2 },
     pair_decline: { ok: true, declined: true },
     unlink_device: { ok: true, unlinked: true, replay: false, epoch: 3 },
+    pal_quota: { state: 'OK', tier: 'TRIAL', limit: 20, used: 1, remaining: 19 },
   };
+  const invokes: { name: string; body: Record<string, unknown> }[] = [];
+  paInvokes = invokes;
   const client = {
+    functions: {
+      async invoke(name: string, opts: { body: Record<string, unknown> }) {
+        invokes.push({ name, body: opts.body });
+        return { data: { conversation_id: 'v', reply: 'ok', blocked: false, flags: [], remaining: 18, state: 'OK' }, error: null };
+      },
+    },
     schema: () => ({
       async rpc(fn: string, args?: Record<string, unknown>) {
         calls.push({ fn, args });
         return { data: canned[fn] ?? null, error: null };
       },
-      from: () => ({
-        select: () => ({
-          eq: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }) }),
-        }),
-      }),
+      from: () => {
+        // Chuỗi truy vấn PostgREST giả: mọi bước trả lại chính nó; await ra { data: [], error: null }.
+        const chain: Record<string, unknown> = {};
+        for (const k of ['select', 'eq', 'is', 'in', 'order', 'limit']) chain[k] = () => chain;
+        chain.maybeSingle = async () => ({ data: null, error: null });
+        chain.then = (ok: (v: unknown) => unknown) => ok({ data: [], error: null });
+        return chain;
+      },
     }),
     auth: { getSession: async () => ({ data: { session: { user: { id: 'u', is_anonymous: false } } }, error: null }) },
   };
@@ -128,11 +143,15 @@ async function driveApi(): Promise<Call[]> {
   await api.pairDecline();
   await api.unlinkDevice('c', '246801', 2);
   await api.unlinkDevice('c', '246801');
+  await api.palQuota();
+  await api.palSend({ message: 'xin chào', conversationId: 'v', childId: 'c', idempotencyKey: 'k' });
+  await api.palSend({ message: 'xin chào', idempotencyKey: 'k' });
+  await api.palHistory();
   return calls;
 }
 
 test('migration có đủ hàm RPC và phân tích được', () => {
-  for (const f of ['family_create', 'touch_active', 'child_create', 'pair_code_create', 'pair_confirm', 'pair_pending', 'pair_accept', 'pair_decline', 'pin_set', 'unlink_device']) {
+  for (const f of ['family_create', 'touch_active', 'child_create', 'pair_code_create', 'pair_confirm', 'pair_pending', 'pair_accept', 'pair_decline', 'pin_set', 'unlink_device', 'pal_quota']) {
     assert.ok(fns.has(f), `migration thiếu app.${f}`);
   }
   assert.deepEqual(fns.get('pair_confirm')!.params, [
@@ -178,6 +197,7 @@ test('trường kết quả mà client đọc có trong jsonb_build_object của
     pair_accept: ['ok', 'child_id', 'epoch'],
     pair_decline: ['ok'],
     unlink_device: ['ok'],
+    pal_quota: ['state', 'tier', 'limit', 'used', 'remaining'],
   };
   for (const [fn, fields] of Object.entries(reads)) {
     let body = fns.get(fn)!.body;
@@ -220,4 +240,33 @@ test('unlink_device: máy con phải gửi epoch, epoch sai là CONFLICT_REV', (
   const body = fns.get('unlink_device')!.body;
   assert.match(body, /v_is_dev and p_binding_epoch is null/);
   assert.match(body, /app\.fail\('CONFLICT_REV'/);
+});
+
+test('Pal: client gọi Edge Function pal-chat với đúng trường mà handler đọc, và đọc đúng trường handler trả', async () => {
+  await driveApi();
+  assert.ok(paInvokes.length >= 2);
+  const handler = readFileSync(PAL_HANDLER, 'utf8');
+  const read = new Set([...handler.matchAll(/\bbody\.(\w+)/g)].map((m) => m[1]));
+  for (const inv of paInvokes) {
+    assert.equal(inv.name, 'pal-chat');
+    for (const k of Object.keys(inv.body)) assert.ok(read.has(k), `client gửi trường '${k}' mà handler pal-chat không đọc`);
+  }
+  for (const need of ['message', 'idempotency_key', 'conversation_id', 'child_id']) assert.ok(read.has(need), `handler không đọc '${need}'`);
+  // Trường trả về mà api.ts đọc: handler (hoặc lõi dùng chung) phải có.
+  for (const f of ['conversation_id', 'reply', 'blocked', 'flags', 'remaining', 'state']) {
+    assert.match(handler, new RegExp(`\\b${f}\\b`), `handler pal-chat không trả '${f}'`);
+  }
+});
+
+test('Pal: mã lỗi PAL_LOCKED và các cột pal_messages mà client đọc có thật ở backend', () => {
+  assert.match(readFileSync(EDGE_API, 'utf8'), /PAL_LOCKED:\s*423/);
+  const src = readFileSync(API_TS, 'utf8');
+  const cols = src.match(/from\('pal_messages'\)\s*\.select\('([^']+)'\)/)?.[1] ?? '';
+  assert.ok(cols, 'không thấy truy vấn pal_messages trong api.ts');
+  const table = sql.match(/create table app\.pal_messages \(([\s\S]*?)\n\);/i)?.[1] ?? '';
+  assert.ok(table, 'migration không có app.pal_messages');
+  for (const c of cols.split(',').map((x) => x.trim())) assert.match(table, new RegExp(`\\b${c}\\b`), `pal_messages thiếu cột ${c}`);
+  assert.match(sql, /create table app\.pal_conversations/i);
+  // Bảng Pal không có quyền ghi trực tiếp cho người dùng: client chỉ đọc.
+  assert.doesNotMatch(src, /from\('pal_(messages|conversations)'\)\s*\.(insert|update|delete|upsert)/);
 });

@@ -1,0 +1,20 @@
+{
+  "_doc": "Vector kiểm chéo chữ ký ghi lượt Pal (D-69). Khóa CHỈ DÙNG TEST (trùng tests/stub). Sinh bằng node:crypto độc lập; SQL (pal.test.mjs) và Deno (_tests/pal.test.ts) cùng phải ra đúng chữ ký này.",
+  "key": "TEST-ONLY-pal-record-key-not-real-0004",
+  "fields": {
+    "conversation": null,
+    "child": "00000000-0000-4000-8000-000000000301",
+    "key": "50000000-0000-4000-8000-000000000001",
+    "user": "Con hay cáu khi làm bài.\nMình phải làm sao?",
+    "assistant": "Mình nghe chị. [con 1] cáu lúc nào?",
+    "flags": [
+      "MEDICAL_DRUG",
+      "PARENT_DISTRESS"
+    ],
+    "counted": true,
+    "in_tokens": 123,
+    "out_tokens": 45,
+    "model": "claude-sonnet-5-5"
+  },
+  "signature": "999166b72bd596d2ce45df2e3a2f69d96f025ba42ef11c6262019ec1d8fc705f"
+}
