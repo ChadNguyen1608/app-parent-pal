@@ -162,7 +162,7 @@ Màn hình bám các RPC trên `main` (migration `20261116110000..170000`); `tes
 
 | Màn | Việc | RPC / bảng |
 |---|---|---|
-| ~~PA-02 `dong-y`~~ (bỏ, D-73) | Không còn màn đồng ý và cổng `needConsent`. `bat-dau` gọi `recordDefaultConsents` ngay sau `child_create`: ghi MD-LICH, MD-SUCKHOE, MD-CONBAO. Lỗi giữa chừng thì chưa vào app, bấm Lưu lại an toàn (cùng khóa gửi lặp) | `child_create`, `consent_record` x3 |
+| ~~PA-02 `dong-y`~~ (bỏ, D-73) | Không còn màn đồng ý và cổng `needConsent`. Máy chủ ghi đồng ý mặc định ngay trong `child_create` (migration T2.9, `basis = 'MAC_DINH_D73'`): MD-LICH, MD-SUCKHOE, MD-CONBAO cùng giao dịch với dòng con, nên không có trạng thái "con có mà chưa đồng ý" do app tắt giữa chừng. App không gọi `consent_record` khi tạo con. Mock phản chiếu (`defaultConsent: false` để test nhánh chưa đồng ý) | `child_create` |
 | PA-32 `quyen-rieng-tu` (D-73) | Đoạn tuyên bố quyền riêng tư chung cho mọi con (nguyên văn D-73, ghi chú "Câu chữ chờ duyệt."), nút "Đồng ý" (quay lại, không ghi máy chủ), khung cuộn "Điều khoản sử dụng" bản nháp AI (`src/content/dieu-khoan.ts`, chờ luật sư) | không gọi máy chủ |
 | `cai-dat-du-lieu` (D-73, từ tab Gia đình) | Mỗi con: công tắc lưu sức khỏe (MD-SUCKHOE), cho con báo bố mẹ ngay (MD-CONBAO) (tắt có xác nhận: dữ liệu cũ ẩn ngay, không hiện lại), trò chuyện AI trên máy con (`ai_chat_enabled`, chuẩn bị, mặc định tắt); nút xóa dữ liệu một con hoặc cả gia đình (sang PA-35/36 hai bước) | `consent_record`, `child_setting_get/set`; sang PA-35/36 |
 | PA-35/36 `xoa` | Một con: `consent_withdraw_all` hai bước (mã xác nhận); cả gia đình: `deletion_request('GIA_DINH')` | rút luôn được kể cả hộ đóng băng |

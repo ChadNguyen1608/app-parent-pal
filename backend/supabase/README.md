@@ -391,3 +391,7 @@ Kiểm sàn cứng và ô đỏ nằm ở Edge Function (bộ xếp là TS): t�
 - Đột biến của đợt 3a đánh số m110..m125 (main đã dùng tới m102).
 - Cần tạo secret `schedule_commit_key` (Vault) và `SCHEDULE_COMMIT_KEY` (Edge Function), cùng giá trị, ≥ 16 ký tự, khi áp lên đám mây. Chưa làm gì trên đám mây.
 - Chưa phủ: AC-04..08, 17 được kiểm ở mức bộ xếp (đã có từ T0.3) và chặn commit ở Edge Function; chưa có e2e với Supabase thật (không Docker). CI hiện chưa có job `db-test` (đề xuất ở trên).
+
+## T2.9: đồng ý mặc định khi tạo con (D-73)
+
+Migration `20261119300000_t2_9_dong_y_mac_dinh_d73.sql`: `app.consent_events` thêm cột `basis` (`NGUOI_DUNG` mặc định; `MAC_DINH_D73`). `app.child_create` (tạo lại bằng `create or replace`, chữ ký không đổi) ghi cùng giao dịch ba sự kiện DONG_Y cho MD-LICH, MD-SUCKHOE, MD-CONBAO (người ghi là QL đang gọi, bản chính sách mới nhất đang hiệu lực, bỏ qua mục `collect_enabled = false`). Gọi lặp cùng khóa trả sớm nên không ghi đôi. Chưa có bản chính sách hiệu lực thì không ghi (fail-closed). Tắt sau vẫn là `consent_record` RUT (basis `NGUOI_DUNG`); rút mục lõi vẫn là rút toàn bộ. `family_create` chưa có con nên không ghi gì. Test: CON-D73a..d (`consent.test.mjs`), CON-01c; đột biến m200..m202.

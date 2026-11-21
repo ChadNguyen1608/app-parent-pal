@@ -75,6 +75,8 @@ export type MockOptions = {
   childConsent?: string[];
   /** Khi bố mẹ bật MD-CONBAO, tạo sẵn một báo mẫu của con (hai app giả lập không thấy nhau). Mặc định tắt. */
   demoAlert?: boolean;
+  /** false: tạo con KHÔNG ghi đồng ý mặc định (D-73), để test các nhánh "chưa đồng ý" (con tạo trước D-73, hoặc máy chủ chưa có bản chính sách). Mặc định true. */
+  defaultConsent?: boolean;
   now?: () => number;
 };
 
@@ -268,8 +270,12 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
       if (age !== null && (age < 0 || age > 18)) fail('VALIDATION', 'BR-001', 'Tuổi từ 0 đến 18.');
       if (grade === null && age === null) fail('VALIDATION', 'BR-001', 'Cần lớp hoặc tuổi của con.');
       const childId = id('child');
-      children.push({ id: childId, callName: name, grade, ageYears: age, hasDevice: input.hasDevice, pairState: 'NONE', coreConsent: false, healthConsent: false, alertConsent: false });
+      children.push({ id: childId, callName: name, grade, ageYears: age, hasDevice: input.hasDevice, pairState: 'NONE', coreConsent: opts.defaultConsent !== false, healthConsent: opts.defaultConsent !== false, alertConsent: opts.defaultConsent !== false });
       if (input.idempotencyKey) seenKeys.set(input.idempotencyKey, childId);
+      // D-73: máy chủ ghi đồng ý mặc định (lõi + hai mục riêng) cùng lúc tạo con.
+      const m = states(childId);
+      if (opts.defaultConsent !== false) for (const code of [PURPOSE_LICH, PURPOSE_SUCKHOE, PURPOSE_CONBAO]) m.set(code, { state: 'DANG_BAT', activeSince: new Date(now()).toISOString() });
+      if (opts.defaultConsent !== false && opts.demoAlert) alerts.push({ id: id('alert'), childId, kind: 'KHONG_KHOE', createdAt: new Date(now() - 5 * 60_000).toISOString(), seenAt: null, key: null });
       return { childId };
     },
 

@@ -26,34 +26,28 @@ async function fillAndSave() {
   await fireEvent.press(screen.getByText('Lưu'));
 }
 
-describe('Bắt đầu: đồng ý mặc định (D-73)', () => {
-  it('tạo con xong ghi MD-LICH, MD-SUCKHOE, MD-CONBAO rồi vào app; không hỏi đồng ý', async () => {
+describe('Bắt đầu: đồng ý mặc định do máy chủ ghi (D-73)', () => {
+  it('tạo con xong vào app ngay; không gọi consent_record từ app; ba đồng ý đã có', async () => {
     const { api, refreshHome } = await setup();
     const spy = jest.spyOn(api, 'consentRecord');
     await render(<BatDau />);
     await fillAndSave();
     await waitFor(() => expect(refreshHome).toHaveBeenCalled());
-    expect(spy.mock.calls.map((c) => [c[0].purposeCode, c[0].event])).toEqual([
-      ['MD-LICH', 'DONG_Y'],
-      ['MD-SUCKHOE', 'DONG_Y'],
-      ['MD-CONBAO', 'DONG_Y'],
-    ]);
+    expect(spy).not.toHaveBeenCalled();
     const c = (await api.getHome())!.children[0];
     expect([c.coreConsent, c.healthConsent, c.alertConsent]).toEqual([true, true, true]);
     expect(screen.queryByText('Đồng ý sử dụng')).toBeNull();
   });
 
-  it('ghi đồng ý lỗi: chưa vào app, báo lỗi; bấm Lưu lại không tạo con thứ hai và ghi đủ ba mục', async () => {
+  it('tạo con lỗi: chưa vào app; bấm Lưu lại không tạo con thứ hai', async () => {
     const { api, refreshHome } = await setup();
-    jest.spyOn(api, 'consentRecord').mockRejectedValueOnce(new Error('mạng'));
+    jest.spyOn(api, 'childCreate').mockRejectedValueOnce(new Error('mạng'));
     await render(<BatDau />);
     await fillAndSave();
     await waitFor(() => expect(screen.getByText('Lưu')).toBeTruthy());
     expect(refreshHome).not.toHaveBeenCalled();
     await fireEvent.press(screen.getByText('Lưu'));
     await waitFor(() => expect(refreshHome).toHaveBeenCalled());
-    const home = (await api.getHome())!;
-    expect(home.children).toHaveLength(1);
-    expect([home.children[0].coreConsent, home.children[0].healthConsent, home.children[0].alertConsent]).toEqual([true, true, true]);
+    expect((await api.getHome())!.children).toHaveLength(1);
   });
 });

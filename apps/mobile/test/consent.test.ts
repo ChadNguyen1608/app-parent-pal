@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { createSupabaseApi } from '../src/data/api.ts';
-import { DEFAULT_PURPOSES, effectiveCodes, recordDefaultConsents } from '../src/data/consent.ts';
+import { effectiveCodes } from '../src/data/consent.ts';
 import { ApiError, toApiError } from '../src/data/errors.ts';
 import { MOCK_ALERT_MAX_PER_HOUR, MOCK_PURPOSES, createMockApi, type MockApi } from '../src/data/mock.ts';
 
@@ -18,7 +18,7 @@ async function rejects(p: Promise<unknown>, code: string) {
 }
 
 async function setup(opts: Parameters<typeof createMockApi>[0] = {}): Promise<{ api: MockApi; childId: string }> {
-  const api = createMockApi({ ...fast, ...opts });
+  const api = createMockApi({ ...fast, defaultConsent: false, ...opts });
   await api.auth.sendEmailOtp('a@b.vn');
   await api.auth.verifyEmailOtp('a@b.vn', '123456');
   const { householdId } = await api.familyCreate('chị Lan');
@@ -369,24 +369,18 @@ test('api.ts: RATE_LIMITED của child_alert_send thành lời Việt của máy
   });
 });
 
-test('D-73: recordDefaultConsents ghi MD-LICH, MD-SUCKHOE, MD-CONBAO theo thứ tự; cả ba hiệu lực; gọi lặp cùng khóa không ghi lại', async () => {
-  const { api, childId } = await setup();
-  const order: string[] = [];
-  const orig = api.consentRecord.bind(api);
-  api.consentRecord = async (i) => {
-    order.push(i.purposeCode);
-    return orig(i);
-  };
-  const keys: Record<string, string> = {};
-  await recordDefaultConsents(api, childId, keys);
-  assert.deepEqual(order, ['MD-LICH', 'MD-SUCKHOE', 'MD-CONBAO']);
-  assert.deepEqual([...DEFAULT_PURPOSES], order);
+test('D-73: tạo con là có sẵn ba đồng ý (máy chủ ghi mặc định); tắt sau vẫn rút được; gọi lặp cùng khóa không đổi', async () => {
+  const api = createMockApi(fast);
+  await api.auth.sendEmailOtp('a@b.vn');
+  await api.auth.verifyEmailOtp('a@b.vn', '123456');
+  const { householdId } = await api.familyCreate('chị Lan');
+  const { childId } = await api.childCreate({ householdId, callName: 'Bin', grade: 3, hasDevice: true, idempotencyKey: 'k' });
   assert.deepEqual(effectiveCodes(await api.getConsentOverview(childId)), ['MD-LICH', 'MD-SUCKHOE', 'MD-CONBAO']);
   const c = (await api.getHome())!.children[0];
   assert.deepEqual([c.coreConsent, c.healthConsent, c.alertConsent], [true, true, true]);
-  assert.equal(Object.keys(keys).length, 3, 'mỗi mục một khóa gửi lặp');
-  await recordDefaultConsents(api, childId, keys); // sau lỗi giữa chừng, bấm lại là an toàn
-  assert.equal((await api.getConsentOverview(childId)).states['MD-CONBAO'].state, 'DANG_BAT');
+  await api.consentRecord({ childId, purposeCode: 'MD-CONBAO', event: 'RUT' });
+  await api.childCreate({ householdId, callName: 'Bin', grade: 3, hasDevice: true, idempotencyKey: 'k' });
+  assert.equal((await api.getConsentOverview(childId)).states['MD-CONBAO'].state, 'DA_RUT', 'replay không bật lại');
 });
 
 test('D-73: cài đặt ai_chat_enabled mặc định tắt; chỉ QL đổi; tắt luôn được kể cả khi đóng băng', async () => {
