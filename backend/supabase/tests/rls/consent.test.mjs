@@ -65,11 +65,11 @@ describe('CON-01: mục lõi gộp + mục riêng, không chọn sẵn (AC-CON-0
     assert.equal(canP(NL, NA, 'MD-LICH').rows[0], 't');
   });
 
-  it('CON-01c: hồ sơ con mới tạo không có dòng purpose_state nào (mục riêng không chọn sẵn)', () => {
+  it('CON-01c: hồ sơ con mới tạo (D-73) đã có sẵn ba đồng ý mặc định; chi tiết ở CON-D73', () => {
     const r = run(QL, `select (app.child_create('${HH1}', 'bé Mít', 3)->>'child_id')::uuid as nc \\gset
-      ${adm(`select count(*) from app.purpose_state where child_id = :'nc'; select count(*) from app.consent_events where child_id = :'nc'`)}`);
+      ${adm(`select count(*) from app.purpose_state where child_id = :'nc' and state = 'DANG_BAT'; select count(*) from app.consent_events where child_id = :'nc'`)}`);
     assert.ok(r.ok, r.err);
-    assert.deepEqual(r.rows.slice(-2), ['0', '0']);
+    assert.deepEqual(r.rows.slice(-2), ['3', '3']);
   });
 
   it('CON-01d: đồng ý ghi sổ: người ghi, phiên bản chính sách, SELF_DECLARED, giờ máy chủ', () => {
@@ -604,5 +604,55 @@ describe('CON-FAM: app.my_family_state - máy con biết hộ có đóng băng k
     NOT_FOUND(run(DEV_NA, st, { setup: `update app.device_bindings set state='DA_HUY' where id='${BIND_NA}';` }));
     assert.equal(run(ANON, st).code, '42501');
     UNAUTH(run({ role: 'authenticated', claims: { is_anonymous: true } }, st));
+  });
+});
+
+// ================================================================ CON-D73: đồng ý mặc định do máy chủ ghi khi tạo con
+describe('CON-D73: child_create ghi đồng ý mặc định cùng giao dịch (D-73; migration T2.9)', { skip }, () => {
+  const mk = (extra = '') => `select app.child_create('${HH1}', 'bé Mít', 3, null, false${extra}) as cc \\gset
+    select (:'cc'::jsonb->>'child_id')::uuid as nc \\gset\n`;
+  const rows = (sql) => adm(sql) + ';';
+  const evs = `select string_agg(purpose_code || ':' || event || ':' || basis, ',' order by at, id) from app.consent_events where child_id = :'nc'`;
+
+  it('CON-D73a: con mới có đủ ba DONG_Y MD-LICH, MD-SUCKHOE, MD-CONBAO, basis MAC_DINH_D73, người ghi là QL đang gọi; cả ba hiệu lực ngay', () => {
+    const r = run(QL, mk() + [
+      evs,
+      `select count(*) from app.consent_events where child_id = :'nc' and actor_member_id = '${MEM_HOA}' and subject_member_id is null and not by_child`,
+      `select app_internal.purpose_effective(:'nc', 'MD-LICH')::text || ',' || app_internal.purpose_effective(:'nc', 'MD-SUCKHOE')::text || ',' || app_internal.purpose_effective(:'nc', 'MD-CONBAO')::text`,
+      `select count(*) from app.purpose_state where child_id = :'nc' and state = 'DANG_BAT'`,
+    ].map(rows).join('\n'));
+    assert.ok(r.ok, r.err);
+    assert.deepEqual(r.rows.slice(-4), [
+      'MD-LICH:DONG_Y:MAC_DINH_D73,MD-SUCKHOE:DONG_Y:MAC_DINH_D73,MD-CONBAO:DONG_Y:MAC_DINH_D73', '3', 'true,true,true', '3']);
+  });
+
+  it('CON-D73b: gọi lặp cùng khóa (replay) không ghi đôi; dòng ghi qua consent_record vẫn có basis NGUOI_DUNG', () => {
+    const k = '30000000-0000-4000-8000-0000000000d7';
+    const r = run(QL, mk(`, '${k}'`) + `select app.child_create('${HH1}', 'bé Mít', 3, null, false, '${k}')->>'replay';
+      ${rows(`select count(*) from app.consent_events where child_id = :'nc'`)}
+      ${rec(NA, 'MD-SUCKHOE', 'RUT')};
+      ${rows(`select basis from app.consent_events where child_id = '${NA}' and event = 'RUT'`)}`);
+    assert.ok(r.ok, r.err);
+    assert.deepEqual(r.rows.filter((x) => ['true', 'false', '3', 'NGUOI_DUNG'].includes(x)).slice(-3), ['true', '3', 'NGUOI_DUNG']);
+  });
+
+  it('CON-D73c: tắt sau ở Cài đặt vẫn ghi RUT bình thường (mục riêng); mục lõi vẫn chỉ rút toàn bộ', () => {
+    const r = run(QL, mk() + `select app.consent_record(:'nc', 'MD-CONBAO', 'RUT')->>'changed';
+      ${rows(evs)}
+      ${rows(`select app_internal.purpose_effective(:'nc', 'MD-CONBAO')::text || ',' || app_internal.purpose_effective(:'nc', 'MD-SUCKHOE')::text`)}`);
+    assert.ok(r.ok, r.err);
+    assert.deepEqual(r.rows.slice(-3), [
+      'true',
+      'MD-LICH:DONG_Y:MAC_DINH_D73,MD-SUCKHOE:DONG_Y:MAC_DINH_D73,MD-CONBAO:DONG_Y:MAC_DINH_D73,MD-CONBAO:RUT:NGUOI_DUNG',
+      'false,true']);
+    VALIDATION(run(QL, mk() + `select app.consent_record(:'nc', 'MD-LICH', 'RUT')`), 'BR-CON-026');
+  });
+
+  it('CON-D73d: người lớn không phải QL không tạo được con (không có đồng ý nào được ghi); mục tắt khẩn cấp (collect_enabled=false) bị bỏ qua', () => {
+    FORBIDDEN(run(NL, `select app.child_create('${HH1}', 'bé Mít', 3, null, false)`));
+    const r = run(QL, `${adm(`update app.purposes set collect_enabled = false where code = 'MD-CONBAO'`)};
+      ${mk().replace(/^/, '')}${rows(evs)}`);
+    assert.ok(r.ok, r.err);
+    assert.equal(r.rows.at(-1), 'MD-LICH:DONG_Y:MAC_DINH_D73,MD-SUCKHOE:DONG_Y:MAC_DINH_D73');
   });
 });

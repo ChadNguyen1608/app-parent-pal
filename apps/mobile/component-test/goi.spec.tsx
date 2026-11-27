@@ -22,7 +22,7 @@ jest.mock('expo-router', () => ({
 }));
 
 async function setup(plan: PlanTier, withPlanInContext: boolean) {
-  const { api, home } = await parentWithChild(plan);
+  const { api, home } = await parentWithChild({ plan });
   const myPlan = withPlanInContext ? await api.myPlan() : null;
   mockUseApp.mockReturnValue({ api, home, refreshHome: async () => undefined, plan: myPlan, refreshPlan: async () => undefined });
   return { api, home };

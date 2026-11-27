@@ -7,11 +7,15 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { getApi } from '../data';
 import { parseAuthLink } from '../data/auth-link';
 import { errorMessage } from '../data/errors';
+import { uuidv4 } from '../data/uuid';
 import type { Api, Binding, Home, PlanInfo, SessionInfo } from '../data/types';
 import { APP_VARIANT } from '../variant';
 
-/** Phụ huynh: loading → out (PA-01) → needHome (tạo hộ, con) → ready. */
-export type ParentStage = 'loading' | 'out' | 'needHome' | 'ready';
+/**
+ * Phụ huynh: loading → out (PA-01) → needHome (tạo hộ, thêm con; đồng ý ghi mặc định, D-73) → ready.
+ * frozen: hộ đóng băng (PA-39). closing: hộ đang chờ xóa (đã gửi yêu cầu xóa gia đình).
+ */
+export type ParentStage = 'loading' | 'out' | 'needHome' | 'frozen' | 'closing' | 'ready';
 /** Máy con: loading → unpaired (CA-01, CA-02) → justPaired (CA-03) → intro (CA-16) → ready. */
 export type ChildStage = 'loading' | 'unpaired' | 'justPaired' | 'intro' | 'ready';
 
@@ -41,11 +45,19 @@ type Ctx = {
   refreshBinding: () => Promise<boolean>;
   acknowledgeJustPaired: () => void;
   acknowledgeIntro: () => Promise<void>;
+  /** CA-17: máy từng ghép nhưng nay không còn liên kết (tự hủy hoặc bố mẹ rút/xóa). */
+  disconnected: boolean;
+  /** Bấm "Lấy mã mới" ở CA-17: quay về luồng ghép. */
+  startNewPairing: () => Promise<void>;
+  /** CA-18: gia đình đang tạm dừng và con chưa bấm "Xem lịch đã có". */
+  paused: boolean;
+  dismissPause: () => void;
   onUnlinked: () => Promise<void>;
 };
 
 const AppCtx = createContext<Ctx | null>(null);
 const INTRO_KEY = 'pp.child.ca16_seen';
+const WAS_PAIRED_KEY = 'pp.child.was_paired';
 
 export function useApp(): Ctx {
   const c = useContext(AppCtx);
@@ -69,10 +81,14 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
   const [bindingEpoch, setBindingEpoch] = useState<number | null>(null);
   const [childStage, setChildStage] = useState<ChildStage>('loading');
   const [childPlanActive, setChildPlanActive] = useState(true);
+  const [disconnected, setDisconnected] = useState(false);
+  const [frozenFamily, setFrozenFamily] = useState(false);
+  const [pauseSeen, setPauseSeen] = useState(false);
 
   const isParent = APP_VARIANT === 'parent';
   const [linkError, setLinkError] = useState<string | null>(null);
   const handledUrl = useRef<string | null>(null);
+  const introKey = useRef(uuidv4());
 
   // Link đăng nhập trong thư mở app (D-59): hoàn tất phiên. Chỉ app phụ huynh.
   useEffect(() => {
@@ -182,6 +198,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
     if (!childSession) {
       setChildId(null);
       setBindingEpoch(null);
+      void AsyncStorage.getItem(WAS_PAIRED_KEY).then((v) => setDisconnected(v === '1')).catch(() => undefined);
       setChildStage('unpaired');
       return;
     }
@@ -198,6 +215,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
         }
         setChildId(b.childId);
         setBindingEpoch(b.epoch);
+        await AsyncStorage.setItem(WAS_PAIRED_KEY, '1').catch(() => undefined);
         const seen = (await AsyncStorage.getItem(INTRO_KEY)) === '1';
         if (alive) setChildStage((cur) => (cur === 'justPaired' ? cur : seen ? 'ready' : 'intro'));
       } catch {
@@ -209,15 +227,20 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
     };
   }, [api, isParent, booted, childSession?.userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Máy con đã vào app: hỏi máy chủ gói còn hoạt động không (D-72), lúc vào và mỗi lần app trở lại nền trước. Lỗi mạng thì giữ trạng thái cũ.
+  // Máy con đã vào app: hỏi máy chủ gia đình có đóng băng không và gói còn hoạt động không (D-72, D-74), lúc vào và mỗi lần app trở lại nền trước.
   useEffect(() => {
     if (isParent || childStage !== 'ready') return;
     let alive = true;
     const check = () =>
       api
         .myFamilyState()
-        .then((st) => alive && setChildPlanActive(st.planActive))
-        .catch(() => undefined);
+        .then((st) => {
+          if (!alive) return;
+          setFrozenFamily(st.frozen);
+          setChildPlanActive(st.planActive);
+          if (!st.frozen) setPauseSeen(false);
+        })
+        .catch(() => undefined); // không đọc được thì giữ trạng thái cũ, không chặn
     void check();
     const sub = AppState.addEventListener('change', (st) => {
       if (st === 'active') void check();
@@ -234,9 +257,15 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       ? 'out'
       : !homeLoaded
         ? 'loading'
-        : home && home.children.length > 0
-          ? 'ready'
-          : 'needHome';
+        : !home
+          ? 'needHome'
+          : home.householdState === 'CHO_XOA' || home.householdState === 'DA_XOA'
+            ? 'closing'
+            : home.householdState === 'DONG_BANG'
+              ? 'frozen'
+              : home.children.length === 0
+                ? 'needHome'
+                : 'ready';
 
   const value = useMemo<Ctx>(
     () => ({
@@ -260,6 +289,8 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       onPaired: (b) => {
         setChildId(b.childId);
         setBindingEpoch(b.epoch);
+        setDisconnected(false);
+        void AsyncStorage.setItem(WAS_PAIRED_KEY, '1').catch(() => undefined);
         setChildStage('justPaired');
       },
       refreshBinding: async () => {
@@ -276,11 +307,23 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       },
       acknowledgeJustPaired: () => setChildStage('intro'),
       acknowledgeIntro: async () => {
+        // CA-16 kiêm bước con đồng ý (D-64): ghi đồng ý lên máy chủ TRƯỚC, lỗi thì ném ra để màn báo và cho thử lại
+        // (không đặt cờ "đã xem", không vào app). Khóa gửi lặp giữ nguyên giữa các lần thử.
+        await api.childConsentRecord(introKey.current);
         await AsyncStorage.setItem(INTRO_KEY, '1').catch(() => undefined);
         setChildStage('ready');
       },
+      disconnected,
+      startNewPairing: async () => {
+        await AsyncStorage.removeItem(WAS_PAIRED_KEY).catch(() => undefined);
+        setDisconnected(false);
+      },
+      paused: frozenFamily && !pauseSeen,
+      dismissPause: () => setPauseSeen(true),
       onUnlinked: async () => {
         await AsyncStorage.removeItem(INTRO_KEY).catch(() => undefined);
+        await AsyncStorage.setItem(WAS_PAIRED_KEY, '1').catch(() => undefined);
+        setDisconnected(true);
         await api.auth.signOut().catch(() => undefined);
         setSession(null);
         setChildId(null);
@@ -288,7 +331,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
         setChildStage('unpaired');
       },
     }),
-    [api, session, parentStage, home, refreshHome, plan, refreshPlan, linkError, childStage, childId, childPlanActive, bindingEpoch],
+    [api, session, parentStage, home, refreshHome, plan, refreshPlan, linkError, childStage, childId, childPlanActive, bindingEpoch, disconnected, frozenFamily, pauseSeen],
   );
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;

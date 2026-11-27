@@ -14,6 +14,7 @@ Repo này chứa **tài liệu** của Parent-Pal (thư mục `documents/`) và 
 - Khóa Claude API chỉ nằm trong secret của Supabase; app gọi qua Edge Function `pal-chat`, có ẩn danh và lớp an toàn chạy trước.
 - `prototype/index.html` là hành vi chuẩn để chuyển sang app; giữ nguyên, không xóa. Từ 15/11/2026, chỗ nào bản thử khác `documents/pal/spec-quy-tac-lap-lich.md` thì theo spec (danh sách ở `prototype/README.md`).
 - Tạo tài khoản, dự án dịch vụ hay phát sinh chi phí: hỏi chủ sản phẩm trước.
+- Giai đoạn test (D-71): dữ liệu lưu trên dự án Supabase chính đều là dữ liệu test, xóa hết trước khi phát hành thật; được lưu toàn bộ dữ liệu, lọc bớt trước khi phát hành. Gói dịch vụ và Pal: D-68, D-69.
 - Ghi kết quả test trên máy thật vào `documents/app/ref-nhat-ky-test.md`.
 
 ## Sản phẩm

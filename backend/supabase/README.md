@@ -449,3 +449,7 @@ Migration `20261119150000_d72_goi_chi_tiet.sql` (sửa D-68 ở trên). Người
 5. `goi_doi` chỉ ghi khi trạng thái PREMIUM đổi.
 6. `D-68.trial_plan` không còn được phát (mỗi con tối đa 1 kế hoạch theo cấu trúc: kế hoạch đầu là lần commit đầu).
 7. Khi nhiều người lớn dùng cùng một máy hoặc cùng một Android ID sau khôi phục cài đặt: Android ID đổi khi xóa dữ liệu/khôi phục gốc; coi là chấp nhận được ở giai đoạn test.
+
+## T2.9: đồng ý mặc định khi tạo con (D-73)
+
+Migration `20261119300000_t2_9_dong_y_mac_dinh_d73.sql`: `app.consent_events` thêm cột `basis` (`NGUOI_DUNG` mặc định; `MAC_DINH_D73`). `app.child_create` (tạo lại bằng `create or replace`, chữ ký không đổi) ghi cùng giao dịch ba sự kiện DONG_Y cho MD-LICH, MD-SUCKHOE, MD-CONBAO (người ghi là QL đang gọi, bản chính sách mới nhất đang hiệu lực, bỏ qua mục `collect_enabled = false`). Gọi lặp cùng khóa trả sớm nên không ghi đôi. Chưa có bản chính sách hiệu lực thì không ghi (fail-closed). Tắt sau vẫn là `consent_record` RUT (basis `NGUOI_DUNG`); rút mục lõi vẫn là rút toàn bộ. `family_create` chưa có con nên không ghi gì. Test: CON-D73a..d (`consent.test.mjs`), CON-01c; đột biến m200..m202.

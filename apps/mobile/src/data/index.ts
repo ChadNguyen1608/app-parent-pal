@@ -23,7 +23,8 @@ export function getApi(): Api | null {
     // Bản web thử (E2E): ?plan=FREE|TRIAL|PREMIUM chọn gói giả lập (không có thì mặc định TRIAL); ?trial=used giả lập máy/email đã dùng thử. Chỉ bản mock đọc tham số này.
     const q = typeof globalThis.location?.search === 'string' ? new URLSearchParams(globalThis.location.search).get('plan') : null;
     const used = typeof globalThis.location?.search === 'string' && new URLSearchParams(globalThis.location.search).get('trial') === 'used';
-    instance = createMockApi({ ...(isPlanTier(q) ? { plan: q } : {}), ...(used ? { trialClaimed: true } : {}) });
+    // demoAlert: báo mẫu để thử màn của bố mẹ (hai app giả lập không thấy nhau)
+    instance = createMockApi({ demoAlert: true, ...(isPlanTier(q) ? { plan: q } : {}), ...(used ? { trialClaimed: true } : {}) });
   } else if (BACKEND === 'supabase') {
     const client = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth: {

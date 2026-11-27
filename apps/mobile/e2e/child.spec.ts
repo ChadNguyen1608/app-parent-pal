@@ -47,6 +47,7 @@ test('ghép máy, xem lời chào, vào các tab, hủy kết nối bằng PIN �
   await expect(page.getByRole('heading', { name: 'Đã kết nối' })).toBeVisible();
   await page.getByRole('button', { name: 'Tiếp tục' }).click();
   await expect(page.getByRole('heading', { name: 'Những gì bố mẹ thấy' })).toBeVisible();
+  await expect(page.getByText(/Khi con bấm "Báo bố mẹ ngay"/)).toBeVisible(); // MD-CONBAO hiệu lực trong mock máy con
   await shot(page, 'ca16-bo-me-thay');
 
   // CA-16: "Con hiểu rồi" phải đưa sang tab Hôm nay (lỗi PR #38).
@@ -65,7 +66,50 @@ test('ghép máy, xem lời chào, vào các tab, hủy kết nối bằng PIN �
   await shot(page, 'ca12-nhap-pin-sai');
 
   await nhapPin(page, '482915');
+  // CA-17: máy từng ghép nay không còn liên kết.
   await expect(page.getByRole('heading', { name: 'Chào con' })).toBeVisible();
+  await expect(page.getByText('Máy này không còn kết nối với gia đình.')).toBeVisible();
+  await shot(page, 'ca17-mat-ket-noi');
+  await page.getByRole('button', { name: 'Lấy mã mới' }).click();
+  await expect(page.getByRole('heading', { name: 'Mã của con' })).toBeVisible();
+});
+
+test('CA-21 Báo bố mẹ ngay (D-67): ba câu hỏi có sẵn, không ô gõ chữ, "Đồng ý" mới gửi, giới hạn tần suất', async ({ page }) => {
+  await ghepXong(page);
+  await page.getByRole('button', { name: 'Báo bố mẹ ngay' }).click();
+  await expect(page.getByRole('heading', { name: 'Báo bố mẹ ngay' }).last()).toBeVisible();
+  await expect(page.getByRole('textbox')).toHaveCount(0);
+  for (const q of ['Con thấy không khỏe?', 'Nhờ bố mẹ đón sớm?', 'Con cần bố mẹ gọi?']) await expect(page.getByRole('button', { name: q })).toBeVisible();
+  await shot(page, 'ca21-bao-bo-me');
+
+  // Chọn câu chưa gửi: phải qua màn xác nhận.
+  await page.getByRole('button', { name: 'Nhờ bố mẹ đón sớm?' }).click();
+  await expect(page.getByRole('heading', { name: 'Nhờ bố mẹ đón sớm?' })).toBeVisible();
+  await expect(page.getByText('Đã gửi. Bố mẹ sẽ trả lời con.')).toHaveCount(0);
+  await shot(page, 'ca21-xac-nhan');
+  await page.getByRole('button', { name: 'Không' }).click();
+  await expect(page.getByRole('button', { name: 'Con cần bố mẹ gọi?' })).toBeVisible();
+
+  await page.getByRole('button', { name: 'Con thấy không khỏe?' }).click();
+  await page.getByRole('button', { name: 'Đồng ý' }).click();
+  await expect(page.getByText('Đã gửi. Bố mẹ sẽ trả lời con.')).toBeVisible();
+  await expect(page.getByText('Lịch hôm nay không tự đổi. Bố mẹ sẽ quyết định.')).toBeVisible();
+  await shot(page, 'ca21-da-gui');
+
+  // Gửi tiếp tới khi chạm giới hạn 6 lần mỗi giờ: lần thứ 7 bị từ chối bằng lời tiếng Việt.
+  for (let i = 2; i <= 6; i++) {
+    await page.getByRole('button', { name: 'Xong' }).click();
+    await page.getByRole('button', { name: 'Báo bố mẹ ngay' }).click();
+    await page.getByRole('button', { name: 'Con cần bố mẹ gọi?' }).click();
+    await page.getByRole('button', { name: 'Đồng ý' }).click();
+    await expect(page.getByText('Đã gửi. Bố mẹ sẽ trả lời con.')).toBeVisible();
+  }
+  await page.getByRole('button', { name: 'Xong' }).click();
+  await page.getByRole('button', { name: 'Báo bố mẹ ngay' }).click();
+  await page.getByRole('button', { name: 'Con cần bố mẹ gọi?' }).click();
+  await page.getByRole('button', { name: 'Đồng ý' }).click();
+  await expect(page.getByRole('alert')).toContainText('Đã báo nhiều lần, hãy chờ một lúc.');
+  await expect(page.getByText('Đã gửi. Bố mẹ sẽ trả lời con.')).toHaveCount(0);
 });
 
 test('nhánh "Không": con từ chối thì lấy mã mới, chưa kết nối', async ({ page }) => {

@@ -5,4 +5,6 @@ module.exports = {
   testMatch: ['<rootDir>/component-test/**/*.spec.tsx'],
   setupFiles: ['<rootDir>/component-test/setup.ts'],
   moduleNameMapper: { '^@/(.*)$': '<rootDir>/src/$1' },
+  // CI chậm hơn máy dev: lần render đầu (nạp jest-expo) có thể quá 5 giây mặc định.
+  testTimeout: 30000,
 };
