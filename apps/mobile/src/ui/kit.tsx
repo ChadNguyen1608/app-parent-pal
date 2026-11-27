@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
+  Switch,
   Text,
   TextInput,
   View,
@@ -119,6 +120,48 @@ export function Choice({ label, selected, onPress }: { label: string; selected: 
   );
 }
 
+/** Ô ghi chú nhạt (kiểu "note" của wireframe). */
+export function Note({ children }: { children: ReactNode }) {
+  return (
+    <View style={{ backgroundColor: '#EFEDE6', borderRadius: 10, padding: 12 }}>
+      <Text style={{ color: COLORS.muted, fontSize: 14, lineHeight: 20 }}>{children}</Text>
+    </View>
+  );
+}
+
+/** Hàng chọn (hộp tích) có tên và mô tả. */
+export function CheckRow({ label, desc, checked, disabled, onPress }: { label: string; desc?: string; checked: boolean; disabled?: boolean; onPress: () => void }) {
+  return (
+    <Pressable
+      accessibilityRole="checkbox"
+      accessibilityLabel={label}
+      accessibilityState={{ checked, disabled: !!disabled }}
+      disabled={disabled}
+      onPress={onPress}
+      style={[s.checkRow, disabled && { opacity: 0.6 }]}
+    >
+      <View style={[s.box, checked && { backgroundColor: COLORS.primary, borderColor: COLORS.primary }]}>{checked ? <Text style={{ color: '#fff', fontWeight: '700' }}>✓</Text> : null}</View>
+      <View style={{ flex: 1, gap: 2 }}>
+        <Text style={{ fontSize: 16, fontWeight: '600', color: COLORS.text }}>{label}</Text>
+        {desc ? <Text style={s.hint}>{desc}</Text> : null}
+      </View>
+    </Pressable>
+  );
+}
+
+/** Hàng công tắc. */
+export function SwitchRow({ label, desc, value, disabled, onValueChange }: { label: string; desc?: string; value: boolean; disabled?: boolean; onValueChange: (v: boolean) => void }) {
+  return (
+    <View style={s.checkRow}>
+      <View style={{ flex: 1, gap: 2 }}>
+        <Text style={{ fontSize: 16, color: COLORS.text }}>{label}</Text>
+        {desc ? <Text style={s.hint}>{desc}</Text> : null}
+      </View>
+      <Switch accessibilityLabel={label} value={value} disabled={disabled} onValueChange={onValueChange} />
+    </View>
+  );
+}
+
 export function Center({ children }: { children: ReactNode }) {
   return <View style={s.center}>{children}</View>;
 }
@@ -136,5 +179,7 @@ const s = StyleSheet.create({
   errorText: { color: COLORS.danger, fontSize: 14 },
   notice: { borderWidth: 1, borderRadius: 10, padding: 12 },
   choice: { minHeight: MIN_TOUCH, borderWidth: 1.5, borderColor: COLORS.line, borderRadius: 10, paddingHorizontal: 14, justifyContent: 'center' },
+  checkRow: { minHeight: 52, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#E4E6EA' },
+  box: { width: 24, height: 24, borderRadius: 6, borderWidth: 1.5, borderColor: COLORS.line, alignItems: 'center', justifyContent: 'center' },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 12 },
 });

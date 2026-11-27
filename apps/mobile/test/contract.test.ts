@@ -6,7 +6,7 @@ import { dirname, join } from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
-import { createSupabaseApi } from '../src/data/api.ts';
+import { TABLE_READS, createSupabaseApi } from '../src/data/api.ts';
 import { PIN_EXISTS_HINT, PIN_REQUIRED_HINT, PIN_REQUIRED_RULE } from '../src/data/validate.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -84,6 +84,40 @@ const fns = parseFunctions(sql);
 const granted = grantedToAuthenticated(sql);
 
 type Call = { fn: string; args: Record<string, unknown> | undefined };
+type Read = { table: string; columns: string[] };
+
+/** Cột của mọi `create table app.X (...)` (kèm `alter table ... add column`). */
+function parseTables(src: string): Map<string, Set<string>> {
+  const out = new Map<string, Set<string>>();
+  const re = /create\s+table\s+app\.(\w+)\s*\(/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(src))) {
+    let depth = 1;
+    let i = re.lastIndex;
+    while (i < src.length && depth > 0) {
+      if (src[i] === '(') depth++;
+      else if (src[i] === ')') depth--;
+      i++;
+    }
+    const cols = new Set<string>();
+    let cur = '';
+    let d = 0;
+    for (const ch of src.slice(re.lastIndex, i - 1) + ',') {
+      if (ch === '(') d++;
+      if (ch === ')') d--;
+      if (ch === ',' && d === 0) {
+        const w = cur.trim().split(/\s+/)[0];
+        if (w && !/^(primary|unique|check|constraint|foreign)$/i.test(w)) cols.add(w);
+        cur = '';
+      } else cur += ch;
+    }
+    out.set(m[1], cols);
+  }
+  for (const a of src.matchAll(/alter\s+table\s+app\.(\w+)\s+add\s+column\s+(?:if\s+not\s+exists\s+)?(\w+)/gi)) out.get(a[1])?.add(a[2]);
+  return out;
+}
+const tables = parseTables(sql);
+const reads: Read[] = [];
 
 /** Chạy mọi hàm RPC của Api với client giả, trả danh sách lời gọi (cả có và không có tham số tùy chọn). */
 async function driveApi(): Promise<Call[]> {
@@ -99,6 +133,30 @@ async function driveApi(): Promise<Call[]> {
     pair_accept: { ok: true, replay: false, binding_id: 'b', child_id: 'c', epoch: 2 },
     pair_decline: { ok: true, declined: true },
     unlink_device: { ok: true, unlinked: true, replay: false, epoch: 3 },
+    consent_record: { ok: true, changed: true, replay: false, effective: true },
+    child_consent_record: { ok: true, changed: true, replay: false, consented_at: 'x', policy_version_id: 'p' },
+    my_family_state: { ok: true, state: 'HOAT_DONG', frozen: false },
+    child_alert_send: { ok: true, replay: false, id: 'a', kind: 'KHONG_KHOE', created_at: 'x' },
+    child_alert_seen: { ok: true, changed: true, seen_at: 'x' },
+    health_note_add: { ok: true, note: { id: 'n', child_id: 'c', kind: 'DI_UNG', content: 'x', declared_by_member_id: 'm', declared_by_role: 'PRIMARY', declared_at: '2026-11-17', source_note: null, active: true } },
+    health_note_update: { ok: true, note: { id: 'n', child_id: 'c', kind: 'DI_UNG', content: 'x', declared_by_member_id: 'm', declared_by_role: 'PRIMARY', declared_at: '2026-11-17', source_note: null, active: false } },
+    health_note_delete: { ok: true, deleted: true },
+    consent_withdraw_all: { ok: true, step: 1, confirm_token: 'tok', expires_at: 'x', consequences: {} },
+    household_reopen: { ok: true, changed: true },
+    deletion_request: { ok: true, replay: false, deletion_request_id: 'd', accepted_at: 'x', state: 'CHO_QUYET_HAN', hard_deleted: false },
+    export_request: { ok: true },
+    child_setting_get: { ok: true, ai_chat_enabled: false },
+    child_setting_set: { ok: true, key: 'ai_chat_enabled', value: true, changed: true },
+  };
+  /** Truy vấn giả: mọi bộ lọc trả chính nó; await ra danh sách rỗng; maybeSingle ra null. */
+  const query = (table: string, columns: string) => {
+    reads.push({ table, columns: columns.split(',').map((c) => c.trim()) });
+    const q: Record<string, unknown> = {};
+    for (const f of ['eq', 'neq', 'in', 'is', 'order']) q[f] = () => q;
+    const row = table === 'members' ? { household_id: 'h', call_name: 'x', role: 'PRIMARY' } : null;
+    q.maybeSingle = async () => ({ data: row, error: null });
+    q.then = (ok: (v: unknown) => unknown) => ok({ data: [], error: null });
+    return q;
   };
   const client = {
     schema: () => ({
@@ -106,11 +164,7 @@ async function driveApi(): Promise<Call[]> {
         calls.push({ fn, args });
         return { data: canned[fn] ?? null, error: null };
       },
-      from: () => ({
-        select: () => ({
-          eq: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }) }),
-        }),
-      }),
+      from: (table: string) => ({ select: (columns: string) => query(table, columns) }),
     }),
     auth: { getSession: async () => ({ data: { session: { user: { id: 'u', is_anonymous: false } } }, error: null }) },
   };
@@ -128,6 +182,33 @@ async function driveApi(): Promise<Call[]> {
   await api.pairDecline();
   await api.unlinkDevice('c', '246801', 2);
   await api.unlinkDevice('c', '246801');
+  await api.consentRecord({ childId: 'c', purposeCode: 'MD-SUCKHOE', event: 'DONG_Y', idempotencyKey: 'k', forSelf: false });
+  await api.consentRecord({ childId: 'c', purposeCode: 'MD-CONBAO', event: 'RUT' });
+  await api.withdrawAllStart('c');
+  canned.consent_withdraw_all = { ok: true, step: 2, replay: false, deletion_request_id: 'd', accepted_at: 'x', state: 'CHO_QUYET_HAN', hard_deleted: false };
+  await api.withdrawAllConfirm('c', 'tok');
+  await api.householdReopen(true);
+  await api.deletionRequest('HO_SO_CON', 'c');
+  await api.deletionRequest('GIA_DINH');
+  await api.exportRequest('GIA_DINH');
+  await api.childSettingGet('c');
+  await api.childSettingSet('c', 'ai_chat_enabled', true);
+  await api.getHome();
+  await api.getConsentOverview('c');
+  await api.getMyConsent('c');
+  await api.getMyBinding();
+  await api.getFamilyState();
+  await api.childConsentRecord('k');
+  await api.childConsentRecord();
+  await api.childAlertSend('KHONG_KHOE', 'k', 2);
+  await api.childAlertSend('DON_SOM');
+  await api.childAlertSeen('a');
+  await api.healthNoteAdd({ childId: 'c', kind: 'DI_UNG', content: 'Tôm', sourceNote: 'theo giấy khám', declaredAt: '2026-11-17' });
+  await api.healthNoteAdd({ childId: 'c', kind: 'KHAC', content: 'x' });
+  await api.healthNoteUpdate('n', { kind: 'THUOC', content: 'y', sourceNote: null, declaredAt: '2026-11-16', active: false });
+  await api.healthNoteDelete('n');
+  await api.listHealthNotes('c');
+  await api.listChildAlerts();
   return calls;
 }
 
@@ -145,7 +226,7 @@ test('migration có đủ hàm RPC và phân tích được', () => {
 
 test('mỗi lời gọi RPC của api.ts: hàm tồn tại, tham số có thật, đủ tham số bắt buộc, được cấp EXECUTE cho authenticated', async () => {
   const calls = await driveApi();
-  assert.ok(calls.length >= 10);
+  assert.ok(calls.length >= 20);
   for (const c of calls) {
     const f = fns.get(c.fn);
     assert.ok(f, `api.ts gọi app.${c.fn} nhưng migration không có`);
@@ -220,4 +301,89 @@ test('unlink_device: máy con phải gửi epoch, epoch sai là CONFLICT_REV', (
   const body = fns.get('unlink_device')!.body;
   assert.match(body, /v_is_dev and p_binding_epoch is null/);
   assert.match(body, /app\.fail\('CONFLICT_REV'/);
+});
+
+test('migration có hàm đồng ý, rút toàn bộ, mở lại, xóa, xuất với đúng tham số', () => {
+  assert.deepEqual(fns.get('consent_record')!.params.map((p) => p.name), ['p_child', 'p_purpose_code', 'p_event', 'p_policy_version_id', 'p_paper_ref', 'p_idempotency_key', 'p_for_self']);
+  assert.deepEqual(fns.get('consent_withdraw_all')!.params, [{ name: 'p_child', hasDefault: false }, { name: 'p_confirm_token', hasDefault: true }]);
+  assert.deepEqual(fns.get('household_reopen')!.params.map((p) => p.name), ['p_confirm']);
+  assert.deepEqual(fns.get('child_consent_record')!.params.map((p) => p.name), ['p_policy_version_id', 'p_idempotency_key']);
+  assert.deepEqual(fns.get('my_family_state')!.params, []);
+  assert.deepEqual(fns.get('child_alert_send')!.params, [
+    { name: 'p_kind', hasDefault: false },
+    { name: 'p_idempotency_key', hasDefault: true },
+    { name: 'p_binding_epoch', hasDefault: true },
+  ]);
+  assert.deepEqual(fns.get('child_alert_seen')!.params.map((p) => p.name), ['p_alert']);
+  assert.deepEqual(fns.get('child_setting_get')!.params.map((p) => p.name), ['p_child']);
+  assert.deepEqual(fns.get('child_setting_set')!.params.map((p) => p.name), ['p_child', 'p_key', 'p_value']);
+  assert.deepEqual(fns.get('health_note_add')!.params.map((p) => p.name), ['p_child', 'p_kind', 'p_content', 'p_declared_at', 'p_source_note']);
+  assert.deepEqual(fns.get('health_note_update')!.params.map((p) => p.name), ['p_note', 'p_patch']);
+  assert.deepEqual(fns.get('health_note_delete')!.params.map((p) => p.name), ['p_note']);
+  assert.deepEqual(fns.get('deletion_request')!.params.map((p) => p.name), ['p_scope', 'p_child', 'p_confirm']);
+  assert.deepEqual(fns.get('export_request')!.params.map((p) => p.name), ['p_scope', 'p_child']);
+});
+
+test('trường kết quả của hàm đồng ý và xóa có trong SQL', () => {
+  const rec = fns.get('consent_record')!.body;
+  for (const f of ['ok', 'changed', 'replay', 'effective']) assert.match(rec, new RegExp(`'${f}'`), `consent_record thiếu '${f}'`);
+  const wd = fns.get('consent_withdraw_all')!.body;
+  for (const f of ['step', 'confirm_token', 'expires_at', 'consequences', 'purposes_withdrawn', 'child_hidden', 'device_unlinked', 'deletion_request',
+    'hard_deleted_now', 'can_reconsent', 'deletion_request_id', 'accepted_at', 'hard_deleted']) assert.match(wd, new RegExp(`'${f}'`), `consent_withdraw_all thiếu '${f}'`);
+  const del = fns.get('deletion_request')!.body;
+  for (const f of ['replay', 'deletion_request_id', 'accepted_at', 'state', 'hard_deleted']) assert.match(del, new RegExp(`'${f}'`), `deletion_request thiếu '${f}'`);
+  assert.match(fns.get('household_reopen')!.body, /'changed'/);
+  for (const [fn, fields] of Object.entries({
+    child_consent_record: ['ok', 'changed', 'consented_at'],
+    my_family_state: ['ok', 'frozen'],
+    child_alert_send: ['ok', 'replay', 'id', 'created_at'],
+    child_alert_seen: ['ok'],
+    health_note_add: ['ok', 'note'],
+    health_note_update: ['ok', 'note'],
+    health_note_delete: ['ok'],
+  })) {
+    for (const f of fields) assert.match(fns.get(fn)!.body, new RegExp(`'${f}'`), `${fn} thiếu '${f}'`);
+  }
+  // Mẫu ghi chú sức khỏe (health_note_json): các trường client đọc
+  for (const f of ['id', 'child_id', 'kind', 'content', 'declared_by_member_id', 'declared_by_role', 'declared_at', 'source_note', 'active']) {
+    assert.match(fns.get('health_note_json')!.body, new RegExp(`'${f}'`), `health_note_json thiếu '${f}'`);
+  }
+});
+
+test('D-64: máy chủ chỉ còn một mục lõi và hai mục riêng; bảng purposes không còn cột depends_on', () => {
+  assert.match(sql, /alter table app\.purposes drop column depends_on/);
+  assert.match(sql, /delete from app\.purposes where code in \('MD-DONGBO', 'MD-XONG', 'MD-MET', 'MD-MONGMUON', 'MD-BAOCAO'\)/);
+  assert.match(sql, /\('MD-CONBAO', '[^']*', 'TUY_CHON', true\)/);
+  assert.ok(!/depends_on/.test(readFileSync(API_TS, 'utf8').replace(/\/\/[^\n]*/g, '')), 'api.ts không được đọc depends_on');
+  // Ba câu của nút "Báo bố mẹ ngay" khớp CHECK của bảng, không có cột chữ tự do (D-67)
+  assert.match(sql, /kind\s+text not null check \(kind in \('KHONG_KHOE', 'DON_SOM', 'GOI_BO_ME'\)\)/);
+  assert.match(sql, /kind\s+text not null check \(kind in \('DI_UNG', 'THUOC', 'KHAC'\)\)/);
+});
+
+test('mã lỗi mới: BLOCKED_H4 và FEATURE_OFF là mã backend (HTTP 403)', () => {
+  assert.match(sql, /when 'BLOCKED_H4'\s+then 'PT403'/);
+  assert.match(sql, /when 'FEATURE_OFF'\s+then 'PT403'/);
+  assert.match(fns.get('export_request')!.body, /app\.fail\('BLOCKED_H4'/);
+  assert.match(fns.get('consent_record')!.body, /app\.fail\('FEATURE_OFF'/);
+  assert.match(fns.get('consent_withdraw_all')!.body, /'D-42'/);
+});
+
+test('mọi cột client đọc (select) có trong migration', async () => {
+  reads.length = 0;
+  await driveApi();
+  assert.ok(reads.length >= 6);
+  const seen = new Set(reads.map((r) => r.table));
+  for (const t of ['members', 'households', 'children', 'device_bindings', 'purposes', 'purpose_state', 'deletion_requests', 'child_health_notes', 'child_alerts']) assert.ok(seen.has(t), `chưa đọc ${t}`);
+  for (const r of reads) {
+    const cols = tables.get(r.table);
+    assert.ok(cols, `migration không có bảng app.${r.table}`);
+    for (const c of r.columns) assert.ok(cols.has(c), `app.${r.table} không có cột ${c}`);
+  }
+  for (const v of Object.values(TABLE_READS)) assert.ok(v.length > 0);
+});
+
+test('chuỗi trạng thái client dùng có trong check của migration', () => {
+  for (const v of ['HOAT_DONG', 'DONG_BANG', 'CHO_XOA', 'DA_XOA', 'PRIMARY', 'SUPPORTER', 'OBSERVER', 'HO_SO_CON', 'GIA_DINH', 'NGUOI_LON_ROI', 'CHUA_HOI', 'DANG_BAT', 'DA_RUT', 'MD-CONBAO', 'MD-LICH', 'MD-SUCKHOE', 'KHONG_KHOE', 'DON_SOM', 'GOI_BO_ME', 'DI_UNG', 'THUOC', 'KHAC']) {
+    assert.ok(sql.includes(`'${v}'`), `migration không có '${v}'`);
+  }
 });

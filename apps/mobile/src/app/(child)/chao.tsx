@@ -1,20 +1,25 @@
 import { useRouter } from 'expo-router';
 
 import { useApp } from '@/state/app';
+import { MatKetNoi } from '@/ui/MatKetNoi';
 import { Btn, H1, Notice, P, Screen } from '@/ui/kit';
 import { useAction } from '@/ui/useAction';
 
-// CA-01 Chào / chưa ghép. Lời ngắn, một ý một câu. "Lấy mã" đăng nhập ẩn danh (máy này chưa có tài khoản).
+// CA-01 Chào / chưa ghép. Máy từng ghép mà nay mất liên kết thì hiện CA-17 ở cùng route. Lời ngắn, một ý một câu. "Lấy mã" đăng nhập ẩn danh (máy này chưa có tài khoản).
 export default function Chao() {
   const router = useRouter();
-  const { api, session } = useApp();
+  const { api, session, disconnected, startNewPairing } = useApp();
   const act = useAction();
   async function getCode() {
     const ok = await act.run(async () => {
       if (!session) await api.auth.signInAnonymously();
     });
-    if (ok) router.push('/(child)/ma-ghep');
+    if (ok) {
+      await startNewPairing();
+      router.push('/(child)/ma-ghep');
+    }
   }
+  if (disconnected) return <MatKetNoi onNewCode={getCode} busy={act.busy} />; // CA-17
   return (
     <Screen big>
       <H1>Chào con</H1>

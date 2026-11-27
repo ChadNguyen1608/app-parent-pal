@@ -1,7 +1,7 @@
 // Ánh xạ lỗi PostgREST / Supabase Auth / mạng sang thông báo tiếng Việt.
 // Hợp đồng lỗi của backend (backend/supabase/README.md, "Hai kiểu trả lỗi"):
 //  1. Lỗi raise (app.fail): message = mã (FORBIDDEN, FROZEN, VALIDATION, NOT_FOUND, UNAUTHENTICATED, CONFLICT_REV,
-//     RATE_LIMITED, ...), hint = lời tiếng Việt, detail = quy tắc.
+//     RATE_LIMITED, FEATURE_OFF, BLOCKED_H4, ...), hint = lời tiếng Việt, detail = quy tắc.
 //  2. Thất bại cần đếm (pair_confirm mã sai, unlink_device PIN sai, pair_accept quá hạn): HTTP 200 với
 //     {"ok": false, "error": {code, rule, message_vi, attempts_left?, locked_until?}}. `apiErrorFromFailure` đổi sang ApiError.
 
@@ -12,6 +12,7 @@ export type ApiErrorCode =
   | 'VALIDATION'
   | 'NOT_FOUND'
   | 'FEATURE_OFF'
+  | 'BLOCKED_H4'
   | 'CONFLICT_REV'
   | 'LOCKED'
   | 'OTP_INVALID'
@@ -52,7 +53,8 @@ export const FALLBACK_MESSAGES: Record<ApiErrorCode, string> = {
   FROZEN: 'Gia đình đang tạm dừng app, chưa làm được việc này.',
   VALIDATION: 'Thông tin chưa hợp lệ. Bạn kiểm tra lại giúp mình nhé.',
   NOT_FOUND: 'Không tìm thấy thông tin này.',
-  FEATURE_OFF: 'Tính năng này chưa mở.',
+  FEATURE_OFF: 'Mục này chưa mở ở bản thử.',
+  BLOCKED_H4: 'Việc này chưa mở ở bản thử, mình chưa làm được.',
   CONFLICT_REV: 'Dữ liệu vừa có thay đổi. Bạn thử lại nhé.',
   LOCKED: 'Dữ liệu đang bị khóa. Bạn thử lại sau nhé.',
   OTP_INVALID: 'Mã không đúng hoặc đã hết hạn. Bạn kiểm tra lại hoặc xin mã mới.',
@@ -64,7 +66,7 @@ export const FALLBACK_MESSAGES: Record<ApiErrorCode, string> = {
 };
 
 const SERVER_CODES: ReadonlySet<string> = new Set([
-  'UNAUTHENTICATED', 'FORBIDDEN', 'FROZEN', 'VALIDATION', 'NOT_FOUND', 'FEATURE_OFF', 'CONFLICT_REV', 'LOCKED', 'RATE_LIMITED',
+  'UNAUTHENTICATED', 'FORBIDDEN', 'FROZEN', 'VALIDATION', 'NOT_FOUND', 'FEATURE_OFF', 'BLOCKED_H4', 'CONFLICT_REV', 'LOCKED', 'RATE_LIMITED',
 ]);
 
 const AUTH_CODES: Record<string, ApiErrorCode> = {

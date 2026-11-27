@@ -4,11 +4,13 @@ import { View } from 'react-native';
 import { uuidv4 } from '@/data/uuid';
 import { checkCallName, parseGrade } from '@/data/validate';
 import { useApp } from '@/state/app';
+import { deletionLine } from '@/ui/deletion-status';
 import { Btn, Choice, Field, H1, Notice, P, Screen } from '@/ui/kit';
 import { useAction } from '@/ui/useAction';
 
 // Lần đầu sau khi đăng nhập: tạo hộ (family_create) rồi hồ sơ con tối thiểu (PA-04 rút gọn).
-// Chưa có PA-02 (đồng ý) và PA-05..07: thuộc task sau. Chỉ nhập tên gọi, không họ tên đầy đủ.
+// D-73: không còn màn đồng ý (PA-02). Máy chủ (child_create) tự ghi đồng ý lõi và hai mục riêng (sức khỏe, con báo bố mẹ) mặc định
+// trong cùng giao dịch; phụ huynh tắt sau trong Cài đặt dữ liệu. PA-05..07 thuộc task sau. Chỉ nhập tên gọi, không họ tên đầy đủ.
 export default function BatDau() {
   const { api, home, refreshHome } = useApp();
   const [householdId, setHouseholdId] = useState<string | null>(home?.householdId ?? null);
@@ -45,6 +47,7 @@ export default function BatDau() {
     setErrors(e);
     if (Object.values(e).some(Boolean) || !householdId || hasDevice === null) return;
     await kid.run(async () => {
+      // Gửi lại sau lỗi dùng cùng khóa nên không tạo con thứ hai.
       await api.childCreate({
         householdId,
         callName: childName,
@@ -71,6 +74,11 @@ export default function BatDau() {
 
   return (
     <Screen>
+      {(home?.openDeletions ?? []).map((d) => (
+        <Notice key={d.id} kind="info">
+          {deletionLine(d)}
+        </Notice>
+      ))}
       <H1>Thêm con</H1>
       <P>Chỉ cần vài thông tin để bắt đầu. Bạn dùng tên gọi ở nhà, không cần họ tên đầy đủ.</P>
       <Field label="Tên gọi của con" value={childName} onChangeText={setChildName} autoCapitalize="words" error={errors.childName} />

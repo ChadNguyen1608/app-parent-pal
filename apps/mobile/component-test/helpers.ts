@@ -2,8 +2,9 @@
 import { createMockApi, MOCK_PAIR_CODE } from '../src/data/mock';
 import type { Api, Home } from '../src/data/types';
 
-export async function parentWithChild(): Promise<{ api: Api; home: Home }> {
-  const api = createMockApi({ latencyMs: 0 });
+/** Mặc định defaultConsent=false: con chưa có đồng ý nào, test tự ghi (như trước D-73). Truyền true để giống máy chủ sau D-73 (đã có ba đồng ý). */
+export async function parentWithChild(opts: { defaultConsent?: boolean } = {}): Promise<{ api: Api; home: Home }> {
+  const api = createMockApi({ latencyMs: 0, defaultConsent: opts.defaultConsent ?? false });
   await api.auth.sendEmailOtp('test.gia@example.com');
   await api.auth.verifyEmailOtp('test.gia@example.com', '123456');
   const { householdId } = await api.familyCreate('chị Lan');
