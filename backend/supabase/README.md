@@ -6,10 +6,10 @@ Nơi đặt dự án đám mây chưa chốt (LQ-08); chưa tạo dự án nào.
 | Thư mục / file | Nội dung |
 |---|---|
 | `config.toml` | Cấu hình Supabase CLI cục bộ, tối thiểu. `private` không nằm trong `[api] schemas` |
-| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set`. `…140000` T1.2: `family_create`, `touch_active`, `private.params`. `…150000` T1.5: ghép máy (`pair_*`), Parent PIN (`pin_set`, `pin_verify` nội bộ), `access_state` thêm `child.pair` và claim epoch, `RATE_LIMITED`. `…160000` T1.6: `unlink_device`. `…170000` T1.8: `member_invite` (khung, cờ `invites_enabled=0`, luôn `FEATURE_OFF`). `…180000` hàm phụ trợ RLS (`can`, `can_household`, `is_member`, `is_self_member`) chuyển sang schema `app_internal` không mở API; 5 hàm không còn dùng thu hồi EXECUTE. `…20261116110000` T2.5: `audit_log` + cơ chế ghi. `…120000` T2.1: mục đích thứ 8, `policy_versions`, `consent_events`, `purpose_state`, `consent_record`, nối `access_state` với đồng ý. `…130000` T2.2: `deletion_requests`, `consent_withdraw_all` hai bước. `…140000` T2.3: đóng băng 30 ngày, `household_reopen`, `deletion_request`, `job_daily`. `…20261117100000` T3.1: `schedule_profiles`, `activity_cards`, `schedule_versions` (bất biến), `schedule_state`, `schedule_answers`. `…110000` T3.2: `profile_save`, `schedule_inputs`, `schedule_commit_apply`, outbox `notifications`, mở rộng `purge_household`. `…150000` T2.4: `trial_slots`, `purge_household`, `deletion_evidence`, `job_trial_purge`, `export_request` (`BLOCKED_H4`) |
+| `migrations/` | `…100000` baseline T0.2: hộ, thành viên + vai trò, con, grants, thiết bị ghép, mã ghép một lần, phần D-38. `…110000` T1.1: `purposes`, `mode_history`, `invitations`, `app.can`, mã lỗi `app.fail`, FK `grants.purpose_code`. `…120000` T1.3: `child_create/update/delete`. `…130000` T1.4: `mode_set`. `…140000` T1.2: `family_create`, `touch_active`, `private.params`. `…150000` T1.5: ghép máy (`pair_*`), Parent PIN (`pin_set`, `pin_verify` nội bộ), `access_state` thêm `child.pair` và claim epoch, `RATE_LIMITED`. `…160000` T1.6: `unlink_device`. `…170000` T1.8: `member_invite` (khung, cờ `invites_enabled=0`, luôn `FEATURE_OFF`). `…180000` hàm phụ trợ RLS (`can`, `can_household`, `is_member`, `is_self_member`) chuyển sang schema `app_internal` không mở API; 5 hàm không còn dùng thu hồi EXECUTE. `…20261116110000` T2.5: `audit_log` + cơ chế ghi. `…120000` T2.1: mục đích thứ 8, `policy_versions`, `consent_events`, `purpose_state`, `consent_record`, nối `access_state` với đồng ý. `…130000` T2.2: `deletion_requests`, `consent_withdraw_all` hai bước. `…140000` T2.3: đóng băng 30 ngày, `household_reopen`, `deletion_request`, `job_daily`. `…20261117100000` T3.1: `schedule_profiles`, `activity_cards`, `schedule_versions` (bất biến), `schedule_state`, `schedule_answers`. `…110000` T3.2: `profile_save`, `schedule_inputs`, `schedule_commit_apply`, outbox `notifications`, mở rộng `purge_household`. `…150000` T2.4: `trial_slots`, `purge_household`, `deletion_evidence`, `job_trial_purge`, `export_request` (`BLOCKED_H4`). `20261119100000` D-68, D-71: gói dịch vụ (`household_plans`, `my_plan`, `plan_set`), mã lỗi `PLAN_REQUIRED` (402), chặn tạo/sửa kế hoạch và ghép máy, mở ghi chú hoạt động. `20261119150000` D-72: đếm dùng thử theo con, FREE nhập được nhưng không xem trước/tạo lịch (`schedule_plan_check`), `trial_start` + `private.trial_claims`, `plan_active` cho máy con, outbox `goi_doi`, `plan.expired` |
 | `seed/` | Dữ liệu giả (chị Hoa, anh Minh, bé Na, bé Bin, cô Lan, bé Su). **Không dữ liệu thật của trẻ** |
 | `tests/stub/` | `supabase-stub.sql`: vai `anon`/`authenticated`/`service_role`, schema `auth`, `auth.uid()`/`auth.jwt()`, `pgcrypto` ở schema `extensions`, `vault.decrypted_secrets` với khóa GIẢ chỉ để test. **Chỉ dùng cho test trên Postgres thuần, không nằm trong migrations** |
-| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `pair.test.mjs` (FN-FAM, FN-PAIR, FN-PIN, FR01-T01..T10, RLS-EPOCH), `member.test.mjs` (MEM-INV, MEM-NL), `consent.test.mjs` (CON-01..08, 22, CON-D58, CON-WA: T2.1, T2.2), `audit.test.mjs` (AUD-01..06: T2.5), `lifecycle.test.mjs` (LC-JOB/FROZEN/REOPEN/DEL/SWITCH/CRON: T2.3), `trial.test.mjs` (TRIAL-SLOT/JOB/WD/PURGE/H4/EXP/EVID/FK: T2.4), `schedule.test.mjs` (SCH-RLS/VER/PS/IN/CM/SIG: T3.1, T3.2), `policy-matrix.json`, `mutations/` |
+| `tests/rls/` | Test bằng `node:test` + `psql` (không package): `rls.test.mjs` (RLS-GEN/ROLE/SCHEMA/D38), `fn.test.mjs` (FN-CAN/TBL/CHILD/MODE), `pair.test.mjs` (FN-FAM, FN-PAIR, FN-PIN, FR01-T01..T10, RLS-EPOCH), `member.test.mjs` (MEM-INV, MEM-NL), `consent.test.mjs` (CON-01..08, 22, CON-D58, CON-WA: T2.1, T2.2), `audit.test.mjs` (AUD-01..06: T2.5), `lifecycle.test.mjs` (LC-JOB/FROZEN/REOPEN/DEL/SWITCH/CRON: T2.3), `trial.test.mjs` (TRIAL-SLOT/JOB/WD/PURGE/H4/EXP/EVID/FK: T2.4), `schedule.test.mjs` (SCH-RLS/VER/PS/IN/CM/SIG: T3.1, T3.2), `plan.test.mjs` (PLAN-DB/AUD/MY/GATE/PAIR/SYNC/PURGE: D-68; PLAN-TRIAL/ACTIVE/NOTIFY/EXP: D-72), `policy-matrix.json`, `mutations/` |
 | `functions/` | Edge Function (Deno): `_shared/` (lõi API, `schedule-core.ts`, và `scheduler/`, `domain/` SINH TỰ ĐỘNG từ `packages/` bằng `scripts/sync-shared.mjs`), `profile-save/`, `schedule-preview/`, `schedule-commit/` (mỗi hàm: `handler.ts` thuần + `index.ts`), `_tests/` (deno test). Xem mục T0.5, T3.1, T3.2 |
 
 ## Chạy test RLS
@@ -20,7 +20,7 @@ Hai chế độ, cùng một bộ test (`tests/rls/rls.test.mjs`, đọc `RLS_DB
 
 ```bash
 scripts/db-test.sh                  # initdb vào /tmp, cổng tự chọn, nạp stub + migrations + seed, chạy test, dọn dẹp
-scripts/db-test.sh --prove-negative # thêm: áp 118 đột biến và xác nhận test THẤT BẠI đúng mã
+scripts/db-test.sh --prove-negative # thêm: áp mọi đột biến và xác nhận test THẤT BẠI đúng mã
 scripts/db-test.sh --prove-negative --only m66,m67   # chỉ đột biến có tên bắt đầu bằng mã này (vẫn chạy baseline trước); cả bộ mất hơn 60 phút
 ```
 
@@ -356,7 +356,7 @@ Chạy test Deno (cần Deno 2 và Node 22): `cd backend/supabase/functions && d
 | Bảng | Ghi chú |
 |---|---|
 | `schedule_profiles` | `CHUAN/GIAI_DOAN/PRESET`, `version`, `input`, `budget` (null = quỹ mặc định), `keep_confirmed` (CHECK không có `ngu`, D-02). Mỗi con ≤ 1 `CHUAN` `ACTIVE` và ≤ 1 nháp. Rời `DRAFT` thì nội dung bị trigger khóa; chuyển trạng thái sai đường bị chặn |
-| `activity_cards` | Không cột địa điểm. `note` có `CHECK (note is null)` cho tới khi có `keyword-check` (BR-CON-094) |
+| `activity_cards` | Không cột địa điểm. `note`: D-71 (giai đoạn test lưu toàn bộ dữ liệu) cho lưu, 1 đến 500 ký tự, nguyên văn, CHƯA qua `keyword-check` (BR-CON-094): **lọc trước khi phát hành**. Trước D-71 là `CHECK (note is null)` + `FEATURE_OFF` |
 | `schedule_versions` | Bất biến: trigger chặn UPDATE/DELETE/TRUNCATE kể cả `service_role` (ngoại lệ duy nhất: trong `purge_household`). `label_status` luôn `chua_kiem_chung`. Duy nhất `(child_id, idempotency_key)` |
 | `schedule_state` | `rev`, con trỏ hiệu lực, khóa (`lock-set` thuộc T4.2) |
 | `schedule_answers` | duy nhất `(child_id, question_key, local_date)`; `question_key` dạng `g7_bot_hoc_nha.T2` |
@@ -391,6 +391,84 @@ Kiểm sàn cứng và ô đỏ nằm ở Edge Function (bộ xếp là TS): t�
 - Đột biến của đợt 3a đánh số m110..m125 (main đã dùng tới m102).
 - Cần tạo secret `schedule_commit_key` (Vault) và `SCHEDULE_COMMIT_KEY` (Edge Function), cùng giá trị, ≥ 16 ký tự, khi áp lên đám mây. Chưa làm gì trên đám mây.
 - Chưa phủ: AC-04..08, 17 được kiểm ở mức bộ xếp (đã có từ T0.3) và chặn commit ở Edge Function; chưa có e2e với Supabase thật (không Docker). CI hiện chưa có job `db-test` (đề xuất ở trên).
+
+
+## D-68, D-71: gói dịch vụ FREE / TRIAL / PREMIUM (19/11/2026)
+
+Migration `20261119100000_d68_goi_dich_vu.sql`. **D-72 (mục sau) sửa lại cách đếm (theo con), cho FREE nhập thông tin và đổi `my_plan`; bảng bên dưới là bản D-68 gốc.** Chưa có thanh toán thật: chủ sản phẩm đặt gói bằng `service_role`. Người soạn: AI, chưa kiểm chứng độc lập.
+
+| Gói | Tạo/sửa kế hoạch | Ghép máy con, đồng bộ lịch sang máy con |
+|---|---|---|
+| FREE (mặc định, hộ chưa có dòng) | Không: `profile_save` và `schedule_commit_apply` trả `PLAN_REQUIRED` | Không |
+| TRIAL | Tạo mới đúng `trial_plans_max` (1); sau lần tạo đầu, tối đa `trial_edits_max` (3) lần commit phiên bản mới | Không |
+| PREMIUM | Không giới hạn (chỗ để mở rộng nhiều kế hoạch/phương án sau) | Có |
+
+- Bảng `app.household_plans` (`household_id` khóa chính, `tier`, `trial_started_at`, `trial_ends_at` tùy chọn, `set_by`, `note`): RLS bật, không chính sách, người dùng không đọc trực tiếp. Chỉ `app.plan_set(p_household, p_tier, p_trial_ends_at, p_note, p_set_by)` (service_role, có `private.require_system`) ghi.
+- `app.my_plan()` (người lớn trong hộ): `{ok, tier, expired, plans_used, plans_max, edits_used, edits_left, pal_questions_left, trial_ends_at}`; PREMIUM có `plans_max` và `edits_left` là null (không giới hạn); `pal_questions_left` luôn null (agent Pal làm phần đếm).
+- Mã lỗi `PLAN_REQUIRED`: `PT402` (HTTP 402). Quy tắc: `D-68.free`, `D-68.trial_plan`, `D-68.trial_edit`, `D-68.premium`. Lời Việt do máy chủ trả; app có câu dự phòng.
+- Tham số `private.params`: `trial_plans_max = 1`, `trial_edits_max = 3` (`DA_CHOT`, D-68).
+- Audit `plan.changed` `{old_tier, new_tier}` (trigger trên `household_plans`, hệ thống); đổi hạn hoặc ghi chú không ghi. `purge_household` xóa `household_plans`.
+- Hàm nội bộ: `private.plan_tier` (gói hiệu lực), `plan_usage`, `plan_check_schedule`, `plan_require_premium`.
+- Seed: hai hộ giả PREMIUM (để các test ghép máy, lịch hiện có chạy); test gói đổi bằng `setup`.
+
+### Quyết định mặc định (CHỜ CHỦ SẢN PHẨM DUYỆT)
+
+1. Đếm theo hộ. Hộ nhiều con: 1 kế hoạch dùng thử là cho MỘT con (con đầu tiên được commit); con khác bị chặn ở bước tạo. Đếm cả con đã ẩn (xóa hồ sơ con không trả lại suất) và cả phiên bản tạo thời PREMIUM (hạ xuống TRIAL thì tính hết).
+2. `profile_save` cũng bị chặn khi commit chắc chắn bị chặn (FREE; TRIAL hết suất tạo hoặc hết lượt sửa), để không nhập dở rồi mới bị chặn.
+3. Gửi lại commit cùng khóa idempotency vẫn trả kết quả cũ kể cả khi gói đã hạ (replay chạy trước kiểm gói).
+4. TRIAL có `trial_ends_at` đã qua = FREE (tính lúc đọc, không sửa dòng). `my_plan` báo `expired`.
+5. `pair_code_create` KHÔNG chặn theo gói: máy con chưa thuộc hộ nào nên không biết gói của ai. Chặn ở `pair_confirm` (người lớn) và `pair_accept` (hộ hạ gói giữa chừng thì không ghép nốt; yêu cầu vẫn chờ, không tự hủy).
+6. Máy đã ghép mà hộ hạ xuống: giữ liên kết (không tự hủy), nhưng không ghi outbox `lich_moi` (không nhận lịch mới, giống đóng băng). **Hàm `device-sync` (T3.6) sau này phải kiểm `private.plan_tier(hộ) = 'PREMIUM'` trước khi trả lịch.**
+7. `schedule-preview` (đọc, không ghi) không chặn theo gói; chặn ở lưu nháp và commit.
+8. Ghi chú hoạt động (D-71): 500 ký tự, nguyên văn, chưa lọc từ khóa khẩn. Lọc trước khi phát hành.
+
+## D-72: gói dịch vụ, chi tiết (19/11/2026)
+
+Migration `20261119150000_d72_goi_chi_tiet.sql` (sửa D-68 ở trên). Người soạn: AI, chưa kiểm chứng độc lập. Quyết định gốc: `app-design-document/progress/Owner_Decision_Log_20261115.md` D-72.
+
+| Gói | Nhập thông tin con (`profile_save`), hỏi Pal | Xem trước (`schedule-preview`) và tạo lịch (`schedule_commit_apply`) | Máy con |
+|---|---|---|---|
+| FREE (kể cả TRIAL hết hạn) | Được | `PLAN_REQUIRED` (`D-68.free`) | `plan_active = false` |
+| TRIAL | Được | MỖI CON: 1 kế hoạch (lần commit đầu), rồi `trial_edits_max` (3) lần commit phiên bản mới; hết thì `PLAN_REQUIRED` (`D-68.trial_edit`) | `plan_active = false` (ghép máy chỉ premium, D-68) |
+| PREMIUM | Được | Không giới hạn | `plan_active = true` |
+
+- **Đếm theo con**: `private.plan_child_usage(child)` = số phiên bản lịch của con đó. `app.my_plan()` trả `{ok, tier, expired, plans_max, edits_max, children: [{child_id, plans_used, edits_used, edits_left}], pal_questions_left, trial_ends_at, trial_available, trial_days}` (con đã ẩn không có trong danh sách; NL chỉ thấy con mình được xem). `plans_max`/`edits_max`/`edits_left` null = không giới hạn.
+- **Xem trước qua RPC**: Edge Function `schedule-preview` gọi `app.schedule_plan_check(p_profile)` TRƯỚC khi đọc dữ liệu (kiểm quyền rồi mới kiểm gói, nên người ngoài hộ không biết gói hộ khác). Edge Function `schedule-commit` không tự kiểm gói; `schedule_commit_apply` kiểm sau bước replay idempotency.
+- **Dùng thử tự phục vụ** `app.trial_start(p_device_hash text)`: chỉ người quản lý chính (PRIMARY), hộ không đóng băng. Hộ phải chưa từng TRIAL/PREMIUM (`household_plans`: `trial_started_at` null, `had_premium` false, đang FREE hoặc chưa có dòng) nếu không `TRIAL_USED` (HTTP 409, quy tắc `D-72.household`). `device_hash` (64 hex) do app gửi = `sha256(androidId + muối cố định của app)`; máy chủ không nhận Android ID thô. Email lấy từ `auth.users` của người gọi, chuẩn hóa bằng `private.email_norm` (chữ thường; mọi miền bỏ phần sau `+`; gmail.com/googlemail.com bỏ dấu chấm và coi là gmail.com) rồi băm. Mã máy hoặc email đã có trong `private.trial_claims` thì `TRIAL_USED` (quy tắc chung `D-72.claim`, không nói là mã máy hay email). Thành công: gói TRIAL, hạn `trial_days` (7, CHUA_CHOT) ngày, `set_by = 'self'`.
+- **`private.trial_claims`** (`device_hash`, `email_norm_hash`, `household_id`, `claimed_at`; hai cột băm đều UNIQUE): RLS bật, không chính sách, chỉ `service_role`. **KHÔNG bị xóa khi `purge_household`/`purge_child`** (không khóa ngoại) để dùng thử không lặp lại được bằng cách xóa hộ rồi tạo lại. Chỉ giữ băm, không có tên, email thô hay Android ID thô. Lý do giữ: giai đoạn test (D-71) cần chống lặp; **xem lại trước phát hành** (thời hạn giữ, căn cứ pháp lý, có đưa vào chính sách quyền riêng tư không).
+- **Máy con**: `app.my_family_state()` trả thêm `plan_active` (true khi hộ PREMIUM). Khi false app con hiện CA-18 ("Tạm dừng, chờ bố mẹ cập nhật"), không nhận lịch mới (outbox `lich_moi` chỉ ghi cho PREMIUM, D-68); liên kết giữ nguyên. Bảng thông báo có loại mới `goi_doi` (nội dung tối giản `{type, id}`, `id` = mã liên kết của máy): trigger `household_plans_notify` ghi cho mọi máy con đã ghép (con chưa ẩn) khi hộ VÀO hoặc RA khỏi PREMIUM; FREE <-> TRIAL không ghi. Thông báo đẩy thật chưa có (T3.5): app con hỏi `my_family_state` lúc vào và mỗi lần trở lại nền trước.
+- **Hết hạn**: TRIAL quá `trial_ends_at` tính là FREE ngay (lúc đọc). `private.job_plan_expiry` (gọi từ `job_daily`, kết quả `plan_expiry.expired`) ghi audit `plan.expired` (hệ thống, không meta) MỘT lần mỗi đợt dùng thử (cột `expired_noted_at`, xóa khi bắt đầu hoặc gia hạn đợt mới).
+- Ghi chú: `PLAN-TRIAL-*` kiểm chuẩn hóa email, hộ đã dùng, `trial_claims` còn sau purge; `PLAN-ACTIVE-*`, `PLAN-NOTIFY-*`, `PLAN-EXP-*`; đột biến `m170`..`m190` (trừ m172) (và `m130`..`m149` đã sửa theo hàm mới; `m131`, `m134`, `m139` đã thay bằng `m170`, `m171`; `m172` bị bỏ vì `access_state` đã loại con ẩn).
+
+### Quyết định mặc định D-72 (CHỜ CHỦ SẢN PHẨM DUYỆT)
+
+1. `trial_days = 7` (CHUA_CHOT), tính theo giờ từ lúc bấm.
+2. Email trong `trial_claims` lưu dạng BĂM (sha256 của email chuẩn hóa, cột `email_norm_hash`), không lưu email dạng chữ như cột `email_norm` mô tả ban đầu: giữ ít dữ liệu cá nhân nhất sau khi xóa hộ. Băm không muối riêng, nên người biết email vẫn dò ra được dòng của họ (chấp nhận ở giai đoạn test).
+3. `profile_save` không xét gói nữa (kể cả TRIAL hết lượt sửa vẫn lưu nháp được); chỉ xem trước và commit bị chặn.
+4. Hộ từng PREMIUM (đặt tay) rồi hạ về FREE: không dùng thử được (`had_premium`).
+5. `goi_doi` chỉ ghi khi trạng thái PREMIUM đổi.
+6. `D-68.trial_plan` không còn được phát (mỗi con tối đa 1 kế hoạch theo cấu trúc: kế hoạch đầu là lần commit đầu).
+7. Khi nhiều người lớn dùng cùng một máy hoặc cùng một Android ID sau khôi phục cài đặt: Android ID đổi khi xóa dữ liệu/khôi phục gốc; coi là chấp nhận được ở giai đoạn test.
+
+## D-74: dùng thử 7 ngày và khóa ghép máy (28/11/2026)
+
+Migration `20261128100000_d74_dung_thu_khoa_ghep_may.sql` (sửa D-68, D-72). Người soạn: AI, chưa kiểm chứng độc lập. Quyết định gốc: `app-design-document/progress/Owner_Decision_Log_20261115.md` (D-74). Đã có sẵn từ D-72 và không đổi: đã dùng thử thì không dùng thử lại (`trial_claims`, `had_premium`).
+
+- **Khóa**: `household_plans.device_keys` (int, mặc định 1, 0..50) là số khóa của PREMIUM, chủ sản phẩm đặt qua `app.plan_set(..., p_device_keys)` (null = giữ nguyên). TRIAL luôn dùng tham số `trial_device_keys` = 1 (DA_CHOT), FREE = 0. `trial_days` = 7 chuyển sang DA_CHOT.
+- **Đã dùng** (`private.device_keys_used`): liên kết `HIEU_LUC` + yêu cầu `CHO_XAC_NHAN_MAY_CON` còn trong `pair_accept_window_minutes` của các con chưa ẩn. `CHO_XAC_MINH` không tính (không có đường lên HIEU_LUC).
+- **`pair_confirm`, `pair_accept`** gọi `private.device_key_require` (khóa hàng hộ): FREE thì `PLAN_REQUIRED` (`D-68.premium`, lời đổi thành "cần gói dùng thử hoặc Premium"); hết khóa thì **`DEVICE_KEY_LIMIT`** (HTTP 402, PT402, quy tắc `D-74.keys`, lời tiếng Việt nêu số khóa). `pair_confirm` không tính liên kết/yêu cầu của chính con đang ghép; `pair_accept` không tính chính yêu cầu đang xác nhận. `private.plan_require_premium` đã bỏ.
+- **Máy con hoạt động** (`private.binding_in_plan`): hộ đang TRIAL/PREMIUM còn hạn và số máy `HIEU_LUC` ghép trước máy này (theo `paired_at`, `id`) < số khóa hiệu lực. Dùng chung cho `my_family_state().plan_active` (theo TỪNG máy) và outbox `lich_moi` (`schedule_commit_apply`). Hết hạn/hạ gói: mọi máy tạm dừng, giữ liên kết. Giảm khóa dưới số máy đang ghép: KHÔNG tự hủy; máy ghép sau cùng tạm dừng.
+- **`goi_doi`**: ghi cho các máy `HIEU_LUC` của hộ khi "gói đang hoạt động" (TRIAL/PREMIUM còn hạn) đổi, kể cả FREE <-> TRIAL, hoặc số khóa hiệu lực đổi. TRIAL hết hạn theo thời gian: `job_plan_expiry` ghi `goi_doi` cùng lúc ghi `plan.expired`.
+- **`my_plan`** thêm `device_keys` (hiệu lực) và `device_keys_used`. Edge Function: `DEVICE_KEY_LIMIT` -> 402 (`_shared/api.ts`).
+- Seed: hai hộ PREMIUM đặt 5 khóa để các test ghép máy cũ chạy được.
+- Test: `PLAN-PAIR-01..06`, `PLAN-SYNC-01..02`, `PLAN-ACTIVE-01..03`, `PLAN-NOTIFY-01..04`, `PLAN-EXP-04`, `PLAN-KEY-01..03` (`plan.test.mjs`); đột biến `m210`..`m227` (và `m91`, `m114`, `m135`..`m137`, `m180`, `m181`, `m183` đã sửa theo hàm mới; `m181` đổi thành `m181-plan-active-bo-so-khoa`).
+
+### Quyết định mặc định D-74 (CHỜ CHỦ SẢN PHẨM DUYỆT)
+
+1. Giảm `device_keys`: máy ghép sau cùng tạm dừng, chưa có màn cho bố mẹ chọn máy nào giữ.
+2. Số khóa tối đa 50; `CHO_XAC_MINH` không giữ khóa; yêu cầu chờ quá 5 phút nhả khóa.
+3. Khóa tính theo hộ (không chia theo con); `plan_set` không ghi audit riêng cho đổi số khóa (chỉ `plan.changed` khi đổi gói).
+4. Hết hạn TRIAL theo thời gian: máy con biết qua `my_family_state` (lúc vào app/trở lại nền trước) và `goi_doi` do job ngày ghi.
 
 ## T2.9: đồng ý mặc định khi tạo con (D-73)
 

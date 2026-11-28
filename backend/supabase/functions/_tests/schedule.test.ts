@@ -78,7 +78,7 @@ function inputsOf(prof: any, over: Partial<ServerInputs> & { budget?: any; keep?
 }
 
 interface Fake { deps: Deps; calls: Array<{ fn: string; args: any }>; }
-function fake(inputs: ServerInputs & { replay?: any }, opts: { applyError?: ApiError; key?: string | undefined } = {}): Fake {
+function fake(inputs: ServerInputs & { replay?: any }, opts: { applyError?: ApiError; planError?: ApiError; key?: string | undefined } = {}): Fake {
   const calls: Fake['calls'] = [];
   const seen = new Map<string, any>();
   const deps: Deps = {
@@ -86,6 +86,7 @@ function fake(inputs: ServerInputs & { replay?: any }, opts: { applyError?: ApiE
     db: {
       async rpc(fn, args) {
         calls.push({ fn, args });
+        if (fn === 'schedule_plan_check') { if (opts.planError) throw opts.planError; return { ok: true }; }
         if (fn === 'schedule_inputs') return inputs;
         if (fn === 'schedule_commit_apply') {
           if (opts.applyError) throw opts.applyError;
@@ -115,7 +116,7 @@ Deno.test('T3.2 preview: P1..P8 chạy trên dữ liệu máy chủ giả, khôn
     if (prof.phase) continue;   // giai đoạn là việc của T4.1
     const f = fake(inputsOf(prof));
     const r: any = await preview({ profile_id: PID }, f.deps);
-    assertEquals(f.calls.map((c) => c.fn), ['schedule_inputs']);
+    assertEquals(f.calls.map((c) => c.fn), ['schedule_plan_check', 'schedule_inputs']);
     assertEquals(r.label_status, 'chua_kiem_chung'); assertEquals(r.balance_label, 'UNKNOWN');
     assertEquals(Object.keys(r.plan.ngay).length, 7);
     assertEquals(r.engine_version, ENGINE_VERSION); assertMatch(r.params_version, /^p-[0-9a-f]{12}$/); assertMatch(r.input_hash, /^[0-9a-f]{64}$/);
@@ -127,6 +128,29 @@ Deno.test('T3.2 preview: P1..P8 chạy trên dữ liệu máy chủ giả, khôn
   const quaTai: any = await preview({ profile_id: PID }, fake(inputsOf(P('P6'))).deps);
   assertEquals(quaTai.commitable, false);
   assert(quaTai.blockers.some((b: any) => b.rule === 'C/A1'), 'P6 (quá tải) phải bị chặn vì có ngày XUNG_DOT');
+});
+
+Deno.test('D-72 preview: gói không đủ (FREE, hết lượt) -> PLAN_REQUIRED 402, kiểm gói chạy TRƯỚC; không đọc dữ liệu, không chạy bộ xếp', async () => {
+  const planError = new ApiError('PLAN_REQUIRED', 'D-68.free', 'Cần gói');
+  const f = fake(inputsOf(P('P2')), { planError });
+  const e: any = await preview({ profile_id: PID }, f.deps).then(() => null, (x) => x);
+  assertEquals([e?.code, e?.status, e?.rule], ['PLAN_REQUIRED', 402, 'D-68.free']);
+  assertEquals(f.calls.map((c) => c.fn), ['schedule_plan_check']);
+  assertEquals(f.calls[0].args, { p_profile: PID });
+  // đủ gói: gọi kiểm gói đúng một lần rồi mới đọc dữ liệu
+  const ok = fake(inputsOf(P('P2')));
+  await preview({ profile_id: PID }, ok.deps);
+  assertEquals(ok.calls.map((c) => c.fn), ['schedule_plan_check', 'schedule_inputs']);
+  // lỗi đầu vào vẫn chặn trước khi gọi CSDL
+  const bad = fake(inputsOf(P('P2')));
+  await preview({ profile_id: 'x' }, bad.deps).then(() => assert(false), () => {});
+  assertEquals(bad.calls.length, 0);
+});
+
+Deno.test('D-72 commit: Edge Function không tự kiểm gói; PLAN_REQUIRED từ SQL (schedule_commit_apply) được chuyển nguyên mã 402', async () => {
+  const f = fake(inputsOf(P('P2')), { applyError: new ApiError('PLAN_REQUIRED', 'D-68.trial_edit', 'hết lượt') });
+  const e: any = await commit(body(), f.deps).then(() => null, (x) => x);
+  assertEquals([e?.code, e?.status, e?.rule], ['PLAN_REQUIRED', 402, 'D-68.trial_edit']);
 });
 
 Deno.test('T3.2 preview: cùng đầu vào cho cùng input_hash; đổi một thẻ thì đổi (AC-06)', async () => {
@@ -222,7 +246,8 @@ Deno.test('T3.2 profile-save: kiểm đầu vào rồi chuyển patch nguyên v�
   assertEquals(r.ok, true);
   assertEquals(f.calls[0].fn, 'profile_save'); assertEquals(f.calls[0].args.p_patch, { input: { commute: 10 }, budget: null, cards: [card] }); assertEquals(f.calls[0].args.p_base_version, 1);
   const bad = async (b: any, code: string) => assertEquals((await assertRejects(() => profileSave({ child_id: CID, ...b }, fake(inputsOf(P('P2'))).deps), ApiError)).code, code, JSON.stringify(b));
-  await bad({ cards: [{ ...card, note: 'đón ở cổng' }] }, 'FEATURE_OFF');
+  await bad({ cards: [{ ...card, note: 'a'.repeat(501) }] }, 'VALIDATION');   // D-71: ghi chú tối đa 500 ký tự
+  await bad({ cards: [{ ...card, note: 7 }] }, 'VALIDATION');
   await bad({ cards: [{ ...card, location: 'Q1' }] }, 'VALIDATION');
   await bad({ cards: [{ ...card, end: '08:00' }] }, 'VALIDATION');
   await bad({ cards: [{ ...card, days: [] }] }, 'VALIDATION');
@@ -255,6 +280,12 @@ Deno.test('API: handler chỉ nhận POST + Bearer + JSON object; lỗi theo d�
   assertEquals(r3.status, 500); assert(!t3.includes('123456'));
   const e = fromDbError({ message: 'FROZEN', details: 'BR-FAM-054', hint: 'tạm dừng' });
   assertEquals([e.code, e.status, e.rule, e.messageVi], ['FROZEN', 423, 'BR-FAM-054', 'tạm dừng']);
+  const pr = fromDbError({ message: 'PLAN_REQUIRED', details: 'D-68.free', hint: 'Cần gói' });
+  assertEquals([pr.code, pr.status, pr.rule, pr.messageVi], ['PLAN_REQUIRED', 402, 'D-68.free', 'Cần gói']);   // D-68
+  const tu = fromDbError({ message: 'TRIAL_USED', details: 'D-72.claim', hint: 'đã dùng thử' });
+  assertEquals([tu.code, tu.status, tu.rule], ['TRIAL_USED', 409, 'D-72.claim']);   // D-72
+  const dk = fromDbError({ message: 'DEVICE_KEY_LIMIT', details: 'D-74.keys', hint: 'Hết khóa ghép máy' });
+  assertEquals([dk.code, dk.status, dk.rule, dk.messageVi], ['DEVICE_KEY_LIMIT', 402, 'D-74.keys', 'Hết khóa ghép máy']);   // D-74
   assertEquals(fromDbError({ message: 'relation "x" does not exist' }).code, 'INTERNAL');
 });
 

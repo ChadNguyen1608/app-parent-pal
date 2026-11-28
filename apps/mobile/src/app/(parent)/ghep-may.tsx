@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import type { ApiError } from '@/data/errors';
+import { PLAN_RULES, pairLockRule } from '@/data/plan';
 import type { PairConfirmResult } from '@/data/types';
 import { PAIR_CODE_LENGTH, PIN_EXISTS_HINT, PIN_LENGTH, PIN_REQUIRED_HINT, PIN_REQUIRED_RULE, checkPairCode, checkPin } from '@/data/validate';
 import { useApp } from '@/state/app';
 import { Btn, Choice, Field, H1, Notice, P, Screen } from '@/ui/kit';
+import { PlanRequiredView } from '@/ui/PlanRequired';
 import { useAction } from '@/ui/useAction';
 
 const isPinRequired = (e: ApiError | null) => e?.code === 'VALIDATION' && e.rule === PIN_REQUIRED_RULE && e.userMessage.startsWith(PIN_REQUIRED_HINT);
@@ -19,7 +21,7 @@ const isPinExists = (e: ApiError | null) => e?.code === 'VALIDATION' && e.rule =
 export default function GhepMay() {
   const router = useRouter();
   const { childId: paramId } = useLocalSearchParams<{ childId?: string }>();
-  const { api, home, refreshHome } = useApp();
+  const { api, home, refreshHome, plan } = useApp();
   const options = (home?.children ?? []).filter((c) => c.hasDevice && c.pairState !== 'PAIRED');
   const [childId, setChildId] = useState<string | null>(paramId ?? (options.length === 1 ? options[0].id : null));
   const [code, setCode] = useState('');
@@ -59,6 +61,14 @@ export default function GhepMay() {
       setAgain('');
     }
   }, [failure]);
+
+  // D-74: ghép máy theo khóa. App biết chưa có gói hoặc hết khóa, hoặc máy chủ vừa báo PLAN_REQUIRED / DEVICE_KEY_LIMIT, thì giải thích thay vì cho nhập mã.
+  const pending = (home?.children ?? []).find((c) => c.id === childId)?.pairState === 'PENDING';
+  const lock = plan ? pairLockRule(plan, pending) : null;
+  const serverBlock = failure?.code === 'PLAN_REQUIRED' || failure?.code === 'DEVICE_KEY_LIMIT';
+  if (lock !== null || serverBlock) {
+    return <PlanRequiredView rule={serverBlock ? failure?.rule : (lock ?? PLAN_RULES.premium)} onBack={() => router.back()} />;
+  }
 
   if (result) {
     return (

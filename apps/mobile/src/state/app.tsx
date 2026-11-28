@@ -8,7 +8,7 @@ import { getApi } from '../data';
 import { parseAuthLink } from '../data/auth-link';
 import { errorMessage } from '../data/errors';
 import { uuidv4 } from '../data/uuid';
-import type { Api, Binding, Home, SessionInfo } from '../data/types';
+import type { Api, Binding, Home, PlanInfo, SessionInfo } from '../data/types';
 import { APP_VARIANT } from '../variant';
 
 /**
@@ -26,6 +26,9 @@ type Ctx = {
   parentStage: ParentStage;
   home: Home;
   refreshHome: () => Promise<void>;
+  /** Gói dịch vụ của hộ (D-68); null khi chưa nạp được (màn không đoán, để máy chủ quyết). */
+  plan: PlanInfo | null;
+  refreshPlan: () => Promise<void>;
   signOut: () => Promise<void>;
   /** Lỗi khi hoàn tất đăng nhập từ link trong thư (D-59), hiện ở PA-01. */
   linkError: string | null;
@@ -33,6 +36,8 @@ type Ctx = {
   // máy con
   childStage: ChildStage;
   childId: string | null;
+  /** Gói của hộ còn hoạt động với máy con (hộ PREMIUM, D-72). false: hiện màn tạm dừng CA-18. Mặc định true tới khi máy chủ báo khác. */
+  childPlanActive: boolean;
   /** binding_epoch của liên kết hiện hành (nhận từ pair_accept); unlink_device phải gửi kèm. */
   bindingEpoch: number | null;
   onPaired: (b: Binding) => void;
@@ -71,9 +76,11 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
   const [booted, setBooted] = useState(false);
   const [home, setHome] = useState<Home>(null);
   const [homeLoaded, setHomeLoaded] = useState(false);
+  const [plan, setPlan] = useState<PlanInfo | null>(null);
   const [childId, setChildId] = useState<string | null>(null);
   const [bindingEpoch, setBindingEpoch] = useState<number | null>(null);
   const [childStage, setChildStage] = useState<ChildStage>('loading');
+  const [childPlanActive, setChildPlanActive] = useState(true);
   const [disconnected, setDisconnected] = useState(false);
   const [frozenFamily, setFrozenFamily] = useState(false);
   const [pauseSeen, setPauseSeen] = useState(false);
@@ -125,6 +132,10 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
     setHomeLoaded(true);
   }, [api]);
 
+  const refreshPlan = useCallback(async () => {
+    setPlan(await api.myPlan());
+  }, [api]);
+
   // Phụ huynh: có phiên (không ẩn danh) thì nạp hộ và báo "đang hoạt động".
   const parentSession = isParent && session && !session.isAnonymous ? session : null;
   useEffect(() => {
@@ -149,6 +160,23 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       alive = false;
     };
   }, [api, parentSession?.userId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Có hộ thì nạp gói dịch vụ (D-68). Lỗi thì để null: màn không chặn theo đoán, máy chủ vẫn là nơi quyết định.
+  const hasHome = Boolean(home);
+  useEffect(() => {
+    if (!parentSession || !hasHome) {
+      setPlan(null);
+      return;
+    }
+    let alive = true;
+    api
+      .myPlan()
+      .then((p) => alive && setPlan(p))
+      .catch(() => alive && setPlan(null));
+    return () => {
+      alive = false;
+    };
+  }, [api, parentSession?.userId, hasHome]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Người lớn mở app (lúc nạp hộ xong và mỗi lần app trở lại nền trước) thì báo "đang hoạt động" (BR-FAM-050).
   // Chỉ thao tác có chủ đích của người lớn; client tự giới hạn 1 lần/giờ. Máy con không gọi hàm này.
@@ -199,19 +227,20 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
     };
   }, [api, isParent, booted, childSession?.userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Máy con: hỏi gia đình có đang tạm dừng không khi vào khung chính và mỗi lần app trở lại nền trước.
+  // Máy con đã vào app: hỏi máy chủ gia đình có đóng băng không và gói còn hoạt động không (D-72, D-74), lúc vào và mỗi lần app trở lại nền trước.
   useEffect(() => {
     if (isParent || childStage !== 'ready') return;
     let alive = true;
     const check = () =>
       api
-        .getFamilyState()
+        .myFamilyState()
         .then((st) => {
           if (!alive) return;
-          setFrozenFamily(st === 'FROZEN');
-          if (st !== 'FROZEN') setPauseSeen(false);
+          setFrozenFamily(st.frozen);
+          setChildPlanActive(st.planActive);
+          if (!st.frozen) setPauseSeen(false);
         })
-        .catch(() => undefined); // không đọc được thì không chặn
+        .catch(() => undefined); // không đọc được thì giữ trạng thái cũ, không chặn
     void check();
     const sub = AppState.addEventListener('change', (st) => {
       if (st === 'active') void check();
@@ -245,6 +274,8 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       parentStage,
       home,
       refreshHome,
+      plan,
+      refreshPlan,
       signOut: async () => {
         await api.auth.signOut();
         setSession(null);
@@ -253,6 +284,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       clearLinkError: () => setLinkError(null),
       childStage,
       childId,
+      childPlanActive,
       bindingEpoch,
       onPaired: (b) => {
         setChildId(b.childId);
@@ -299,7 +331,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
         setChildStage('unpaired');
       },
     }),
-    [api, session, parentStage, home, refreshHome, linkError, childStage, childId, bindingEpoch, disconnected, frozenFamily, pauseSeen],
+    [api, session, parentStage, home, refreshHome, plan, refreshPlan, linkError, childStage, childId, childPlanActive, bindingEpoch, disconnected, frozenFamily, pauseSeen],
   );
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;

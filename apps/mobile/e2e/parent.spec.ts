@@ -1,11 +1,12 @@
 // Tên tab trên web có thêm ký tự giữ chỗ "⏷" (biểu tượng chưa đặt), nên so khớp phần cuối tên.
 // Luồng phụ huynh (EXPO_PUBLIC_API_MOCK=1: OTP và mã ghép đều 123456).
+// Gói dịch vụ (D-68, D-72): mock mặc định TRIAL (không ghép máy được); ?plan=PREMIUM|FREE|TRIAL trên URL chọn gói. Luồng ghép máy dùng PREMIUM.
 import { expect, test, type Page } from '@playwright/test';
 
 const shot = (page: Page, name: string) => expect(page).toHaveScreenshot(`${name}.png`);
 
-async function dangNhap(page: Page) {
-  await page.goto('/');
+async function dangNhap(page: Page, plan?: 'FREE' | 'TRIAL' | 'PREMIUM') {
+  await page.goto(plan ? `/?plan=${plan}` : '/');
   await page.getByRole('textbox', { name: 'Email của bạn' }).fill('test.gia@example.com');
   await page.getByRole('button', { name: 'Gửi mã cho mình' }).click();
   await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
@@ -27,7 +28,7 @@ async function vaoAppNgay(page: Page) {
 }
 
 async function vaoGhepMay(page: Page) {
-  await dangNhap(page);
+  await dangNhap(page, 'PREMIUM');
   await themCon(page);
   await page.getByRole('button', { name: 'Lưu' }).click();
   await vaoAppNgay(page);
@@ -36,8 +37,8 @@ async function vaoGhepMay(page: Page) {
   await expect(page.getByRole('textbox', { name: /Mã trên máy con/ })).toBeVisible();
 }
 
-test('đăng nhập, làm quen, thêm con, ghép máy lần đầu với PIN', async ({ page }) => {
-  await page.goto('/');
+test('đăng nhập, làm quen, thêm con, ghép máy lần đầu với PIN (gói Premium)', async ({ page }) => {
+  await page.goto('/?plan=PREMIUM');
   await expect(page.getByRole('heading', { name: 'Chào bạn' })).toBeVisible();
   await shot(page, 'pa01-dang-nhap-email');
 
@@ -123,6 +124,103 @@ test('nhánh lỗi: mã ghép sai báo một câu chung (sau khi đặt PIN lầ
   await page.getByRole('button', { name: 'Ghép máy' }).click();
   await expect(page.getByText('Mã không đúng hoặc đã hết hạn.')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Đã nhập mã đúng' })).toHaveCount(0);
+});
+
+// D-68, D-74: tab Gia đình hiện gói và khóa ghép máy (đã dùng X/Y); hết khóa hoặc chưa có gói thì khóa nút và giải thích. Không chụp ảnh (không thêm ảnh chuẩn).
+async function giaDinhVoiGoi(page: Page, plan?: 'FREE' | 'TRIAL' | 'PREMIUM', query = '') {
+  await page.goto(`/?plan=${plan ?? 'TRIAL'}${query}`);
+  await page.getByRole('textbox', { name: 'Email của bạn' }).fill('test.gia@example.com');
+  await page.getByRole('button', { name: 'Gửi mã cho mình' }).click();
+  await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
+  await page.getByRole('button', { name: 'Xác nhận' }).click();
+  await themCon(page);
+  await page.getByRole('button', { name: 'Lưu' }).click();
+  await page.getByRole('tab', { name: /Gia đình$/ }).click();
+  await expect(page.getByText('Bin', { exact: true })).toBeVisible();
+}
+
+test('gói dùng thử (mặc định, D-74): hiện gói và "Khóa ghép máy: đã dùng 0/1"; bước ghép máy mở; ghép xong thì "đã dùng 1/1"', async ({ page }) => {
+  await giaDinhVoiGoi(page);
+  await expect(page.getByText('Gói: Dùng thử')).toBeVisible();
+  await expect(page.getByText('Mỗi con tạo được 1 kế hoạch và chỉnh sửa 3 lần.')).toBeVisible();
+  await expect(page.getByText('Chưa tạo kế hoạch (tạo được 1 kế hoạch).')).toBeVisible();
+  await expect(page.getByText('Khóa ghép máy: đã dùng 0/1')).toBeVisible();
+
+  await page.getByRole('button', { name: 'Ghép máy của con', exact: true }).click();
+  await expect(page.getByRole('textbox', { name: /Mã trên máy con/ })).toBeVisible();
+  await page.getByRole('textbox', { name: /Mã trên máy con/ }).fill('123456');
+  await page.getByRole('button', { name: 'Ghép máy', exact: true }).click();
+  await page.getByRole('textbox', { name: /Đặt PIN/ }).fill('482915');
+  await page.getByRole('textbox', { name: 'Nhập lại PIN' }).fill('482915');
+  await page.getByRole('button', { name: 'Ghép máy', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Đã nhập mã đúng' })).toBeVisible();
+  await page.getByRole('button', { name: 'Xong' }).click();
+  await expect(page.getByText('Khóa ghép máy: đã dùng 1/1').last()).toBeVisible();
+});
+
+test('hết khóa (Premium 0 khóa, D-74): nút ghép máy nói hết khóa; bấm vào có lời giải thích cách xử lý, không có ô nhập mã', async ({ page }) => {
+  await giaDinhVoiGoi(page, 'PREMIUM', '&keys=0');
+  await expect(page.getByText('Gói: Premium')).toBeVisible();
+  await expect(page.getByText('Khóa ghép máy: đã dùng 0/0')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Ghép máy của con', exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Ghép máy của con (hết khóa)' }).click();
+  await expect(page.getByRole('heading', { name: 'Đã dùng hết khóa ghép máy' })).toBeVisible();
+  await expect(page.getByText(/hủy liên kết một máy đang ghép/)).toBeVisible();
+  await expect(page.getByRole('textbox', { name: /Mã trên máy con/ })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Quay lại' }).click();
+  await expect(page.getByText('Gói: Premium')).toBeVisible();
+});
+
+test('gói miễn phí: nhập thông tin và hỏi Pal được, chưa xem trước và tạo lịch; 0 khóa; bấm ghép máy thì được mời dùng thử rồi ghép được', async ({ page }) => {
+  await giaDinhVoiGoi(page, 'FREE');
+  await expect(page.getByText('Gói: Miễn phí')).toBeVisible();
+  await expect(page.getByText('Nhập thông tin con và hỏi Pal được; chưa xem trước và tạo lịch được.')).toBeVisible();
+  await expect(page.getByText('Khóa ghép máy: đã dùng 0/0')).toBeVisible();
+  await page.getByRole('button', { name: 'Ghép máy của con (cần gói)' }).click();
+  await expect(page.getByRole('heading', { name: 'Ghép máy cần gói dùng thử hoặc Premium' })).toBeVisible();
+  await expect(page.getByText(/dùng thử 7 ngày, ghép được 1 máy/)).toBeVisible();
+  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).click();
+  await expect(page.getByText('Gói: Dùng thử')).toBeVisible();
+  await expect(page.getByText('Khóa ghép máy: đã dùng 0/1')).toBeVisible();
+  await page.getByRole('button', { name: 'Ghép máy của con', exact: true }).click();
+  await expect(page.getByRole('textbox', { name: /Mã trên máy con/ })).toBeVisible();
+});
+
+test('gói Premium: hiện gói và khóa ghép máy, ghép máy mở bình thường', async ({ page }) => {
+  await giaDinhVoiGoi(page, 'PREMIUM');
+  await expect(page.getByText('Gói: Premium')).toBeVisible();
+  await expect(page.getByText('Khóa ghép máy: đã dùng 0/1')).toBeVisible();
+  await page.getByRole('button', { name: 'Ghép máy của con', exact: true }).click();
+  await expect(page.getByRole('textbox', { name: /Mã trên máy con/ })).toBeVisible();
+});
+
+test('dùng thử (D-72): gói miễn phí bấm Dùng thử, vào gói TRIAL; nút biến mất; không chụp ảnh', async ({ page }) => {
+  await giaDinhVoiGoi(page, 'FREE');
+  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).click();
+  await expect(page.getByRole('heading', { name: 'Cần gói dùng thử hoặc Premium' })).toBeVisible();
+  await expect(page.getByText(/chưa xem trước và tạo lịch/).last()).toBeVisible();
+  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).click();
+  await expect(page.getByText('Gói: Dùng thử')).toBeVisible();
+  await expect(page.getByText('Mỗi con tạo được 1 kế hoạch và chỉnh sửa 3 lần.')).toBeVisible();
+  await expect(page.getByRole('button', { name: /^Dùng thử \d+ ngày$/ })).toHaveCount(0);
+});
+
+test('dùng thử (D-72): máy hoặc email đã dùng thử -> lời từ chối tiếng Việt, vẫn FREE', async ({ page }) => {
+  await page.goto('/?plan=FREE&trial=used');
+  await page.getByRole('textbox', { name: 'Email của bạn' }).fill('test.gia@example.com');
+  await page.getByRole('button', { name: 'Gửi mã cho mình' }).click();
+  await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
+  await page.getByRole('button', { name: 'Xác nhận' }).click();
+  await themCon(page);
+  await page.getByRole('button', { name: 'Lưu' }).click();
+  await page.getByRole('tab', { name: /Gia đình$/ }).click();
+  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).click();
+  // Tab Gia đình vẫn nằm trong DOM (ẩn) khi màn Cần gói mở: chỉ bấm nút đang hiện.
+  await expect(page.getByRole('heading', { name: 'Cần gói dùng thử hoặc Premium' })).toBeVisible();
+  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).filter({ visible: true }).click();
+  await expect(page.getByText('Máy này hoặc email này đã dùng thử rồi.')).toBeVisible();
+  await page.getByRole('button', { name: 'Quay lại' }).click();
+  await expect(page.getByText('Gói: Miễn phí')).toBeVisible();
 });
 
 test('đồng ý mặc định (D-73): thêm con là vào app ngay; Cài đặt dữ liệu tắt/bật từng mục; PA-32 tuyên bố và điều khoản', async ({ page }) => {

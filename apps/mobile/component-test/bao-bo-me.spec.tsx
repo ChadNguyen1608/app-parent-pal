@@ -191,7 +191,7 @@ describe('PA-03 tab Gia đình: lối vào Sức khỏe và Thông báo của co
     await api.childAlertSend('KHONG_KHOE', 'g1');
     await api.auth.sendEmailOtp('test.gia@example.com');
     await api.auth.verifyEmailOtp('test.gia@example.com', '123456');
-    mockUseApp.mockReturnValue({ api, home: await api.getHome(), refreshHome: jest.fn(async () => undefined) });
+    mockUseApp.mockReturnValue({ api, home: await api.getHome(), refreshHome: jest.fn(async () => undefined), plan: null, refreshPlan: jest.fn(async () => undefined) });
     await render(<GiaDinh />);
     await fireEvent.press(screen.getByText('Sức khỏe của Bin'));
     expect(mockPush).toHaveBeenCalledWith({ pathname: '/(parent)/suc-khoe', params: { childId } });
@@ -204,7 +204,7 @@ describe('PA-03 tab Gia đình: lối vào Sức khỏe và Thông báo của co
     const { api } = await kidSetup(false);
     await api.auth.sendEmailOtp('test.gia@example.com');
     await api.auth.verifyEmailOtp('test.gia@example.com', '123456');
-    mockUseApp.mockReturnValue({ api, home: await api.getHome(), refreshHome: jest.fn(async () => undefined) });
+    mockUseApp.mockReturnValue({ api, home: await api.getHome(), refreshHome: jest.fn(async () => undefined), plan: null, refreshPlan: jest.fn(async () => undefined) });
     await render(<GiaDinh />);
     await waitFor(() => screen.getByText('Sức khỏe của Bin'));
     expect(screen.queryByText(/Thông báo của con/)).toBeNull();

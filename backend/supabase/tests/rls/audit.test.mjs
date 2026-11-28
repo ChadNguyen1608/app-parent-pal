@@ -99,7 +99,7 @@ describe('AUD-02: nội dung - không PIN, mã ghép, token, chữ tự do, lự
     const codes = admin(`select event_code from private.audit_events order by 1`).rows;
     assert.deepEqual(codes, ['alert.sent', 'binding.paired', 'binding.requested', 'binding.unlinked', 'child.hidden', 'consent.granted',
       'consent.withdrawn', 'deletion.requested', 'health.added', 'health.deleted', 'health.updated', 'household.closing', 'household.frozen',
-      'household.reopened', 'mode.changed', 'schedule.committed', 'setting.changed']);
+      'household.reopened', 'mode.changed', 'plan.changed', 'plan.expired', 'schedule.committed', 'setting.changed']);
     assert.ok(!codes.some((c) => /help|checkin|hoi_tham|safety|talk/i.test(c)));
   });
 });
@@ -204,10 +204,10 @@ describe('AUD-05: không lộ PIN, mã ghép, token qua luồng thật (BR-CON-0
 describe('AUD-06: đọc theo vai (Tech Spec §2.7)', { skip }, () => {
   it('AUD-06: QL đọc dòng của hộ mình; NL, máy con không đọc; hộ khác chỉ thấy hộ mình; anon bị từ chối; QL không thấy dòng hộ 2', () => {
     const cnt = (who) => run(who, `select count(*) from app.audit_log`).rows[0];
-    assert.equal(cnt(QL), '4');
+    assert.equal(cnt(QL), '5');
     assert.equal(cnt(NL), '0');
     assert.equal(cnt(DEV_NA), '0');
-    assert.equal(cnt(HK), '2');
+    assert.equal(cnt(HK), '3');
     const other = run(QL, `select count(*) from app.audit_log where household_id <> '${HH1}'`);
     assert.equal(other.rows[0], '0');
     const a = run(ANON, `select count(*) from app.audit_log`);

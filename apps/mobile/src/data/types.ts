@@ -114,6 +114,34 @@ export type ChildInput = {
   idempotencyKey?: string;
 };
 
+/** Gói dịch vụ của hộ (D-68). */
+export type PlanTier = 'FREE' | 'TRIAL' | 'PREMIUM';
+
+/** Mức dùng gói của MỘT con (D-72: đếm theo con). editsLeft null = không giới hạn (PREMIUM). */
+export type PlanChildUsage = { childId: string; plansUsed: number; editsUsed: number; editsLeft: number | null };
+
+/** Kết quả app.my_plan(). Giá trị null ở plansMax / editsMax nghĩa là không giới hạn (PREMIUM). Số kế hoạch và lượt sửa là MỖI CON (D-72). */
+export type PlanInfo = {
+  tier: PlanTier;
+  /** Gói TRIAL đã quá hạn (máy chủ coi như FREE). */
+  expired: boolean;
+  plansMax: number | null;
+  editsMax: number | null;
+  children: PlanChildUsage[];
+  /** Số câu hỏi Pal còn lại; null khi chưa có bộ đếm (agent Pal làm sau). */
+  palQuestionsLeft: number | null;
+  trialEndsAt: string | null;
+  /** Hộ chưa từng dùng thử hay PREMIUM, đang FREE: được bấm "Dùng thử" (máy chủ còn kiểm mã máy và email). */
+  trialAvailable: boolean;
+  trialDays: number;
+  /** D-74: số khóa ghép máy con của gói (FREE 0, dùng thử 1, Premium theo chủ sản phẩm đặt) và số khóa đã dùng (máy đang ghép + yêu cầu đang chờ). */
+  deviceKeys: number;
+  deviceKeysUsed: number;
+};
+
+/** Kết quả app.my_family_state() cho máy con. planActive=false: hộ hết dùng thử hoặc hạ gói, hoặc máy này vượt số khóa ghép máy; máy con tạm dừng chờ bố mẹ cập nhật (D-72, D-74). */
+export type MyFamilyState = { frozen: boolean; planActive: boolean };
+
 export type PairCode = { code: string; expiresAt: string | null };
 
 /** CHO_XAC_NHAN_MAY_CON: máy con sẽ hỏi "Kết nối với ...?". CHO_XAC_MINH: máy từng ghép ở hộ khác, chưa có quyền gì (AC-FAM-16). */
@@ -146,6 +174,12 @@ export interface Api {
   /** Gọi khi người lớn mở app. Client tự giới hạn tối đa 1 lần/giờ như máy chủ. Trả touched=false nếu không gọi hoặc máy chủ bỏ qua. */
   touchActive(): Promise<{ touched: boolean }>;
   childCreate(input: ChildInput): Promise<{ childId: string }>;
+  /** Gói dịch vụ của hộ và số lượt còn lại (D-68). Chỉ người lớn trong hộ. */
+  myPlan(): Promise<PlanInfo>;
+  /** Bắt đầu dùng thử (D-72). Ném TRIAL_USED nếu máy hoặc email đã dùng thử, hoặc hộ đã dùng thử / có gói. */
+  trialStart(): Promise<{ trialEndsAt: string | null }>;
+  /** Máy con: hộ có đóng băng không và gói còn hoạt động không (D-72). */
+  myFamilyState(): Promise<MyFamilyState>;
   /** pin: bắt buộc ở lần ghép đầu của QL (đặt PIN cùng lúc), không gửi các lần sau. */
   pairConfirm(childId: string, code: string, pin?: string): Promise<PairConfirmResult>;
   pinSet(pin: string): Promise<void>;

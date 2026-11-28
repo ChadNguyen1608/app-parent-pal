@@ -272,7 +272,7 @@ describe('CA-17, CA-18', () => {
 
   it('CA-18: câu đúng wireframe; "Xem lịch đã có" bỏ màn tạm dừng và sang Hôm nay', async () => {
     const dismissPause = jest.fn();
-    mockUseApp.mockReturnValue({ dismissPause });
+    mockUseApp.mockReturnValue({ dismissPause, childPlanActive: true });
     await render(<TamDung />);
     expect(screen.getByText('Gia đình đang tạm dừng app.')).toBeTruthy();
     expect(screen.getByText('Con vẫn xem được lịch đã có. Con nhờ bố mẹ mở app nhé.')).toBeTruthy();

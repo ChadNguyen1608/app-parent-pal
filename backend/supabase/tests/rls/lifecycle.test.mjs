@@ -175,6 +175,8 @@ describe('LC-FROZEN: hộ đóng băng - mọi hàm ghi trả FROZEN trừ danh 
     profile_save: (s) => FROZEN(run(QL, `select app.profile_save('${NA}', '{"budget": null}')`, s)),
     schedule_inputs: (s) => FROZEN(run(QL, `select app.schedule_inputs('00000000-0000-4000-8000-000000000501')`, s)),
     schedule_commit_apply: (s) => FROZEN(run(QL, `select app.schedule_commit_apply('${NA}', '00000000-0000-4000-8000-000000000501', 1, gen_random_uuid(), repeat('a', 64), repeat('b', 64), 'e', 'p', 'UNKNOWN', '{}', '[]', '[]', '[]', 'x')`, s)),
+    schedule_plan_check: (s) => FROZEN(run(QL, `select app.schedule_plan_check('00000000-0000-4000-8000-000000000501')`, s)),
+    trial_start: (s) => FROZEN(run(QL, `select app.trial_start('${'c'.repeat(64)}')`, s)),
     deletion_request: (s) => {
       assert.equal(J(run(QL, `select app.deletion_request('HO_SO_CON', '${NA}', true)`, s)).replay, false);   // luôn được (D-64)
       VALIDATION(run(QL, `select app.deletion_request('GIA_DINH', null, true)`, s), 'BR-FAM-083');          // không còn FROZEN: còn người lớn khác
@@ -207,6 +209,7 @@ describe('LC-FROZEN: hộ đóng băng - mọi hàm ghi trả FROZEN trừ danh 
     export_request: ['luôn BLOCKED_H4 (không ghi gì)', (s) => rejected(run(QL, `select app.export_request()`, s), 'BLOCKED_H4', 'PT403')],
     health_note_delete: ['xóa là thu hẹp, luôn được (D-66)', (s) => assert.equal(J(run(QL, `select app.health_note_delete((select id from app.child_health_notes limit 1))`, s)).deleted, true)],
     child_setting_get: ['chỉ đọc', (s) => assert.equal(J(run(QL, `select app.child_setting_get('${NA}')`, s)).ai_chat_enabled, false)],
+    my_plan: ['chỉ đọc gói dịch vụ (D-68)', (s) => assert.equal(J(run(QL, `select app.my_plan()`, s)).tier, 'PREMIUM')],
     my_family_state: ['máy con biết hộ đóng băng (D-41)', (s) => assert.equal(J(run(DEV_NA, `select app.my_family_state()`, s)).frozen, true)],
     member_invite: ['tính năng tắt', (s) => rejected(run(QL, `select app.member_invite('SUPPORTER')`, s), 'FEATURE_OFF', 'PT403')],
   };

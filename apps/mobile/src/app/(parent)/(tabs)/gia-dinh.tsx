@@ -2,6 +2,7 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { PLAN_RULES, childPlanLine, deviceKeysLine, pairLockRule, planLines, tierLabel } from '@/data/plan';
 import type { Child } from '@/data/types';
 import { useApp } from '@/state/app';
 import { Btn, H1, P, Screen } from '@/ui/kit';
@@ -17,22 +18,39 @@ function pairText(c: Child): string {
 // PA-03 rút gọn: thẻ từng con + lối vào PA-06 (sức khỏe của con), PA-13 (ghép máy), PA-14 (PIN), PA-15 (báo của con), PA-32 (quyền riêng tư), Cài đặt dữ liệu (D-73), PA-33, PA-35, PA-38.
 export default function GiaDinh() {
   const router = useRouter();
-  const { api, home, refreshHome } = useApp();
+  const { api, home, refreshHome, plan, refreshPlan } = useApp();
   const [unseen, setUnseen] = useState(0);
   useFocusEffect(
     useCallback(() => {
       void refreshHome().catch(() => undefined);
+      void refreshPlan().catch(() => undefined);
       // Số báo của con chưa xem (D-67). Lỗi đọc thì không hiện số; màn Thông báo tự báo lỗi.
       void api
         .listChildAlerts()
         .then((a) => setUnseen(a.filter((x) => x.seenAt === null).length))
         .catch(() => setUnseen(0));
-    }, [api, refreshHome]),
+    }, [api, refreshHome, refreshPlan]),
   );
   const alertsOn = (home?.children ?? []).some((c) => c.alertConsent);
+  // Gói chưa biết (plan null) thì không khóa: máy chủ vẫn chặn nếu thiếu gói. Biết là chưa có gói hoặc hết khóa ghép máy thì khóa và giải thích (D-74).
+  const lockRule = (c: Child): string | null => (plan === null ? null : pairLockRule(plan, c.pairState === 'PENDING'));
   return (
     <Screen>
       <H1>Gia đình</H1>
+      {plan ? (
+        <View style={s.card} accessibilityRole="summary">
+          <Text style={s.name}>{`Gói: ${tierLabel(plan)}`}</Text>
+          {planLines(plan).map((line) => (
+            <P key={line} muted>
+              {line}
+            </P>
+          ))}
+          <P muted>{deviceKeysLine(plan)}</P>
+          {plan.tier === 'FREE' && plan.trialAvailable ? (
+            <Btn label={`Dùng thử ${plan.trialDays} ngày`} kind="secondary" onPress={() => router.push({ pathname: '/(parent)/can-goi', params: { rule: PLAN_RULES.free } })} />
+          ) : null}
+        </View>
+      ) : null}
       {home?.children.map((c) => (
         <View key={c.id} style={s.card}>
           <Text style={s.name}>{c.callName}</Text>
@@ -41,9 +59,18 @@ export default function GiaDinh() {
             {' · '}
             {pairText(c)}
           </P>
+          {childPlanLine(plan, c.id) ? <P muted>{childPlanLine(plan, c.id)}</P> : null}
           <Btn label={`Sức khỏe của ${c.callName}`} kind="secondary" onPress={() => router.push({ pathname: '/(parent)/suc-khoe', params: { childId: c.id } })} />
           {c.hasDevice && c.pairState !== 'PAIRED' ? (
-            <Btn label="Ghép máy của con" kind="secondary" onPress={() => router.push({ pathname: '/(parent)/ghep-may', params: { childId: c.id } })} />
+            lockRule(c) !== null ? (
+              <Btn
+                label={lockRule(c) === PLAN_RULES.keys ? 'Ghép máy của con (hết khóa)' : 'Ghép máy của con (cần gói)'}
+                kind="secondary"
+                onPress={() => router.push({ pathname: '/(parent)/can-goi', params: { rule: lockRule(c) ?? PLAN_RULES.premium } })}
+              />
+            ) : (
+              <Btn label="Ghép máy của con" kind="secondary" onPress={() => router.push({ pathname: '/(parent)/ghep-may', params: { childId: c.id } })} />
+            )
           ) : null}
         </View>
       ))}

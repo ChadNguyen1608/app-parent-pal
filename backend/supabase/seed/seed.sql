@@ -16,6 +16,11 @@ insert into app.households (id, label, data_class) values
   ('00000000-0000-4000-8000-000000000101', 'Nhà giả lập 1', 'GIA_LAP'),
   ('00000000-0000-4000-8000-000000000102', 'Nhà giả lập 2', 'GIA_LAP');
 
+-- D-68: gói dịch vụ của hai hộ giả. Cả hai PREMIUM (5 khóa ghép máy, D-74) để các luồng ghép máy, lịch, đồng bộ của test chạy được; test gói đổi bằng setup.
+insert into app.household_plans (household_id, tier, set_by, note, device_keys) values
+  ('00000000-0000-4000-8000-000000000101', 'PREMIUM', 'seed', 'Dữ liệu giả', 5),
+  ('00000000-0000-4000-8000-000000000102', 'PREMIUM', 'seed', 'Dữ liệu giả', 5);
+
 insert into app.members (id, household_id, user_id, role, call_name) values
   ('00000000-0000-4000-8000-000000000201', '00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-0000000000a1', 'PRIMARY',   'chị Hoa'),
   ('00000000-0000-4000-8000-000000000202', '00000000-0000-4000-8000-000000000101', '00000000-0000-4000-8000-0000000000a2', 'SUPPORTER', 'anh Minh'),
@@ -102,3 +107,4 @@ insert into app.schedule_answers (child_id, question_key, local_date, answer, an
 insert into app.notifications (type, recipient_kind, recipient_id, child_id, idempotency_key, payload_min) values
   ('lich_moi', 'device', '00000000-0000-4000-8000-000000000401', '00000000-0000-4000-8000-000000000301', '20000000-0000-4000-8000-000000000002',
    '{"type":"lich_moi","id":"00000000-0000-4000-8000-000000000521"}');
+

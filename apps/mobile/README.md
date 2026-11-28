@@ -102,7 +102,7 @@ Dữ liệu nằm trong bộ nhớ, mất khi đóng app. Hai app là hai tiến
 - `mock.ts`: bản giả lập có kiểm đầu vào giống máy chủ (tên, lớp 1-9, tuổi 0-18, cần lớp hoặc tuổi, PIN 6 số, khóa sau 5 lần sai PIN, FROZEN khi bật `frozen`).
 - `index.ts`: chọn bản thật/giả theo `src/config.ts` (duy nhất file này import module native).
 
-Test: `npm test` trong `apps/mobile` (43 test: ánh xạ lỗi, kiểm đầu vào, mock, RPC với client giả, hợp đồng với migration SQL). Lệnh `npm test` ở gốc repo cũng chạy các test này.
+Test: `npm test` trong `apps/mobile` (52 test: ánh xạ lỗi, kiểm đầu vào, mock, RPC với client giả, hợp đồng với migration SQL). Lệnh `npm test` ở gốc repo cũng chạy các test này.
 
 ### Hợp đồng RPC
 
@@ -120,6 +120,7 @@ Khớp migration `20261115140000` (T1.2), `150000` (T1.5), `160000` (T1.6) và `
 | `pair_decline` (máy con) | không | `ok` |
 | `pin_set` (QL) | `p_pin` | `ok` |
 | `unlink_device` | `p_child`, `p_pin`, `p_binding_epoch` (máy con bắt buộc) | `ok` |
+| `my_plan` (người lớn) | không | `ok`, `tier`, `expired`, `plans_used`, `plans_max`, `edits_used`, `edits_left`, `pal_questions_left`, `trial_ends_at` |
 
 **Hai kiểu lỗi.** (1) Lỗi raise: `error.message` là mã (`FORBIDDEN`, `FROZEN`, `VALIDATION`, `NOT_FOUND`, `CONFLICT_REV`, `RATE_LIMITED`...), `hint` là lời Việt, `details` là quy tắc. (2) Thất bại cần đếm trả HTTP 200 `{"ok": false, "error": {code, rule, message_vi, attempts_left?, locked_until?}}`: `pair_confirm` (mã sai, mọi lý do liên quan tới mã), `unlink_device` (PIN sai), `pair_accept` (quá hạn). `rpcOk` trong `api.ts` đổi `ok:false` thành `ApiError`; **thiếu `ok` cũng bị từ chối** (không bao giờ coi là thành công, nhất là `unlink_device`). Chỗ gọi chỉ cần try/catch.
 
@@ -134,6 +135,16 @@ Khớp migration `20261115140000` (T1.2), `150000` (T1.5), `160000` (T1.6) và `
 **`touch_active`.** Gọi khi người lớn mở app và mỗi lần app trở lại nền trước (chỉ khi đã có hộ), client giới hạn 1 lần/giờ như `touch_active_min_interval_minutes = 60` (tham số chưa chốt `CHUA_CHOT`). Máy con không gọi (máy chủ trả `FORBIDDEN`).
 
 **Chưa có trong hợp đồng (Edge Function sau này):** hủy phiên ẩn danh của máy con và xóa token đẩy sau `unlink_device`, thông báo cho QL. Sau `unlink_device` thành công, máy con tự đăng xuất cục bộ.
+
+### Gói dịch vụ (D-68, D-72, D-74)
+
+- `myPlan()` gọi `my_plan`; `useApp().plan` (null khi chưa nạp được: app không đoán, không khóa theo đoán, máy chủ vẫn quyết). Tab Gia đình hiện gói; gói TRIAL hiện mức dùng của TỪNG CON (D-72: mỗi con 1 kế hoạch, 3 lần sửa). `src/data/plan.ts` giữ câu chữ.
+- **Ghép máy theo khóa (D-74)**: tab Gia đình hiện "Khóa ghép máy: đã dùng X/Y" (`plan.deviceKeysUsed`/`deviceKeys`). Dùng thử có 1 khóa, Premium theo số chủ sản phẩm đặt, FREE 0. Chưa có gói thì nút thành "Ghép máy của con (cần gói)"; hết khóa thì "Ghép máy của con (hết khóa)"; cả hai dẫn tới màn `can-goi` (`D-68.premium`: cần gói, mời dùng thử nếu còn; `D-74.keys`: hết khóa, nói cách xử lý). Màn ghép máy cũng tự giải thích nếu vào thẳng. Máy chủ báo `PLAN_REQUIRED` hoặc `DEVICE_KEY_LIMIT` (HTTP 402) thì màn hiện giải thích, không hiện lỗi đỏ. Con đang có yêu cầu chờ không bị tính khóa của chính nó (ghép lại được).
+- Bản giả lập (`mock.ts`): gói mặc định TRIAL (1 khóa ghép máy, như máy chủ). Chọn gói: `createMockApi({ plan, deviceKeys })`, hoặc `?plan=FREE|TRIAL|PREMIUM` và `?keys=N` (khóa của PREMIUM, mặc định 1) trên URL bản web (E2E).
+- **Dùng thử (D-72)**: màn `can-goi` có nút "Dùng thử N ngày" khi `plan.trialAvailable` (gói FREE chưa từng dùng thử) và lý do không phải ghép máy hay hết lượt sửa; bấm gọi `trialStart()` (RPC `trial_start`), thành công thì nạp lại gói và quay lại. `TRIAL_USED` (409) hiện lời tiếng Việt của máy chủ. Mã máy gửi lên là `sha256(androidId + muối)` (`src/data/device-hash.ts`, SHA-256 thuần TS có test so với `node:crypto`); `expo-application` `getAndroidId()` chỉ đọc ở `src/data/index.ts` (Android; web/mock dùng giá trị giả). App không gửi Android ID thô (có test).
+- **Máy con (D-72, D-74)**: `myFamilyState()` (RPC `my_family_state`) hỏi lúc vào và mỗi lần app trở lại nền trước; `useApp().childPlanActive` mặc định true, chỉ false khi máy chủ báo `plan_active = false` (hộ hết dùng thử/hạ gói, hoặc máy này vượt số khóa ghép máy; theo từng máy) (lỗi mạng giữ trạng thái cũ). False thì `(child)/_layout.tsx` đóng nhóm `(tabs)` và mở `tam-dung.tsx` (CA-18, "Tạm dừng, chờ bố mẹ cập nhật"; nút Con cần giúp đỡ vẫn ở thanh trên). Chưa có thông báo đẩy `goi_doi` (T3.5). `tam-dung.tsx` cũng là màn CA-18 của gia đình đóng băng (câu wireframe, có nút "Xem lịch đã có"); `state/app.tsx` đọc cả `frozen` (`paused`) và `planActive` từ một lần gọi `myFamilyState()`.
+- Bản giả lập: `?trial=used` trên URL (hoặc `trialClaimed`) giả lập máy/email đã dùng thử.
+- Câu chữ ở `plan.ts`, `PlanRequired.tsx`, `tam-dung.tsx` là TẠM, chờ chủ sản phẩm duyệt. Chưa có thanh toán trong app (màn nói "báo người phụ trách Parent-Pal để đổi gói").
 
 ### Đăng nhập bằng link trong thư (D-59)
 

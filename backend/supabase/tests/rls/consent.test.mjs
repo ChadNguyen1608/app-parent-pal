@@ -584,12 +584,13 @@ describe('CON-SET: ai_chat_enabled - chỗ lưu cài đặt cho chặng 2 (D-64)
 // ================================================================ CON-FAM: my_family_state cho máy con
 describe('CON-FAM: app.my_family_state - máy con biết hộ có đóng băng không (D-41, D-64)', { skip }, () => {
   const st = `select app.my_family_state()`;
-  it('CON-FAM-01: hộ đang hoạt động -> {state, frozen=false}; đúng hai khóa ngoài ok (không lộ gì khác)', () => {
+  it('CON-FAM-01: hộ đang hoạt động -> {state, frozen=false, plan_active}; đúng ba khóa ngoài ok (không lộ gì khác; D-72)', () => {
     const r = run(DEV_NA, st);
     const o = J(r);
     assert.equal(o.state, 'HOAT_DONG');
     assert.equal(o.frozen, false);
-    assert.deepEqual(Object.keys(o).sort(), ['frozen', 'ok', 'state']);
+    assert.equal(o.plan_active, true);   // seed: hộ PREMIUM
+    assert.deepEqual(Object.keys(o).sort(), ['frozen', 'ok', 'plan_active', 'state']);
   });
   it('CON-FAM-02: đóng băng -> frozen=true (máy con vẫn ghép); hộ CHO_XOA -> frozen=true', () => {
     const f = J(run(DEV_NA, st, { setup: FREEZE }));

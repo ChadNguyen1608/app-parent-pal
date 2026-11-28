@@ -39,6 +39,7 @@ export default function ParentLayout() {
         <Stack.Screen name="xuat-du-lieu" options={{ title: 'Xuất dữ liệu' }} />
         <Stack.Screen name="xoa" options={{ title: 'Xóa tài khoản' }} />
         <Stack.Screen name="ghep-may" options={{ title: 'Ghép máy của con' }} />
+        <Stack.Screen name="can-goi" options={{ title: 'Cần gói dịch vụ' }} />
         <Stack.Screen name="dat-pin" options={{ title: 'Mã PIN của bố mẹ' }} />
         <Stack.Screen name="phien" options={{ title: 'Phiên đăng nhập' }} />
       </Stack.Protected>

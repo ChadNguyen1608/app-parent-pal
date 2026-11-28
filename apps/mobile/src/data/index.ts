@@ -1,11 +1,13 @@
 // Chọn bản thật hoặc giả lập theo cấu hình. Chỉ file này import module native (AsyncStorage).
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
-import { AppState } from 'react-native';
+import * as Application from 'expo-application';
+import { AppState, Platform } from 'react-native';
 
 import { BACKEND, SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL, type BackendKind } from '../config';
 import { createSupabaseApi } from './api';
-import { createMockApi } from './mock';
+import { FAKE_DEVICE_ID } from './device-hash';
+import { createMockApi, isPlanTier } from './mock';
 import type { Api } from './types';
 
 let instance: Api | null = null;
@@ -18,7 +20,14 @@ export function backendKind(): BackendKind {
 export function getApi(): Api | null {
   if (instance) return instance;
   if (BACKEND === 'mock') {
-    instance = createMockApi({ demoAlert: true }); // báo mẫu để thử màn của bố mẹ (hai app giả lập không thấy nhau)
+    // Bản web thử (E2E): ?plan=FREE|TRIAL|PREMIUM chọn gói giả lập (không có thì mặc định TRIAL); ?keys=N số khóa ghép máy của PREMIUM; ?trial=used giả lập máy/email đã dùng thử. Chỉ bản mock đọc tham số này.
+    const q = typeof globalThis.location?.search === 'string' ? new URLSearchParams(globalThis.location.search).get('plan') : null;
+    const used = typeof globalThis.location?.search === 'string' && new URLSearchParams(globalThis.location.search).get('trial') === 'used';
+    // ?keys=N: số khóa ghép máy của gói PREMIUM (D-74; mặc định 1).
+    const keysQ = typeof globalThis.location?.search === 'string' ? Number(new URLSearchParams(globalThis.location.search).get('keys')) : NaN;
+    const keys = Number.isInteger(keysQ) && keysQ >= 0 && keysQ <= 50 && typeof globalThis.location?.search === 'string' && new URLSearchParams(globalThis.location.search).has('keys') ? keysQ : null;
+    // demoAlert: báo mẫu để thử màn của bố mẹ (hai app giả lập không thấy nhau)
+    instance = createMockApi({ demoAlert: true, ...(isPlanTier(q) ? { plan: q } : {}), ...(used ? { trialClaimed: true } : {}), ...(keys !== null ? { deviceKeys: keys } : {}) });
   } else if (BACKEND === 'supabase') {
     const client = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth: {
@@ -37,7 +46,14 @@ export function getApi(): Api | null {
       else void client.auth.stopAutoRefresh();
     });
     void client.auth.startAutoRefresh();
-    instance = createSupabaseApi(client);
+    // Android ID theo app (D-72): chỉ Android có; web hoặc nền khác dùng giá trị giả (không dùng được cho chống lặp thật).
+    const getDeviceId = async () => {
+      if (Platform.OS !== 'android') return FAKE_DEVICE_ID;
+      const id = Application.getAndroidId();
+      if (!id) throw new Error('Không đọc được mã máy'); // không dùng mã chung: mọi máy sẽ trùng và chặn nhau
+      return id;
+    };
+    instance = createSupabaseApi(client, () => Date.now(), getDeviceId);
   }
   return instance;
 }
