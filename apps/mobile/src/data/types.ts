@@ -31,6 +31,8 @@ export type DeletionScope = 'HO_SO_CON' | 'GIA_DINH' | 'NGUOI_LON_ROI';
 /** Yêu cầu xóa đang mở (chưa bị hủy). Không có hạn xóa hẳn: PR-CON-01 chưa chốt. */
 export type OpenDeletion = { id: string; scope: DeletionScope; childId: string | null; acceptedAt: string | null; state: string };
 
+export type TermsStatus = { currentVersion: string; accepted: boolean };
+
 /** Hộ của người lớn đang đăng nhập; null nếu chưa tạo hộ. */
 export type Home = {
   householdId: string;
@@ -170,6 +172,11 @@ export interface Api {
   };
   // Người lớn
   getHome(): Promise<Home>;
+  /** D-76: bản Điều khoản hiện hành và người dùng đã đồng ý bản đó chưa. Chỉ người lớn đăng nhập. */
+  termsStatus(): Promise<TermsStatus>;
+  /** D-76: ghi đồng ý bản Điều khoản `version` (phải là bản hiện hành, nếu không VALIDATION). Gọi lặp an toàn. */
+  termsAccept(version: string): Promise<{ version: string; replay: boolean }>;
+  /** Ném TERMS_REQUIRED (428) nếu chưa đồng ý bản hiện hành (D-76). */
   familyCreate(callName: string): Promise<{ householdId: string; replay: boolean }>;
   /** Gọi khi người lớn mở app. Client tự giới hạn tối đa 1 lần/giờ như máy chủ. Trả touched=false nếu không gọi hoặc máy chủ bỏ qua. */
   touchActive(): Promise<{ touched: boolean }>;

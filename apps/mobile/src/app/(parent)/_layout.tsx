@@ -4,7 +4,7 @@ import { useApp } from '@/state/app';
 import { Center, P } from '@/ui/kit';
 import { APP_VARIANT } from '@/variant';
 
-// Cổng theo trạng thái: chưa đăng nhập chỉ thấy PA-01; chưa có hộ/con chỉ thấy bước bắt đầu (đồng ý ghi mặc định lúc tạo con, D-73); xong mới vào khung chính.
+// Cổng theo trạng thái: chưa đăng nhập chỉ thấy PA-01; chưa đồng ý Điều khoản (D-76) chỉ thấy màn thỏa thuận; chưa có hộ/con chỉ thấy bước bắt đầu (đồng ý ghi mặc định lúc tạo con, D-73); xong mới vào khung chính.
 export default function ParentLayout() {
   const { parentStage } = useApp();
   if (APP_VARIANT !== 'parent') return <Redirect href="/" />;
@@ -19,6 +19,9 @@ export default function ParentLayout() {
     <Stack>
       <Stack.Protected guard={parentStage === 'out'}>
         <Stack.Screen name="dang-nhap" options={{ title: 'Đăng nhập', headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={parentStage === 'needTerms'}>
+        <Stack.Screen name="thoa-thuan" options={{ title: 'Thỏa thuận sử dụng', headerBackVisible: false }} />
       </Stack.Protected>
       <Stack.Protected guard={parentStage === 'needHome'}>
         <Stack.Screen name="bat-dau" options={{ title: 'Bắt đầu' }} />

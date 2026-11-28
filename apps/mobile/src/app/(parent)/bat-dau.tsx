@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { View } from 'react-native';
 
+import { toApiError } from '@/data/errors';
 import { uuidv4 } from '@/data/uuid';
 import { checkCallName, parseGrade } from '@/data/validate';
 import { useApp } from '@/state/app';
@@ -12,7 +13,7 @@ import { useAction } from '@/ui/useAction';
 // D-73: không còn màn đồng ý (PA-02). Máy chủ (child_create) tự ghi đồng ý lõi và hai mục riêng (sức khỏe, con báo bố mẹ) mặc định
 // trong cùng giao dịch; phụ huynh tắt sau trong Cài đặt dữ liệu. PA-05..07 thuộc task sau. Chỉ nhập tên gọi, không họ tên đầy đủ.
 export default function BatDau() {
-  const { api, home, refreshHome } = useApp();
+  const { api, home, refreshHome, refreshTerms } = useApp();
   const [householdId, setHouseholdId] = useState<string | null>(home?.householdId ?? null);
   const [myName, setMyName] = useState('');
   const [childName, setChildName] = useState('');
@@ -29,8 +30,14 @@ export default function BatDau() {
     setErrors({ myName: bad });
     if (bad) return;
     await fam.run(async () => {
-      const r = await api.familyCreate(myName);
-      setHouseholdId(r.householdId);
+      try {
+        const r = await api.familyCreate(myName);
+        setHouseholdId(r.householdId);
+      } catch (e) {
+        // D-76: máy chủ báo chưa đồng ý Điều khoản (ví dụ không nạp được trạng thái lúc vào): đọc lại để cổng đưa về màn thỏa thuận.
+        if (toApiError(e).code === 'TERMS_REQUIRED') await refreshTerms().catch(() => undefined);
+        throw e;
+      }
     });
   }
 

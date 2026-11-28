@@ -132,7 +132,7 @@ describe('PLAN-DB: bảng household_plans và app.plan_set (chỉ hệ thống)'
   });
 
   it('PLAN-DB-04: hộ chưa có dòng gói là FREE (hộ tạo bằng family_create)', () => {
-    const r = run(MAI, `select app.family_create('chị Mai'); select app.my_plan()`);
+    const r = run(MAI, `select app.family_create('chị Mai'); select app.my_plan()`, { setup: `insert into app.terms_acceptances(user_id, terms_version) values ('${MAI.sub}', private.terms_current_version());` });
     assert.ok(r.ok, r.err);
     const p = J(r, 1);
     assert.equal(p.tier, 'FREE'); assert.equal(p.plans_max, 0); assert.deepEqual(p.children, []);

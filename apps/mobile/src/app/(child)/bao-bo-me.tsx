@@ -67,7 +67,6 @@ export default function BaoBoMe() {
       {ALERT_KINDS.map((k) => (
         <Btn key={k} big kind="secondary" label={CHILD_QUESTION[k]} onPress={() => setKind(k)} />
       ))}
-      <P muted>Nếu con thấy không an toàn, bấm nút "Con cần giúp đỡ" ở trên.</P>
     </Screen>
   );
 }

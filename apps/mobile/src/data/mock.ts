@@ -73,6 +73,8 @@ export const MOCK_TRIAL_PLANS_MAX = 1;
 export const MOCK_TRIAL_EDITS_MAX = 3;
 export const MOCK_TRIAL_DAYS = 7;
 export const MOCK_TRIAL_DEVICE_KEYS = 1;
+/** D-76: phiên bản Điều khoản hiện hành của bản giả lập (như private.terms_version của máy chủ). */
+export const MOCK_TERMS_VERSION = '2026-11-28-nhap';
 
 export function isPlanTier(v: unknown): v is PlanTier {
   return v === 'FREE' || v === 'TRIAL' || v === 'PREMIUM';
@@ -85,6 +87,8 @@ export type MockOptions = {
   deviceKeys?: number;
   /** Giả lập hộ đóng băng: getHome báo DONG_BANG, mọi hàm ghi trả FROZEN cho tới khi household_reopen. */
   frozen?: boolean;
+  /** D-76: người lớn đã đồng ý bản Điều khoản hiện hành từ đầu (mặc định false: phải gọi termsAccept trước familyCreate, như máy chủ). */
+  termsAccepted?: boolean;
   /** Giả lập mã máy hoặc email đã dùng thử ở nơi khác: trialStart trả TRIAL_USED. */
   trialClaimed?: boolean;
   /** Số lần pair_pending trả pending=false trước khi có yêu cầu chờ (mặc định 1). */
@@ -113,7 +117,7 @@ function fail(code: string, rule: string, hint: string): never {
 }
 
 /** Bản giả lập kèm móc cho test: đổi trạng thái hộ như job đóng băng của máy chủ. */
-export type MockApi = Api & { setHouseholdState(s: HouseholdState): void };
+export type MockApi = Api & { setHouseholdState(s: HouseholdState): void; /** D-76: đổi phiên bản Điều khoản hiện hành; mọi người dùng phải đồng ý lại. */ setTermsVersion(v: string): void };
 
 export function createMockApi(opts: MockOptions = {}): MockApi {
   const now = opts.now ?? (() => Date.now());
@@ -125,6 +129,8 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
   /** D-74: khóa ghép máy theo gói. */
   const keys = (): number => (plan === 'TRIAL' ? MOCK_TRIAL_DEVICE_KEYS : plan === 'PREMIUM' ? (opts.deviceKeys ?? 1) : 0);
 
+  let termsVersion = MOCK_TERMS_VERSION;
+  let termsOk = opts.termsAccepted === true;
   let session: SessionInfo | null = null;
   const listeners = new Set<(s: SessionInfo | null) => void>();
   let pendingEmail: string | null = null;
@@ -200,6 +206,11 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
 
   const api: MockApi = {
     kind: 'mock',
+    setTermsVersion(v) {
+      if (v !== termsVersion) termsOk = false;
+      termsVersion = v;
+    },
+
     setHouseholdState(st) {
       hhState = st;
     },
@@ -269,9 +280,25 @@ export function createMockApi(opts: MockOptions = {}): MockApi {
       };
     },
 
+    async termsStatus() {
+      needLogin();
+      await pause();
+      return { currentVersion: termsVersion, accepted: termsOk };
+    },
+
+    async termsAccept(version) {
+      needLogin();
+      await pause();
+      if (version !== termsVersion) fail('VALIDATION', 'D-76.version', 'Điều khoản đã đổi, hãy mở lại và đọc bản mới.');
+      const replay = termsOk;
+      termsOk = true;
+      return { version: termsVersion, replay };
+    },
+
     async familyCreate(callName) {
       writable();
       await pause();
+      if (!household && !termsOk) fail('TERMS_REQUIRED', 'D-76', 'Bạn cần đồng ý Điều khoản sử dụng trước khi tạo gia đình.');
       const name = callName.trim();
       if (name === '') fail('VALIDATION', 'BR-001', 'Cần tên gọi của bạn.');
       if (name.length > 40) fail('VALIDATION', 'BR-001', 'Tên gọi tối đa 40 ký tự.');

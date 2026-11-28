@@ -37,6 +37,7 @@ const QL = A.QL, NL = A.NL, HK = A.HO_KHAC, ANON = A.ANON;
 // ---------------------------------------------------------------- trợ giúp
 const as = (a) => `select set_config('request.jwt.claims', '${JSON.stringify({ sub: a.sub, role: a.role, ...(a.claims || {}) })}', true) as _s \\gset\n`;
 const adm = (sql) => `reset role;\n${sql};\nset local role authenticated;\n`;   // bước quản trị giữa chừng
+const TERMS_NEW = `insert into app.terms_acceptances(user_id, terms_version) values ('${U.ADULT_NEW}', private.terms_current_version());`;   // D-76: đã đồng ý điều khoản
 const BIN_DEVICE = adm(`update app.children set has_device = true where id = '${BIN}'`);
 const SET_PIN = (m = MEM_HOA, p = PIN) => `select private.pin_store('${m}', '${p}');`;
 const FREEZE = `update app.households set state='DONG_BANG', frozen_at=now() where id='${HH1}';`;
@@ -67,7 +68,7 @@ describe('FN-FAM: tạo hộ và hoạt động (T1.2; BR-FAM-001, 050; AC-FAM-2
     const r = run(ADULT_NEW, `select app.family_create('  chị Mai ');
       select count(*) from app.households; select count(*) from app.members;
       select role || ':' || call_name || ':' || status || ':' || (last_active_at is not null) from app.members;
-      ${adm(`select data_class || ':' || state || ':' || (frozen_at is null) from app.households h join app.members m on m.household_id = h.id where m.user_id = '${U.ADULT_NEW}'`)}`);
+      ${adm(`select data_class || ':' || state || ':' || (frozen_at is null) from app.households h join app.members m on m.household_id = h.id where m.user_id = '${U.ADULT_NEW}'`)}`, { setup: TERMS_NEW });
     const out = J(r);
     assert.equal(out.role, 'PRIMARY');
     assert.equal(out.call_name, 'chị Mai');
@@ -80,7 +81,7 @@ describe('FN-FAM: tạo hộ và hoạt động (T1.2; BR-FAM-001, 050; AC-FAM-2
 
   it('FN-FAM-02: gọi lại (mất phản hồi) trả hộ cũ, không tạo hộ thứ hai; chị Hoa đã là QL cũng vậy', () => {
     const r = run(ADULT_NEW, `select app.family_create('chị Mai'); select app.family_create('tên khác');
-      ${adm(`select count(*) from app.households; select count(*) from app.members where user_id = '${U.ADULT_NEW}'`)}`);
+      ${adm(`select count(*) from app.households; select count(*) from app.members where user_id = '${U.ADULT_NEW}'`)}`, { setup: TERMS_NEW });
     const a = J(r, 0), b = J(r, 1);
     assert.equal(b.replay, true);
     assert.equal(b.household_id, a.household_id);
@@ -102,8 +103,8 @@ describe('FN-FAM: tạo hộ và hoạt động (T1.2; BR-FAM-001, 050; AC-FAM-2
     UNAUTH(run({ role: 'authenticated' }, `select app.family_create('chị Mai')`));
     UNAUTH(run({ role: 'authenticated', sub: '00000000-0000-4000-8000-0000000000ee' }, `select app.family_create('x')`));
     NO_EXEC(run(ANON, `select app.family_create('chị Mai')`));
-    for (const bad of ['', '   ', 'x'.repeat(41)]) VALIDATION(run(ADULT_NEW, `select app.family_create('${bad}')`), 'BR-FAM-001');
-    assert.equal(run(ADULT_NEW, `select app.family_create(null)`).ok, false);
+    for (const bad of ['', '   ', 'x'.repeat(41)]) VALIDATION(run(ADULT_NEW, `select app.family_create('${bad}')`, { setup: TERMS_NEW }), 'BR-FAM-001');
+    assert.equal(run(ADULT_NEW, `select app.family_create(null)`, { setup: TERMS_NEW }).ok, false);
   });
 
   it('FN-FAM-04: touch_active - cập nhật last_active_at, tối đa 1 lần/giờ, NL cũng tính (AC-FAM-24)', () => {

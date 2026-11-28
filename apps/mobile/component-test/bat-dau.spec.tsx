@@ -8,7 +8,7 @@ const mockUseApp = jest.fn();
 jest.mock('@/state/app', () => ({ useApp: () => mockUseApp() }));
 
 async function setup() {
-  const api = createMockApi({ latencyMs: 0 });
+  const api = createMockApi({ latencyMs: 0, termsAccepted: true });
   await api.auth.sendEmailOtp('test.gia@example.com');
   await api.auth.verifyEmailOtp('test.gia@example.com', '123456');
   const refreshHome = jest.fn(async () => undefined);

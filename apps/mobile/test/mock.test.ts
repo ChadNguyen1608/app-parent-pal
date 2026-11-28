@@ -2,11 +2,11 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { ApiError } from '../src/data/errors.ts';
-import { MOCK_ADULT_NAME, MOCK_DEFAULT_PIN, MOCK_OTP, MOCK_PAIR_CODE, createMockApi } from '../src/data/mock.ts';
+import { MOCK_ADULT_NAME, MOCK_DEFAULT_PIN, MOCK_OTP, MOCK_PAIR_CODE, MOCK_TERMS_VERSION, createMockApi } from '../src/data/mock.ts';
 
-const fast = { latencyMs: 0 };
+const fast = { latencyMs: 0, termsAccepted: true };   // D-76: đã đồng ý Điều khoản để familyCreate chạy
 /** Ghép máy theo khóa (D-74): PREMIUM mặc định 1 khóa; mock mặc định TRIAL (1 khóa). */
-const premium = { latencyMs: 0, plan: 'PREMIUM' as const };
+const premium = { ...fast, plan: 'PREMIUM' as const };
 
 async function rejects(p: Promise<unknown>, code: string) {
   await assert.rejects(p, (e: unknown) => {
@@ -34,6 +34,34 @@ test('chưa đăng nhập thì gọi RPC bị UNAUTHENTICATED', async () => {
   const api = createMockApi(fast);
   await rejects(api.familyCreate('chị Lan'), 'UNAUTHENTICATED');
   await rejects(api.getHome(), 'UNAUTHENTICATED');
+});
+
+test('D-76: chưa đồng ý Điều khoản thì familyCreate bị TERMS_REQUIRED; đồng ý rồi tạo được; đồng ý lặp an toàn; bản lạ bị VALIDATION', async () => {
+  const api = createMockApi({ latencyMs: 0 });
+  await rejects(api.termsStatus(), 'UNAUTHENTICATED');
+  await api.auth.sendEmailOtp('a@b.vn');
+  await api.auth.verifyEmailOtp('a@b.vn', MOCK_OTP);
+  assert.deepEqual(await api.termsStatus(), { currentVersion: MOCK_TERMS_VERSION, accepted: false });
+  await rejects(api.familyCreate('chị Lan'), 'TERMS_REQUIRED');
+  assert.equal(await api.getHome(), null, 'không tạo hộ khi chưa đồng ý');
+  await rejects(api.termsAccept('2020-01-01'), 'VALIDATION');
+  assert.deepEqual(await api.termsAccept(MOCK_TERMS_VERSION), { version: MOCK_TERMS_VERSION, replay: false });
+  assert.deepEqual(await api.termsAccept(MOCK_TERMS_VERSION), { version: MOCK_TERMS_VERSION, replay: true });
+  assert.equal((await api.termsStatus()).accepted, true);
+  assert.equal((await api.familyCreate('chị Lan')).replay, false);
+});
+
+test('D-76: Điều khoản đổi phiên bản thì phải đồng ý lại; người đã có hộ gọi familyCreate vẫn nhận hộ cũ', async () => {
+  const api = createMockApi({ latencyMs: 0, termsAccepted: true });
+  await api.auth.sendEmailOtp('a@b.vn');
+  await api.auth.verifyEmailOtp('a@b.vn', MOCK_OTP);
+  const { householdId } = await api.familyCreate('chị Lan');
+  api.setTermsVersion('2026-12-01');
+  assert.deepEqual(await api.termsStatus(), { currentVersion: '2026-12-01', accepted: false });
+  await rejects(api.termsAccept(MOCK_TERMS_VERSION), 'VALIDATION');
+  assert.equal((await api.familyCreate('chị Lan')).householdId, householdId, 'hộ cũ không bị chặn');
+  await api.termsAccept('2026-12-01');
+  assert.equal((await api.termsStatus()).accepted, true);
 });
 
 test('phụ huynh: tạo hộ, tạo con, ghép máy, đặt PIN', async () => {

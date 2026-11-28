@@ -39,6 +39,24 @@ function fakeClient(results: Record<string, { data?: unknown; error?: unknown } 
   return { client: client as never, calls, raw: client };
 }
 
+test('D-76: terms_status và terms_accept gọi đúng hàm, tham số p_version, đọc đúng trường', async () => {
+  const { client, calls } = fakeClient({
+    terms_status: { data: { current_version: '2026-11-28-nhap', accepted: false } },
+    terms_accept: { data: { version: '2026-11-28-nhap', accepted: true, replay: true } },
+  });
+  const api = createSupabaseApi(client);
+  assert.deepEqual(await api.termsStatus(), { currentVersion: '2026-11-28-nhap', accepted: false });
+  assert.deepEqual(await api.termsAccept('2026-11-28-nhap'), { version: '2026-11-28-nhap', replay: true });
+  assert.deepEqual(calls.map((c) => [c.fn, c.args]), [['terms_status', undefined], ['terms_accept', { p_version: '2026-11-28-nhap' }]]);
+  const bad = fakeClient({ terms_status: { data: { accepted: true } } });
+  await assert.rejects(createSupabaseApi(bad.client).termsStatus());
+});
+
+test('D-76: family_create bị TERMS_REQUIRED (PT428) thành ApiError TERMS_REQUIRED', async () => {
+  const { client } = fakeClient({ family_create: { error: { message: 'TERMS_REQUIRED', details: 'D-76', hint: 'Bạn cần đồng ý Điều khoản sử dụng trước khi tạo gia đình.', code: 'PT428' } } });
+  await assert.rejects(createSupabaseApi(client).familyCreate('x'), (e: unknown) => e instanceof ApiError && e.code === 'TERMS_REQUIRED' && e.rule === 'D-76');
+});
+
 test('RPC gọi đúng schema app, tên hàm và tham số', async () => {
   const { client, calls } = fakeClient({
     family_create: { data: { household_id: 'h1', member_id: 'm1', replay: false } },

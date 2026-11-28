@@ -253,6 +253,7 @@ const RICH = `
     insert into private.withdraw_confirmations(child_id, member_id, expires_at) values ('${NA}', '${MEM_HOA}', now() + interval '10 minutes');
     insert into app.deletion_requests(household_id, scope, child_id, requested_by, reason) values ('${HH1}', 'HO_SO_CON', '${BIN}', '${MEM_HOA}', 'XOA_HO_SO');
     insert into app.child_alerts(child_id, binding_id, kind) values ('${NA}', '00000000-0000-4000-8000-000000000401', 'DON_SOM');
+    insert into app.terms_acceptances(user_id, terms_version) values ('${U_HOA}', private.terms_current_version());
   end $r$;`;
 const DRILL = (reason = 'GIA_LAP_DIEN_TAP', prelude = RICH, root = HH1, call = `app.purge_household('${HH1}', '${reason}')`) => `${prelude}
   create temp table pp_ids (id text primary key);

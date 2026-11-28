@@ -470,6 +470,19 @@ Migration `20261128100000_d74_dung_thu_khoa_ghep_may.sql` (sửa D-68, D-72). Ng
 3. Khóa tính theo hộ (không chia theo con); `plan_set` không ghi audit riêng cho đổi số khóa (chỉ `plan.changed` khi đổi gói).
 4. Hết hạn TRIAL theo thời gian: máy con biết qua `my_family_state` (lúc vào app/trở lại nền trước) và `goi_doi` do job ngày ghi.
 
+## D-76: thỏa thuận người dùng khi đăng ký
+
+Migration `20261128300000_d76_thoa_thuan_dieu_khoan.sql`. Người soạn: AI, chưa kiểm chứng độc lập. Quyết định gốc: D-76 trong `app-design-document/progress/Owner_Decision_Log_20261115.md`.
+
+- `private.terms_version` (một dòng): phiên bản Điều khoản hiện hành, giá trị đầu `2026-11-28-nhap` (`CHUA_CHOT`). Đổi phiên bản = sửa dòng này bằng quản trị; mọi người dùng được hỏi đồng ý lại một lần.
+- `app.terms_acceptances` (`user_id`, `terms_version`, `accepted_at`, duy nhất theo cặp user + phiên bản): chỉ-thêm (trigger chặn sửa, xóa, truncate; riêng `purge_household` được xóa, qua `app.tg_append_only`). Không khóa ngoại tới `auth.users`. Người dùng không đọc hay ghi trực tiếp.
+- `app.terms_status()` -> `{current_version, accepted}`; `app.terms_accept(p_version)` -> `{version, accepted, replay}` (idempotent theo user + phiên bản; phiên bản không phải bản hiện hành: `VALIDATION`, quy tắc `D-76.version`). Chỉ người lớn đăng nhập; máy con ẩn danh `FORBIDDEN`.
+- `family_create`: người chưa có hộ mà chưa đồng ý bản hiện hành bị `TERMS_REQUIRED` (**HTTP 428**, `PT428`, quy tắc `D-76`). Thứ tự kiểm: chưa đăng nhập, máy con, đã thuộc hộ (trả hộ cũ, không chặn), rồi điều khoản.
+- Audit `terms.accepted` (chỉ khóa `version`): ghi ngay trong `terms_accept` nếu người đó đã có hộ; nếu chưa có hộ thì `family_create` ghi khi hộ được tạo (audit cần `household_id`).
+- `purge_household` xóa dòng điều khoản của người dùng bị xóa; `row_counts` có khóa `app.terms_acceptances`.
+- Test: `TERMS-ST/ACC/GATE/VER/AUD/LOG/PURGE` (`terms.test.mjs`); đột biến `m240`..`m251`.
+- Quyết định mặc định (CHỜ CHỦ SẢN PHẨM DUYỆT): mã HTTP 428 (không dùng 403 vì 403 đã là quyền); không có đường thu hồi đồng ý điều khoản; người đã có hộ trước D-76 không bị chặn ở máy chủ (app hỏi họ qua `terms_status`).
+
 ## T2.9: đồng ý mặc định khi tạo con (D-73)
 
 Migration `20261119300000_t2_9_dong_y_mac_dinh_d73.sql`: `app.consent_events` thêm cột `basis` (`NGUOI_DUNG` mặc định; `MAC_DINH_D73`). `app.child_create` (tạo lại bằng `create or replace`, chữ ký không đổi) ghi cùng giao dịch ba sự kiện DONG_Y cho MD-LICH, MD-SUCKHOE, MD-CONBAO (người ghi là QL đang gọi, bản chính sách mới nhất đang hiệu lực, bỏ qua mục `collect_enabled = false`). Gọi lặp cùng khóa trả sớm nên không ghi đôi. Chưa có bản chính sách hiệu lực thì không ghi (fail-closed). Tắt sau vẫn là `consent_record` RUT (basis `NGUOI_DUNG`); rút mục lõi vẫn là rút toàn bộ. `family_create` chưa có con nên không ghi gì. Test: CON-D73a..d (`consent.test.mjs`), CON-01c; đột biến m200..m202.

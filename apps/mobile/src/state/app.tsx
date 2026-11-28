@@ -8,14 +8,15 @@ import { getApi } from '../data';
 import { parseAuthLink } from '../data/auth-link';
 import { errorMessage } from '../data/errors';
 import { uuidv4 } from '../data/uuid';
-import type { Api, Binding, Home, PlanInfo, SessionInfo } from '../data/types';
+import type { Api, Binding, Home, PlanInfo, SessionInfo, TermsStatus } from '../data/types';
 import { APP_VARIANT } from '../variant';
 
 /**
- * Phụ huynh: loading → out (PA-01) → needHome (tạo hộ, thêm con; đồng ý ghi mặc định, D-73) → ready.
+ * Phụ huynh: loading → out (PA-01) → needTerms (thỏa thuận Điều khoản, D-76) → needHome (tạo hộ, thêm con; đồng ý ghi mặc định, D-73) → ready.
+ * needTerms cũng chặn người đã có hộ khi Điều khoản đổi phiên bản (hỏi lại một lần); hộ đóng băng hoặc đang chờ xóa không bị chặn.
  * frozen: hộ đóng băng (PA-39). closing: hộ đang chờ xóa (đã gửi yêu cầu xóa gia đình).
  */
-export type ParentStage = 'loading' | 'out' | 'needHome' | 'frozen' | 'closing' | 'ready';
+export type ParentStage = 'loading' | 'out' | 'needTerms' | 'needHome' | 'frozen' | 'closing' | 'ready';
 /** Máy con: loading → unpaired (CA-01, CA-02) → justPaired (CA-03) → intro (CA-16) → ready. */
 export type ChildStage = 'loading' | 'unpaired' | 'justPaired' | 'intro' | 'ready';
 
@@ -26,6 +27,11 @@ type Ctx = {
   parentStage: ParentStage;
   home: Home;
   refreshHome: () => Promise<void>;
+  /** D-76: bản Điều khoản hiện hành và đã đồng ý chưa; null khi chưa nạp được (không chặn: máy chủ vẫn chặn tạo hộ). */
+  terms: TermsStatus | null;
+  /** D-76: bấm "Đồng ý" ở màn thỏa thuận: ghi lên máy chủ rồi mở cổng. Lỗi thì ném ra để màn báo. */
+  acceptTerms: () => Promise<void>;
+  refreshTerms: () => Promise<void>;
   /** Gói dịch vụ của hộ (D-68); null khi chưa nạp được (màn không đoán, để máy chủ quyết). */
   plan: PlanInfo | null;
   refreshPlan: () => Promise<void>;
@@ -77,6 +83,8 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
   const [home, setHome] = useState<Home>(null);
   const [homeLoaded, setHomeLoaded] = useState(false);
   const [plan, setPlan] = useState<PlanInfo | null>(null);
+  const [terms, setTerms] = useState<TermsStatus | null>(null);
+  const [termsLoaded, setTermsLoaded] = useState(false);
   const [childId, setChildId] = useState<string | null>(null);
   const [bindingEpoch, setBindingEpoch] = useState<number | null>(null);
   const [childStage, setChildStage] = useState<ChildStage>('loading');
@@ -132,6 +140,12 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
     setHomeLoaded(true);
   }, [api]);
 
+  const refreshTerms = useCallback(async () => {
+    const t = await api.termsStatus();
+    setTerms(t);
+    setTermsLoaded(true);
+  }, [api]);
+
   const refreshPlan = useCallback(async () => {
     setPlan(await api.myPlan());
   }, [api]);
@@ -155,6 +169,29 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       .catch(() => {
         // Không nạp được hộ (mạng, quyền): coi như chưa có hộ để không treo; người dùng thử lại ở bước sau.
         if (alive) setHomeLoaded(true);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [api, parentSession?.userId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // D-76: nạp trạng thái đồng ý Điều khoản cùng lúc với hộ. Không nạp được (mạng): coi như chưa biết, không chặn (máy chủ vẫn chặn tạo hộ bằng TERMS_REQUIRED).
+  useEffect(() => {
+    if (!parentSession) {
+      setTerms(null);
+      setTermsLoaded(false);
+      return;
+    }
+    let alive = true;
+    api
+      .termsStatus()
+      .then((t) => {
+        if (!alive) return;
+        setTerms(t);
+        setTermsLoaded(true);
+      })
+      .catch(() => {
+        if (alive) setTermsLoaded(true);
       });
     return () => {
       alive = false;
@@ -251,11 +288,11 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
     };
   }, [api, isParent, childStage]);
 
-  const parentStage: ParentStage = !booted
+  const baseStage: ParentStage = !booted
     ? 'loading'
     : !parentSession
       ? 'out'
-      : !homeLoaded
+      : !homeLoaded || !termsLoaded
         ? 'loading'
         : !home
           ? 'needHome'
@@ -266,6 +303,8 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
               : home.children.length === 0
                 ? 'needHome'
                 : 'ready';
+  // D-76: chưa đồng ý bản Điều khoản hiện hành thì chỉ thấy màn thỏa thuận (trừ hộ đóng băng, đang chờ xóa: không chặn lối ra).
+  const parentStage: ParentStage = (baseStage === 'needHome' || baseStage === 'ready') && terms && !terms.accepted ? 'needTerms' : baseStage;
 
   const value = useMemo<Ctx>(
     () => ({
@@ -274,6 +313,19 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
       parentStage,
       home,
       refreshHome,
+      terms,
+      refreshTerms,
+      acceptTerms: async () => {
+        // Phiên bản lấy từ máy chủ lúc nạp; nếu đã đổi (VALIDATION) thì đọc lại để màn hiện đúng bản mới rồi báo lỗi.
+        if (!terms) return;
+        try {
+          await api.termsAccept(terms.currentVersion);
+        } catch (e) {
+          await refreshTerms().catch(() => undefined);
+          throw e;
+        }
+        await refreshTerms();
+      },
       plan,
       refreshPlan,
       signOut: async () => {
@@ -331,7 +383,7 @@ function Inner({ api, children }: { api: Api; children: ReactNode }) {
         setChildStage('unpaired');
       },
     }),
-    [api, session, parentStage, home, refreshHome, plan, refreshPlan, linkError, childStage, childId, childPlanActive, bindingEpoch, disconnected, frozenFamily, pauseSeen],
+    [api, session, parentStage, home, refreshHome, terms, refreshTerms, plan, refreshPlan, linkError, childStage, childId, childPlanActive, bindingEpoch, disconnected, frozenFamily, pauseSeen],
   );
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;

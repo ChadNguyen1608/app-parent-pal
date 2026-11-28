@@ -2,12 +2,11 @@ import { Redirect, Stack } from 'expo-router';
 
 import { useApp } from '@/state/app';
 import { Center, P } from '@/ui/kit';
-import { HelpButton } from '@/ui/HelpButton';
 import { APP_VARIANT } from '@/variant';
 
 // Cổng theo giai đoạn ghép và gói (D-72: hộ không PREMIUM thì máy con ở CA-18 Tạm dừng).
 // Cổng theo giai đoạn ghép. Chưa ghép: chỉ CA-01, CA-02 (không thấy chương trình của phụ huynh).
-// Nút "Con cần giúp đỡ" có ở thanh trên mọi màn (IA-Q03) và luôn mở được, kể cả khi chưa ghép.
+// D-75: không có nút "Con cần giúp đỡ"; mọi vấn đề của con đi qua bố mẹ ("Báo bố mẹ ngay").
 export default function ChildLayout() {
   const { childStage, childPlanActive, paused } = useApp();
   if (APP_VARIANT !== 'child') return <Redirect href="/" />;
@@ -19,7 +18,7 @@ export default function ChildLayout() {
     );
   }
   return (
-    <Stack screenOptions={{ headerRight: () => <HelpButton /> }}>
+    <Stack>
       <Stack.Protected guard={childStage === 'unpaired'}>
         <Stack.Screen name="chao" options={{ title: 'Parent-Pal' }} />
         <Stack.Screen name="ma-ghep" options={{ title: 'Mã ghép' }} />
@@ -39,7 +38,6 @@ export default function ChildLayout() {
         <Stack.Screen name="cai-dat" options={{ title: 'Cài đặt' }} />
         <Stack.Screen name="nhap-pin" options={{ title: 'Cần bố mẹ nhập PIN' }} />
       </Stack.Protected>
-      <Stack.Screen name="con-can-giup-do" options={{ title: 'Con cần giúp đỡ', headerRight: () => null }} />
     </Stack>
   );
 }

@@ -5,12 +5,19 @@ import { expect, test, type Page } from '@playwright/test';
 
 const shot = (page: Page, name: string) => expect(page).toHaveScreenshot(`${name}.png`);
 
+/** D-76: sau đăng nhập lần đầu là màn thỏa thuận; bấm Đồng ý mới sang bước tạo gia đình. */
+async function dongYThoaThuan(page: Page) {
+  await expect(page.getByRole('heading', { name: 'Thỏa thuận sử dụng' }).last()).toBeVisible();
+  await page.getByRole('button', { name: 'Đồng ý', exact: true }).click();
+}
+
 async function dangNhap(page: Page, plan?: 'FREE' | 'TRIAL' | 'PREMIUM') {
   await page.goto(plan ? `/?plan=${plan}` : '/');
   await page.getByRole('textbox', { name: 'Email của bạn' }).fill('test.gia@example.com');
   await page.getByRole('button', { name: 'Gửi mã cho mình' }).click();
   await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
   await page.getByRole('button', { name: 'Xác nhận' }).click();
+  await dongYThoaThuan(page);
 }
 
 async function themCon(page: Page) {
@@ -49,6 +56,7 @@ test('đăng nhập, làm quen, thêm con, ghép máy lần đầu với PIN (g�
 
   await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
   await page.getByRole('button', { name: 'Xác nhận' }).click();
+  await dongYThoaThuan(page);
   await expect(page.getByRole('heading', { name: 'Mình gọi bạn là gì?' })).toBeVisible();
 
   await page.getByRole('textbox', { name: 'Cách gọi bạn' }).fill('chị Lan');
@@ -102,6 +110,41 @@ test('nhánh lỗi: email sai, mã đăng nhập sai', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Chào bạn' })).toBeVisible();
 });
 
+test('thỏa thuận lúc đăng ký (D-76): hiện ngay sau đăng nhập lần đầu, chưa Đồng ý thì không tạo gia đình; Đồng ý mới sang bước tạo gia đình', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('textbox', { name: 'Email của bạn' }).fill('test.gia@example.com');
+  await page.getByRole('button', { name: 'Gửi mã cho mình' }).click();
+  await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
+  await page.getByRole('button', { name: 'Xác nhận' }).click();
+  await expect(page.getByRole('heading', { name: 'Thỏa thuận sử dụng' }).last()).toBeVisible();
+  await expect(page.getByText(/Trong quá trình sử dụng dịch vụ, chúng tôi ghi lại thông tin liên quan đến trẻ/)).toBeVisible();
+  await expect(page.getByText('BẢN NHÁP, người soạn: AI, chờ luật sư duyệt')).toBeVisible();
+  // Chưa Đồng ý: không có bước tạo gia đình, không có thanh tab.
+  await expect(page.getByRole('heading', { name: 'Mình gọi bạn là gì?' })).toHaveCount(0);
+  await expect(page.getByRole('textbox', { name: 'Cách gọi bạn' })).toHaveCount(0);
+  await expect(page.getByRole('tab', { name: /Gia đình$/ })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Đồng ý', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Mình gọi bạn là gì?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Thỏa thuận sử dụng' })).toHaveCount(0);
+});
+
+test('thỏa thuận (D-76): không đồng ý thì không đi tiếp, chỉ đăng xuất về màn đăng nhập; đăng nhập lại vẫn bị hỏi', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('textbox', { name: 'Email của bạn' }).fill('test.gia@example.com');
+  await page.getByRole('button', { name: 'Gửi mã cho mình' }).click();
+  await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
+  await page.getByRole('button', { name: 'Xác nhận' }).click();
+  await expect(page.getByRole('heading', { name: 'Thỏa thuận sử dụng' }).last()).toBeVisible();
+  await page.getByRole('button', { name: 'Không đồng ý, đăng xuất' }).click();
+  await expect(page.getByRole('heading', { name: 'Chào bạn' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Mình gọi bạn là gì?' })).toHaveCount(0);
+  await page.getByRole('textbox', { name: 'Email của bạn' }).fill('test.gia@example.com');
+  await page.getByRole('button', { name: 'Gửi mã cho mình' }).click();
+  await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
+  await page.getByRole('button', { name: 'Xác nhận' }).click();
+  await expect(page.getByRole('heading', { name: 'Thỏa thuận sử dụng' }).last()).toBeVisible();
+});
+
 test('nhánh lỗi: thiếu tên gọi, thiếu lớp hoặc tuổi, chưa chọn máy riêng', async ({ page }) => {
   await dangNhap(page);
   await page.getByRole('button', { name: 'Tiếp tục' }).click();
@@ -133,6 +176,7 @@ async function giaDinhVoiGoi(page: Page, plan?: 'FREE' | 'TRIAL' | 'PREMIUM', qu
   await page.getByRole('button', { name: 'Gửi mã cho mình' }).click();
   await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
   await page.getByRole('button', { name: 'Xác nhận' }).click();
+  await dongYThoaThuan(page);
   await themCon(page);
   await page.getByRole('button', { name: 'Lưu' }).click();
   await page.getByRole('tab', { name: /Gia đình$/ }).click();
@@ -211,6 +255,7 @@ test('dùng thử (D-72): máy hoặc email đã dùng thử -> lời từ chố
   await page.getByRole('button', { name: 'Gửi mã cho mình' }).click();
   await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
   await page.getByRole('button', { name: 'Xác nhận' }).click();
+  await dongYThoaThuan(page);
   await themCon(page);
   await page.getByRole('button', { name: 'Lưu' }).click();
   await page.getByRole('tab', { name: /Gia đình$/ }).click();
