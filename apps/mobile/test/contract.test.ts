@@ -124,6 +124,8 @@ const reads: Read[] = [];
 async function driveApi(): Promise<Call[]> {
   const calls: Call[] = [];
   const canned: Record<string, unknown> = {
+    terms_status: { current_version: '2026-11-28-nhap', accepted: false },
+    terms_accept: { version: '2026-11-28-nhap', accepted: true, replay: false },
     family_create: { household_id: 'h', member_id: 'm', role: 'PRIMARY', call_name: 'x', replay: false },
     touch_active: { touched: true, last_active_at: 'x' },
     child_create: { child_id: 'c' },
@@ -173,6 +175,8 @@ async function driveApi(): Promise<Call[]> {
   };
   let t = 0;
   const api = createSupabaseApi(client as never, () => (t += 2 * 60 * 60_000));
+  await api.termsStatus();
+  await api.termsAccept('v');
   await api.familyCreate('x');
   await api.touchActive();
   await api.childCreate({ householdId: 'h', callName: 'x', grade: 1, hasDevice: true, idempotencyKey: 'k' });
@@ -219,7 +223,7 @@ async function driveApi(): Promise<Call[]> {
 }
 
 test('migration có đủ hàm RPC và phân tích được', () => {
-  for (const f of ['family_create', 'touch_active', 'child_create', 'pair_code_create', 'pair_confirm', 'pair_pending', 'pair_accept', 'pair_decline', 'pin_set', 'unlink_device', 'my_plan', 'trial_start', 'my_family_state']) {
+  for (const f of ['terms_status', 'terms_accept', 'family_create', 'touch_active', 'child_create', 'pair_code_create', 'pair_confirm', 'pair_pending', 'pair_accept', 'pair_decline', 'pin_set', 'unlink_device', 'my_plan', 'trial_start', 'my_family_state']) {
     assert.ok(fns.has(f), `migration thiếu app.${f}`);
   }
   assert.deepEqual(fns.get('pair_confirm')!.params, [
@@ -255,6 +259,8 @@ test('mọi hàm được gọi bằng chuỗi rpc(...) trong api.ts đều đã
 
 test('trường kết quả mà client đọc có trong jsonb_build_object của hàm', () => {
   const reads: Record<string, string[]> = {
+    terms_status: ['current_version', 'accepted'],
+    terms_accept: ['version', 'replay'],
     family_create: ['household_id', 'replay'],
     touch_active: ['touched'],
     child_create: ['child_id'],
@@ -322,6 +328,16 @@ test('PLAN_REQUIRED (D-68): app.fail trả PT402; my_plan không tham số; pair
   assert.match(fns.get('schedule_plan_check')!.body, /plan_check_schedule/);
   // Mã quy tắc mà plan.ts nhận diện phải do máy chủ thật sự phát ra (private.plan_*).
   for (const rule of Object.values(PLAN_RULES)) assert.ok(sql.includes(`'${rule}'`), `migration không phát quy tắc ${rule}`);
+});
+
+test('D-76: terms_accept nhận p_version; app.fail trả PT428 cho TERMS_REQUIRED; family_create kiểm điều khoản bằng mã quy tắc D-76; terms_status/accept chặn máy con', () => {
+  assert.deepEqual(fns.get('terms_accept')!.params, [{ name: 'p_version', hasDefault: false }]);
+  assert.deepEqual(fns.get('terms_status')!.params, []);
+  assert.match(sql, /when 'TERMS_REQUIRED'\s+then 'PT428'/);
+  assert.match(fns.get('family_create')!.body, /app\.fail\('TERMS_REQUIRED',\s*'D-76'/);
+  assert.match(fns.get('terms_accept')!.body, /app\.fail\('VALIDATION',\s*'D-76\.version'/);
+  assert.match(fns.get('terms_accept')!.body, /is_anonymous_caller/);
+  assert.match(fns.get('terms_status')!.body, /is_anonymous_caller/);
 });
 
 test('D-72: trial_start nhận đúng một băm 64 hex; TRIAL_USED là PT409; máy chủ phát đúng các quy tắc app dựa vào; my_family_state có plan_active', () => {

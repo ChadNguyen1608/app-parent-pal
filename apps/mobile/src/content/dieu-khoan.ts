@@ -11,6 +11,14 @@ export const GHI_CHU_TUYEN_BO = 'Câu chữ chờ duyệt.';
 
 export const DIEU_KHOAN_NHAN_DE = 'Điều khoản sử dụng (bản nháp, chờ luật sư duyệt)';
 
+// Màn thỏa thuận lúc đăng ký (D-76). CÂU CHỮ TẠM, chờ chủ sản phẩm và luật sư duyệt.
+export const THOA_THUAN_TIEU_DE = 'Thỏa thuận sử dụng';
+export const THOA_THUAN_MO_DAU = 'Trước khi tạo gia đình, bạn đọc kỹ phần dưới và bấm "Đồng ý" nếu bạn đồng ý.';
+export const THOA_THUAN_DOI_PHIEN_BAN = 'Điều khoản vừa được cập nhật. Bạn đọc bản mới và bấm "Đồng ý" để tiếp tục.';
+export const THOA_THUAN_NUT_DONG_Y = 'Đồng ý';
+export const THOA_THUAN_NUT_KHONG_DONG_Y = 'Không đồng ý, đăng xuất';
+export const THOA_THUAN_GHI_CHU_KHONG_DONG_Y = 'Nếu bạn không đồng ý thì chưa dùng được app. Bạn có thể đăng xuất.';
+
 export type DieuKhoan = { so: number; tieuDe: string; noiDung: string };
 
 export const DIEU_KHOAN: readonly DieuKhoan[] = [

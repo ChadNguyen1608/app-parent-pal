@@ -7,7 +7,7 @@ import { effectiveCodes } from '../src/data/consent.ts';
 import { ApiError, toApiError } from '../src/data/errors.ts';
 import { MOCK_ALERT_MAX_PER_HOUR, MOCK_PURPOSES, createMockApi, type MockApi } from '../src/data/mock.ts';
 
-const fast = { latencyMs: 0 };
+const fast = { latencyMs: 0, termsAccepted: true };   // D-76: đã đồng ý Điều khoản để familyCreate chạy
 
 async function rejects(p: Promise<unknown>, code: string) {
   await assert.rejects(p, (e: unknown) => {

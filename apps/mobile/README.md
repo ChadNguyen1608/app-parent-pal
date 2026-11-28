@@ -10,7 +10,7 @@ Cài bằng APK nội bộ, người thử tự tải (D-48); không đưa APK v
 | Tên app | Parent-Pal Phụ huynh | Parent-Pal Con |
 | applicationId (đã chốt D-51) | `vn.parentbestpal.parent` | `vn.parentbestpal.child` |
 | Tab | Lịch tuần, Lên kế hoạch, Tuần qua, Gia đình | Hôm nay, Tuần của con, Của con |
-| Thanh trên | (chưa có) | nút "Con cần giúp đỡ" mở màn lời tĩnh + gọi 111, không gửi tin (D-43) |
+| Thanh trên | (chưa có) | (không có nút "Con cần giúp đỡ" từ D-75; mọi vấn đề của con đi qua "Báo bố mẹ ngay") |
 
 Các tab chính vẫn là màn giữ chỗ (trừ "Gia đình" của parent và "Của con" của child, đã có lối vào ghép máy và cài đặt; xem T1.7 bên dưới). Chọn biến thể nằm ở `app.config.ts`; code đọc qua `src/variant.ts`. Nhóm route `src/app/(parent)` và `src/app/(child)`: biến thể nào chỉ vào nhóm của mình.
 
@@ -57,7 +57,6 @@ Thông báo đẩy (FCM) cần `google-services.json` của Firebase. Chỉ nạ
 - Chưa build APK thật, chưa chạy trên máy thật (không có Android SDK/EAS ở môi trường này).
 - `expo-doctor` không chạy hết được vì chặn mạng tới exp.host (18/20 kiểm tra đạt, 2 kiểm tra cần mạng).
 - applicationId, tên app, icon: tạm, chờ chủ sản phẩm chốt. Chưa có `extra.eas.projectId` (cần tài khoản Expo).
-- Câu chữ màn "Con cần giúp đỡ" là giữ chỗ; câu thật lấy từ `packages/content` sau khi duyệt.
 - Module báo thức native (AlarmManager.setAlarmClock) làm ở T3.x; hiện nhắc dùng `expo-notifications`.
 - Chưa có `src/features`, `src/data`, `src/notifications` (các task sau).
 - Kiểu `Block`/`Plan` sẽ chuyển sang `packages/domain` khi kiểu chung được chốt.
@@ -74,7 +73,7 @@ Màn theo IA 06.1 (§3.6, §4.6, §6): PA-01, PA-04 rút gọn, PA-13, PA-14, PA
 | child | CA-01 "Lấy mã" (đăng nhập ẩn danh) → CA-02 mã cỡ lớn, thăm dò `pair_accept` mỗi 4 giây hoặc nút "Bố mẹ đã nhập" → CA-03 → CA-16 → khung chính | `(child)/chao.tsx`, `ma-ghep.tsx`, `ghep-xong.tsx`, `bo-me-thay.tsx` |
 | child | Của con → Cài đặt (CA-11) → Hủy kết nối → Nhập PIN (CA-12) → `unlink_device` → về CA-01 | `(child)/cai-dat.tsx`, `nhap-pin.tsx` |
 
-Cổng màn hình: `(parent)/_layout.tsx` và `(child)/_layout.tsx` dùng `Stack.Protected` theo giai đoạn trong `src/state/app.tsx` (phụ huynh: loading, out, needHome, ready; máy con: loading, unpaired, justPaired, intro, ready). Nút "Con cần giúp đỡ" (lời tĩnh + 111, không gửi tin, D-43) hiện ở thanh trên mọi màn của child, kể cả khi chưa ghép. Cảnh báo hiện ngay trong màn (`Notice`), không popup. Nút cao tối thiểu 48.
+Cổng màn hình: `(parent)/_layout.tsx` và `(child)/_layout.tsx` dùng `Stack.Protected` theo giai đoạn trong `src/state/app.tsx` (phụ huynh: loading, out, needHome, ready; máy con: loading, unpaired, justPaired, intro, ready). Máy con không có nút "Con cần giúp đỡ" (D-75). Cảnh báo hiện ngay trong màn (`Notice`), không popup. Nút cao tối thiểu 48.
 
 ### Cấu hình môi trường
 
@@ -142,7 +141,7 @@ Khớp migration `20261115140000` (T1.2), `150000` (T1.5), `160000` (T1.6) và `
 - **Ghép máy theo khóa (D-74)**: tab Gia đình hiện "Khóa ghép máy: đã dùng X/Y" (`plan.deviceKeysUsed`/`deviceKeys`). Dùng thử có 1 khóa, Premium theo số chủ sản phẩm đặt, FREE 0. Chưa có gói thì nút thành "Ghép máy của con (cần gói)"; hết khóa thì "Ghép máy của con (hết khóa)"; cả hai dẫn tới màn `can-goi` (`D-68.premium`: cần gói, mời dùng thử nếu còn; `D-74.keys`: hết khóa, nói cách xử lý). Màn ghép máy cũng tự giải thích nếu vào thẳng. Máy chủ báo `PLAN_REQUIRED` hoặc `DEVICE_KEY_LIMIT` (HTTP 402) thì màn hiện giải thích, không hiện lỗi đỏ. Con đang có yêu cầu chờ không bị tính khóa của chính nó (ghép lại được).
 - Bản giả lập (`mock.ts`): gói mặc định TRIAL (1 khóa ghép máy, như máy chủ). Chọn gói: `createMockApi({ plan, deviceKeys })`, hoặc `?plan=FREE|TRIAL|PREMIUM` và `?keys=N` (khóa của PREMIUM, mặc định 1) trên URL bản web (E2E).
 - **Dùng thử (D-72)**: màn `can-goi` có nút "Dùng thử N ngày" khi `plan.trialAvailable` (gói FREE chưa từng dùng thử) và lý do không phải ghép máy hay hết lượt sửa; bấm gọi `trialStart()` (RPC `trial_start`), thành công thì nạp lại gói và quay lại. `TRIAL_USED` (409) hiện lời tiếng Việt của máy chủ. Mã máy gửi lên là `sha256(androidId + muối)` (`src/data/device-hash.ts`, SHA-256 thuần TS có test so với `node:crypto`); `expo-application` `getAndroidId()` chỉ đọc ở `src/data/index.ts` (Android; web/mock dùng giá trị giả). App không gửi Android ID thô (có test).
-- **Máy con (D-72, D-74)**: `myFamilyState()` (RPC `my_family_state`) hỏi lúc vào và mỗi lần app trở lại nền trước; `useApp().childPlanActive` mặc định true, chỉ false khi máy chủ báo `plan_active = false` (hộ hết dùng thử/hạ gói, hoặc máy này vượt số khóa ghép máy; theo từng máy) (lỗi mạng giữ trạng thái cũ). False thì `(child)/_layout.tsx` đóng nhóm `(tabs)` và mở `tam-dung.tsx` (CA-18, "Tạm dừng, chờ bố mẹ cập nhật"; nút Con cần giúp đỡ vẫn ở thanh trên). Chưa có thông báo đẩy `goi_doi` (T3.5). `tam-dung.tsx` cũng là màn CA-18 của gia đình đóng băng (câu wireframe, có nút "Xem lịch đã có"); `state/app.tsx` đọc cả `frozen` (`paused`) và `planActive` từ một lần gọi `myFamilyState()`.
+- **Máy con (D-72, D-74)**: `myFamilyState()` (RPC `my_family_state`) hỏi lúc vào và mỗi lần app trở lại nền trước; `useApp().childPlanActive` mặc định true, chỉ false khi máy chủ báo `plan_active = false` (hộ hết dùng thử/hạ gói, hoặc máy này vượt số khóa ghép máy; theo từng máy) (lỗi mạng giữ trạng thái cũ). False thì `(child)/_layout.tsx` đóng nhóm `(tabs)` và mở `tam-dung.tsx` (CA-18, "Tạm dừng, chờ bố mẹ cập nhật"). Chưa có thông báo đẩy `goi_doi` (T3.5). `tam-dung.tsx` cũng là màn CA-18 của gia đình đóng băng (câu wireframe, có nút "Xem lịch đã có"); `state/app.tsx` đọc cả `frozen` (`paused`) và `planActive` từ một lần gọi `myFamilyState()`.
 - Bản giả lập: `?trial=used` trên URL (hoặc `trialClaimed`) giả lập máy/email đã dùng thử.
 - Câu chữ ở `plan.ts`, `PlanRequired.tsx`, `tam-dung.tsx` là TẠM, chờ chủ sản phẩm duyệt. Chưa có thanh toán trong app (màn nói "báo người phụ trách Parent-Pal để đổi gói").
 
@@ -174,6 +173,7 @@ Màn hình bám các RPC trên `main` (migration `20261116110000..170000`); `tes
 | Màn | Việc | RPC / bảng |
 |---|---|---|
 | ~~PA-02 `dong-y`~~ (bỏ, D-73) | Không còn màn đồng ý và cổng `needConsent`. Máy chủ ghi đồng ý mặc định ngay trong `child_create` (migration T2.9, `basis = 'MAC_DINH_D73'`): MD-LICH, MD-SUCKHOE, MD-CONBAO cùng giao dịch với dòng con, nên không có trạng thái "con có mà chưa đồng ý" do app tắt giữa chừng. App không gọi `consent_record` khi tạo con. Mock phản chiếu (`defaultConsent: false` để test nhánh chưa đồng ý) | `child_create` |
+| `thoa-thuan` (D-76) | Màn thỏa thuận ngay sau đăng nhập lần đầu (cổng `needTerms`): tuyên bố quyền lưu dữ liệu như PA-32, khung cuộn Điều khoản (`DieuKhoanBox`), nút "Đồng ý" (ghi `terms_accept` rồi mở bước tạo gia đình) và lối "Không đồng ý, đăng xuất". Hỏi lại một lần khi Điều khoản đổi phiên bản (cả người đã có hộ; hộ đóng băng hoặc chờ xóa không bị chặn). Không nạp được `terms_status` (mạng) thì không chặn ở máy khách, máy chủ vẫn chặn `family_create` bằng `TERMS_REQUIRED` (HTTP 428). Câu chữ tạm trong `src/content/dieu-khoan.ts` |
 | PA-32 `quyen-rieng-tu` (D-73) | Đoạn tuyên bố quyền riêng tư chung cho mọi con (nguyên văn D-73, ghi chú "Câu chữ chờ duyệt."), nút "Đồng ý" (quay lại, không ghi máy chủ), khung cuộn "Điều khoản sử dụng" bản nháp AI (`src/content/dieu-khoan.ts`, chờ luật sư) | không gọi máy chủ |
 | `cai-dat-du-lieu` (D-73, từ tab Gia đình) | Mỗi con: công tắc lưu sức khỏe (MD-SUCKHOE), cho con báo bố mẹ ngay (MD-CONBAO) (tắt có xác nhận: dữ liệu cũ ẩn ngay, không hiện lại), trò chuyện AI trên máy con (`ai_chat_enabled`, chuẩn bị, mặc định tắt); nút xóa dữ liệu một con hoặc cả gia đình (sang PA-35/36 hai bước) | `consent_record`, `child_setting_get/set`; sang PA-35/36 |
 | PA-35/36 `xoa` | Một con: `consent_withdraw_all` hai bước (mã xác nhận); cả gia đình: `deletion_request('GIA_DINH')` | rút luôn được kể cả hộ đóng băng |

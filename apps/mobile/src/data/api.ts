@@ -280,6 +280,18 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       return { householdId, memberCallName, role, householdState, children, openDeletions };
     },
 
+    async termsStatus() {
+      const o = asObj(await rpc('terms_status', undefined));
+      const currentVersion = asStr(o.current_version);
+      if (!currentVersion) throw toApiError(new Error('terms_status: thiếu current_version'));
+      return { currentVersion, accepted: o.accepted === true };
+    },
+
+    async termsAccept(version) {
+      const o = asObj(await rpc('terms_accept', { p_version: version }));
+      return { version: asStr(o.version) ?? version, replay: o.replay === true };
+    },
+
     async familyCreate(callName) {
       const o = asObj(await rpc('family_create', { p_call_name: callName.trim() }));
       const householdId = asStr(o.household_id);

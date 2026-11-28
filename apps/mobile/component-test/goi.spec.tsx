@@ -183,7 +183,7 @@ describe('Dùng thử trên màn "Cần gói" (D-72)', () => {
   });
 
   it('máy hoặc email đã dùng thử (TRIAL_USED): hiện lời tiếng Việt của máy chủ, không quay lại, không đổi gói', async () => {
-    const api = createMockApi({ latencyMs: 0, plan: 'FREE', trialClaimed: true });
+    const api = createMockApi({ latencyMs: 0, termsAccepted: true, plan: 'FREE', trialClaimed: true });
     await api.auth.sendEmailOtp('test.gia@example.com');
     await api.auth.verifyEmailOtp('test.gia@example.com', '123456');
     await api.familyCreate('chị Lan');
@@ -196,7 +196,7 @@ describe('Dùng thử trên màn "Cần gói" (D-72)', () => {
   });
 
   it('FREE chưa dùng thử bị chặn ghép máy: lời giải thích có mời dùng thử và nói ghép được 1 máy (D-74)', async () => {
-    const free = createMockApi({ latencyMs: 0, plan: 'FREE' });
+    const free = createMockApi({ latencyMs: 0, termsAccepted: true, plan: 'FREE' });
     await free.auth.sendEmailOtp('a@b.vn');
     await free.auth.verifyEmailOtp('a@b.vn', '123456');
     mockParams = { rule: 'D-68.premium' };
@@ -207,7 +207,7 @@ describe('Dùng thử trên màn "Cần gói" (D-72)', () => {
   });
 
   it('không mời dùng thử khi: lý do là hết khóa hay hết lượt sửa, gói không phải FREE, hộ đã dùng thử, hoặc chưa biết gói', async () => {
-    const free = createMockApi({ latencyMs: 0, plan: 'FREE' });
+    const free = createMockApi({ latencyMs: 0, termsAccepted: true, plan: 'FREE' });
     await free.auth.sendEmailOtp('a@b.vn');
     await free.auth.verifyEmailOtp('a@b.vn', '123456');
     const freePlan = await free.myPlan();

@@ -7,7 +7,7 @@ import type { Api, Home, PlanTier } from '../src/data/types';
  * Mặc định defaultConsent=false: con chưa có đồng ý nào, test tự ghi (như trước D-73). Truyền true để giống máy chủ sau D-73 (đã có ba đồng ý).
  */
 export async function parentWithChild(opts: { plan?: PlanTier; defaultConsent?: boolean } = {}): Promise<{ api: Api; home: Home }> {
-  const api = createMockApi({ latencyMs: 0, plan: opts.plan ?? 'PREMIUM', defaultConsent: opts.defaultConsent ?? false });
+  const api = createMockApi({ latencyMs: 0, termsAccepted: true, plan: opts.plan ?? 'PREMIUM', defaultConsent: opts.defaultConsent ?? false });
   await api.auth.sendEmailOtp('test.gia@example.com');
   await api.auth.verifyEmailOtp('test.gia@example.com', '123456');
   const { householdId } = await api.familyCreate('chị Lan');
