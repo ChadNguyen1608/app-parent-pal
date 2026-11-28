@@ -211,6 +211,8 @@ describe('LC-FROZEN: hộ đóng băng - mọi hàm ghi trả FROZEN trừ danh 
     child_setting_get: ['chỉ đọc', (s) => assert.equal(J(run(QL, `select app.child_setting_get('${NA}')`, s)).ai_chat_enabled, false)],
     my_plan: ['chỉ đọc gói dịch vụ (D-68)', (s) => assert.equal(J(run(QL, `select app.my_plan()`, s)).tier, 'PREMIUM')],
     my_family_state: ['máy con biết hộ đóng băng (D-41)', (s) => assert.equal(J(run(DEV_NA, `select app.my_family_state()`, s)).frozen, true)],
+    terms_status: ['chỉ đọc trạng thái đồng ý điều khoản (D-76)', (s) => assert.equal(J(run(QL, `select app.terms_status()`, s)).accepted, false)],
+    terms_accept: ['đồng ý điều khoản là của người dùng, không phải dữ liệu của hộ (D-76)', (s) => assert.equal(J(run(QL, `select app.terms_accept('2026-11-28-nhap')`, s)).accepted, true)],
     member_invite: ['tính năng tắt', (s) => rejected(run(QL, `select app.member_invite('SUPPORTER')`, s), 'FEATURE_OFF', 'PT403')],
   };
 
