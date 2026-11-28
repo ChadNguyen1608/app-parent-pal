@@ -215,7 +215,9 @@ test('dùng thử (D-72): máy hoặc email đã dùng thử -> lời từ chố
   await page.getByRole('button', { name: 'Lưu' }).click();
   await page.getByRole('tab', { name: /Gia đình$/ }).click();
   await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).click();
-  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).click();
+  // Tab Gia đình vẫn nằm trong DOM (ẩn) khi màn Cần gói mở: chỉ bấm nút đang hiện.
+  await expect(page.getByRole('heading', { name: 'Cần gói dùng thử hoặc Premium' })).toBeVisible();
+  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).filter({ visible: true }).click();
   await expect(page.getByText('Máy này hoặc email này đã dùng thử rồi.')).toBeVisible();
   await page.getByRole('button', { name: 'Quay lại' }).click();
   await expect(page.getByText('Gói: Miễn phí')).toBeVisible();
