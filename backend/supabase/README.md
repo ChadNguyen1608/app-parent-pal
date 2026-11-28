@@ -450,6 +450,26 @@ Migration `20261119150000_d72_goi_chi_tiet.sql` (sửa D-68 ở trên). Người
 6. `D-68.trial_plan` không còn được phát (mỗi con tối đa 1 kế hoạch theo cấu trúc: kế hoạch đầu là lần commit đầu).
 7. Khi nhiều người lớn dùng cùng một máy hoặc cùng một Android ID sau khôi phục cài đặt: Android ID đổi khi xóa dữ liệu/khôi phục gốc; coi là chấp nhận được ở giai đoạn test.
 
+## D-74: dùng thử 7 ngày và khóa ghép máy (28/11/2026)
+
+Migration `20261128100000_d74_dung_thu_khoa_ghep_may.sql` (sửa D-68, D-72). Người soạn: AI, chưa kiểm chứng độc lập. Quyết định gốc: `app-design-document/progress/Owner_Decision_Log_20261115.md` (D-74). Đã có sẵn từ D-72 và không đổi: đã dùng thử thì không dùng thử lại (`trial_claims`, `had_premium`).
+
+- **Khóa**: `household_plans.device_keys` (int, mặc định 1, 0..50) là số khóa của PREMIUM, chủ sản phẩm đặt qua `app.plan_set(..., p_device_keys)` (null = giữ nguyên). TRIAL luôn dùng tham số `trial_device_keys` = 1 (DA_CHOT), FREE = 0. `trial_days` = 7 chuyển sang DA_CHOT.
+- **Đã dùng** (`private.device_keys_used`): liên kết `HIEU_LUC` + yêu cầu `CHO_XAC_NHAN_MAY_CON` còn trong `pair_accept_window_minutes` của các con chưa ẩn. `CHO_XAC_MINH` không tính (không có đường lên HIEU_LUC).
+- **`pair_confirm`, `pair_accept`** gọi `private.device_key_require` (khóa hàng hộ): FREE thì `PLAN_REQUIRED` (`D-68.premium`, lời đổi thành "cần gói dùng thử hoặc Premium"); hết khóa thì **`DEVICE_KEY_LIMIT`** (HTTP 402, PT402, quy tắc `D-74.keys`, lời tiếng Việt nêu số khóa). `pair_confirm` không tính liên kết/yêu cầu của chính con đang ghép; `pair_accept` không tính chính yêu cầu đang xác nhận. `private.plan_require_premium` đã bỏ.
+- **Máy con hoạt động** (`private.binding_in_plan`): hộ đang TRIAL/PREMIUM còn hạn và số máy `HIEU_LUC` ghép trước máy này (theo `paired_at`, `id`) < số khóa hiệu lực. Dùng chung cho `my_family_state().plan_active` (theo TỪNG máy) và outbox `lich_moi` (`schedule_commit_apply`). Hết hạn/hạ gói: mọi máy tạm dừng, giữ liên kết. Giảm khóa dưới số máy đang ghép: KHÔNG tự hủy; máy ghép sau cùng tạm dừng.
+- **`goi_doi`**: ghi cho các máy `HIEU_LUC` của hộ khi "gói đang hoạt động" (TRIAL/PREMIUM còn hạn) đổi, kể cả FREE <-> TRIAL, hoặc số khóa hiệu lực đổi. TRIAL hết hạn theo thời gian: `job_plan_expiry` ghi `goi_doi` cùng lúc ghi `plan.expired`.
+- **`my_plan`** thêm `device_keys` (hiệu lực) và `device_keys_used`. Edge Function: `DEVICE_KEY_LIMIT` -> 402 (`_shared/api.ts`).
+- Seed: hai hộ PREMIUM đặt 5 khóa để các test ghép máy cũ chạy được.
+- Test: `PLAN-PAIR-01..06`, `PLAN-SYNC-01..02`, `PLAN-ACTIVE-01..03`, `PLAN-NOTIFY-01..04`, `PLAN-EXP-04`, `PLAN-KEY-01..03` (`plan.test.mjs`); đột biến `m210`..`m227` (và `m91`, `m114`, `m135`..`m137`, `m180`, `m181`, `m183` đã sửa theo hàm mới; `m181` đổi thành `m181-plan-active-bo-so-khoa`).
+
+### Quyết định mặc định D-74 (CHỜ CHỦ SẢN PHẨM DUYỆT)
+
+1. Giảm `device_keys`: máy ghép sau cùng tạm dừng, chưa có màn cho bố mẹ chọn máy nào giữ.
+2. Số khóa tối đa 50; `CHO_XAC_MINH` không giữ khóa; yêu cầu chờ quá 5 phút nhả khóa.
+3. Khóa tính theo hộ (không chia theo con); `plan_set` không ghi audit riêng cho đổi số khóa (chỉ `plan.changed` khi đổi gói).
+4. Hết hạn TRIAL theo thời gian: máy con biết qua `my_family_state` (lúc vào app/trở lại nền trước) và `goi_doi` do job ngày ghi.
+
 ## T2.9: đồng ý mặc định khi tạo con (D-73)
 
 Migration `20261119300000_t2_9_dong_y_mac_dinh_d73.sql`: `app.consent_events` thêm cột `basis` (`NGUOI_DUNG` mặc định; `MAC_DINH_D73`). `app.child_create` (tạo lại bằng `create or replace`, chữ ký không đổi) ghi cùng giao dịch ba sự kiện DONG_Y cho MD-LICH, MD-SUCKHOE, MD-CONBAO (người ghi là QL đang gọi, bản chính sách mới nhất đang hiệu lực, bỏ qua mục `collect_enabled = false`). Gọi lặp cùng khóa trả sớm nên không ghi đôi. Chưa có bản chính sách hiệu lực thì không ghi (fail-closed). Tắt sau vẫn là `consent_record` RUT (basis `NGUOI_DUNG`); rút mục lõi vẫn là rút toàn bộ. `family_create` chưa có con nên không ghi gì. Test: CON-D73a..d (`consent.test.mjs`), CON-01c; đột biến m200..m202.

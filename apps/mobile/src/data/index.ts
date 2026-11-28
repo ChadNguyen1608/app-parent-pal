@@ -20,11 +20,14 @@ export function backendKind(): BackendKind {
 export function getApi(): Api | null {
   if (instance) return instance;
   if (BACKEND === 'mock') {
-    // Bản web thử (E2E): ?plan=FREE|TRIAL|PREMIUM chọn gói giả lập (không có thì mặc định TRIAL); ?trial=used giả lập máy/email đã dùng thử. Chỉ bản mock đọc tham số này.
+    // Bản web thử (E2E): ?plan=FREE|TRIAL|PREMIUM chọn gói giả lập (không có thì mặc định TRIAL); ?keys=N số khóa ghép máy của PREMIUM; ?trial=used giả lập máy/email đã dùng thử. Chỉ bản mock đọc tham số này.
     const q = typeof globalThis.location?.search === 'string' ? new URLSearchParams(globalThis.location.search).get('plan') : null;
     const used = typeof globalThis.location?.search === 'string' && new URLSearchParams(globalThis.location.search).get('trial') === 'used';
+    // ?keys=N: số khóa ghép máy của gói PREMIUM (D-74; mặc định 1).
+    const keysQ = typeof globalThis.location?.search === 'string' ? Number(new URLSearchParams(globalThis.location.search).get('keys')) : NaN;
+    const keys = Number.isInteger(keysQ) && keysQ >= 0 && keysQ <= 50 && typeof globalThis.location?.search === 'string' && new URLSearchParams(globalThis.location.search).has('keys') ? keysQ : null;
     // demoAlert: báo mẫu để thử màn của bố mẹ (hai app giả lập không thấy nhau)
-    instance = createMockApi({ demoAlert: true, ...(isPlanTier(q) ? { plan: q } : {}), ...(used ? { trialClaimed: true } : {}) });
+    instance = createMockApi({ demoAlert: true, ...(isPlanTier(q) ? { plan: q } : {}), ...(used ? { trialClaimed: true } : {}), ...(keys !== null ? { deviceKeys: keys } : {}) });
   } else if (BACKEND === 'supabase') {
     const client = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth: {

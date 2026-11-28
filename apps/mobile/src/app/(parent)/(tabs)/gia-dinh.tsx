@@ -2,7 +2,7 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { PLAN_RULES, canPair, childPlanLine, planLines, tierLabel } from '@/data/plan';
+import { PLAN_RULES, childPlanLine, deviceKeysLine, pairLockRule, planLines, tierLabel } from '@/data/plan';
 import type { Child } from '@/data/types';
 import { useApp } from '@/state/app';
 import { Btn, H1, P, Screen } from '@/ui/kit';
@@ -32,8 +32,8 @@ export default function GiaDinh() {
     }, [api, refreshHome, refreshPlan]),
   );
   const alertsOn = (home?.children ?? []).some((c) => c.alertConsent);
-  // Gói chưa biết (plan null) thì không khóa: máy chủ vẫn chặn nếu thiếu gói. Biết là hết khóa ghép máy thì khóa và giải thích.
-  const pairLocked = plan !== null && !canPair(plan);
+  // Gói chưa biết (plan null) thì không khóa: máy chủ vẫn chặn nếu thiếu gói. Biết là chưa có gói hoặc hết khóa ghép máy thì khóa và giải thích (D-74).
+  const lockRule = (c: Child): string | null => (plan === null ? null : pairLockRule(plan, c.pairState === 'PENDING'));
   return (
     <Screen>
       <H1>Gia đình</H1>
@@ -45,6 +45,7 @@ export default function GiaDinh() {
               {line}
             </P>
           ))}
+          <P muted>{deviceKeysLine(plan)}</P>
           {plan.tier === 'FREE' && plan.trialAvailable ? (
             <Btn label={`Dùng thử ${plan.trialDays} ngày`} kind="secondary" onPress={() => router.push({ pathname: '/(parent)/can-goi', params: { rule: PLAN_RULES.free } })} />
           ) : null}
@@ -61,8 +62,12 @@ export default function GiaDinh() {
           {childPlanLine(plan, c.id) ? <P muted>{childPlanLine(plan, c.id)}</P> : null}
           <Btn label={`Sức khỏe của ${c.callName}`} kind="secondary" onPress={() => router.push({ pathname: '/(parent)/suc-khoe', params: { childId: c.id } })} />
           {c.hasDevice && c.pairState !== 'PAIRED' ? (
-            pairLocked ? (
-              <Btn label="Ghép máy của con (cần Premium)" kind="secondary" onPress={() => router.push({ pathname: '/(parent)/can-goi', params: { rule: PLAN_RULES.premium } })} />
+            lockRule(c) !== null ? (
+              <Btn
+                label={lockRule(c) === PLAN_RULES.keys ? 'Ghép máy của con (hết khóa)' : 'Ghép máy của con (cần gói)'}
+                kind="secondary"
+                onPress={() => router.push({ pathname: '/(parent)/can-goi', params: { rule: lockRule(c) ?? PLAN_RULES.premium } })}
+              />
             ) : (
               <Btn label="Ghép máy của con" kind="secondary" onPress={() => router.push({ pathname: '/(parent)/ghep-may', params: { childId: c.id } })} />
             )

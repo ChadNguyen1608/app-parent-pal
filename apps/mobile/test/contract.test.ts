@@ -134,7 +134,7 @@ async function driveApi(): Promise<Call[]> {
     pair_accept: { ok: true, replay: false, binding_id: 'b', child_id: 'c', epoch: 2 },
     pair_decline: { ok: true, declined: true },
     unlink_device: { ok: true, unlinked: true, replay: false, epoch: 3 },
-    my_plan: { ok: true, tier: 'TRIAL', expired: false, plans_max: 1, edits_max: 3, children: [{ child_id: 'c', plans_used: 0, edits_used: 0, edits_left: 3 }], pal_questions_left: null, trial_ends_at: null, trial_available: false, trial_days: 7 },
+    my_plan: { ok: true, tier: 'TRIAL', expired: false, plans_max: 1, edits_max: 3, children: [{ child_id: 'c', plans_used: 0, edits_used: 0, edits_left: 3 }], pal_questions_left: null, trial_ends_at: null, trial_available: false, trial_days: 7, device_keys: 1, device_keys_used: 0 },
     trial_start: { ok: true, tier: 'TRIAL', trial_ends_at: 'x' },
     my_family_state: { ok: true, state: 'HOAT_DONG', frozen: false, plan_active: true },
     consent_record: { ok: true, changed: true, replay: false, effective: true },
@@ -265,7 +265,7 @@ test('trường kết quả mà client đọc có trong jsonb_build_object của
     pair_accept: ['ok', 'child_id', 'epoch'],
     pair_decline: ['ok'],
     unlink_device: ['ok'],
-    my_plan: ['ok', 'tier', 'expired', 'plans_max', 'edits_max', 'children', 'child_id', 'plans_used', 'edits_used', 'edits_left', 'pal_questions_left', 'trial_ends_at', 'trial_available', 'trial_days'],
+    my_plan: ['ok', 'tier', 'expired', 'plans_max', 'edits_max', 'children', 'child_id', 'plans_used', 'edits_used', 'edits_left', 'pal_questions_left', 'trial_ends_at', 'trial_available', 'trial_days', 'device_keys', 'device_keys_used'],
     trial_start: ['ok', 'trial_ends_at'],
     my_family_state: ['ok', 'frozen', 'plan_active'],
   };
@@ -312,11 +312,11 @@ test('unlink_device: máy con phải gửi epoch, epoch sai là CONFLICT_REV', (
   assert.match(body, /app\.fail\('CONFLICT_REV'/);
 });
 
-test('PLAN_REQUIRED (D-68): app.fail trả PT402; my_plan không tham số; pair_confirm/pair_accept/profile_save/commit gọi kiểm gói với đúng mã quy tắc', () => {
+test('PLAN_REQUIRED (D-68): app.fail trả PT402; my_plan không tham số; pair_confirm/pair_accept kiểm khóa ghép máy (D-74); profile_save/commit gọi kiểm gói với đúng mã quy tắc', () => {
   assert.match(sql, /when 'PLAN_REQUIRED'\s+then 'PT402'/);
   assert.deepEqual(fns.get('my_plan')!.params, []);
-  assert.match(fns.get('pair_confirm')!.body, /plan_require_premium/);
-  assert.match(fns.get('pair_accept')!.body, /plan_require_premium/);
+  assert.match(fns.get('pair_confirm')!.body, /device_key_require/);
+  assert.match(fns.get('pair_accept')!.body, /device_key_require/);
   assert.doesNotMatch(fns.get('profile_save')!.body, /plan_check_schedule/, 'D-72: lưu hồ sơ không xét gói (FREE nhập được)');
   assert.match(fns.get('schedule_commit_apply')!.body, /plan_check_schedule/);
   assert.match(fns.get('schedule_plan_check')!.body, /plan_check_schedule/);
@@ -333,6 +333,18 @@ test('D-72: trial_start nhận đúng một băm 64 hex; TRIAL_USED là PT409; m
   assert.deepEqual(fns.get('schedule_plan_check')!.params, [{ name: 'p_profile', hasDefault: false }]);
   assert.match(fns.get('my_family_state')!.body, /'plan_active'/);
   assert.ok(granted.has('trial_start') && granted.has('schedule_plan_check') && granted.has('my_family_state'));
+});
+
+test('D-74: DEVICE_KEY_LIMIT là PT402 (HTTP 402) với quy tắc app dựa vào; my_family_state tính plan_active theo từng máy; plan_set có p_device_keys', () => {
+  assert.match(sql, /when 'DEVICE_KEY_LIMIT'\s+then 'PT402'/);
+  const dk = sql.match(/function private\.device_key_require[\s\S]*?\nend \$\$;/)?.[0] ?? '';
+  assert.match(dk, /app\.fail\('DEVICE_KEY_LIMIT',\s*'D-74\.keys'/);
+  assert.match(dk, /app\.fail\('PLAN_REQUIRED',\s*'D-68\.premium'/);
+  assert.match(fns.get('my_family_state')!.body, /binding_in_plan/);
+  assert.deepEqual(fns.get('plan_set')!.params.map((p) => p.name), ['p_household', 'p_tier', 'p_trial_ends_at', 'p_note', 'p_set_by', 'p_device_keys']);
+  assert.match(fns.get('schedule_commit_apply')!.body, /binding_in_plan/);
+  for (const rule of Object.values(PLAN_RULES)) assert.ok(sql.includes(`'${rule}'`), `migration không phát quy tắc ${rule}`);
+});
 
 test('migration có hàm đồng ý, rút toàn bộ, mở lại, xóa, xuất với đúng tham số', () => {
   assert.deepEqual(fns.get('consent_record')!.params.map((p) => p.name), ['p_child', 'p_purpose_code', 'p_event', 'p_policy_version_id', 'p_paper_ref', 'p_idempotency_key', 'p_for_self']);

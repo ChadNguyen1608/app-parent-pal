@@ -8,6 +8,7 @@
 export type ApiErrorCode =
   | 'UNAUTHENTICATED'
   | 'PLAN_REQUIRED'
+  | 'DEVICE_KEY_LIMIT'
   | 'TRIAL_USED'
   | 'FORBIDDEN'
   | 'FROZEN'
@@ -52,6 +53,7 @@ export class ApiError extends Error {
 export const FALLBACK_MESSAGES: Record<ApiErrorCode, string> = {
   UNAUTHENTICATED: 'Bạn cần đăng nhập lại.',
   PLAN_REQUIRED: 'Cần gói dùng thử hoặc Premium để làm việc này.',
+  DEVICE_KEY_LIMIT: 'Gói hiện tại đã dùng hết khóa ghép máy của con. Hãy hủy liên kết một máy hoặc nâng cấp gói để ghép thêm.',
   TRIAL_USED: 'Máy này, email này hoặc gia đình này đã dùng thử rồi, nên không dùng thử lại được. Bạn có thể nâng cấp Premium.',
   FORBIDDEN: 'Bạn chưa có quyền làm việc này.',
   FROZEN: 'Gia đình đang tạm dừng app, chưa làm được việc này.',
@@ -115,7 +117,7 @@ export function toApiError(err: unknown): ApiError {
 
   // Thiếu quyền EXECUTE / RLS của Postgres (anon gọi hàm không cho phép).
   if (authCode === '42501') return new ApiError('FORBIDDEN', FALLBACK_MESSAGES.FORBIDDEN, rule);
-  // PostgREST: errcode PT402 (PLAN_REQUIRED, D-68) thành HTTP 402 khi message không mang mã.
+  // PostgREST: errcode PT402 (PLAN_REQUIRED D-68, DEVICE_KEY_LIMIT D-74) thành HTTP 402 khi message không mang mã: coi là PLAN_REQUIRED.
   if (authCode === 'PT402') return new ApiError('PLAN_REQUIRED', FALLBACK_MESSAGES.PLAN_REQUIRED, rule);
   // PostgREST: errcode PT429 thành HTTP 429 (RATE_LIMITED) khi message không mang mã.
   // PT409 dùng chung cho CONFLICT_REV, LOCKED, TRIAL_USED: chỉ coi là TRIAL_USED khi message mang mã (nhánh trên); ở đây không đoán.

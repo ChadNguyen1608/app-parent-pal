@@ -134,9 +134,12 @@ export type PlanInfo = {
   /** Hộ chưa từng dùng thử hay PREMIUM, đang FREE: được bấm "Dùng thử" (máy chủ còn kiểm mã máy và email). */
   trialAvailable: boolean;
   trialDays: number;
+  /** D-74: số khóa ghép máy con của gói (FREE 0, dùng thử 1, Premium theo chủ sản phẩm đặt) và số khóa đã dùng (máy đang ghép + yêu cầu đang chờ). */
+  deviceKeys: number;
+  deviceKeysUsed: number;
 };
 
-/** Kết quả app.my_family_state() cho máy con. planActive=false: hộ không PREMIUM, máy con tạm dừng chờ bố mẹ cập nhật (D-72). */
+/** Kết quả app.my_family_state() cho máy con. planActive=false: hộ hết dùng thử hoặc hạ gói, hoặc máy này vượt số khóa ghép máy; máy con tạm dừng chờ bố mẹ cập nhật (D-72, D-74). */
 export type MyFamilyState = { frozen: boolean; planActive: boolean };
 
 export type PairCode = { code: string; expiresAt: string | null };

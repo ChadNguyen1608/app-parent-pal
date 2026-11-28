@@ -172,27 +172,28 @@ test('emailRedirectTo được truyền; link đổi phiên bằng exchangeCodeF
 test('my_plan: đọc gói theo con (D-72); PREMIUM không giới hạn là null; phản hồi lạ bị từ chối (không đoán gói)', async () => {
   const { client, calls } = fakeClient({
     my_plan: { data: { ok: true, tier: 'TRIAL', expired: false, plans_max: 1, edits_max: 3, children: [{ child_id: 'c1', plans_used: 1, edits_used: 2, edits_left: 1 }, { child_id: 'c2', plans_used: 0, edits_used: 0, edits_left: 3 }],
-      pal_questions_left: null, trial_ends_at: '2026-12-01T00:00:00Z', trial_available: false, trial_days: 7 } },
+      pal_questions_left: null, trial_ends_at: '2026-12-01T00:00:00Z', trial_available: false, trial_days: 7, device_keys: 1, device_keys_used: 0 } },
   });
   const api = createSupabaseApi(client);
   assert.deepEqual(await api.myPlan(), {
     tier: 'TRIAL', expired: false, plansMax: 1, editsMax: 3,
     children: [{ childId: 'c1', plansUsed: 1, editsUsed: 2, editsLeft: 1 }, { childId: 'c2', plansUsed: 0, editsUsed: 0, editsLeft: 3 }],
-    palQuestionsLeft: null, trialEndsAt: '2026-12-01T00:00:00Z', trialAvailable: false, trialDays: 7,
+    palQuestionsLeft: null, trialEndsAt: '2026-12-01T00:00:00Z', trialAvailable: false, trialDays: 7, deviceKeys: 1, deviceKeysUsed: 0,
   });
   assert.deepEqual(calls.map((c) => [c.schema, c.fn, c.args]), [['app', 'my_plan', undefined]]);
 
-  const prem = createSupabaseApi(fakeClient({ my_plan: { data: { ok: true, tier: 'PREMIUM', expired: false, plans_max: null, edits_max: null, children: [{ child_id: 'c1', plans_used: 3, edits_used: 9, edits_left: null }], pal_questions_left: 5, trial_ends_at: null, trial_available: false, trial_days: 7 } } }).client);
-  assert.deepEqual(await prem.myPlan(), { tier: 'PREMIUM', expired: false, plansMax: null, editsMax: null, children: [{ childId: 'c1', plansUsed: 3, editsUsed: 9, editsLeft: null }], palQuestionsLeft: 5, trialEndsAt: null, trialAvailable: false, trialDays: 7 });
+  const prem = createSupabaseApi(fakeClient({ my_plan: { data: { ok: true, tier: 'PREMIUM', expired: false, plans_max: null, edits_max: null, children: [{ child_id: 'c1', plans_used: 3, edits_used: 9, edits_left: null }], pal_questions_left: 5, trial_ends_at: null, trial_available: false, trial_days: 7, device_keys: 3, device_keys_used: 2 } } }).client);
+  assert.deepEqual(await prem.myPlan(), { tier: 'PREMIUM', expired: false, plansMax: null, editsMax: null, children: [{ childId: 'c1', plansUsed: 3, editsUsed: 9, editsLeft: null }], palQuestionsLeft: 5, trialEndsAt: null, trialAvailable: false, trialDays: 7, deviceKeys: 3, deviceKeysUsed: 2 });
 
-  const free = createSupabaseApi(fakeClient({ my_plan: { data: { ok: true, tier: 'FREE', expired: false, plans_max: 0, edits_max: 0, children: [], trial_available: true, trial_days: 7 } } }).client);
+  const free = createSupabaseApi(fakeClient({ my_plan: { data: { ok: true, tier: 'FREE', expired: false, plans_max: 0, edits_max: 0, children: [], trial_available: true, trial_days: 7, device_keys: 0, device_keys_used: 0 } } }).client);
   assert.equal((await free.myPlan()).trialAvailable, true);
   // trial_available thiếu: coi là KHÔNG dùng thử được (không mở nút khi chưa chắc)
-  const noFlag = createSupabaseApi(fakeClient({ my_plan: { data: { ok: true, tier: 'FREE', children: [] } } }).client);
+  const noFlag = createSupabaseApi(fakeClient({ my_plan: { data: { ok: true, tier: 'FREE', children: [], device_keys: 0, device_keys_used: 0 } } }).client);
   assert.equal((await noFlag.myPlan()).trialAvailable, false);
 
   for (const data of [null, {}, { ok: true }, { ok: true, tier: 'GOLD', children: [] }, { ok: true, tier: 'PREMIUM' }, { ok: true, tier: 'TRIAL', children: [{ child_id: 'c' }] },
-    { ok: true, tier: 'TRIAL', children: [{ plans_used: 0, edits_used: 0 }] }]) {
+    { ok: true, tier: 'TRIAL', children: [{ plans_used: 0, edits_used: 0 }] },
+    { ok: true, tier: 'PREMIUM', children: [], device_keys_used: 0 }, { ok: true, tier: 'PREMIUM', children: [], device_keys: 1 }]) {   // D-74: thiếu số khóa thì không đoán
     const bad = createSupabaseApi(fakeClient({ my_plan: { data } }).client);
     await assert.rejects(bad.myPlan(), (e: unknown) => e instanceof ApiError && e.code === 'UNKNOWN', JSON.stringify(data));
   }
@@ -221,9 +222,21 @@ test('my_family_state (máy con, D-72): plan_active; thiếu trường thì coi 
   await assert.rejects(mk({ frozen: false, plan_active: true }).myFamilyState(), (e: unknown) => e instanceof ApiError);
 });
 
+test('DEVICE_KEY_LIMIT (HTTP 402, D-74) từ pair_confirm thành ApiError riêng, giữ quy tắc và lời tiếng Việt; PT402 trơ trụi vẫn là PLAN_REQUIRED', async () => {
+  const { client } = fakeClient({
+    pair_confirm: { error: { message: 'DEVICE_KEY_LIMIT', details: 'D-74.keys', hint: 'Gói hiện tại ghép được tối đa 1 máy của con và đã dùng hết khóa ghép máy.', code: 'PT402' } },
+  });
+  await assert.rejects(createSupabaseApi(client).pairConfirm('c', '123456'),
+    (e: unknown) => e instanceof ApiError && e.code === 'DEVICE_KEY_LIMIT' && e.rule === 'D-74.keys' && e.userMessage.includes('khóa ghép máy'));
+  const noMsg = fakeClient({ pair_confirm: { error: { message: 'x', details: 'D-74.keys', code: 'PT402' } } });
+  await assert.rejects(createSupabaseApi(noMsg.client).pairConfirm('c', '123456'), (e: unknown) => e instanceof ApiError && e.code === 'PLAN_REQUIRED');
+  const noHint = fakeClient({ pair_confirm: { error: { message: 'DEVICE_KEY_LIMIT', details: 'D-74.keys', code: 'PT402' } } });
+  await assert.rejects(createSupabaseApi(noHint.client).pairConfirm('c', '123456'), (e: unknown) => e instanceof ApiError && e.code === 'DEVICE_KEY_LIMIT' && /hết khóa ghép máy|dùng hết khóa/.test(e.userMessage));
+});
+
 test('PLAN_REQUIRED (HTTP 402) từ pair_confirm thành ApiError có quy tắc D-68', async () => {
   const { client } = fakeClient({
-    pair_confirm: { error: { message: 'PLAN_REQUIRED', details: 'D-68.premium', hint: 'Chỉ gói Premium mới ghép và đồng bộ lịch sang máy của con.', code: 'PT402' } },
+    pair_confirm: { error: { message: 'PLAN_REQUIRED', details: 'D-68.premium', hint: 'Cần gói dùng thử hoặc Premium để ghép máy của con.', code: 'PT402' } },
   });
   const api = createSupabaseApi(client);
   await assert.rejects(api.pairConfirm('c', '123456'), (e: unknown) => e instanceof ApiError && e.code === 'PLAN_REQUIRED' && e.rule === 'D-68.premium' && e.userMessage.includes('Premium'));

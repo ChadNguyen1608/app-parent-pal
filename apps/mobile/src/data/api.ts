@@ -315,7 +315,9 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
       const o = await rpcOk('my_plan', undefined);
       // Phản hồi lạ thì từ chối chứ không đoán gói (không bao giờ mặc định thành PREMIUM).
       const tier = o.tier === 'FREE' || o.tier === 'TRIAL' || o.tier === 'PREMIUM' ? (o.tier as PlanTier) : null;
-      if (!tier || !Array.isArray(o.children)) throw toApiError(new Error('my_plan: phản hồi sai hợp đồng'));
+      const deviceKeys = asInt(o.device_keys);
+      const deviceKeysUsed = asInt(o.device_keys_used);
+      if (!tier || !Array.isArray(o.children) || deviceKeys === null || deviceKeysUsed === null) throw toApiError(new Error('my_plan: phản hồi sai hợp đồng'));
       const children: PlanChildUsage[] = o.children.map((raw) => {
         const k = asObj(raw);
         const childId = asStr(k.child_id);
@@ -334,6 +336,8 @@ export function createSupabaseApi(client: SupabaseClient, now: () => number = ()
         trialEndsAt: asStr(o.trial_ends_at),
         trialAvailable: o.trial_available === true,
         trialDays: asInt(o.trial_days) ?? 0,
+        deviceKeys,
+        deviceKeysUsed,
       };
     },
 

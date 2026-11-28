@@ -1,8 +1,8 @@
-// Test D-68, D-72: gói dịch vụ FREE / TRIAL / PREMIUM ở cấp hộ (app.household_plans, my_plan, plan_set, chặn tạo/sửa kế hoạch THEO CON, ghép máy, đồng bộ,
+// Test D-68, D-72, D-74: gói dịch vụ FREE / TRIAL / PREMIUM ở cấp hộ (app.household_plans, my_plan, plan_set, chặn tạo/sửa kế hoạch THEO CON, ghép máy, đồng bộ,
 // dùng thử tự phục vụ trial_start, plan_active của máy con, outbox goi_doi, hết hạn).
 // Mã: PLAN-DB (bảng, plan_set), PLAN-AUD (audit plan.changed), PLAN-MY (my_plan), PLAN-GATE (chặn tạo/sửa kế hoạch: profile_save, commit),
-//     PLAN-PAIR (ghép máy chỉ PREMIUM), PLAN-SYNC (outbox lich_moi chỉ PREMIUM), PLAN-PURGE (xóa theo hộ),
-//     PLAN-TRIAL (trial_start, trial_claims: D-72), PLAN-ACTIVE (plan_active), PLAN-NOTIFY (goi_doi), PLAN-EXP (plan.expired).
+//     PLAN-PAIR (ghép máy theo KHÓA, D-74), PLAN-SYNC (outbox lich_moi chỉ máy còn trong gói và trong số khóa), PLAN-PURGE (xóa theo hộ),
+//     PLAN-TRIAL (trial_start, trial_claims: D-72), PLAN-ACTIVE (plan_active), PLAN-NOTIFY (goi_doi), PLAN-EXP (plan.expired), PLAN-KEY (khóa ghép máy: device_keys, plan_set, my_plan).
 // Seed: hai hộ PREMIUM; mỗi test đổi gói bằng setup (giao dịch rồi ROLLBACK). Dữ liệu: chỉ tên giả.
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
@@ -87,6 +87,8 @@ describe('PLAN-DB: bảng household_plans và app.plan_set (chỉ hệ thống)'
     assert.equal(ins('tier, trial_started_at, trial_ends_at', `'TRIAL', now(), now() - interval '1 day'`).code, '23514');
     assert.equal(ins('tier, set_by', `'FREE', 'chu san pham'`).code, '23514');
     assert.equal(ins('tier, note', `'FREE', repeat('a', 501)`).code, '23514');
+    assert.equal(ins('tier, device_keys', `'PREMIUM', 51`).code, '23514');    // D-74: device_keys 0..50
+    assert.equal(ins('tier, device_keys', `'PREMIUM', -1`).code, '23514');
     assert.equal(ins('tier, trial_started_at, trial_ends_at, note', `'TRIAL', now(), now() + interval '7 days', repeat('a', 500)`).ok, true);
   });
 
@@ -95,7 +97,7 @@ describe('PLAN-DB: bảng household_plans và app.plan_set (chỉ hệ thống)'
       const r = run(who, `select app.plan_set('${HH1}', 'FREE')`);
       assert.equal(r.ok, false); assert.equal(r.code, '42501', `${who.role}`);
     }
-    const GRANT = `grant execute on function app.plan_set(uuid, text, timestamptz, text, text) to authenticated;`;
+    const GRANT = `grant execute on function app.plan_set(uuid, text, timestamptz, text, text, int) to authenticated;`;
     rejected(run(QL, `select app.plan_set('${HH1}', 'FREE')`, { setup: GRANT }), 'FORBIDDEN', 'PT403');
     rejected(run(DEV, `select app.plan_set('${HH1}', 'FREE')`, { setup: GRANT }), 'FORBIDDEN', 'PT403');
     assert.equal(J(run(SVC, `select app.plan_set('${HH1}', 'FREE')`)).tier, 'FREE');
@@ -163,6 +165,7 @@ describe('PLAN-MY: app.my_plan (người lớn trong hộ, theo con)', { skip },
   it('PLAN-MY-01: FREE: không được tạo, không lượt sửa; số kế hoạch đã dùng của từng con vẫn hiện; hộ từng PREMIUM thì không còn trial_available', () => {
     const p = my(QL, TIER(HH1, 'FREE'));
     assert.deepEqual(p, { ok: true, tier: 'FREE', expired: false, plans_max: 0, edits_max: 0, pal_questions_left: null, trial_ends_at: null, trial_available: false, trial_days: 7,
+      device_keys: 0, device_keys_used: 1,
       children: [{ child_id: NA, plans_used: 1, edits_used: 0, edits_left: 0 }, { child_id: BIN, plans_used: 0, edits_used: 0, edits_left: 0 }] });
   });
   it('PLAN-MY-02: TRIAL: mỗi con 1 kế hoạch, còn 3 lượt sửa; trừ dần theo phiên bản mới CỦA CON ĐÓ; không âm', () => {
@@ -312,36 +315,87 @@ describe('PLAN-GATE: chặn xem trước và tạo/sửa kế hoạch THEO CON (
   });
 });
 
-describe('PLAN-PAIR: ghép máy chỉ PREMIUM (D-68)', { skip }, () => {
+describe('PLAN-PAIR: ghép máy theo KHÓA ghép máy (D-74; thay "chỉ PREMIUM" của D-68)', { skip }, () => {
   const FLOW = `update app.children set has_device = true where id = '${BIN}';
     insert into private.pairing_codes(device_user_id, code_hmac, expires_at) values ('${DEV_NEW_SUB}', private.pair_hmac('${CODE}'), now() + interval '10 minutes');`;
   const CONFIRM = `select app.pair_confirm('${BIN}', '${CODE}', '${PIN}')`;
-
-  it('PLAN-PAIR-01: pair_confirm: FREE, TRIAL, TRIAL quá hạn bị PLAN_REQUIRED (không tiêu mã, không đếm sai, không tạo binding); PREMIUM ghép được', () => {
-    const state = `reset role; select (select count(*) from app.device_bindings where child_id = '${BIN}'), (select state from private.pairing_codes where device_user_id = '${DEV_NEW_SUB}'),
+  const KEYS = (hh, n) => `update app.household_plans set device_keys = ${n} where household_id = '${hh}';`;
+  /** bé Na (seed) đang giữ 1 khóa bằng liên kết HIEU_LUC; bỏ liên kết đó để hộ có 0 máy. */
+  const NO_DEVICE = `update app.device_bindings set state = 'DA_HUY', revoked_at = now(), revoke_reason = 'BO_ME_HUY' where child_id = '${NA}' and state = 'HIEU_LUC';`;
+  const state = `reset role; select (select count(*) from app.device_bindings where child_id = '${BIN}'), (select state from private.pairing_codes where device_user_id = '${DEV_NEW_SUB}'),
       (select count(*) from private.pair_throttle)`;
-    for (const t of [TIER(HH1, 'FREE'), TIER(HH1, 'TRIAL'), TIER(HH1, 'TRIAL', EXPIRED)]) {
+  const CLEAN = (setup, rule) => {          // bị từ chối mà không tiêu mã, không đếm sai, không tạo binding
+    const r = run(QL, `do $t$ begin ${CONFIRM.replace('select ', 'perform ')}; exception when sqlstate 'PT402' then null; end $t$; ${state}`, { setup });
+    assert.ok(r.ok, r.err);
+    assert.equal(r.rows[0], '0|CON_HAN|0', rule);
+  };
+
+  it('PLAN-PAIR-01: pair_confirm: FREE, TRIAL quá hạn, hộ chưa có dòng gói bị PLAN_REQUIRED (không tiêu mã, không đếm sai, không tạo binding)', () => {
+    for (const t of [TIER(HH1, 'FREE'), TIER(HH1, 'TRIAL', EXPIRED), `delete from app.household_plans where household_id = '${HH1}';`]) {
       PLAN_REQ(run(QL, CONFIRM, { setup: FLOW + t }), 'D-68.premium');
-      const r = run(QL, `do $t$ begin ${CONFIRM.replace('select ', 'perform ')}; exception when sqlstate 'PT402' then null; end $t$; ${state}`, { setup: FLOW + t });
-      assert.ok(r.ok, r.err);
-      assert.equal(r.rows[0], '0|CON_HAN|0');
+      CLEAN(FLOW + t, 'PLAN_REQUIRED');
     }
-    const ok = run(QL, CONFIRM, { setup: FLOW });
-    assert.equal(J(ok).ok, true);
   });
 
-  it('PLAN-PAIR-02: pair_accept: hộ hạ gói giữa chừng thì máy con không ghép nốt (yêu cầu vẫn chờ, không tự hủy)', () => {
-    const r = run(QL, `${CONFIRM}; ${adm(`update app.household_plans set tier = 'TRIAL', trial_started_at = now() where household_id = '${HH1}'`)} ${as(DEV_NEW)} select app.pair_accept()`, { setup: FLOW });
-    PLAN_REQ(r, 'D-68.premium');
-    const st = run(QL, `${CONFIRM}; ${adm(`update app.household_plans set tier = 'FREE' where household_id = '${HH1}'`)} ${as(DEV_NEW)}
-      do $t$ begin perform app.pair_accept(); exception when sqlstate 'PT402' then null; end $t$; reset role;
-      select state from app.device_bindings where child_id = '${BIN}' and device_user_id = '${DEV_NEW_SUB}'`, { setup: FLOW });
-    assert.equal(st.rows.at(-1), 'CHO_XAC_NHAN_MAY_CON');
-    const ok = run(QL, `${CONFIRM}; ${as(DEV_NEW)} select app.pair_accept()`, { setup: FLOW });
+  it('PLAN-PAIR-02: hết khóa: PREMIUM 1 khóa (Na đang giữ), PREMIUM 0 khóa, TRIAL (1 khóa, Na đang giữ) -> DEVICE_KEY_LIMIT 402 `D-74.keys`, lời tiếng Việt nêu số khóa; không tiêu mã, không tạo binding', () => {
+    for (const t of [KEYS(HH1, 1), KEYS(HH1, 0), TIER(HH1, 'TRIAL')]) {
+      const r = run(QL, CONFIRM, { setup: FLOW + t });
+      rejected(r, 'DEVICE_KEY_LIMIT', 'PT402', 'D-74.keys');
+      assert.match(r.err, /Hãy hủy liên kết một máy hoặc nâng cấp gói/);
+      CLEAN(FLOW + t, 'DEVICE_KEY_LIMIT');
+    }
+    assert.match(run(QL, CONFIRM, { setup: FLOW + KEYS(HH1, 1) }).err, /tối đa 1 máy/);
+  });
+
+  it('PLAN-PAIR-03: còn khóa thì ghép được: TRIAL còn hạn khi chưa có máy nào (1 khóa dùng thử); PREMIUM 2 khóa khi đã có 1 máy; hộ khác không chia khóa', () => {
+    const t = run(QL, `${CONFIRM}; ${as(DEV_NEW)} select app.pair_accept()`, { setup: FLOW + TIER(HH1, 'TRIAL', { ends: `now() + interval '5 days'` }) + NO_DEVICE });
+    assert.equal(J(t, 0).ok, true); assert.equal(J(t, 1).ok, true);
+    const p = run(QL, `${CONFIRM}; ${as(DEV_NEW)} select app.pair_accept()`, { setup: FLOW + KEYS(HH1, 2) });
+    assert.equal(J(p, 0).ok, true); assert.equal(J(p, 1).ok, true);
+    // hộ 2 đang có máy chờ (seed) nhưng khóa của hộ 1 không bị tính chung
+    assert.equal(J(run(QL, CONFIRM, { setup: FLOW + KEYS(HH1, 2) + KEYS(HH2, 1) })).ok, true);
+  });
+
+  it('PLAN-PAIR-04: yêu cầu ghép đang chờ máy con xác nhận giữ một khóa; quá hạn xác nhận thì nhả khóa; liên kết đã hủy nhả khóa; con khác của hộ bị chặn khi hết khóa', () => {
+    const SUB5 = '00000000-0000-4000-8000-0000000000a5';
+    const C3 = '00000000-0000-4000-8000-0000000000c3';
+    const F2 = `${FLOW} ${KEYS(HH1, 2)}
+      insert into app.children (id, household_id, call_name, grade, mode, has_device) values ('${C3}', '${HH1}', 'bé Cả', 3, 'CHILD_EXECUTED', true);
+      delete from private.pairing_codes where device_user_id = '${SUB5}';
+      insert into private.pairing_codes(device_user_id, code_hmac, expires_at) values ('${SUB5}', private.pair_hmac('246802'), now() + interval '10 minutes');`;
+    const C2 = `select app.pair_confirm('${C3}', '246802', null)`;
+    // Na (HIEU_LUC) + Bin (chờ) = 2 khóa đã dùng: con thứ ba bị chặn. (PIN đã có sau lần ghép đầu của chị Hoa: gọi lần hai không kèm PIN.)
+    const blocked = run(QL, `${CONFIRM}; ${C2}`, { setup: F2 });
+    rejected(blocked, 'DEVICE_KEY_LIMIT', 'PT402', 'D-74.keys');
+    // yêu cầu chờ của Bin quá hạn xác nhận (5 phút): không còn giữ khóa
+    const aged = run(QL, `${CONFIRM}; ${adm(`update app.device_bindings set created_at = now() - interval '10 minutes' where child_id = '${BIN}'`)} ${as(QL)} ${C2}`, { setup: F2 });
+    assert.ok(aged.ok, aged.err);
+    // liên kết đã hủy nhả khóa
+    const freed = run(QL, `${CONFIRM}; ${adm(`update app.device_bindings set state = 'DA_HUY', revoked_at = now(), revoke_reason = 'BO_ME_HUY' where child_id = '${BIN}'`)} ${as(QL)} ${C2}`, { setup: F2 });
+    assert.ok(freed.ok, freed.err);
+    // yêu cầu chờ của CHÍNH con đó không tính: xác nhận lại cho Bin bằng máy khác thì thay yêu cầu cũ, dù hộ đang ở đúng 2/2 khóa
+    const again = run(QL, `${CONFIRM}; ${adm(`delete from private.pairing_codes where device_user_id = '${SUB5}'; insert into private.pairing_codes(device_user_id, code_hmac, expires_at) values ('${SUB5}', private.pair_hmac('246810'), now() + interval '10 minutes')`)} ${as(QL)}
+      select app.pair_confirm('${BIN}', '246810', null); reset role;
+      select (select count(*) from app.device_bindings where child_id = '${BIN}' and state = 'CHO_XAC_NHAN_MAY_CON'), (select count(*) from app.device_bindings where child_id = '${BIN}' and state = 'DA_HUY')`,
+      { setup: FLOW + KEYS(HH1, 2) });
+    assert.ok(again.ok, again.err);
+    assert.equal(again.rows.at(-1), '1|1', 'yêu cầu mới thay yêu cầu cũ');
+  });
+
+  it('PLAN-PAIR-05: pair_accept: giảm khóa hoặc hạ gói giữa chừng thì máy con không ghép nốt (yêu cầu vẫn chờ, không tự hủy); trả lại khóa thì ghép được', () => {
+    const st = (cond) => `reset role; select state from app.device_bindings where child_id = '${BIN}' and device_user_id = '${DEV_NEW_SUB}'`;
+    const lim = run(QL, `${CONFIRM}; ${adm(KEYS(HH1, 1).slice(0, -1))} ${as(DEV_NEW)} select app.pair_accept()`, { setup: FLOW + KEYS(HH1, 2) });
+    rejected(lim, 'DEVICE_KEY_LIMIT', 'PT402', 'D-74.keys');
+    const keep = run(QL, `${CONFIRM}; ${adm(KEYS(HH1, 1).slice(0, -1))} ${as(DEV_NEW)}
+      do $t$ begin perform app.pair_accept(); exception when sqlstate 'PT402' then null; end $t$; ${st()}`, { setup: FLOW + KEYS(HH1, 2) });
+    assert.equal(keep.rows.at(-1), 'CHO_XAC_NHAN_MAY_CON');
+    const free = run(QL, `${CONFIRM}; ${adm(TIER(HH1, 'FREE').slice(0, -1))} ${as(DEV_NEW)} select app.pair_accept()`, { setup: FLOW + KEYS(HH1, 2) });
+    PLAN_REQ(free, 'D-68.premium');
+    const ok = run(QL, `${CONFIRM}; ${as(DEV_NEW)} select app.pair_accept()`, { setup: FLOW + KEYS(HH1, 2) });
     assert.equal(J(ok, 1).ok, true);
   });
 
-  it('PLAN-PAIR-03: máy đã ghép giữ liên kết khi hộ hạ gói (không tự hủy); gọi lại pair_accept trả replay; pair_code_create của máy chưa ghép không bị chặn theo gói', () => {
+  it('PLAN-PAIR-06: máy đã ghép giữ liên kết khi hộ hạ gói (không tự hủy); gọi lại pair_accept trả replay; pair_code_create của máy chưa ghép không bị chặn theo gói', () => {
     const r = run(DEV, `select app.pair_accept(); select (select count(*) from app.device_bindings where state = 'HIEU_LUC' and child_id = '${NA}')`, { setup: TIER(HH1, 'FREE') });
     assert.ok(r.ok, r.err);
     assert.equal(J(r, 0).replay, true); assert.equal(r.rows[1], '1');
@@ -350,18 +404,29 @@ describe('PLAN-PAIR: ghép máy chỉ PREMIUM (D-68)', { skip }, () => {
   });
 });
 
-describe('PLAN-SYNC: đồng bộ lịch sang máy con chỉ PREMIUM (outbox lich_moi)', { skip }, () => {
+describe('PLAN-SYNC: đồng bộ lịch sang máy con chỉ cho máy còn trong gói và trong số khóa (outbox lich_moi)', { skip }, () => {
   const outbox = `reset role; select count(*) from app.notifications where child_id = '${NA}' and type = 'lich_moi'`;
-  it('PLAN-SYNC-01: PREMIUM ghi outbox cho máy đã ghép; TRIAL (còn lượt sửa) commit được nhưng KHÔNG ghi outbox và không hủy liên kết', () => {
+  const BIN_DEV = `update app.children set has_device = true where id = '${BIN}';
+    insert into app.device_bindings (child_id, device_user_id, state, paired_by_member_id, paired_at)
+      values ('${BIN}', '${DEV_NEW_SUB}', 'HIEU_LUC', '${MEM_HOA}', now() - interval '1 day');`;      // máy của Bin ghép TRƯỚC máy của Na
+  const sync = (setup) => { const c = commit(); const r = run(QL, `select ${c.call}; ${outbox}`, { setup: `${setup} ${c.setup}` }); assert.ok(r.ok, r.err); return Number(r.rows.at(-1)); };
+  it('PLAN-SYNC-01: PREMIUM ghi outbox cho máy đã ghép; TRIAL (còn hạn, 1 khóa) cũng ghi (D-74); PREMIUM 0 khóa commit được nhưng KHÔNG ghi; liên kết vẫn HIEU_LUC', () => {
+    assert.equal(sync(''), 2, 'PREMIUM: hàng seed + 1');
+    assert.equal(sync(TIER(HH1, 'TRIAL')), 2, 'TRIAL còn hạn');
+    assert.equal(sync(`update app.household_plans set device_keys = 0 where household_id = '${HH1}';`), 1, 'PREMIUM 0 khóa: chỉ hàng seed');
+    // FREE và TRIAL quá hạn không tạo/sửa được kế hoạch (PLAN_REQUIRED), nên không có lần commit nào để ghi outbox; liên kết vẫn giữ
     const c = commit();
-    const p = run(QL, `select ${c.call}; ${outbox}`, { setup: c.setup });
-    assert.ok(p.ok, p.err);
-    assert.equal(p.rows.at(-1), '2');
-    const t = run(QL, `select ${c.call}; ${outbox}; select count(*) from app.device_bindings where child_id = '${NA}' and state = 'HIEU_LUC'`, { setup: `${TIER(HH1, 'TRIAL')} ${c.setup}` });
-    assert.ok(t.ok, t.err);
-    assert.equal(J(t, 0).rev, 2);
-    assert.equal(t.rows[1], '1', 'chỉ còn hàng seed, không thêm hàng mới');
-    assert.equal(t.rows[2], '1', 'liên kết vẫn HIEU_LUC');
+    const t = run(QL, `select ${c.call}; reset role; select count(*) from app.device_bindings where child_id = '${NA}' and state = 'HIEU_LUC'`, { setup: `update app.household_plans set device_keys = 0 where household_id = '${HH1}'; ${c.setup}` });
+    assert.equal(t.rows[1], '1', 'liên kết vẫn HIEU_LUC');
+  });
+  it('PLAN-SYNC-02: máy vượt số khóa (ghép sau cùng) không nhận lịch mới; đủ khóa thì nhận; không tự hủy liên kết', () => {
+    assert.equal(sync(`${BIN_DEV} update app.household_plans set device_keys = 1 where household_id = '${HH1}';`), 1, 'khóa 1: máy Bin giữ, máy Na vượt');
+    assert.equal(sync(`${BIN_DEV} update app.household_plans set device_keys = 2 where household_id = '${HH1}';`), 2, 'khóa 2: cả hai');
+    assert.equal(sync(`${BIN_DEV} update app.household_plans set device_keys = 0 where household_id = '${HH1}';`), 1, 'khóa 0: không máy nào');
+    const c = commit();
+    const r = run(QL, `select ${c.call}; select count(*) from app.device_bindings where state = 'HIEU_LUC' and child_id in ('${NA}', '${BIN}')`,
+      { setup: `${BIN_DEV} update app.household_plans set device_keys = 1 where household_id = '${HH1}'; ${c.setup}` });
+    assert.equal(r.rows[1], '2');
   });
 });
 
@@ -519,43 +584,61 @@ describe('PLAN-TRIAL: app.trial_start và private.trial_claims (D-72)', { skip }
   });
 });
 
-describe('PLAN-ACTIVE: app.my_family_state.plan_active (máy con, D-72)', { skip }, () => {
-  const active = (setup = '') => J(run(DEV, `select app.my_family_state()`, { setup })).plan_active;
-  it('PLAN-ACTIVE-01: chỉ PREMIUM là true; TRIAL (còn hạn), TRIAL quá hạn, FREE đều false; trả đúng ba khóa ngoài ok', () => {
+describe('PLAN-ACTIVE: app.my_family_state.plan_active (máy con, D-72, D-74)', { skip }, () => {
+  const active = (setup = '', who = DEV) => J(run(who, `select app.my_family_state()`, { setup })).plan_active;
+  const BIN_DEV = `update app.children set has_device = true where id = '${BIN}';
+    insert into app.device_bindings (child_id, device_user_id, state, paired_by_member_id, paired_at)
+      values ('${BIN}', '${DEV_NEW_SUB}', 'HIEU_LUC', '${MEM_HOA}', now() - interval '1 day');`;      // máy của Bin ghép TRƯỚC máy của Na
+  it('PLAN-ACTIVE-01: PREMIUM (còn khóa) và TRIAL còn hạn là true; TRIAL quá hạn, FREE, hộ chưa có gói, PREMIUM 0 khóa là false; trả đúng ba khóa ngoài ok', () => {
     assert.equal(active(), true);
-    assert.equal(active(TIER(HH1, 'TRIAL')), false);
-    assert.equal(active(TIER(HH1, 'TRIAL', { ends: `now() + interval '5 days'` })), false);
+    assert.equal(active(TIER(HH1, 'TRIAL')), true);
+    assert.equal(active(TIER(HH1, 'TRIAL', { ends: `now() + interval '5 days'` })), true);
     assert.equal(active(TIER(HH1, 'TRIAL', EXPIRED)), false);
     assert.equal(active(TIER(HH1, 'FREE')), false);
     assert.equal(active(`delete from app.household_plans where household_id = '${HH1}';`), false);
+    assert.equal(active(`update app.household_plans set device_keys = 0 where household_id = '${HH1}';`), false);
     assert.deepEqual(Object.keys(J(run(DEV, `select app.my_family_state()`))).sort(), ['frozen', 'ok', 'plan_active', 'state']);
   });
   it('PLAN-ACTIVE-02: đổi gói theo hộ: hạ rồi nâng lại -> false rồi true; hộ khác không ảnh hưởng; liên kết giữ nguyên', () => {
-    const r = run(DEV, `select app.my_family_state(); reset role; update app.household_plans set tier = 'TRIAL', trial_started_at = now() where household_id = '${HH1}'; ${as(DEV)} set local role authenticated;
-      select app.my_family_state(); reset role; update app.household_plans set tier = 'PREMIUM' where household_id = '${HH1}'; ${as(DEV)} set local role authenticated; select app.my_family_state();
+    const r = run(DEV, `select app.my_family_state(); reset role; update app.household_plans set tier = 'FREE' where household_id = '${HH1}'; ${as(DEV)} set local role authenticated;
+      select app.my_family_state(); reset role; update app.household_plans set tier = 'TRIAL', trial_started_at = now() where household_id = '${HH1}'; ${as(DEV)} set local role authenticated; select app.my_family_state();
       reset role; select count(*) from app.device_bindings where child_id = '${NA}' and state = 'HIEU_LUC'`);
     assert.ok(r.ok, r.err);
     assert.deepEqual([J(r, 0).plan_active, J(r, 1).plan_active, J(r, 2).plan_active, r.rows[3]], [true, false, true, '1']);
     assert.equal(J(run(DEV, `select app.my_family_state()`, { setup: TIER(HH2, 'FREE') })).plan_active, true);
   });
+  it('PLAN-ACTIVE-03: giảm khóa dưới số máy đang ghép: không hủy liên kết; máy ghép SAU CÙNG vượt khóa tạm dừng, máy ghép trước vẫn chạy; nâng khóa thì cả hai chạy', () => {
+    const k = (n) => `${BIN_DEV} update app.household_plans set device_keys = ${n} where household_id = '${HH1}';`;
+    assert.deepEqual([active(k(2)), active(k(2), DEV_NEW)], [true, true]);
+    assert.deepEqual([active(k(1)), active(k(1), DEV_NEW)], [false, true], 'Na ghép sau Bin: vượt khóa');
+    assert.deepEqual([active(k(0)), active(k(0), DEV_NEW)], [false, false]);
+    const n = admin(`${k(1)} select count(*) from app.device_bindings where state = 'HIEU_LUC' and child_id in ('${NA}', '${BIN}')`);
+    assert.equal(n.rows[0], '2', 'không tự hủy liên kết');
+    assert.deepEqual([active(`${BIN_DEV} ${TIER(HH1, 'TRIAL')}`), active(`${BIN_DEV} ${TIER(HH1, 'TRIAL')}`, DEV_NEW)], [false, true], 'TRIAL 1 khóa: chỉ máy ghép trước');
+  });
 });
 
-describe('PLAN-NOTIFY: outbox goi_doi cho máy con khi hộ vào/ra PREMIUM (D-72)', { skip }, () => {
+describe('PLAN-NOTIFY: outbox goi_doi cho máy con khi "gói đang hoạt động" của hộ đổi hoặc số khóa đổi (D-72, D-74)', { skip }, () => {
   const rows = (extra = '') => `reset role; select coalesce(string_agg(payload_min::text || '|' || recipient_kind || '|' || state, ';'), '') from app.notifications where type = 'goi_doi' and child_id = '${NA}' ${extra}`;
   const BIND = '00000000-0000-4000-8000-000000000401';
-  it('PLAN-NOTIFY-01: PREMIUM -> TRIAL và TRIAL -> PREMIUM mỗi lần ghi một hàng goi_doi cho máy đã ghép (nội dung tối giản {type,id}); không ghi cho FREE <-> TRIAL', () => {
-    const r = run(SVC, `select app.plan_set('${HH1}', 'TRIAL'); ${rows()}; select app.plan_set('${HH1}', 'FREE'); ${rows()}; select app.plan_set('${HH1}', 'TRIAL'); ${rows()};
-      select app.plan_set('${HH1}', 'PREMIUM'); select count(*) from app.notifications where type = 'goi_doi' and child_id = '${NA}'`);
+  /** Đưa seed về PREMIUM 1 khóa (mặc định thật) mà không phát thông báo. */
+  const KEY1 = `alter table app.household_plans disable trigger household_plans_notify; update app.household_plans set device_keys = 1 where household_id = '${HH1}'; alter table app.household_plans enable trigger household_plans_notify;`;
+  const cnt = `select count(*) from app.notifications where type = 'goi_doi' and child_id = '${NA}'`;
+  it('PLAN-NOTIFY-01: mỗi lần "gói hoạt động" đổi (kể cả FREE <-> TRIAL) ghi một hàng goi_doi cho máy đã ghép (nội dung tối giản {type,id}); PREMIUM <-> TRIAL cùng 1 khóa không đổi gì với máy con thì không ghi', () => {
+    const r = run(SVC, `select app.plan_set('${HH1}', 'TRIAL'); ${cnt};
+      select app.plan_set('${HH1}', 'FREE'); ${rows()}; ${cnt};
+      select app.plan_set('${HH1}', 'TRIAL'); ${cnt};
+      select app.plan_set('${HH1}', 'PREMIUM'); ${cnt};
+      select app.plan_set('${HH1}', 'FREE'); ${cnt}`, { setup: KEY1 });
     assert.ok(r.ok, r.err);
-    const one = `{"id": "${BIND}", "type": "goi_doi"}|device|CHO_GUI`;
-    assert.equal(r.rows[1], one);
-    assert.equal(r.rows[3], one, 'TRIAL -> FREE: không thêm');
-    assert.equal(r.rows[5], one, 'FREE -> TRIAL: không thêm');
-    assert.equal(r.rows.at(-1), '2', 'TRIAL -> PREMIUM: hàng thứ hai');
+    const n = r.rows.filter((x) => /^\d+$/.test(x)).map(Number);
+    assert.deepEqual(n, [0, 1, 2, 2, 3], 'PREMIUM->TRIAL: 0; TRIAL->FREE: 1; FREE->TRIAL: 2; TRIAL->PREMIUM: không đổi (cùng 1 khóa) ; PREMIUM->FREE: 3');
+    assert.equal(r.rows.find((x) => x.includes('goi_doi')), `{"id": "${BIND}", "type": "goi_doi"}|device|CHO_GUI`);
   });
-  it('PLAN-NOTIFY-02: không đổi trạng thái PREMIUM (cùng gói, đổi hạn/ghi chú) không ghi; máy con chỉ thấy hàng của mình; hộ khác và máy chưa ghép không có', () => {
-    const r = run(SVC, `select app.plan_set('${HH1}', 'PREMIUM', null, 'ghi chú mới'); select count(*) from app.notifications where type = 'goi_doi'`);
-    assert.equal(r.rows.at(-1), '0');
+  it('PLAN-NOTIFY-02: đổi số khóa hiệu lực ghi goi_doi (máy nào vượt khóa đổi theo); đổi ghi chú, giữ nguyên gói và khóa thì không ghi; máy con chỉ thấy hàng của mình; hộ khác và máy chưa ghép không có', () => {
+    const r = run(SVC, `select app.plan_set('${HH1}', 'PREMIUM', null, 'ghi chú mới'); ${cnt}; select app.plan_set('${HH1}', 'PREMIUM', null, null, 'owner', 3); ${cnt}; select app.plan_set('${HH1}', 'PREMIUM', null, null, 'owner', 3); ${cnt}`, { setup: KEY1 });
+    assert.ok(r.ok, r.err);
+    assert.deepEqual(r.rows.filter((x) => /^\d+$/.test(x)), ['0', '1', '1']);
     const d = run(DEV, `select count(*) from app.notifications where type = 'goi_doi'`, { setup: TIER(HH1, 'FREE') });
     assert.equal(d.rows[0], '1');
     assert.equal(run(QL, `select count(*) from app.notifications where type = 'goi_doi'`, { setup: TIER(HH1, 'FREE') }).rows[0], '0');
@@ -601,4 +684,52 @@ describe('PLAN-EXP: job_daily ghi audit plan.expired khi TRIAL hết hạn (D-72
   it('PLAN-EXP-03: job chỉ cho hệ thống: người dùng không gọi được job_plan_expiry', () => {
     for (const who of [QL, NL, DEV, ANON]) assert.equal(run(who, `select private.job_plan_expiry()`).code, '42501');
   });
+  it('PLAN-EXP-04: TRIAL hết hạn: job ghi goi_doi cho máy đã ghép đúng một lần (đổi trạng thái theo thời gian không có dòng nào đổi); chạy lại không ghi thêm', () => {
+    const c = `select count(*) from app.notifications where type = 'goi_doi' and child_id = '${NA}'`;
+    const QUIET = `alter table app.household_plans disable trigger household_plans_notify; ${TIER(HH1, 'TRIAL', EXPIRED)} alter table app.household_plans enable trigger household_plans_notify;`;
+    const r = run(SVC, `${c}; select private.job_daily(); ${c}; select private.job_daily(); ${c}`, { setup: QUIET });
+    assert.ok(r.ok, r.err);
+    assert.deepEqual(r.rows.filter((x) => /^\d+$/.test(x)), ['0', '1', '1']);
+  });
 });
+
+describe('PLAN-KEY: khóa ghép máy (D-74): device_keys, plan_set, my_plan', { skip }, () => {
+  const my = (who, setup = '') => J(run(who, `select app.my_plan()`, { setup }));
+  const col = (hh) => admin(`select device_keys from app.household_plans where household_id = '${hh}'`).rows[0];
+  it('PLAN-KEY-01: cột device_keys mặc định 1 khi hộ mới vào gói; plan_set đặt số khóa, null giữ nguyên; ngoài 0..50 bị VALIDATION', () => {
+    const r = run(SVC, `select app.plan_set('${HH1}', 'PREMIUM'); select device_keys from app.household_plans where household_id = '${HH1}';
+      select app.plan_set('${HH1}', 'PREMIUM', null, null, 'owner', 4); select device_keys from app.household_plans where household_id = '${HH1}';
+      select app.plan_set('${HH1}', 'FREE'); select device_keys from app.household_plans where household_id = '${HH1}'`, { setup: `delete from app.household_plans where household_id = '${HH1}';` });
+    assert.ok(r.ok, r.err);
+    assert.equal(J(r, 0).device_keys, 1);
+    assert.deepEqual([r.rows[1], r.rows[3], r.rows[5]], ['1', '4', '4'], 'đổi gói không xóa số khóa đã đặt');
+    for (const n of [-1, 51]) rejected(run(SVC, `select app.plan_set('${HH1}', 'PREMIUM', null, null, 'owner', ${n})`), 'VALIDATION', 'PT422');
+    assert.equal(col(HH1), '5', 'seed');
+    // D-74: 7 ngày dùng thử và 1 khóa dùng thử là đã chốt
+    assert.equal(admin(`select string_agg(key || '=' || value_int || ':' || status, ',' order by key) from private.params where key in ('trial_days', 'trial_device_keys')`).rows[0],
+      'trial_days=7:DA_CHOT,trial_device_keys=1:DA_CHOT');
+  });
+  it('PLAN-KEY-02: my_plan trả số khóa HIỆU LỰC và số đã dùng: FREE 0; TRIAL luôn 1 (bỏ qua cột); PREMIUM theo cột; yêu cầu chờ trong hạn tính, quá hạn không tính', () => {
+    const k = (p) => [p.device_keys, p.device_keys_used];
+    assert.deepEqual(k(my(QL)), [5, 1]);
+    assert.deepEqual(k(my(QL, `update app.household_plans set device_keys = 3 where household_id = '${HH1}';`)), [3, 1]);
+    assert.deepEqual(k(my(QL, TIER(HH1, 'FREE'))), [0, 1]);
+    assert.deepEqual(k(my(QL, TIER(HH1, 'TRIAL') + `update app.household_plans set device_keys = 9 where household_id = '${HH1}';`)), [1, 1]);
+    assert.deepEqual(k(my(QL, TIER(HH1, 'TRIAL', EXPIRED))), [0, 1]);
+    const wait = (age) => `update app.children set has_device = true where id = '${BIN}';
+      insert into app.device_bindings (child_id, device_user_id, state, paired_by_member_id, created_at) values ('${BIN}', '${DEV_NEW_SUB}', 'CHO_XAC_NHAN_MAY_CON', '${MEM_HOA}', now() - interval '${age}');`;
+    assert.deepEqual(k(my(QL, wait('1 minute'))), [5, 2]);
+    assert.deepEqual(k(my(QL, wait('10 minutes'))), [5, 1]);
+    assert.deepEqual(k(my(HK)), [5, 1], 'hộ 2: máy bé Su đang chờ xác nhận (seed) giữ 1 khóa');
+  });
+  it('PLAN-KEY-03: con ẩn và liên kết đã hủy không tính khóa; máy con và người ngoài không gọi được hàm khóa nội bộ', () => {
+    assert.equal(my(QL, `update app.children set hidden_at = now(), hidden_reason = 'XOA' where id = '${NA}';`).device_keys_used, 0);
+    assert.equal(my(QL, `update app.device_bindings set state = 'DA_HUY', revoked_at = now(), revoke_reason = 'BO_ME_HUY' where child_id = '${NA}';`).device_keys_used, 0);
+    for (const who of [QL, NL, DEV, ANON]) {
+      for (const fn of [`private.device_keys('${HH1}')`, `private.device_keys_used('${HH1}')`, `private.binding_in_plan('${BIND_ID}')`, `private.device_key_require('${HH1}')`]) {
+        assert.equal(run(who, `select ${fn}`).code, '42501', fn);
+      }
+    }
+  });
+});
+const BIND_ID = '00000000-0000-4000-8000-000000000401';

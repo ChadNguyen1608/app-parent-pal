@@ -126,41 +126,70 @@ test('nhánh lỗi: mã ghép sai báo một câu chung (sau khi đặt PIN lầ
   await expect(page.getByRole('heading', { name: 'Đã nhập mã đúng' })).toHaveCount(0);
 });
 
-// D-68: chưa PREMIUM thì tab Gia đình hiện gói và khóa ghép máy, kèm lời giải thích. Không chụp ảnh (không thêm ảnh chuẩn).
-async function giaDinhVoiGoi(page: Page, plan?: 'FREE' | 'TRIAL' | 'PREMIUM') {
-  await dangNhap(page, plan);
+// D-68, D-74: tab Gia đình hiện gói và khóa ghép máy (đã dùng X/Y); hết khóa hoặc chưa có gói thì khóa nút và giải thích. Không chụp ảnh (không thêm ảnh chuẩn).
+async function giaDinhVoiGoi(page: Page, plan?: 'FREE' | 'TRIAL' | 'PREMIUM', query = '') {
+  await page.goto(`/?plan=${plan ?? 'TRIAL'}${query}`);
+  await page.getByRole('textbox', { name: 'Email của bạn' }).fill('test.gia@example.com');
+  await page.getByRole('button', { name: 'Gửi mã cho mình' }).click();
+  await page.getByRole('textbox', { name: 'Mã 6 số' }).fill('123456');
+  await page.getByRole('button', { name: 'Xác nhận' }).click();
   await themCon(page);
   await page.getByRole('button', { name: 'Lưu' }).click();
   await page.getByRole('tab', { name: /Gia đình$/ }).click();
   await expect(page.getByText('Bin', { exact: true })).toBeVisible();
 }
 
-test('gói dùng thử (mặc định): hiện gói, ghép máy bị khóa và được giải thích, không vào được màn nhập mã', async ({ page }) => {
+test('gói dùng thử (mặc định, D-74): hiện gói và "Khóa ghép máy: đã dùng 0/1"; bước ghép máy mở; ghép xong thì "đã dùng 1/1"', async ({ page }) => {
   await giaDinhVoiGoi(page);
   await expect(page.getByText('Gói: Dùng thử')).toBeVisible();
   await expect(page.getByText('Mỗi con tạo được 1 kế hoạch và chỉnh sửa 3 lần.')).toBeVisible();
   await expect(page.getByText('Chưa tạo kế hoạch (tạo được 1 kế hoạch).')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Ghép máy của con', exact: true })).toHaveCount(0);
+  await expect(page.getByText('Khóa ghép máy: đã dùng 0/1')).toBeVisible();
 
-  await page.getByRole('button', { name: 'Ghép máy của con (cần Premium)' }).click();
-  await expect(page.getByRole('heading', { name: 'Ghép máy cần gói Premium' })).toBeVisible();
-  await expect(page.getByText(/chưa có thanh toán/)).toBeVisible();
-  await expect(page.getByRole('textbox', { name: /Mã trên máy con/ })).toHaveCount(0);
-  await page.getByRole('button', { name: 'Quay lại' }).click();
-  await expect(page.getByText('Gói: Dùng thử')).toBeVisible();
+  await page.getByRole('button', { name: 'Ghép máy của con', exact: true }).click();
+  await expect(page.getByRole('textbox', { name: /Mã trên máy con/ })).toBeVisible();
+  await page.getByRole('textbox', { name: /Mã trên máy con/ }).fill('123456');
+  await page.getByRole('button', { name: 'Ghép máy', exact: true }).click();
+  await page.getByRole('textbox', { name: /Đặt PIN/ }).fill('482915');
+  await page.getByRole('textbox', { name: 'Nhập lại PIN' }).fill('482915');
+  await page.getByRole('button', { name: 'Ghép máy', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Đã nhập mã đúng' })).toBeVisible();
+  await page.getByRole('button', { name: 'Xong' }).click();
+  await expect(page.getByText('Khóa ghép máy: đã dùng 1/1').last()).toBeVisible();
 });
 
-test('gói miễn phí: nhập thông tin và hỏi Pal được, chưa xem trước và tạo lịch; ghép máy bị khóa', async ({ page }) => {
+test('hết khóa (Premium 0 khóa, D-74): nút ghép máy nói hết khóa; bấm vào có lời giải thích cách xử lý, không có ô nhập mã', async ({ page }) => {
+  await giaDinhVoiGoi(page, 'PREMIUM', '&keys=0');
+  await expect(page.getByText('Gói: Premium')).toBeVisible();
+  await expect(page.getByText('Khóa ghép máy: đã dùng 0/0')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Ghép máy của con', exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Ghép máy của con (hết khóa)' }).click();
+  await expect(page.getByRole('heading', { name: 'Đã dùng hết khóa ghép máy' })).toBeVisible();
+  await expect(page.getByText(/hủy liên kết một máy đang ghép/)).toBeVisible();
+  await expect(page.getByRole('textbox', { name: /Mã trên máy con/ })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Quay lại' }).click();
+  await expect(page.getByText('Gói: Premium')).toBeVisible();
+});
+
+test('gói miễn phí: nhập thông tin và hỏi Pal được, chưa xem trước và tạo lịch; 0 khóa; bấm ghép máy thì được mời dùng thử rồi ghép được', async ({ page }) => {
   await giaDinhVoiGoi(page, 'FREE');
   await expect(page.getByText('Gói: Miễn phí')).toBeVisible();
   await expect(page.getByText('Nhập thông tin con và hỏi Pal được; chưa xem trước và tạo lịch được.')).toBeVisible();
-  await page.getByRole('button', { name: 'Ghép máy của con (cần Premium)' }).click();
-  await expect(page.getByRole('heading', { name: 'Ghép máy cần gói Premium' })).toBeVisible();
+  await expect(page.getByText('Khóa ghép máy: đã dùng 0/0')).toBeVisible();
+  await page.getByRole('button', { name: 'Ghép máy của con (cần gói)' }).click();
+  await expect(page.getByRole('heading', { name: 'Ghép máy cần gói dùng thử hoặc Premium' })).toBeVisible();
+  await expect(page.getByText(/dùng thử 7 ngày, ghép được 1 máy/)).toBeVisible();
+  await page.getByRole('button', { name: 'Dùng thử 7 ngày' }).click();
+  await expect(page.getByText('Gói: Dùng thử')).toBeVisible();
+  await expect(page.getByText('Khóa ghép máy: đã dùng 0/1')).toBeVisible();
+  await page.getByRole('button', { name: 'Ghép máy của con', exact: true }).click();
+  await expect(page.getByRole('textbox', { name: /Mã trên máy con/ })).toBeVisible();
 });
 
-test('gói Premium: hiện gói, ghép máy mở bình thường', async ({ page }) => {
+test('gói Premium: hiện gói và khóa ghép máy, ghép máy mở bình thường', async ({ page }) => {
   await giaDinhVoiGoi(page, 'PREMIUM');
   await expect(page.getByText('Gói: Premium')).toBeVisible();
+  await expect(page.getByText('Khóa ghép máy: đã dùng 0/1')).toBeVisible();
   await page.getByRole('button', { name: 'Ghép máy của con', exact: true }).click();
   await expect(page.getByRole('textbox', { name: /Mã trên máy con/ })).toBeVisible();
 });

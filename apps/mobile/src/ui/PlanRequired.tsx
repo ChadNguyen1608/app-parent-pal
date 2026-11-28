@@ -8,8 +8,8 @@ import { useAction } from './useAction';
 export function PlanRequiredView({ rule, onBack }: { rule?: string | null; onBack: () => void }) {
   const { api, plan, refreshPlan } = useApp();
   const act = useAction();
-  // Lời mời dùng thử chỉ cho lý do "gói miễn phí" (không cho ghép máy hay hết lượt sửa: dùng thử không giúp được).
-  const offer = plan?.trialAvailable === true && plan.tier === 'FREE' && rule !== PLAN_RULES.premium && rule !== PLAN_RULES.trialEdit;
+  // Lời mời dùng thử chỉ khi hộ đang FREE và còn dùng thử được; không mời khi lý do là hết lượt sửa hoặc hết khóa (dùng thử không giúp được). Dùng thử có 1 khóa ghép máy (D-74).
+  const offer = plan?.trialAvailable === true && plan.tier === 'FREE' && rule !== PLAN_RULES.keys && rule !== PLAN_RULES.trialEdit;
   const copy = planRequiredCopy(rule, offer ? plan?.trialDays : null);
   async function start() {
     const ok = await act.run(async () => {

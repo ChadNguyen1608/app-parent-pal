@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import type { ApiError } from '@/data/errors';
-import { PLAN_RULES, canPair } from '@/data/plan';
+import { PLAN_RULES, pairLockRule } from '@/data/plan';
 import type { PairConfirmResult } from '@/data/types';
 import { PAIR_CODE_LENGTH, PIN_EXISTS_HINT, PIN_LENGTH, PIN_REQUIRED_HINT, PIN_REQUIRED_RULE, checkPairCode, checkPin } from '@/data/validate';
 import { useApp } from '@/state/app';
@@ -62,9 +62,12 @@ export default function GhepMay() {
     }
   }, [failure]);
 
-  // D-68: chỉ gói Premium ghép máy. App biết gói chưa đủ, hoặc máy chủ vừa báo PLAN_REQUIRED, thì giải thích thay vì cho nhập mã.
-  if (plan ? !canPair(plan) : failure?.code === 'PLAN_REQUIRED') {
-    return <PlanRequiredView rule={failure?.code === 'PLAN_REQUIRED' ? failure.rule : PLAN_RULES.premium} onBack={() => router.back()} />;
+  // D-74: ghép máy theo khóa. App biết chưa có gói hoặc hết khóa, hoặc máy chủ vừa báo PLAN_REQUIRED / DEVICE_KEY_LIMIT, thì giải thích thay vì cho nhập mã.
+  const pending = (home?.children ?? []).find((c) => c.id === childId)?.pairState === 'PENDING';
+  const lock = plan ? pairLockRule(plan, pending) : null;
+  const serverBlock = failure?.code === 'PLAN_REQUIRED' || failure?.code === 'DEVICE_KEY_LIMIT';
+  if (lock !== null || serverBlock) {
+    return <PlanRequiredView rule={serverBlock ? failure?.rule : (lock ?? PLAN_RULES.premium)} onBack={() => router.back()} />;
   }
 
   if (result) {

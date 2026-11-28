@@ -284,6 +284,8 @@ Deno.test('API: handler chỉ nhận POST + Bearer + JSON object; lỗi theo d�
   assertEquals([pr.code, pr.status, pr.rule, pr.messageVi], ['PLAN_REQUIRED', 402, 'D-68.free', 'Cần gói']);   // D-68
   const tu = fromDbError({ message: 'TRIAL_USED', details: 'D-72.claim', hint: 'đã dùng thử' });
   assertEquals([tu.code, tu.status, tu.rule], ['TRIAL_USED', 409, 'D-72.claim']);   // D-72
+  const dk = fromDbError({ message: 'DEVICE_KEY_LIMIT', details: 'D-74.keys', hint: 'Hết khóa ghép máy' });
+  assertEquals([dk.code, dk.status, dk.rule, dk.messageVi], ['DEVICE_KEY_LIMIT', 402, 'D-74.keys', 'Hết khóa ghép máy']);   // D-74
   assertEquals(fromDbError({ message: 'relation "x" does not exist' }).code, 'INTERNAL');
 });
 

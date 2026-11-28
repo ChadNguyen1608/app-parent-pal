@@ -7,14 +7,14 @@ const PIN_FIELD = /PIN \(6 số\)/;
 
 /** Chào -> mã -> Đồng ý -> Tiếp tục -> Con hiểu rồi, dừng ở tab Hôm nay. */
 async function ghepXong(page: Page, plan: 'PREMIUM' | 'TRIAL' | 'FREE' = 'PREMIUM') {
-  // D-72: máy con chỉ hoạt động khi hộ PREMIUM; mock mặc định TRIAL nên các luồng thường chọn PREMIUM.
+  // D-72, D-74: máy con chỉ hoạt động khi hộ đang dùng thử hoặc Premium (có khóa ghép máy); FREE thì tạm dừng. Các luồng thường chọn PREMIUM.
   await page.goto(`/?plan=${plan}`);
   await page.getByRole('button', { name: 'Lấy mã' }).click();
   await expect(page.getByRole('heading', { name: 'Mã của con' })).toBeVisible();
   await page.getByRole('button', { name: 'Đồng ý' }).click({ timeout: 20_000 });
   await page.getByRole('button', { name: 'Tiếp tục' }).click();
   await page.getByRole('button', { name: 'Con hiểu rồi' }).click();
-  if (plan === 'PREMIUM') await expect(page.getByRole('heading', { name: 'Hôm nay' })).toBeVisible();
+  if (plan !== 'FREE') await expect(page.getByRole('heading', { name: 'Hôm nay' })).toBeVisible();
 }
 
 async function vaoNhapPin(page: Page) {
@@ -143,10 +143,16 @@ test('nút "Con cần giúp đỡ" mở màn lời tĩnh và số 111, dùng đ�
   await shot(page, 'ca14-con-can-giup-do');
 });
 
-test('hộ không PREMIUM (mock mặc định TRIAL): máy con ở màn Tạm dừng, không thấy lịch, nút Con cần giúp đỡ vẫn có (D-72)', async ({ page }) => {
-  await ghepXong(page, 'TRIAL');
+test('hộ không còn gói (FREE): máy con ở màn Tạm dừng, không thấy lịch, nút Con cần giúp đỡ vẫn có (D-72, D-74)', async ({ page }) => {
+  await ghepXong(page, 'FREE');
   await expect(page.getByRole('heading', { name: 'Tạm dừng' }).last()).toBeVisible();
   await expect(page.getByText(/Tạm dừng, chờ bố mẹ cập nhật/)).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Hôm nay' })).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'Con cần giúp đỡ' })).toBeVisible();
+});
+
+test('hộ đang dùng thử (mock mặc định TRIAL, 1 khóa): máy con hoạt động bình thường, thấy lịch (D-74)', async ({ page }) => {
+  await ghepXong(page, 'TRIAL');
+  await expect(page.getByRole('heading', { name: 'Hôm nay' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Tạm dừng' })).toHaveCount(0);
 });
