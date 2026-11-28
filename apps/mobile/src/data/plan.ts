@@ -90,4 +90,4 @@ export const PLAN_CONTACT_NOTE = 'Hiện app chưa có thanh toán. Bạn báo n
 
 /** Máy con khi gói không còn hoạt động (hết dùng thử, hạ gói, hoặc máy vượt số khóa ghép máy; CA-18 với câu khác, D-72, D-74). */
 export const CHILD_PAUSED_TITLE = 'Tạm dừng';
-export const CHILD_PAUSED_BODY = 'Tạm dừng, chờ bố mẹ cập nhật. Con vẫn còn nút "Con cần giúp đỡ" ở góc trên.';
+export const CHILD_PAUSED_BODY = 'Tạm dừng, chờ bố mẹ cập nhật.';

@@ -11,6 +11,5 @@ export function seenLines(effective: ReadonlySet<string>): SeenLine[] {
     { see: true, text: 'Mong muốn con gửi' },
   ];
   if (effective.has('MD-CONBAO')) out.push({ see: true, text: 'Khi con bấm "Báo bố mẹ ngay" (bố mẹ nhận ngay)' });
-  out.push({ see: false, text: 'Khi con bấm "Con cần giúp đỡ"' });
   return out;
 }

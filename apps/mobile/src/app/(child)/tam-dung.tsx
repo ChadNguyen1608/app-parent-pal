@@ -7,7 +7,6 @@ import { Btn, H1, P, Screen } from '@/ui/kit';
 // CA-18 Tạm dừng. Hai lý do:
 //  - Gói không còn hoạt động (D-72, D-74: hết dùng thử, hạ gói, máy vượt số khóa ghép): không hiện lịch, không nhận lịch mới. Câu chữ tạm, chờ chủ sản phẩm duyệt.
 //  - Gia đình đóng băng: câu chữ nguyên từ wireframe; con xem lại lịch đã có được.
-// Nút "Con cần giúp đỡ" nằm ở thanh trên (layout) và luôn dùng được.
 export default function TamDung() {
   const router = useRouter();
   const { childPlanActive, dismissPause } = useApp();

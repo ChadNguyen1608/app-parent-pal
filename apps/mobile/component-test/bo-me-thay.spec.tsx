@@ -43,10 +43,10 @@ describe('CA-16 Những gì bố mẹ thấy', () => {
     await render(<BoMeThay />);
   }
 
-  it('nêu rõ bố mẹ không thấy khi con bấm "Con cần giúp đỡ" (wireframe: Bố mẹ không thấy: Khi con bấm ...)', async () => {
+  it('D-75: không còn dòng "Con cần giúp đỡ" (bố mẹ thấy / không thấy)', async () => {
     await withConsent(['MD-LICH']);
-    await waitFor(() => expect(screen.getByLabelText('Bố mẹ không thấy: Khi con bấm "Con cần giúp đỡ"')).toBeTruthy());
-    expect(screen.getByText('Đã kết nối với gia đình.')).toBeTruthy();
+    await waitFor(() => expect(screen.getByText('Đã kết nối với gia đình.')).toBeTruthy());
+    expect(screen.queryByLabelText(/Con cần giúp đỡ/)).toBeNull();
   });
 
   it('lần đầu: ghi đồng ý của con không thành công thì báo lỗi, không vào Hôm nay, bấm lại được (không kẹt màn)', async () => {
@@ -91,7 +91,6 @@ describe('CA-16 Những gì bố mẹ thấy', () => {
       'Bố mẹ thấy: Việc con bấm "Xong" và giờ bấm',
       'Bố mẹ thấy: Con hay mệt vào loại ngày nào, trong báo cáo cuối tuần',
       'Bố mẹ không thấy: Con chọn gì mỗi ngày khi được hỏi thăm',
-      'Bố mẹ không thấy: Khi con bấm "Con cần giúp đỡ"',
     ]) expect(screen.getByLabelText(l)).toBeTruthy();
     expect(screen.queryByLabelText(/Báo bố mẹ ngay/)).toBeNull();
   });

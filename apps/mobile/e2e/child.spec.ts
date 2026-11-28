@@ -135,20 +135,18 @@ test('PIN sai 5 lần thì khóa, nhập đúng cũng chưa được', async ({ 
   await expect(page.getByRole('heading', { name: 'Chào con' })).toHaveCount(0);
 });
 
-test('nút "Con cần giúp đỡ" mở màn lời tĩnh và số 111, dùng được cả khi chưa ghép', async ({ page }) => {
+test('D-75: máy con không có nút "Con cần giúp đỡ" (chưa ghép và đã ghép)', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('link', { name: 'Con cần giúp đỡ' }).click();
-  await expect(page.getByText(/nói với một người lớn con tin/)).toBeVisible();
-  await expect(page.getByText('Gọi 111', { exact: true })).toBeVisible();
-  await shot(page, 'ca14-con-can-giup-do');
+  await expect(page.getByRole('link', { name: 'Con cần giúp đỡ' })).toHaveCount(0);
+  await expect(page.getByText('Con cần giúp đỡ')).toHaveCount(0);
 });
 
-test('hộ không còn gói (FREE): máy con ở màn Tạm dừng, không thấy lịch, nút Con cần giúp đỡ vẫn có (D-72, D-74)', async ({ page }) => {
+test('hộ không còn gói (FREE): máy con ở màn Tạm dừng, không thấy lịch, không có nút Con cần giúp đỡ (D-72, D-74, D-75)', async ({ page }) => {
   await ghepXong(page, 'FREE');
   await expect(page.getByRole('heading', { name: 'Tạm dừng' }).last()).toBeVisible();
   await expect(page.getByText(/Tạm dừng, chờ bố mẹ cập nhật/)).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Hôm nay' })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: 'Con cần giúp đỡ' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Con cần giúp đỡ' })).toHaveCount(0);
 });
 
 test('hộ đang dùng thử (mock mặc định TRIAL, 1 khóa): máy con hoạt động bình thường, thấy lịch (D-74)', async ({ page }) => {
